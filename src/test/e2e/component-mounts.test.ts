@@ -11,31 +11,32 @@ import type { Component } from 'vue';
  */
 
 // Mock Leaflet for GeoMap
-vi.mock('@/components/geo-map/_adapter', () => ({
-  cn: (...classes: (string | undefined | null | false)[]) => classes.filter(Boolean).join(' '),
-  MapContainer: {
-    name: 'MapContainer',
-    props: ['center', 'zoom', 'children'],
-    template: '<div class="mock-map-container"><slot /></div>',
-  },
-  TileLayer: {
-    name: 'TileLayer',
-    props: ['url', 'attribution'],
-    template: '<div class="mock-tile-layer"></div>',
-  },
-  Marker: {
-    name: 'Marker',
-    props: ['position'],
-    template: '<div class="mock-marker"></div>',
-  },
-  Popup: {
-    name: 'Popup',
-    template: '<div class="mock-popup"><slot /></div>',
-  },
-  useMap: () => ({
+vi.mock('leaflet', () => ({
+  default: {},
+  map: () => ({
     setView: vi.fn(),
     fitBounds: vi.fn(),
+    remove: vi.fn(),
   }),
+  tileLayer: () => ({
+    addTo: vi.fn(),
+  }),
+  marker: () => ({
+    addTo: vi.fn(),
+    bindPopup: vi.fn(),
+  }),
+  latLng: (lat: number, lng: number) => ({ lat, lng }),
+  latLngBounds: () => ({
+    extend: vi.fn(),
+  }),
+}));
+
+vi.mock('@/components/geo-map', () => ({
+  GeoMap: {
+    name: 'cmpt-geo-map',
+    props: ['id', 'markers'],
+    template: '<div class="mock-geo-map" :data-tool-ui-id="id"></div>',
+  },
 }));
 
 describe('E2E: Component Mounts', () => {
@@ -70,6 +71,7 @@ describe('E2E: Component Mounts', () => {
         id: 'test-image',
         src: 'https://example.com/image.jpg',
         assetId: 'asset-image-1',
+        alt: 'Test image',
       },
     });
     expect(wrapper.exists()).toBe(true);
@@ -117,6 +119,7 @@ describe('E2E: Component Mounts', () => {
       props: {
         id: 'test-citation',
         title: 'Test Article',
+        href: 'https://example.com/article',
         domain: 'example.com',
       },
     });
@@ -226,6 +229,9 @@ describe('E2E: Component Mounts', () => {
       props: {
         id: 'test-draft',
         channel: 'email',
+        body: 'Test email body',
+        subject: 'Test Subject',
+        to: ['recipient@example.com'],
       },
     });
     expect(wrapper.exists()).toBe(true);
@@ -238,6 +244,7 @@ describe('E2E: Component Mounts', () => {
         id: 'test-table',
         columns: [{ key: 'name', label: 'Name', priority: 'primary' }],
         data: [{ name: 'Test' }],
+        rowIdKey: 'name',
       },
     });
     expect(wrapper.exists()).toBe(true);
@@ -261,6 +268,7 @@ describe('E2E: Component Mounts', () => {
     const wrapper = mount(Plan as Component, {
       props: {
         id: 'test-plan',
+        title: 'Test Plan',
         todos: [
           { id: 'todo1', label: 'Todo item', status: 'pending' },
         ],
@@ -355,6 +363,8 @@ describe('E2E: Component Mounts', () => {
         current: {
           conditionCode: 'clear',
           temperature: 20,
+          tempMax: 25,
+          tempMin: 15,
         },
         forecast: [
           { label: 'Mon', conditionCode: 'clear', tempMin: 15, tempMax: 25 },

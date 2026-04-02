@@ -107,7 +107,7 @@ describe('Utility Functions', () => {
           isPrimary ? 'bg-blue-500 text-white' : 'bg-gray-200',
           { 'text-lg': isLarge, 'text-sm': !isLarge }
         );
-        expect(result).toBe('px-4 py-2 rounded bg-blue-500 text-white text-sm');
+        expect(result).toBe('rounded px-4 py-2 bg-blue-500 text-white text-sm');
       });
 
       it('should handle component className merging', () => {

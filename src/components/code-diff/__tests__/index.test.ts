@@ -81,7 +81,7 @@ describe('CodeDiff', () => {
         },
       });
       const html = wrapper.html();
-      expect(html).toContain('<span class="select-none mr-1 text-red-500">-</span>');
+      expect(html).toContain('<span class="mr-1 select-none text-red-500">-</span>');
       // Should have deletion background color class (light theme default)
       expect(html).toContain('bg-red-50/50');
     });
@@ -95,7 +95,7 @@ describe('CodeDiff', () => {
         },
       });
       const html = wrapper.html();
-      expect(html).toContain('<span class="select-none mr-1 text-emerald-500">+</span>');
+      expect(html).toContain('<span class="mr-1 select-none text-emerald-500">+</span>');
       // Should have addition background color class (light theme default)
       expect(html).toContain('bg-emerald-50/50');
     });

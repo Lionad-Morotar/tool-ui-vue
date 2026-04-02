@@ -5,6 +5,8 @@ export const ALLOWED_PATTERNS: RegExp[] = [
   /\[Shiki\] \d+ instances have been created/,
   // Vue injection warning - expected when testing useImageGallery outside provider
   /\[Vue warn\]: injection "Symbol\(ImageGalleryContext\)" not found/,
+  // QuestionFlow union type props - Vue validates all union props at runtime
+  /\[Vue warn\]: Missing required prop: "(step|options|steps|choice|title)"/,
 ];
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;

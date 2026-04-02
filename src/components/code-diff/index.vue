@@ -215,8 +215,8 @@ const wordDeletionBg = computed(() =>
             :aria-label="isCopied ? 'Copied' : 'Copy code'"
             @click="copyCode"
           >
-            <check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
-            <copy v-else class="h-4 w-4 text-muted-foreground" />
+            <Check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
+            <Copy v-else class="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       </div>
@@ -257,10 +257,7 @@ const wordDeletionBg = computed(() =>
             >
               <span
                 class="mr-1 select-none"
-                :class="[
-                  line.type === 'addition' && 'text-emerald-500',
-                  line.type === 'deletion' && 'text-red-500',
-                ]"
+                :class="line.type === 'addition' ? 'text-emerald-500' : line.type === 'deletion' ? 'text-red-500' : ''"
               >
                 {{ line.type === 'addition' ? '+' : line.type === 'deletion' ? '-' : ' ' }}
               </span>
@@ -399,11 +396,11 @@ const wordDeletionBg = computed(() =>
         @click="toggleExpanded"
       >
         <template v-if="isCollapsed">
-          <chevron-down class="mr-1 size-4" />
+          <ChevronDown class="mr-1 size-4" />
           Show full diff
         </template>
         <template v-else>
-          <chevron-up class="mr-1 size-4" />
+          <ChevronUp class="mr-1 size-4" />
           Collapse
         </template>
       </button>

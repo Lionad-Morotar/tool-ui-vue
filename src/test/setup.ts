@@ -29,11 +29,13 @@ global.ResizeObserver = vi.fn().mockImplementation(function () {
 }) as unknown as typeof ResizeObserver;
 
 // IntersectionObserver mock (for lazy loading)
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+global.IntersectionObserver = vi.fn().mockImplementation(function () {
+  return {
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  };
+}) as unknown as typeof IntersectionObserver;
 
 // Canvas/WebGL context mock (for WeatherWidget)
 HTMLCanvasElement.prototype.getContext = vi.fn((contextId: string) => {

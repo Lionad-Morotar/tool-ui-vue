@@ -43,7 +43,7 @@ describe('CitationList', () => {
         },
       });
       // Default variant renders Citation components
-      expect(wrapper.findAllComponents({ name: 'Citation' }).length).toBe(5);
+      expect(wrapper.findAllComponents({ name: 'cmpt-citation' }).length).toBe(5);
     });
 
     test('renders custom css.root', () => {
@@ -177,7 +177,7 @@ describe('CitationList', () => {
         },
       });
       // Should only render 2 Citation components
-      expect(wrapper.findAllComponents({ name: 'Citation' }).length).toBe(2);
+      expect(wrapper.findAllComponents({ name: 'cmpt-citation' }).length).toBe(2);
     });
   });
 
@@ -264,7 +264,7 @@ describe('CitationList', () => {
       });
 
       // Find Citation components and trigger navigate
-      const citationComponents = wrapper.findAllComponents({ name: 'Citation' });
+      const citationComponents = wrapper.findAllComponents({ name: 'cmpt-citation' });
       citationComponents[0].vm.$emit('navigate', citations[0].href, citations[0]);
 
       expect(wrapper.emitted('navigate')).toBeTruthy();
