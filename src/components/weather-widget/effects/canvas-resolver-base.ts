@@ -1,12 +1,12 @@
-import { getTimeOfDay, mapWeatherToEffects } from "./parameter-mapper";
-import type { WeatherEffectParams } from "./types";
-import type { WeatherEffectsCanvasProps } from "./weather-effects-types";
+import { getTimeOfDay, mapWeatherToEffects } from './parameter-mapper';
+import type { WeatherEffectParams } from './types';
 import type {
   WeatherCompositorParams,
   WeatherStudioCompositorParams,
-} from "./weather-compositor-types";
+} from './weather-compositor-types';
+import type { WeatherEffectsCanvasProps } from './weather-effects-types';
 
-export type { WeatherStudioCompositorParams } from "./weather-compositor-types";
+export type { WeatherStudioCompositorParams } from './weather-compositor-types';
 
 export function createStudioTimestamp(
   timeOfDay: number,

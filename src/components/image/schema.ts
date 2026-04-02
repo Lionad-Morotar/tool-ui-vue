@@ -8,20 +8,20 @@
  *
  * @module tool-ui-vue/components/image/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
 
 /**
  * 宽高比的 Schema 定义
  */
 export const AspectRatioSchema = z
-  .enum(["auto", "1:1", "4:3", "16:9", "9:16"])
-  .default("auto");
+  .enum(['auto', '1:1', '4:3', '16:9', '9:16'])
+  .default('auto');
 
 /**
  * 宽高比类型
@@ -32,7 +32,7 @@ export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 /**
  * 媒体适配模式的 Schema 定义
  */
-export const MediaFitSchema = z.enum(["cover", "contain"]).default("cover");
+export const MediaFitSchema = z.enum(['cover', 'contain']).default('cover');
 
 /**
  * 媒体适配模式类型
@@ -65,7 +65,7 @@ export const SerializableImageSchema = z.object({
   receipt: ToolUIReceiptSchema.optional(),
   assetId: z.string(),
   src: z.string().url(),
-  alt: z.string().min(1, "Images require alt text for accessibility"),
+  alt: z.string().min(1, 'Images require alt text for accessibility'),
   title: z.string().optional(),
   description: z.string().optional(),
   href: z.string().url().optional(),
@@ -85,7 +85,7 @@ export const SerializableImageSchema = z.object({
 export type SerializableImage = z.infer<typeof SerializableImageSchema>;
 
 const SerializableImageSchemaContract = defineToolUiContract(
-  "Image",
+  'Image',
   SerializableImageSchema,
 );
 
@@ -102,9 +102,9 @@ export const safeParseSerializableImage: (
  */
 export interface ImageProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;

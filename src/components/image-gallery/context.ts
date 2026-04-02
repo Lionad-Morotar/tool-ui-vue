@@ -1,5 +1,5 @@
-import { ref, computed, provide, inject, type InjectionKey, type Ref } from "vue";
-import type { ImageGalleryItem } from "./schema";
+import { ref, computed, provide, inject, type InjectionKey, type Ref } from 'vue';
+import type { ImageGalleryItem } from './schema';
 
 export interface ImageGalleryContextValue {
   images: Ref<ImageGalleryItem[]>;
@@ -15,14 +15,14 @@ export interface ImageGalleryContextValue {
 }
 
 export const ImageGalleryKey: InjectionKey<ImageGalleryContextValue> = Symbol(
-  "ImageGalleryContext"
+  'ImageGalleryContext'
 );
 
 export function useImageGallery(): ImageGalleryContextValue {
   const context = inject(ImageGalleryKey);
   if (!context) {
     throw new Error(
-      "useImageGallery must be used within ImageGalleryProvider"
+      'useImageGallery must be used within ImageGalleryProvider'
     );
   }
   return context;
@@ -50,13 +50,13 @@ export function createImageGalleryContext(
     if (index < 0 || index >= images.value.length) return;
     activeIndex.value = index;
     isOpen.value = true;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
     isOpen.value = false;
     activeIndex.value = null;
-    document.body.style.overflow = "";
+    document.body.style.overflow = '';
   }
 
   function nextImage() {

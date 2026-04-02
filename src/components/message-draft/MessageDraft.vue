@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted, nextTick } from "vue";
-import { cn } from "./_adapter";
+import { ref, computed, watch, onUnmounted, nextTick } from 'vue';
+import { cn } from './_adapter';
 import type {
   RuntimeMessageDraftProps,
   SerializableEmailDraft,
   SerializableSlackDraft,
-} from "./schema";
+} from './schema';
 
 const props = defineProps<RuntimeMessageDraftProps & {
   undoGracePeriod?: number;
@@ -20,14 +20,14 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-type DraftState = "review" | "sending" | "sent" | "cancelled";
+type DraftState = 'review' | 'sending' | 'sent' | 'cancelled';
 
 const COLLAPSED_BODY_HEIGHT = 280;
 const DEFAULT_UNDO_GRACE_PERIOD = 5000;
 
 const state = ref<DraftState>(resolveStateFromOutcome(props.outcome));
 const countdown = ref(Math.ceil((props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD) / 1000));
-const sentAt = ref<Date | null>(props.outcome === "sent" ? new Date() : null);
+const sentAt = ref<Date | null>(props.outcome === 'sent' ? new Date() : null);
 const isExpanded = ref(false);
 const needsExpansion = ref(false);
 const undoButtonRef = ref<HTMLButtonElement | null>(null);
@@ -36,9 +36,9 @@ let timer: ReturnType<typeof setTimeout> | null = null;
 let countdownInterval: ReturnType<typeof setInterval> | null = null;
 
 function resolveStateFromOutcome(outcome: typeof props.outcome): DraftState {
-  if (outcome === "sent") return "sent";
-  if (outcome === "cancelled") return "cancelled";
-  return "review";
+  if (outcome === 'sent') return 'sent';
+  if (outcome === 'cancelled') return 'cancelled';
+  return 'review';
 }
 
 function resolveOutcomeTransition(
@@ -62,31 +62,31 @@ function clearTimers() {
 
 function formatSentTime(date: Date): string {
   return date.toLocaleTimeString(undefined, {
-    hour: "numeric",
-    minute: "2-digit",
+    hour: 'numeric',
+    minute: '2-digit',
   });
 }
 
 function handleSend() {
-  state.value = "sending";
+  state.value = 'sending';
 }
 
 function handleUndo() {
   clearTimers();
-  state.value = "review";
+  state.value = 'review';
   props.onUndo?.();
-  emit("undo");
+  emit('undo');
 }
 
 function handleCancel() {
   clearTimers();
-  state.value = "cancelled";
+  state.value = 'cancelled';
   props.onCancel?.();
-  emit("cancel");
+  emit('cancel');
 }
 
 function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === "Escape" && state.value === "review") {
+  if (event.key === 'Escape' && state.value === 'review') {
     event.preventDefault();
     handleCancel();
   }
@@ -109,7 +109,7 @@ watch(
     clearTimers();
     state.value = nextState;
     countdown.value = Math.ceil((props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD) / 1000);
-    sentAt.value = nextState === "sent" ? new Date() : null;
+    sentAt.value = nextState === 'sent' ? new Date() : null;
   }
 );
 
@@ -117,7 +117,7 @@ watch(
 watch(
   () => state.value,
   async (newState) => {
-    if (newState === "sending") {
+    if (newState === 'sending') {
       // Focus undo button after DOM update
       await nextTick();
       undoButtonRef.value?.focus();
@@ -139,9 +139,9 @@ watch(
       timer = setTimeout(async () => {
         clearTimers();
         await props.onSend?.();
-        emit("send");
+        emit('send');
         sentAt.value = new Date();
-        state.value = "sent";
+        state.value = 'sent';
       }, props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD);
     }
   }
@@ -155,8 +155,8 @@ onUnmounted(() => {
 const showExpandButton = computed(() => needsExpansion.value);
 
 // Type guards for discriminated union
-const isEmailDraft = computed(() => props.channel === "email");
-const isSlackDraft = computed(() => props.channel === "slack");
+const isEmailDraft = computed(() => props.channel === 'email');
+const isSlackDraft = computed(() => props.channel === 'slack');
 
 // Cast props for type narrowing in template
 const emailProps = computed(() => props as unknown as SerializableEmailDraft);
@@ -171,9 +171,9 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
       v-if="state === 'sent'"
       :class="
         cn(
-          'flex w-full min-w-64 max-w-lg flex-col',
+          'flex w-full max-w-lg min-w-64 flex-col',
           'text-foreground',
-          'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:fill-mode-both',
+          'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
           props.className
         )
       "
@@ -187,7 +187,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
         <span class="text-muted-foreground">
           Sent at {{ formatSentTime(sentAt ?? new Date()) }}
         </span>
-        <span class="bg-primary/10 text-primary flex size-6 shrink-0 items-center justify-center rounded-full">
+        <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -212,7 +212,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
         cn(
           'flex w-full max-w-lg min-w-64 flex-col gap-3',
           'text-foreground',
-          'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:fill-mode-both',
+          'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
           props.className
         )
       "
@@ -224,7 +224,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
       @keydown="handleKeyDown"
     >
       <div
-        class="bg-card border-border flex w-full flex-col gap-3 rounded-2xl border px-5 pt-3 pb-5 shadow-xs transition-none"
+        class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card px-5 pt-3 pb-5 shadow-xs transition-none"
       >
         <!-- Email Draft Content -->
         <template v-if="isEmailDraft">
@@ -239,7 +239,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
             <tbody>
               <tr v-if="emailProps.from" class="text-sm">
                 <td
-                  class="text-muted-foreground w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap"
+                  class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
                   From
                 </td>
@@ -247,7 +247,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               </tr>
               <tr class="text-sm">
                 <td
-                  class="text-muted-foreground w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap"
+                  class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
                   To
                 </td>
@@ -266,7 +266,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 class="text-sm"
               >
                 <td
-                  class="text-muted-foreground w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap"
+                  class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
                   Cc
                 </td>
@@ -285,7 +285,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 class="text-sm"
               >
                 <td
-                  class="text-muted-foreground w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap"
+                  class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
                   Bcc
                 </td>
@@ -304,7 +304,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
             </tbody>
           </table>
 
-          <div class="bg-border -mx-5 h-px" role="separator" />
+          <div class="-mx-5 h-px bg-border" role="separator" />
 
           <!-- Expandable Body -->
           <div class="relative">
@@ -331,7 +331,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               v-if="needsExpansion"
               :class="
                 cn(
-                  'from-card pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t to-transparent transition-[height] duration-300 ease-in-out',
+                  'pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-card to-transparent transition-[height] duration-300 ease-in-out',
                   isExpanded ? 'h-0' : 'h-12'
                 )
               "
@@ -369,13 +369,13 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
             </span>
             <span
               v-if="slackProps.target.type === 'channel' && slackProps.target.memberCount !== undefined"
-              class="text-muted-foreground ml-auto text-sm font-normal"
+              class="ml-auto text-sm font-normal text-muted-foreground"
             >
               {{ slackProps.target.memberCount.toLocaleString() }} members
             </span>
           </div>
 
-          <div class="bg-border -mx-5 h-px" role="separator" />
+          <div class="-mx-5 h-px bg-border" role="separator" />
 
           <!-- Expandable Body -->
           <div class="relative">
@@ -402,7 +402,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               v-if="needsExpansion"
               :class="
                 cn(
-                  'from-card pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t to-transparent transition-[height] duration-300 ease-in-out',
+                  'pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-card to-transparent transition-[height] duration-300 ease-in-out',
                   isExpanded ? 'h-0' : 'h-12'
                 )
               "
@@ -418,7 +418,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
             cn(
               'inline-flex items-center justify-center rounded-md px-2 py-1 text-sm font-medium transition-colors',
               'hover:bg-accent hover:text-accent-foreground',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'h-7 gap-1'
             )
           "
@@ -450,7 +450,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
           class="flex items-center justify-end gap-3"
           aria-live="polite"
         >
-          <span class="text-muted-foreground text-sm">
+          <span class="text-sm text-muted-foreground">
             Sending in {{ countdown }}s
           </span>
           <button
@@ -460,7 +460,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               cn(
                 'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors',
                 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-                'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
                 'disabled:pointer-events-none disabled:opacity-50',
                 'h-9'
               )
@@ -487,7 +487,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               cn(
                 'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
                 'hover:bg-accent hover:text-accent-foreground',
-                'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
                 'disabled:pointer-events-none disabled:opacity-50',
                 'h-9 w-full @[240px]:w-auto'
               )
@@ -502,7 +502,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               cn(
                 'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
                 'bg-primary text-primary-foreground hover:bg-primary/90',
-                'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
                 'disabled:pointer-events-none disabled:opacity-50',
                 'h-9 w-full @[240px]:w-auto'
               )

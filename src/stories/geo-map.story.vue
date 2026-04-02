@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { GeoMap } from "../components";
-import type { GeoMapMarker, GeoMapRoute } from "../components/geo-map/schema";
+import { reactive } from 'vue';
+import { GeoMap } from '../components';
+import type { GeoMapMarker, GeoMapRoute } from '../components/geo-map/schema';
 
 const mapState = reactive({
   selectedMarker: null as string | null,
@@ -9,11 +9,11 @@ const mapState = reactive({
 });
 
 function handleMarkerClick(marker: GeoMapMarker) {
-  mapState.selectedMarker = marker.id || marker.label || "Unknown";
+  mapState.selectedMarker = marker.id || marker.label || 'Unknown';
 }
 
 function handleRouteClick(route: GeoMapRoute) {
-  mapState.selectedRoute = route.id || route.label || "Unknown";
+  mapState.selectedRoute = route.id || route.label || 'Unknown';
 }
 </script>
 
@@ -21,7 +21,7 @@ function handleRouteClick(route: GeoMapRoute) {
   <Story title="GeoMap/All Variants">
     <Variant title="Single Marker">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-single"
           title="Location"
           description="Office headquarters"
@@ -35,7 +35,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Multiple Markers">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-multiple"
           title="Office Locations"
           description="Our offices across California"
@@ -51,7 +51,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="With Routes">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-routes"
           title="Delivery Route"
           description="Optimized delivery path"
@@ -81,7 +81,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="With Custom Icons">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-icons"
           title="Points of Interest"
           :markers="[
@@ -96,7 +96,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Dark Theme">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-dark"
           title="Night Mode"
           :markers="[
@@ -120,7 +120,7 @@ function handleRouteClick(route: GeoMapRoute) {
             Clear
           </button>
         </div>
-        <GeoMap
+        <geo-map
           id="geo-map-interactive"
           title="Clickable Markers"
           description="Click on any marker to select it"
@@ -146,7 +146,7 @@ function handleRouteClick(route: GeoMapRoute) {
             Clear
           </button>
         </div>
-        <GeoMap
+        <geo-map
           id="geo-map-routes-interactive"
           title="Clickable Routes"
           description="Click on any route to select it"
@@ -185,7 +185,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="With Clustering">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-clustering"
           title="High Density Markers"
           description="Many markers in a small area"
@@ -207,7 +207,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Without Title">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-no-title"
           :markers="[
             { id: '1', lat: 51.5074, lng: -0.1278, label: 'London' },
@@ -221,7 +221,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="With Image Icons">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-image-icons"
           title="Popular Destinations"
           :markers="[
@@ -235,7 +235,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="With Custom Dot Icons">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-dot-icons"
           title="Priority Locations"
           :markers="[
@@ -250,7 +250,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Dense Clustering Demo">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-dense-clustering"
           title="High Density Points"
           description="Many markers in a small area with clustering enabled"
@@ -276,7 +276,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Complex Route with Styling">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-complex-route"
           title="Multi-Stop Delivery"
           description="Optimized route with multiple waypoints"
@@ -311,7 +311,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Center Viewport Mode">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-center-mode"
           title="Fixed Center"
           description="Using center mode with specific coordinates"
@@ -325,7 +325,7 @@ function handleRouteClick(route: GeoMapRoute) {
 
     <Variant title="Without Zoom Control">
       <div class="w-full max-w-2xl">
-        <GeoMap
+        <geo-map
           id="geo-map-no-zoom"
           title="No Zoom Controls"
           description="Map without zoom control buttons"

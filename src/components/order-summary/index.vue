@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { Package, CheckCircle } from "lucide-vue-next";
-import { cn } from "./_adapter";
-import type { OrderSummaryProps, OrderItem, Pricing } from "./schema";
+import { Package, CheckCircle } from 'lucide-vue-next';
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import type { OrderSummaryProps, OrderItem } from './schema';
 
 const props = defineProps<OrderSummaryProps>();
 
 function formatCurrency(amount: number, currency?: string): string {
-  const curr = currency || "USD";
+  const curr = currency || 'USD';
   try {
     return new Intl.NumberFormat(undefined, {
-      style: "currency",
+      style: 'currency',
       currency: curr,
     }).format(amount);
   } catch {
@@ -19,7 +19,7 @@ function formatCurrency(amount: number, currency?: string): string {
 }
 
 function formatQuantity(quantity: number): string {
-  return quantity === 1 ? "" : `Qty: ${quantity}`;
+  return quantity === 1 ? '' : `Qty: ${quantity}`;
 }
 
 function getItemTotal(item: OrderItem): number {
@@ -32,9 +32,9 @@ function formatDate(isoString: string): string | undefined {
     const date = new Date(isoString);
     if (isNaN(date.getTime())) return undefined;
     return date.toLocaleDateString(undefined, {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   } catch {
     return undefined;
@@ -44,10 +44,10 @@ function formatDate(isoString: string): string | undefined {
 // Auto-resolve variant based on choice prop
 const resolvedVariant = computed(() => {
   if (props.variant) return props.variant;
-  return props.choice === undefined ? "summary" : "receipt";
+  return props.choice === undefined ? 'summary' : 'receipt';
 });
 
-const isReceipt = computed(() => resolvedVariant.value === "receipt");
+const isReceipt = computed(() => resolvedVariant.value === 'receipt');
 
 // Malformed payload detection
 const isMalformedPayload = computed(() => {
@@ -59,12 +59,12 @@ const isMalformedPayload = computed(() => {
 
 // Receipt badge text
 const receiptBadgeText = computed(() => {
-  if (!props.choice) return "";
+  if (!props.choice) return '';
   const parts = [
     props.choice.orderId && `#${props.choice.orderId}`,
     props.choice.confirmedAt && formatDate(props.choice.confirmedAt),
   ].filter(Boolean);
-  return parts.join(" · ");
+  return parts.join(' · ');
 });
 </script>
 
@@ -77,11 +77,11 @@ const receiptBadgeText = computed(() => {
     :data-tool-ui-id="id"
     :aria-labelledby="`${id}-title`"
   >
-    <div class="text-card-foreground border-border rounded-lg border bg-card p-4 shadow-sm">
+    <div class="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
       <h2 :id="`${id}-title`" class="text-base font-semibold">
         {{ title || "Order Summary" }}
       </h2>
-      <p class="text-muted-foreground mt-2 text-sm">
+      <p class="mt-2 text-sm text-muted-foreground">
         Unable to render order summary
       </p>
     </div>
@@ -101,21 +101,21 @@ const receiptBadgeText = computed(() => {
     role="status"
     :aria-labelledby="`${id}-title`"
   >
-    <div class="text-card-foreground border-border rounded-lg border shadow-sm bg-card/60">
+    <div class="rounded-lg border border-border bg-card/60 text-card-foreground shadow-sm">
       <div class="space-y-4 p-4 opacity-95">
         <div>
           <h2
             :id="`${id}-title`"
             class="flex items-center gap-2 text-base font-semibold"
           >
-            <CheckCircle
+            <check-circle
               class="h-5 w-5 text-green-600 dark:text-green-500"
               aria-hidden="true"
               :focusable="false"
             />
             {{ title || "Order Summary" }}
           </h2>
-          <p v-if="receiptBadgeText" class="text-muted-foreground mt-1 text-sm">
+          <p v-if="receiptBadgeText" class="mt-1 text-sm text-muted-foreground">
             {{ receiptBadgeText }}
           </p>
         </div>
@@ -134,9 +134,9 @@ const receiptBadgeText = computed(() => {
               height="48"
               class="h-12 w-12 shrink-0 rounded-md object-cover"
             />
-            <div v-else class="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md">
-              <Package
-                class="text-muted-foreground h-5 w-5"
+            <div v-else class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-muted">
+              <package
+                class="h-5 w-5 text-muted-foreground"
                 aria-hidden="true"
                 :focusable="false"
               />
@@ -147,7 +147,7 @@ const receiptBadgeText = computed(() => {
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
                   <span class="truncate text-sm tabular-nums">{{ formatCurrency(getItemTotal(item), pricing.currency) }}</span>
                 </div>
-                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="text-muted-foreground truncate text-sm">
+                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
                   {{ [item.description, formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
                 </div>
               </div>
@@ -155,7 +155,7 @@ const receiptBadgeText = computed(() => {
           </div>
         </div>
 
-        <hr class="border-border shrink-0 border-t" />
+        <hr class="shrink-0 border-t border-border" />
 
         <!-- Pricing -->
         <dl class="flex flex-col gap-2 text-sm">
@@ -202,7 +202,7 @@ const receiptBadgeText = computed(() => {
     :data-tool-ui-id="id"
     :aria-labelledby="`${id}-title`"
   >
-    <div class="text-card-foreground border-border rounded-lg border bg-card shadow-sm">
+    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
       <div class="space-y-4 p-4">
         <div>
           <h2 :id="`${id}-title`" class="text-base font-semibold">{{ title || "Order Summary" }}</h2>
@@ -222,9 +222,9 @@ const receiptBadgeText = computed(() => {
               height="48"
               class="h-12 w-12 shrink-0 rounded-md object-cover"
             />
-            <div v-else class="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md">
-              <Package
-                class="text-muted-foreground h-5 w-5"
+            <div v-else class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-muted">
+              <package
+                class="h-5 w-5 text-muted-foreground"
                 aria-hidden="true"
                 :focusable="false"
               />
@@ -235,7 +235,7 @@ const receiptBadgeText = computed(() => {
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
                   <span class="truncate text-sm tabular-nums">{{ formatCurrency(getItemTotal(item), pricing.currency) }}</span>
                 </div>
-                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="text-muted-foreground truncate text-sm">
+                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
                   {{ [item.description, formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
                 </div>
               </div>
@@ -243,7 +243,7 @@ const receiptBadgeText = computed(() => {
           </div>
         </div>
 
-        <hr class="border-border shrink-0 border-t" />
+        <hr class="shrink-0 border-t border-border" />
 
         <!-- Pricing -->
         <dl class="flex flex-col gap-2 text-sm">

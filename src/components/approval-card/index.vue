@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, h } from "vue";
-import { Check, X, icons } from "lucide-vue-next";
-import { cn } from "./_adapter";
-import type { ApprovalCardBaseProps, ApprovalDecision } from "./schema";
+import { Check, X, icons } from 'lucide-vue-next';
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import type { ApprovalCardBaseProps } from './schema';
 
 const props = defineProps<ApprovalCardBaseProps>();
 
@@ -11,10 +11,10 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const resolvedVariant = computed(() => props.variant ?? "default");
-const resolvedConfirmLabel = computed(() => props.confirmLabel ?? "Approve");
-const resolvedCancelLabel = computed(() => props.cancelLabel ?? "Deny");
-const isDestructive = computed(() => resolvedVariant.value === "destructive");
+const resolvedVariant = computed(() => props.variant ?? 'default');
+const resolvedConfirmLabel = computed(() => props.confirmLabel ?? 'Approve');
+const resolvedCancelLabel = computed(() => props.cancelLabel ?? 'Deny');
+const isDestructive = computed(() => resolvedVariant.value === 'destructive');
 
 // Dynamic icon lookup using lucide-vue-next
 const IconComponent = computed(() => {
@@ -22,9 +22,9 @@ const IconComponent = computed(() => {
 
   // Convert kebab-case to PascalCase for icon lookup
   const pascalName = props.icon
-    .split("-")
+    .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join("");
+    .join('');
 
   const Icon = icons[pascalName as keyof typeof icons];
   return Icon ?? null;
@@ -33,24 +33,24 @@ const IconComponent = computed(() => {
 // Receipt display label - follows React logic
 const receiptLabel = computed(() => {
   // Use the appropriate label based on choice
-  if (props.choice === "approved") {
+  if (props.choice === 'approved') {
     return resolvedConfirmLabel.value;
   }
   return resolvedCancelLabel.value;
 });
 
 function handleConfirm() {
-  emit("confirm");
+  emit('confirm');
 }
 
 function handleCancel() {
-  emit("cancel");
+  emit('cancel');
 }
 
 function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === "Escape") {
+  if (event.key === 'Escape') {
     event.preventDefault();
-    emit("cancel");
+    emit('cancel');
   }
 }
 </script>
@@ -61,9 +61,9 @@ function handleKeyDown(event: KeyboardEvent) {
     v-if="choice"
     :class="
       cn(
-        'flex w-full min-w-64 max-w-md flex-col',
+        'flex w-full max-w-md min-w-64 flex-col',
         'text-foreground',
-        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:fill-mode-both',
+        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
         className,
       )
     "
@@ -76,7 +76,7 @@ function handleKeyDown(event: KeyboardEvent) {
     <div
       :class="
         cn(
-          'bg-card/60 border-border flex w-full items-center gap-3 rounded-2xl border px-4 py-3 shadow-xs',
+          'flex w-full items-center gap-3 rounded-2xl border border-border bg-card/60 px-4 py-3 shadow-xs',
         )
       "
     >
@@ -95,7 +95,7 @@ function handleKeyDown(event: KeyboardEvent) {
       </span>
       <div class="flex flex-col">
         <span class="text-sm font-medium">{{ receiptLabel }}</span>
-        <span class="text-muted-foreground text-sm">{{ title }}</span>
+        <span class="text-sm text-muted-foreground">{{ title }}</span>
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@ function handleKeyDown(event: KeyboardEvent) {
     v-else
     :class="
       cn(
-        'flex w-full min-w-64 max-w-md flex-col gap-3',
+        'flex w-full max-w-md min-w-64 flex-col gap-3',
         'text-foreground',
         className,
       )
@@ -119,7 +119,7 @@ function handleKeyDown(event: KeyboardEvent) {
     @keydown="handleKeyDown"
   >
     <div
-      class="bg-card border-border flex w-full flex-col gap-4 rounded-2xl border p-5 shadow-xs"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
     >
       <div class="flex items-start gap-3">
         <span
@@ -138,14 +138,14 @@ function handleKeyDown(event: KeyboardEvent) {
         <div class="flex flex-1 flex-col gap-1">
           <h2
             :id="`${id}-title`"
-            class="text-base font-semibold leading-tight"
+            class="text-base leading-tight font-semibold"
           >
             {{ title }}
           </h2>
           <p
             v-if="description"
             :id="`${id}-description`"
-            class="text-muted-foreground text-sm"
+            class="text-sm text-muted-foreground"
           >
             {{ description }}
           </p>
@@ -153,14 +153,14 @@ function handleKeyDown(event: KeyboardEvent) {
       </div>
 
       <template v-if="metadata && metadata.length > 0">
-        <hr class="border-border shrink-0 border-t" />
+        <hr class="shrink-0 border-t border-border" />
         <dl class="flex flex-col gap-2 text-sm">
           <div
             v-for="(item, index) in metadata"
             :key="index"
             class="flex justify-between gap-4"
           >
-            <dt class="text-muted-foreground shrink-0">{{ item.key }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ item.key }}</dt>
             <dd class="min-w-0 truncate">{{ item.value }}</dd>
           </div>
         </dl>
@@ -173,7 +173,7 @@ function handleKeyDown(event: KeyboardEvent) {
         :class="
           cn(
             'flex w-full flex-col gap-3',
-            'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-end',
+            '@[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-end @[240px]/actions:gap-2',
           )
         "
       >
@@ -183,7 +183,7 @@ function handleKeyDown(event: KeyboardEvent) {
             cn(
               'inline-flex items-center justify-center rounded-full px-4 text-base font-medium transition-colors',
               'hover:bg-accent hover:text-accent-foreground',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'disabled:pointer-events-none disabled:opacity-50',
               'min-h-11 w-full text-base',
               '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',
@@ -198,7 +198,7 @@ function handleKeyDown(event: KeyboardEvent) {
           :class="
             cn(
               'inline-flex items-center justify-center rounded-full px-4 text-base font-medium transition-colors',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'disabled:pointer-events-none disabled:opacity-50',
               'min-h-11 w-full text-base',
               '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',

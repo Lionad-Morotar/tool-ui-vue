@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/geo-map/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 const LatitudeSchema = z.number().finite().min(-90).max(90);
 const LongitudeSchema = z.number().finite().min(-180).max(180);
@@ -22,18 +23,18 @@ const HttpUrlSchema = z
   .string()
   .url()
   .refine((value) => /^https?:\/\//i.test(value), {
-    message: "Expected an http or https URL.",
+    message: 'Expected an http or https URL.',
   });
 
 const GeoMapMarkerIconDotSchema = z.object({
-  type: z.literal("dot"),
+  type: z.literal('dot'),
   color: z.string().optional(),
   borderColor: z.string().optional(),
   radius: z.number().min(3).max(16).optional(),
 });
 
 const GeoMapMarkerIconEmojiSchema = z.object({
-  type: z.literal("emoji"),
+  type: z.literal('emoji'),
   value: z.string().min(1),
   size: z.number().min(16).max(40).optional(),
   bgColor: z.string().optional(),
@@ -41,7 +42,7 @@ const GeoMapMarkerIconEmojiSchema = z.object({
 });
 
 const GeoMapMarkerIconImageSchema = z.object({
-  type: z.literal("image"),
+  type: z.literal('image'),
   url: HttpUrlSchema,
   width: z.number().min(16).max(64).optional(),
   height: z.number().min(16).max(64).optional(),
@@ -73,7 +74,7 @@ export const GeoMapMarkerSchema = z.object({
   lng: LongitudeSchema,
   label: z.string().optional(),
   description: z.string().optional(),
-  tooltip: z.enum(["none", "hover", "always"]).optional(),
+  tooltip: z.enum(['none', 'hover', 'always']).optional(),
   icon: GeoMapMarkerIconSchema.optional(),
 });
 
@@ -99,7 +100,7 @@ export const GeoMapRouteSchema = z.object({
   points: z.array(GeoMapRoutePointSchema).min(2),
   label: z.string().optional(),
   description: z.string().optional(),
-  tooltip: z.enum(["none", "hover", "always"]).optional(),
+  tooltip: z.enum(['none', 'hover', 'always']).optional(),
   color: z.string().optional(),
   weight: z.number().min(1).max(12).optional(),
   opacity: z.number().min(0).max(1).optional(),
@@ -131,7 +132,7 @@ export type GeoMapClustering = z.infer<typeof GeoMapClusteringSchema>;
 /**
  * 地图适配目标的 Schema 定义
  */
-export const GeoMapFitTargetSchema = z.enum(["markers", "routes", "all"]);
+export const GeoMapFitTargetSchema = z.enum(['markers', 'routes', 'all']);
 
 /**
  * 地图适配目标类型
@@ -140,14 +141,14 @@ export const GeoMapFitTargetSchema = z.enum(["markers", "routes", "all"]);
 export type GeoMapFitTarget = z.infer<typeof GeoMapFitTargetSchema>;
 
 const GeoMapFitViewportSchema = z.object({
-  mode: z.literal("fit"),
+  mode: z.literal('fit'),
   padding: z.number().nonnegative().optional(),
   maxZoom: z.number().min(1).max(22).optional(),
   target: GeoMapFitTargetSchema.optional(),
 });
 
 const GeoMapCenterViewportSchema = z.object({
-  mode: z.literal("center"),
+  mode: z.literal('center'),
   center: z.object({
     lat: LatitudeSchema,
     lng: LongitudeSchema,
@@ -185,7 +186,7 @@ export const GeoMapPropsSchema = z
     clustering: GeoMapClusteringSchema.optional(),
     viewport: GeoMapViewportSchema.optional(),
     showZoomControl: z.boolean().optional(),
-    theme: z.enum(["light", "dark"]).optional(),
+    theme: z.enum(['light', 'dark']).optional(),
   })
   .superRefine((value, ctx) => {
     const seenMarkerIds = new Set<string>();
@@ -197,8 +198,8 @@ export const GeoMapPropsSchema = z
 
       if (seenMarkerIds.has(marker.id)) {
         ctx.addIssue({
-          code: "custom",
-          path: ["markers", index, "id"],
+          code: 'custom',
+          path: ['markers', index, 'id'],
           message: `Duplicate marker id "${marker.id}".`,
         });
         return;
@@ -215,8 +216,8 @@ export const GeoMapPropsSchema = z
 
       if (seenRouteIds.has(route.id)) {
         ctx.addIssue({
-          code: "custom",
-          path: ["routes", index, "id"],
+          code: 'custom',
+          path: ['routes', index, 'id'],
           message: `Duplicate route id "${route.id}".`,
         });
         return;
@@ -251,8 +252,8 @@ export type GeoMapClientProps = {
  */
 export interface GeoMapProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   title?: string;
   description?: string;
   markers: GeoMapMarker[];
@@ -260,7 +261,7 @@ export interface GeoMapProps {
   clustering?: GeoMapClustering;
   viewport?: GeoMapViewport;
   showZoomControl?: boolean;
-  theme?: "light" | "dark";
+  theme?: 'light' | 'dark';
   className?: string;
   style?: GeoMapStyle;
   tooltipClassName?: string;
@@ -281,7 +282,7 @@ export const SerializableGeoMapSchema = GeoMapPropsSchema;
 export type SerializableGeoMap = z.infer<typeof SerializableGeoMapSchema>;
 
 const SerializableGeoMapSchemaContract = defineToolUiContract(
-  "GeoMap",
+  'GeoMap',
   SerializableGeoMapSchema,
 );
 

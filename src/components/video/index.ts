@@ -1,11 +1,11 @@
-export { default as Video } from "./index.vue";
+export { default as Video } from './index.vue';
 export type {
   VideoProps,
   SerializableVideo,
   Source,
   AspectRatio,
   MediaFit,
-} from "./schema";
+} from './schema';
 export {
   SerializableVideoSchema,
   SourceSchema,
@@ -13,18 +13,18 @@ export {
   MediaFitSchema,
   parseSerializableVideo,
   safeParseSerializableVideo,
-} from "./schema";
+} from './schema';
 export {
   useVideo,
   useLocalVideo,
   provideVideo,
   type VideoPlaybackState,
   type VideoContextValue,
-} from "./context";
+} from './context';
 export {
   getMuteMediaEvent,
   resolveVideoNavigation,
   normalizeVideoDataForCallback,
   type VideoMediaEvent,
   type ResolvedVideoNavigation,
-} from "./video-helpers";
+} from './video-helpers';

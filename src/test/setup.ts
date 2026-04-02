@@ -1,11 +1,11 @@
-import { vi } from "vitest";
-import { setupConsoleGuard } from "./console-guard";
+import { vi } from 'vitest';
+import { setupConsoleGuard } from './console-guard';
 
 // Activate console guard to catch unexpected console output during tests
 setupConsoleGuard();
 
 // matchMedia mock (for theme detection)
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
@@ -37,7 +37,7 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
 
 // Canvas/WebGL context mock (for WeatherWidget)
 HTMLCanvasElement.prototype.getContext = vi.fn((contextId: string) => {
-  if (contextId === "webgl" || contextId === "webgl2") {
+  if (contextId === 'webgl' || contextId === 'webgl2') {
     return {
       getExtension: vi.fn(),
       getParameter: vi.fn(),
@@ -65,7 +65,7 @@ HTMLCanvasElement.prototype.getContext = vi.fn((contextId: string) => {
       getAttribLocation: vi.fn().mockReturnValue(0),
     };
   }
-  if (contextId === "2d") {
+  if (contextId === '2d') {
     return {
       fillRect: vi.fn(),
       clearRect: vi.fn(),

@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/image-gallery/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
  * 图片画廊来源的 Schema 定义
@@ -36,7 +37,7 @@ export type ImageGallerySource = z.infer<typeof ImageGallerySourceSchema>;
 export const ImageGalleryItemSchema = z.object({
   id: z.string().min(1),
   src: z.string().url(),
-  alt: z.string().min(1, "Images require alt text for accessibility"),
+  alt: z.string().min(1, 'Images require alt text for accessibility'),
   width: z.number().positive(),
   height: z.number().positive(),
   title: z.string().optional(),
@@ -77,8 +78,8 @@ export type SerializableImageGallery = z.infer<
  */
 export interface ImageGalleryProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   images: ImageGalleryItem[];
   title?: string;
   description?: string;
@@ -87,7 +88,7 @@ export interface ImageGalleryProps {
 }
 
 const SerializableImageGallerySchemaContract = defineToolUiContract(
-  "ImageGallery",
+  'ImageGallery',
   SerializableImageGallerySchema,
 );
 

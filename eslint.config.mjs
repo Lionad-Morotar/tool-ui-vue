@@ -15,7 +15,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default tseslint.config(
   // ========== 全局忽略 ==========
-  { ignores: ['dist', 'node_modules', '.histoire', '.vite', 'coverage'] },
+  { ignores: ['dist', 'node_modules', '.histoire', '.vite', 'coverage', 'src/components/.example'] },
 
   // ========== Vue 推荐规则 ==========
   ...pluginVue.configs['flat/recommended'],
@@ -64,6 +64,7 @@ export default tseslint.config(
 
       // ========== Vue 格式化 ==========
       'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+      'vue/multi-word-component-names': ['error', { ignores: ['index'] }],
       'vue/html-self-closing': 'off',
       'vue/max-attributes-per-line': [
         'error',
@@ -95,7 +96,15 @@ export default tseslint.config(
 
       // ========== TypeScript ==========
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        destructuredArrayIgnorePattern: '^_'
+      }],
+
+      // ========== Vue ==========
+      // code-block/terminal 等组件需要渲染原始 HTML
+      'vue/no-v-html': 'off',
 
       // ========== 引号风格 ==========
       'quotes': ['error', 'single', { avoidEscape: true }],
@@ -165,6 +174,20 @@ export default tseslint.config(
     files: ['**/globals.d.ts'],
     rules: {
       '@typescript-eslint/consistent-type-imports': 'off'
+    }
+  },
+
+  // ========== 测试文件：仅放宽 Histoire 框架约束 ==========
+  // 注意：测试文件的代码质量标准与源码一致，不额外放宽
+  {
+    files: ['src/stories/**/*.vue'],
+    rules: {
+      // Histoire 要求在 <script setup> 中 export 变量供 story 使用
+      'vue/no-export-in-script-setup': 'off',
+      // Histoire story 文件使用单一根节点
+      'vue/valid-template-root': 'off',
+      // story 命名约定：audio.story.vue，与多词规则冲突
+      'vue/multi-word-component-names': 'off'
     }
   }
 )

@@ -9,31 +9,31 @@
  * @module tool-ui-vue/components/weather-widget/schema
  */
 
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
-import { ToolUIIdSchema } from "../../shared/schema";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema } from '../../shared/schema';
 
 /** WeatherConditionCodeSchema Zod Schema */
 export const WeatherConditionCodeSchema = z.enum([
-  "clear",
-  "partly-cloudy",
-  "cloudy",
-  "overcast",
-  "fog",
-  "drizzle",
-  "rain",
-  "heavy-rain",
-  "thunderstorm",
-  "snow",
-  "sleet",
-  "hail",
-  "windy",
+  'clear',
+  'partly-cloudy',
+  'cloudy',
+  'overcast',
+  'fog',
+  'drizzle',
+  'rain',
+  'heavy-rain',
+  'thunderstorm',
+  'snow',
+  'sleet',
+  'hail',
+  'windy',
 ]);
 
 export type WeatherConditionCode = z.infer<typeof WeatherConditionCodeSchema>;
 
 /** TemperatureUnitSchema Zod Schema */
-export const TemperatureUnitSchema = z.enum(["celsius", "fahrenheit"]);
+export const TemperatureUnitSchema = z.enum(['celsius', 'fahrenheit']);
 
 export type TemperatureUnit = z.infer<typeof TemperatureUnitSchema>;
 
@@ -49,10 +49,10 @@ export type ForecastDay = z.infer<typeof ForecastDaySchema>;
 
 /** PrecipitationLevelSchema Zod Schema */
 export const PrecipitationLevelSchema = z.enum([
-  "none",
-  "light",
-  "moderate",
-  "heavy",
+  'none',
+  'light',
+  'moderate',
+  'heavy',
 ]);
 
 export type PrecipitationLevel = z.infer<typeof PrecipitationLevelSchema>;
@@ -86,7 +86,7 @@ export const WeatherWidgetLocationSchema = z.object({
 export type WeatherWidgetLocation = z.infer<typeof WeatherWidgetLocationSchema>;
 
 /** EffectQualitySchema Zod Schema */
-export const EffectQualitySchema = z.enum(["low", "medium", "high", "auto"]);
+export const EffectQualitySchema = z.enum(['low', 'medium', 'high', 'auto']);
 
 export type EffectQuality = z.infer<typeof EffectQualitySchema>;
 
@@ -131,7 +131,7 @@ export interface WeatherWidgetProps {
 }
 
 const SerializableWeatherWidgetSchemaContract = defineToolUiContract(
-  "WeatherWidget",
+  'WeatherWidget',
   SerializableWeatherWidgetSchema,
 );
 

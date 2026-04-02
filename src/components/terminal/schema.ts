@@ -9,13 +9,14 @@
  * @module tool-ui-vue/components/terminal/schema
  */
 
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /** TerminalPropsSchema Zod Schema */
 export const TerminalPropsSchema = z.object({
@@ -36,8 +37,8 @@ export const TerminalPropsSchema = z.object({
 /** TerminalProps 组件属性接口 */
 export interface TerminalProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   command: string;
   stdout?: string;
   stderr?: string;
@@ -57,7 +58,7 @@ export const SerializableTerminalSchema = TerminalPropsSchema.omit({
 export type SerializableTerminal = z.infer<typeof SerializableTerminalSchema>;
 
 const SerializableTerminalSchemaContract = defineToolUiContract(
-  "Terminal",
+  'Terminal',
   SerializableTerminalSchema,
 );
 

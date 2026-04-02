@@ -8,14 +8,15 @@
  *
  * @module tool-ui-vue/components/parameter-slider/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   SerializableActionSchema,
   SerializableActionsConfigSchema,
   ToolUIIdSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { Action, SerializableActionsConfig } from '../../shared/schema';
 
 /**
  * 滑块配置的 Schema 定义
@@ -39,16 +40,16 @@ export const SliderConfigSchema = z
     if (slider.max <= slider.min) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["max"],
-        message: "max must be greater than min",
+        path: ['max'],
+        message: 'max must be greater than min',
       });
     }
 
     if (slider.value < slider.min || slider.value > slider.max) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["value"],
-        message: "value must be between min and max",
+        path: ['value'],
+        message: 'value must be between min and max',
       });
     }
   });
@@ -97,7 +98,7 @@ export const SerializableParameterSliderSchema = z
       if (firstSeenAt !== undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ["sliders", index, "id"],
+          path: ['sliders', index, 'id'],
           message: `duplicate slider id '${slider.id}' (first seen at index ${firstSeenAt})`,
         });
         return;
@@ -115,7 +116,7 @@ export type SerializableParameterSlider = z.infer<
 >;
 
 const SerializableParameterSliderSchemaContract = defineToolUiContract(
-  "ParameterSlider",
+  'ParameterSlider',
   SerializableParameterSliderSchema,
 );
 
@@ -143,13 +144,13 @@ export interface SliderValue {
  */
 export interface ParameterSliderProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   sliders: SliderConfig[];
   className?: string;
   values?: SliderValue[];
   actions?:
-    | import("../../shared/schema").Action[]
-    | import("../../shared/schema").SerializableActionsConfig;
+    | Action[]
+    | SerializableActionsConfig;
   onChange?: (values: SliderValue[]) => void;
   onAction?: (actionId: string, values: SliderValue[]) => void | Promise<void>;
 }

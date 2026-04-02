@@ -1,11 +1,11 @@
-export { default as Image } from "./index.vue";
+export { default as Image } from './index.vue';
 export type {
   ImageProps,
   SerializableImage,
   Source,
   AspectRatio,
   MediaFit,
-} from "./schema";
+} from './schema';
 export {
   SerializableImageSchema,
   SourceSchema,
@@ -13,4 +13,4 @@ export {
   MediaFitSchema,
   parseSerializableImage,
   safeParseSerializableImage,
-} from "./schema";
+} from './schema';

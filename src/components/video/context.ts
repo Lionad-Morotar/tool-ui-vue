@@ -1,4 +1,4 @@
-import { inject, provide, ref, shallowRef, type InjectionKey } from "vue";
+import { inject, provide, ref, shallowRef, type InjectionKey } from 'vue';
 
 export interface VideoPlaybackState {
   playing: boolean;
@@ -13,12 +13,12 @@ export interface VideoContextValue {
   setVideoElement: (node: HTMLVideoElement | null) => void;
 }
 
-const VideoContextKey: InjectionKey<VideoContextValue> = Symbol("video-context");
+const VideoContextKey: InjectionKey<VideoContextValue> = Symbol('video-context');
 
 export function useVideo(): VideoContextValue {
   const ctx = inject(VideoContextKey);
   if (!ctx) {
-    throw new Error("useVideo must be used within a <VideoProvider />");
+    throw new Error('useVideo must be used within a <VideoProvider />');
   }
   return ctx;
 }

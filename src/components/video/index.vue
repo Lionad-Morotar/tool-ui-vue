@@ -1,30 +1,29 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { useMediaControls } from "@vueuse/core";
-import { cn } from "./_adapter";
-import { useLocalVideo } from "./context";
+import { useMediaControls } from '@vueuse/core';
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
+import { useLocalVideo } from './context';
 import {
   getMuteMediaEvent,
   resolveVideoNavigation,
-  normalizeVideoDataForCallback,
-} from "./video-helpers";
-import type { VideoProps, AspectRatio, MediaFit } from "./schema";
+} from './video-helpers';
 import {
   RATIO_CLASS_MAP,
   getFitClass,
   OVERLAY_GRADIENT,
   formatDuration,
   openSafeNavigationHref,
-} from "../../shared/media";
+} from '../../shared/media';
+import type { VideoProps } from './schema';
 
 const props = defineProps<VideoProps>();
 
 const emit = defineEmits<{
   navigate: [href: string];
-  mediaEvent: [type: "play" | "pause" | "mute" | "unmute" | "error"];
+  mediaEvent: [type: 'play' | 'pause' | 'mute' | 'unmute' | 'error'];
 }>();
 
-const FALLBACK_LOCALE = "en-US";
+const FALLBACK_LOCALE = 'en-US';
 
 const videoRef = ref<HTMLVideoElement | null>(null);
 const previousMuted = ref(true);
@@ -68,27 +67,14 @@ watch(
 // Initialize previousMuted from state
 previousMuted.value = state.muted;
 
-const resolvedRatio = computed(() => props.ratio ?? "auto");
-const resolvedFit = computed(() => props.fit ?? "cover");
+const resolvedRatio = computed(() => props.ratio ?? 'auto');
+const resolvedFit = computed(() => props.fit ?? 'cover');
 const autoPlay = computed(() => props.autoPlay ?? true);
 const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
 
-const { sanitizedHref, sanitizedSourceUrl, primaryHref } = computed(() =>
+const { primaryHref } = computed(() =>
   resolveVideoNavigation(props.href, props.source?.url)
 ).value;
-
-const videoData = computed(() =>
-  normalizeVideoDataForCallback(
-    { ...props, href: props.href, source: props.source },
-    {
-      ratio: resolvedRatio.value,
-      fit: resolvedFit.value,
-      locale: locale.value,
-      sanitizedHref,
-      sanitizedSourceUrl,
-    }
-  )
-);
 
 const sourceLabel = computed(() => props.source?.label);
 const metadataDomain = computed(() =>
@@ -110,7 +96,7 @@ function formatCreatedAt(createdAt: string): string {
   if (Number.isNaN(date.getTime())) {
     return createdAt;
   }
-  return new Intl.DateTimeFormat(locale.value, { dateStyle: "medium" }).format(
+  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }).format(
     date
   );
 }
@@ -121,7 +107,7 @@ function togglePlay() {
 
 function handleOpen() {
   if (!primaryHref) return;
-  if (emit("navigate", primaryHref)) {
+  if (emit('navigate', primaryHref)) {
     // Event was handled by parent
   } else {
     openSafeNavigationHref(primaryHref);
@@ -129,15 +115,15 @@ function handleOpen() {
 }
 
 function handlePlayEvent() {
-  emit("mediaEvent", "play");
+  emit('mediaEvent', 'play');
 }
 
 function handlePauseEvent() {
-  emit("mediaEvent", "pause");
+  emit('mediaEvent', 'pause');
 }
 
 function handleErrorEvent() {
-  emit("mediaEvent", "error");
+  emit('mediaEvent', 'error');
 }
 
 // Watch for mute state changes and emit events
@@ -147,7 +133,7 @@ watch(
     const mediaEvent = getMuteMediaEvent(previousMuted.value, newMuted);
     previousMuted.value = newMuted;
     if (mediaEvent) {
-      emit("mediaEvent", mediaEvent);
+      emit('mediaEvent', mediaEvent);
     }
   }
 );
@@ -157,9 +143,9 @@ watch(
   () => state.playing,
   (newPlaying, oldPlaying) => {
     if (newPlaying && !oldPlaying) {
-      emit("mediaEvent", "play");
+      emit('mediaEvent', 'play');
     } else if (!newPlaying && oldPlaying) {
-      emit("mediaEvent", "pause");
+      emit('mediaEvent', 'pause');
     }
   }
 );
@@ -167,7 +153,7 @@ watch(
 
 <template>
   <article
-    :class="cn('relative w-full min-w-80 max-w-md', className)"
+    :class="cn('relative w-full max-w-md min-w-80', className)"
     :lang="locale"
     data-slot="video"
     :data-tool-ui-id="id"
@@ -217,11 +203,11 @@ watch(
         <!-- Overlay -->
         <template v-if="hasOverlay">
           <div
-            class="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+            class="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100"
             :style="{ backgroundImage: OVERLAY_GRADIENT }"
           />
           <div
-            class="absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+            class="absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100"
           >
             <div
               v-if="title"
@@ -287,11 +273,11 @@ watch(
 
       <!-- Metadata -->
       <div v-if="hasMetadata" class="flex flex-col gap-1.5 px-4 py-3">
-        <p v-if="description" class="text-foreground line-clamp-2 text-sm leading-snug">
+        <p v-if="description" class="line-clamp-2 text-sm leading-snug text-foreground">
           {{ description }}
         </p>
         <div
-          class="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
+          class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground"
         >
           <span v-if="sourceLabel">{{ sourceLabel }}</span>
           <span v-if="metadataDomain">{{ metadataDomain }}</span>

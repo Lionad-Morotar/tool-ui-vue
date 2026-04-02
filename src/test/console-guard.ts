@@ -1,4 +1,4 @@
-import { beforeEach, afterEach, vi } from "vitest";
+import { beforeEach, afterEach, vi } from 'vitest';
 
 export const ALLOWED_PATTERNS: RegExp[] = [
   // Shiki highlighter singleton warning - expected in tests with multiple CodeBlock instances
@@ -16,7 +16,7 @@ export function toMessage(args: unknown[]): string {
       if (arg instanceof Error) {
         return `${arg.name}: ${arg.message}`;
       }
-      if (typeof arg === "string") {
+      if (typeof arg === 'string') {
         return arg;
       }
       try {
@@ -25,7 +25,7 @@ export function toMessage(args: unknown[]): string {
         return String(arg);
       }
     })
-    .join(" ");
+    .join(' ');
 }
 
 export function isAllowedMessage(message: string): boolean {
@@ -34,8 +34,8 @@ export function isAllowedMessage(message: string): boolean {
 
 export function setupConsoleGuard(): void {
   beforeEach(() => {
-    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -55,9 +55,9 @@ export function setupConsoleGuard(): void {
     if (unexpectedMessages.length > 0) {
       throw new Error(
         [
-          "Unexpected console warnings/errors detected during test:",
+          'Unexpected console warnings/errors detected during test:',
           ...unexpectedMessages.map((message) => `- ${message}`),
-        ].join("\n"),
+        ].join('\n'),
       );
     }
   });

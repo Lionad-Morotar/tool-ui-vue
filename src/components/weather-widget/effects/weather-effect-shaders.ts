@@ -9,4 +9,4 @@ export {
   LIGHTNING_FRAGMENT,
   RAIN_FRAGMENT,
   SNOW_FRAGMENT,
-} from "./generated/weather-effect-shaders.generated";
+} from './generated/weather-effect-shaders.generated';

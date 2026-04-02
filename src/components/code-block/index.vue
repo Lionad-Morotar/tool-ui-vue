@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import { cn } from "./_adapter";
-import type { CodeBlockProps, CodeBlockLineNumbersMode } from "./schema";
-import { Copy, Check, ChevronDown, ChevronUp } from "lucide-vue-next";
-import type { Highlighter, ShikiTransformer } from "shiki";
+import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
+import { ref, computed, watch, onMounted } from 'vue';
+import { cn } from './_adapter';
+import type { CodeBlockProps, CodeBlockLineNumbersMode } from './schema';
+import type { Highlighter, ShikiTransformer } from 'shiki';
 
 // Dynamic import for Shiki (client-side only)
 async function loadShiki() {
-  return import("shiki");
+  return import('shiki');
 }
 
 const props = withDefaults(defineProps<CodeBlockProps>(), {
-  language: "text",
-  lineNumbers: "visible",
+  language: 'text',
+  lineNumbers: 'visible',
 });
 
 const MAX_HTML_CACHE_ENTRIES = 64;
@@ -24,21 +24,21 @@ const isExpanded = ref(false);
 const isLoading = ref(true);
 
 // Theme detection
-const resolvedTheme = ref<"light" | "dark">("light");
+const resolvedTheme = ref<'light' | 'dark'>('light');
 
-function getSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+function getSystemTheme(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function getDocumentTheme(): "light" | "dark" | null {
-  if (typeof document === "undefined") return null;
+function getDocumentTheme(): 'light' | 'dark' | null {
+  if (typeof document === 'undefined') return null;
   const root = document.documentElement;
-  const dataTheme = root.getAttribute("data-theme")?.toLowerCase();
-  if (dataTheme === "dark") return "dark";
-  if (dataTheme === "light") return "light";
-  if (root.classList.contains("dark")) return "dark";
-  if (root.classList.contains("light")) return "light";
+  const dataTheme = root.getAttribute('data-theme')?.toLowerCase();
+  if (dataTheme === 'dark') return 'dark';
+  if (dataTheme === 'light') return 'light';
+  if (root.classList.contains('dark')) return 'dark';
+  if (root.classList.contains('light')) return 'light';
   return null;
 }
 
@@ -72,7 +72,7 @@ function setCachedHtml(cacheKey: string, html: string): void {
   }
   if (htmlCache.size >= MAX_HTML_CACHE_ENTRIES) {
     const oldestKey = htmlCache.keys().next().value;
-    if (typeof oldestKey === "string") {
+    if (typeof oldestKey === 'string') {
       htmlCache.delete(oldestKey);
     }
   }
@@ -81,30 +81,30 @@ function setCachedHtml(cacheKey: string, html: string): void {
 
 // Language display names
 const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
-  typescript: "TypeScript",
-  javascript: "JavaScript",
-  python: "Python",
-  tsx: "TSX",
-  jsx: "JSX",
-  json: "JSON",
-  bash: "Bash",
-  shell: "Shell",
-  css: "CSS",
-  html: "HTML",
-  markdown: "Markdown",
-  sql: "SQL",
-  yaml: "YAML",
-  go: "Go",
-  rust: "Rust",
-  text: "Plain Text",
+  typescript: 'TypeScript',
+  javascript: 'JavaScript',
+  python: 'Python',
+  tsx: 'TSX',
+  jsx: 'JSX',
+  json: 'JSON',
+  bash: 'Bash',
+  shell: 'Shell',
+  css: 'CSS',
+  html: 'HTML',
+  markdown: 'Markdown',
+  sql: 'SQL',
+  yaml: 'YAML',
+  go: 'Go',
+  rust: 'Rust',
+  text: 'Plain Text',
 };
 
 const languageDisplayName = computed(() => {
-  return LANGUAGE_DISPLAY_NAMES[props.language?.toLowerCase() ?? "text"] || (props.language?.toUpperCase() ?? "Text");
+  return LANGUAGE_DISPLAY_NAMES[props.language?.toLowerCase() ?? 'text'] || (props.language?.toUpperCase() ?? 'Text');
 });
 
 // Line count and collapse logic
-const lineCount = computed(() => props.code.split("\n").length);
+const lineCount = computed(() => props.code.split('\n').length);
 const shouldCollapse = computed(() => {
   return !!props.maxCollapsedLines && lineCount.value > props.maxCollapsedLines;
 });
@@ -118,8 +118,8 @@ async function getHighlighter(): Promise<Highlighter> {
     const shiki = await loadShiki();
     // Import themes dynamically
     const [pierreDarkTheme, pierreLightTheme] = await Promise.all([
-      import("../../shared/pierre-dark-theme.js"),
-      import("../../shared/pierre-light-theme.js"),
+      import('../../shared/pierre-dark-theme.js'),
+      import('../../shared/pierre-light-theme.js'),
     ]);
     highlighterPromise = shiki.createHighlighter({
       themes: [pierreDarkTheme.default as never, pierreLightTheme.default as never],
@@ -131,12 +131,12 @@ async function getHighlighter(): Promise<Highlighter> {
 }
 
 async function highlightCode() {
-  const theme = resolvedTheme.value === "dark" ? "pierre-dark" : "pierre-light";
+  const theme = resolvedTheme.value === 'dark' ? 'pierre-dark' : 'pierre-light';
   const cacheKey = getCacheKey(
     props.code,
-    props.language ?? "text",
+    props.language ?? 'text',
     theme,
-    props.lineNumbers ?? "visible",
+    props.lineNumbers ?? 'visible',
     props.highlightLines,
   );
 
@@ -148,7 +148,7 @@ async function highlightCode() {
   }
 
   if (!props.code) {
-    highlightedHtml.value = "";
+    highlightedHtml.value = '';
     isLoading.value = false;
     return;
   }
@@ -156,13 +156,13 @@ async function highlightCode() {
   try {
     const highlighter = await getHighlighter();
     const loadedLangs = highlighter.getLoadedLanguages();
-    const language = props.language ?? "text";
+    const language = props.language ?? 'text';
 
     if (!loadedLangs.includes(language)) {
       await highlighter.loadLanguage(language as Parameters<typeof highlighter.loadLanguage>[0]);
     }
 
-    const showLineNumbers = props.lineNumbers !== "hidden";
+    const showLineNumbers = props.lineNumbers !== 'hidden';
     const lineNumberWidth = `${String(lineCount.value).length + 0.5}ch`;
 
     const html = highlighter.codeToHtml(props.code, {
@@ -171,22 +171,22 @@ async function highlightCode() {
       transformers: [
         {
           line(node: { properties: Record<string, unknown>; children: unknown[] }, line: number) {
-            node.properties["data-line"] = line;
+            node.properties['data-line'] = line;
             if (props.highlightLines?.includes(line)) {
-              const highlightBg = resolvedTheme.value === "dark"
-                ? "rgba(255,255,255,0.1)"
-                : "rgba(0,0,0,0.05)";
+              const highlightBg = resolvedTheme.value === 'dark'
+                ? 'rgba(255,255,255,0.1)'
+                : 'rgba(0,0,0,0.05)';
               node.properties.style = `background:${highlightBg};`;
             }
             if (showLineNumbers) {
               node.children.unshift({
-                type: "element",
-                tagName: "span",
+                type: 'element',
+                tagName: 'span',
                 properties: {
                   style: `display:inline-block;width:${lineNumberWidth};text-align:right;margin-right:1.5em;user-select:none;opacity:0.5;`,
-                  "aria-hidden": "true",
+                  'aria-hidden': 'true',
                 },
-                children: [{ type: "text", value: String(line) }],
+                children: [{ type: 'text', value: String(line) }],
               });
             }
           },
@@ -199,9 +199,9 @@ async function highlightCode() {
   } catch {
     // Fallback to escaped text
     const escaped = props.code
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
     highlightedHtml.value = `<pre><code>${escaped}</code></pre>`;
   } finally {
     isLoading.value = false;
@@ -239,17 +239,17 @@ watch(
 onMounted(() => {
   updateTheme();
 
-  const mql = window.matchMedia?.("(prefers-color-scheme: dark)");
-  mql?.addEventListener("change", updateTheme);
+  const mql = window.matchMedia?.('(prefers-color-scheme: dark)');
+  mql?.addEventListener('change', updateTheme);
 
   const observer = new MutationObserver(updateTheme);
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["class", "data-theme"],
+    attributeFilter: ['class', 'data-theme'],
   });
 
   return () => {
-    mql?.removeEventListener("change", updateTheme);
+    mql?.removeEventListener('change', updateTheme);
     observer.disconnect();
   };
 });
@@ -266,18 +266,18 @@ onMounted(() => {
     lang="en"
     :aria-busy="isLoading"
   >
-    <div class="border-border bg-card overflow-hidden rounded-lg border shadow-xs">
+    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
       <div
-        class="bg-card flex items-center justify-between border-b px-4 py-2"
+        class="flex items-center justify-between border-b bg-card px-4 py-2"
       >
         <div class="flex items-center gap-1">
-          <span class="text-muted-foreground text-sm">
+          <span class="text-sm text-muted-foreground">
             {{ languageDisplayName }}
           </span>
           <template v-if="filename">
             <span class="text-muted-foreground/50">•</span>
-            <span class="text-foreground text-sm font-medium">
+            <span class="text-sm font-medium text-foreground">
               {{ filename }}
             </span>
           </template>
@@ -285,20 +285,20 @@ onMounted(() => {
         <button
           type="button"
           :class="cn(
-            'inline-flex items-center justify-center rounded-md h-7 w-7 p-0 text-sm font-medium transition-colors',
+            'inline-flex h-7 w-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
             'hover:bg-accent hover:text-accent-foreground',
-            'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2',
+            'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
           )"
           :aria-label="isCopied ? 'Copied' : 'Copy code'"
           @click="copyCode"
         >
-          <Check
+          <check
             v-if="isCopied"
             class="h-4 w-4 text-green-700 dark:text-green-400"
           />
-          <Copy
+          <copy
             v-else
-            class="text-muted-foreground h-4 w-4"
+            class="h-4 w-4 text-muted-foreground"
           />
         </button>
       </div>
@@ -321,19 +321,19 @@ onMounted(() => {
         v-if="shouldCollapse"
         type="button"
         :class="cn(
-          'text-muted-foreground w-full rounded-none border-t font-normal',
+          'w-full rounded-none border-t font-normal text-muted-foreground',
           'inline-flex items-center justify-center px-4 py-2 text-sm transition-colors',
           'hover:bg-accent hover:text-accent-foreground',
-          'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2',
+          'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         )"
         @click="toggleExpanded"
       >
         <template v-if="isCollapsed">
-          <ChevronDown class="mr-1 size-4" />
+          <chevron-down class="mr-1 size-4" />
           Show all {{ lineCount }} lines
         </template>
         <template v-else>
-          <ChevronUp class="mr-1 size-4" />
+          <chevron-up class="mr-1 size-4" />
           Collapse
         </template>
       </button>

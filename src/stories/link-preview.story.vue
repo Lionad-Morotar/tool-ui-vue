@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { LinkPreview } from "../components";
+import { reactive } from 'vue';
+import { LinkPreview } from '../components';
 
 const interactiveState = reactive({
-  href: "https://example.com/interactive",
-  title: "Interactive Link Preview",
-  description: "Customize this preview by changing the properties below.",
-  image: "https://picsum.photos/400/200?random=135",
-  domain: "example.com",
-  ratio: "auto" as const,
+  href: 'https://example.com/interactive',
+  title: 'Interactive Link Preview',
+  description: 'Customize this preview by changing the properties below.',
+  image: 'https://picsum.photos/400/200?random=135',
+  domain: 'example.com',
+  ratio: 'auto' as const,
 });
 
 /**
@@ -51,7 +51,7 @@ const interactiveState = reactive({
   <Story title="LinkPreview/All Variants">
     <Variant title="With Image">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-image"
           href="https://example.com/article"
           title="Building Better UI Components"
@@ -64,7 +64,7 @@ const interactiveState = reactive({
 
     <Variant title="Without Image">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-no-image"
           href="https://example.com/docs"
           title="API Documentation"
@@ -76,7 +76,7 @@ const interactiveState = reactive({
 
     <Variant title="Compact">
       <div class="w-full max-w-sm">
-        <LinkPreview
+        <link-preview
           id="link-preview-compact"
           href="https://github.com/example/repo"
           title="example/repo"
@@ -87,7 +87,7 @@ const interactiveState = reactive({
 
     <Variant title="Long Description">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-long"
           href="https://example.com/blog"
           title="Understanding Modern JavaScript"
@@ -100,7 +100,7 @@ const interactiveState = reactive({
 
     <Variant title="News Article">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-news"
           href="https://news.example.com/story"
           title="Tech Industry Sees Record Growth in Q4"
@@ -113,7 +113,7 @@ const interactiveState = reactive({
 
     <Variant title="With Favicon">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-favicon"
           href="https://github.com/features"
           title="GitHub Features"
@@ -127,7 +127,7 @@ const interactiveState = reactive({
 
     <Variant title="Square Ratio (1:1)">
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-square"
           href="https://example.com/gallery"
           title="Photo Gallery"
@@ -141,7 +141,7 @@ const interactiveState = reactive({
 
     <Variant title="Portrait Ratio (9:16)">
       <div class="w-full max-w-sm">
-        <LinkPreview
+        <link-preview
           id="link-preview-portrait"
           href="https://example.com/portrait"
           title="Portrait Mode"
@@ -155,7 +155,7 @@ const interactiveState = reactive({
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <LinkPreview
+        <link-preview
           id="link-preview-interactive"
           v-bind="interactiveState"
         />

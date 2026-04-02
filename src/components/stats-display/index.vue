@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { cn } from "./_adapter";
-import type { StatsDisplayProps, StatItem, StatFormat, StatDiff } from "./schema";
-import Sparkline from "./Sparkline.vue";
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import type { StatsDisplayProps, StatDiff } from './schema';
 
 const props = defineProps<StatsDisplayProps>();
 
 const locale = computed(() => {
-  return props.locale ?? (typeof navigator !== "undefined" ? navigator.language : "en");
+  return props.locale ?? (typeof navigator !== 'undefined' ? navigator.language : 'en');
 });
 
 const hasHeader = computed(() => Boolean(props.title || props.description));
@@ -22,16 +21,16 @@ function deltaClasses(diff: StatDiff): string {
   const isBad = upIsPositive ? isNegative : isPositive;
 
   const colorClass = isGood
-    ? "text-green-600 dark:text-green-400"
+    ? 'text-green-600 dark:text-green-400'
     : isBad
-      ? "text-red-600 dark:text-red-500"
-      : "text-muted-foreground";
+      ? 'text-red-600 dark:text-red-500'
+      : 'text-muted-foreground';
 
   const bgClass = isGood
-    ? "bg-green-500/10 dark:bg-green-600/15"
+    ? 'bg-green-500/10 dark:bg-green-600/15'
     : isBad
-      ? "bg-red-500/10 dark:bg-red-500/15"
-      : "bg-muted";
+      ? 'bg-red-500/10 dark:bg-red-500/15'
+      : 'bg-muted';
 
   return cn(colorClass, bgClass);
 }
@@ -39,7 +38,7 @@ function deltaClasses(diff: StatDiff): string {
 function deltaDisplay(diff: StatDiff): string {
   const { value, decimals = 1 } = diff;
   const formatted = Math.abs(value).toFixed(decimals);
-  const sign = value < 0 ? "−" : "+";
+  const sign = value < 0 ? '−' : '+';
   return `${sign}${formatted}%`;
 }
 
@@ -48,14 +47,14 @@ function deltaArrow(diff: StatDiff): string | null {
   const isPositive = diff.value > 0;
   const isNegative = diff.value < 0;
   const isGood = isPositive ? false : isNegative ? true : false;
-  return isGood ? "↓" : "↑";
+  return isGood ? '↓' : '↑';
 }
 
 function formatCompactNumberParts(value: number, decimals: number) {
   return new Intl.NumberFormat(locale.value, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-    notation: "compact",
+    notation: 'compact',
   }).formatToParts(value);
 }
 
@@ -65,7 +64,7 @@ function formatCompactFullNumber(value: number) {
 
 function formatCurrency(value: number, currency: string, decimals: number) {
   return new Intl.NumberFormat(locale.value, {
-    style: "currency",
+    style: 'currency',
     currency,
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
@@ -74,9 +73,9 @@ function formatCurrency(value: number, currency: string, decimals: number) {
 
 function formatCurrencySpoken(value: number, currency: string, decimals: number) {
   return new Intl.NumberFormat(locale.value, {
-    style: "currency",
+    style: 'currency',
     currency,
-    currencyDisplay: "name",
+    currencyDisplay: 'name',
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   }).format(value);
@@ -89,8 +88,8 @@ function formatNumber(value: number, decimals: number) {
   }).format(value);
 }
 
-function formatPercent(value: number, decimals: number, basis: "fraction" | "unit") {
-  const numeric = basis === "fraction" ? value * 100 : value;
+function formatPercent(value: number, decimals: number, basis: 'fraction' | 'unit') {
+  const numeric = basis === 'fraction' ? value * 100 : value;
   return numeric.toFixed(decimals);
 }
 </script>
@@ -98,7 +97,7 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
 <template>
   <article
     :class="cn(
-      'w-full min-w-80 max-w-xl',
+      'w-full max-w-xl min-w-80',
       isSingle && 'max-w-sm',
       className
     )"
@@ -109,7 +108,7 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
   >
     <div
       :class="cn(
-        'border-border overflow-clip rounded-2xl border bg-card shadow-sm !pb-0 !pt-2',
+        'overflow-clip rounded-2xl border border-border bg-card !pt-2 !pb-0 shadow-sm',
         hasHeader && '!gap-0'
       )"
     >
@@ -119,20 +118,20 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
         class="border-b border-border px-6 pt-3 pb-4"
       >
         <h2 v-if="title" class="text-base font-semibold text-pretty">{{ title }}</h2>
-        <p v-if="description" class="text-muted-foreground text-sm text-pretty">{{ description }}</p>
+        <p v-if="description" class="text-sm text-pretty text-muted-foreground">{{ description }}</p>
       </div>
 
       <!-- Stats Grid -->
       <div class="@container overflow-hidden p-0">
         <div
-          class="grid @[440px]:-ml-px @[440px]:-mt-px"
+          class="grid @[440px]:-mt-px @[440px]:-ml-px"
           :style="{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }"
         >
           <div
             v-for="(stat, index) in stats"
             :key="stat.key"
             :class="cn(
-              'overflow-clip py-3 first:pt-0 @[440px]:py-3 @[440px]:first:pt-3 @[440px]:border-l @[440px]:border-t @[440px]:border-border',
+              'overflow-clip py-3 first:pt-0 @[440px]:border-t @[440px]:border-l @[440px]:border-border @[440px]:py-3 @[440px]:first:pt-3',
               index > 0 && 'border-t border-border'
             )"
           >
@@ -142,20 +141,20 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
                 isSingle ? 'justify-center' : 'justify-end'
               )"
             >
-              <!-- Sparkline -->
-              <Sparkline
+              <!-- SparkLine -->
+              <sparkline
                 v-if="stat.sparkline"
                 :data="stat.sparkline.data"
                 :color="stat.sparkline.color || 'var(--muted-foreground)'"
                 :show-fill="true"
                 :fill-opacity="0.09"
-                class="pointer-events-none absolute inset-x-0 top-2 bottom-2 animate-in fade-in slide-in-from-bottom-12 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                class="animate-in fade-in slide-in-from-bottom-12 fill-mode-both pointer-events-none absolute inset-x-0 top-2 bottom-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175}ms` }"
               />
 
               <!-- Label -->
               <span
-                class="text-muted-foreground relative text-xs font-normal tracking-wider uppercase opacity-90 animate-in fade-in slide-in-from-bottom-1 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                class="animate-in fade-in slide-in-from-bottom-1 fill-mode-both relative text-xs font-normal tracking-wider text-muted-foreground uppercase opacity-90 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175 + 75}ms` }"
               >
                 {{ stat.label }}
@@ -163,7 +162,7 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
 
               <!-- Value and Diff -->
               <div
-                class="relative flex items-baseline gap-2 pb-2 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                class="animate-in fade-in slide-in-from-bottom-2 fill-mode-both relative flex items-baseline gap-2 pb-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175 + 150}ms` }"
               >
                 <span
@@ -233,7 +232,7 @@ function formatPercent(value: number, decimals: number, basis: "fraction" | "uni
                 >
                   <span v-if="deltaArrow(stat.diff)" class="text-[0.9em]">{{ deltaArrow(stat.diff) }}</span>
                   {{ deltaDisplay(stat.diff) }}
-                  <span v-if="stat.diff.label" class="text-muted-foreground font-normal">{{ stat.diff.label }}</span>
+                  <span v-if="stat.diff.label" class="font-normal text-muted-foreground">{{ stat.diff.label }}</span>
                 </span>
               </div>
             </div>

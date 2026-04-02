@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { Chart } from "../components";
-
-import type { ChartDataPoint } from "../components/chart/schema";
+import { reactive } from 'vue';
+import { Chart } from '../components';
+import type { ChartDataPoint } from '../components/chart/schema';
 
 const chartData = reactive({
   selectedPoint: null as string | null,
@@ -71,7 +70,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </template>
     <Variant title="Line Chart">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-line"
           type="line"
           title="System Performance"
@@ -97,7 +96,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Bar Chart">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-bar"
           type="bar"
           title="Monthly Revenue"
@@ -124,7 +123,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Multi-Series">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-multi"
           type="line"
           title="Traffic Sources"
@@ -148,7 +147,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="With Custom Colors">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-colors"
           type="bar"
           title="Performance Metrics"
@@ -174,7 +173,7 @@ function handleDataPointClick(point: ChartDataPoint) {
         <div v-if="chartData.selectedPoint" class="mb-4 rounded-lg bg-primary/10 p-3 text-sm">
           <strong>Clicked:</strong> {{ chartData.selectedPoint }}
         </div>
-        <Chart
+        <chart
           id="chart-interactive"
           type="bar"
           title="Clickable Chart"
@@ -202,7 +201,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Without Grid">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-no-grid"
           type="bar"
           title="No Grid Lines"
@@ -224,7 +223,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Without Legend">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-no-legend"
           type="line"
           title="No Legend"
@@ -248,7 +247,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Minimal">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-minimal"
           type="bar"
           x-key="item"
@@ -268,7 +267,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Large Dataset">
       <div class="w-full max-w-2xl">
-        <Chart
+        <chart
           id="chart-large"
           type="line"
           title="Yearly Trends"

@@ -8,24 +8,24 @@
  *
  * @module tool-ui-vue/components/citation/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
 
 /**
  * 引用类型的 Schema 定义
  */
 export const CitationTypeSchema = z.enum([
-  "webpage",
-  "document",
-  "article",
-  "api",
-  "code",
-  "other",
+  'webpage',
+  'document',
+  'article',
+  'api',
+  'code',
+  'other',
 ]);
 
 /**
@@ -37,12 +37,12 @@ export type CitationType = z.infer<typeof CitationTypeSchema>;
 /**
  * 引用变体的 Schema 定义
  */
-export const CitationVariantSchema = z.enum(["default", "inline", "stacked"]);
+export const CitationVariantSchema = z.enum(['default', 'inline', 'stacked']);
 
 /**
  * 引用变体类型
  */
-export type CitationVariant = "default" | "inline" | "stacked";
+export type CitationVariant = 'default' | 'inline' | 'stacked';
 
 /**
  * Citation 的可序列化数据 Schema
@@ -70,7 +70,7 @@ export const SerializableCitationSchema = z.object({
 export type SerializableCitation = z.infer<typeof SerializableCitationSchema>;
 
 const SerializableCitationSchemaContract = defineToolUiContract(
-  "Citation",
+  'Citation',
   SerializableCitationSchema,
 );
 
@@ -88,9 +88,9 @@ export const safeParseSerializableCitation: (
  */
 export interface CitationProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;

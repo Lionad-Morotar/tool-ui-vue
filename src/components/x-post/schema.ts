@@ -9,8 +9,8 @@
  * @module tool-ui-vue/components/x-post/schema
  */
 
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 
 /** XPostAuthorSchema Zod Schema */
 export const XPostAuthorSchema = z.object({
@@ -22,10 +22,10 @@ export const XPostAuthorSchema = z.object({
 
 /** XPostMediaSchema Zod Schema */
 export const XPostMediaSchema = z.object({
-  type: z.enum(["image", "video"]),
+  type: z.enum(['image', 'video']),
   url: z.string().url(),
   alt: z.string(),
-  aspectRatio: z.enum(["1:1", "4:3", "16:9", "9:16"]).optional(),
+  aspectRatio: z.enum(['1:1', '4:3', '16:9', '9:16']).optional(),
 });
 
 /** XPostLinkPreviewSchema Zod Schema */
@@ -53,10 +53,10 @@ export interface XPostAuthor {
 }
 
 export interface XPostMedia {
-  type: "image" | "video";
+  type: 'image' | 'video';
   url: string;
   alt: string;
-  aspectRatio?: "1:1" | "4:3" | "16:9" | "9:16";
+  aspectRatio?: '1:1' | '4:3' | '16:9' | '9:16';
 }
 
 export interface XPostLinkPreview {
@@ -97,7 +97,7 @@ export const SerializableXPostSchema: z.ZodType<XPostData> = z.object({
 });
 
 const SerializableXPostSchemaContract = defineToolUiContract(
-  "XPost",
+  'XPost',
   SerializableXPostSchema,
 );
 

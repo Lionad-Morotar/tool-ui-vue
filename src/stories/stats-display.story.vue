@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { StatsDisplay } from "../components";
+import { StatsDisplay } from '../components';
 </script>
 
 <template>
   <Story title="StatsDisplay/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-basic"
           :stats="[
             { key: 'revenue', label: 'Revenue', value: '$48.2K' },
@@ -19,7 +19,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="With Trends">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-trends"
           title="Key Metrics"
           description="Performance overview"
@@ -34,7 +34,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="With Sparklines">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-sparklines"
           title="Q4 Performance"
           description="October through December 2024"
@@ -90,7 +90,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="Single Stat">
       <div class="w-full max-w-sm">
-        <StatsDisplay
+        <stats-display
           id="stats-single"
           :stats="[
             {
@@ -111,7 +111,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="Currency Formats">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-currency"
           title="Financial Overview"
           :stats="[
@@ -126,7 +126,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="Number Formats">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-numbers"
           title="Usage Statistics"
           :stats="[
@@ -141,7 +141,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="Percent Formats">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-percent"
           title="Conversion Metrics"
           :stats="[
@@ -155,7 +155,7 @@ import { StatsDisplay } from "../components";
 
     <Variant title="Trend Indicators">
       <div class="w-full max-w-2xl">
-        <StatsDisplay
+        <stats-display
           id="stats-trends"
           title="Trend Analysis"
           :stats="[

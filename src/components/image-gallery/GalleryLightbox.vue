@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
-import { X } from "lucide-vue-next";
 import {
   useMagicKeys,
   useSwipe,
   usePreferredReducedMotion,
-} from "@vueuse/core";
-import { cn } from "./_adapter";
-import { useImageGallery } from "./context";
+} from '@vueuse/core';
+import { X } from 'lucide-vue-next';
+import { ref, watch, computed } from 'vue';
+import { cn } from './_adapter';
+import { useImageGallery } from './context';
 
 const dialogRef = ref<HTMLDialogElement | null>(null);
 const contentRef = ref<HTMLDivElement | null>(null);
@@ -51,9 +51,9 @@ const { direction } = useSwipe(contentRef, {
   threshold: 50,
   onSwipeEnd: () => {
     if (!isOpen.value) return;
-    if (direction.value === "left") {
+    if (direction.value === 'left') {
       nextImage();
-    } else if (direction.value === "right") {
+    } else if (direction.value === 'right') {
       prevImage();
     }
   },
@@ -114,7 +114,7 @@ const currentIndexDisplay = computed(() =>
             aria-label="Close"
             @click="closeLightbox"
           >
-            <X class="h-5 w-5" />
+            <x class="h-5 w-5" />
           </button>
         </div>
 
@@ -123,7 +123,7 @@ const currentIndexDisplay = computed(() =>
           <button
             type="button"
             :class="cn(
-              'absolute left-4 top-1/2 -translate-y-1/2 z-20',
+              'absolute top-1/2 left-4 z-20 -translate-y-1/2',
               'inline-flex items-center justify-center rounded-md',
               'h-12 w-12',
               'text-white/80 hover:bg-white/10 hover:text-white',
@@ -150,7 +150,7 @@ const currentIndexDisplay = computed(() =>
           <button
             type="button"
             :class="cn(
-              'absolute right-4 top-1/2 -translate-y-1/2 z-20',
+              'absolute top-1/2 right-4 z-20 -translate-y-1/2',
               'inline-flex items-center justify-center rounded-md',
               'h-12 w-12',
               'text-white/80 hover:bg-white/10 hover:text-white',
@@ -203,8 +203,8 @@ const currentIndexDisplay = computed(() =>
           <div
             v-if="
               currentImage?.title ||
-              currentImage?.caption ||
-              currentImage?.source?.label
+                currentImage?.caption ||
+                currentImage?.source?.label
             "
             class="text-center"
           >

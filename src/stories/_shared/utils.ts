@@ -24,28 +24,28 @@ export function useControl<T>(defaultValue: T): {
  * Common variant names for consistent story organization
  */
 export const VariantNames = {
-  DEFAULT: "Default",
-  LOADING: "Loading",
-  ERROR: "Error",
-  EMPTY: "Empty",
-  RECEIPT: "Receipt",
-  INTERACTIVE: "Interactive",
-  DESTRUCTIVE: "Destructive",
-  WITH_ACTIONS: "With Actions",
-  CUSTOM_STYLED: "Custom Styled",
+  DEFAULT: 'Default',
+  LOADING: 'Loading',
+  ERROR: 'Error',
+  EMPTY: 'Empty',
+  RECEIPT: 'Receipt',
+  INTERACTIVE: 'Interactive',
+  DESTRUCTIVE: 'Destructive',
+  WITH_ACTIONS: 'With Actions',
+  CUSTOM_STYLED: 'Custom Styled',
 } as const;
 
 /**
  * Helper to create common action handlers for stories
  */
-export function createActionHandlers(showNotification?: (msg: string, type: "success" | "error") => void) {
+export function createActionHandlers(showNotification?: (msg: string, type: 'success' | 'error') => void) {
   return {
-    onConfirm: () => showNotification?.("Confirmed!", "success"),
-    onCancel: () => showNotification?.("Cancelled!", "error"),
-    onSelect: (id: string) => showNotification?.(`Selected: ${id}`, "success"),
-    onChange: (value: unknown) => showNotification?.(`Changed: ${JSON.stringify(value)}`, "success"),
-    onSubmit: () => showNotification?.("Submitted!", "success"),
-    onSave: () => showNotification?.("Saved!", "success"),
+    onConfirm: () => showNotification?.('Confirmed!', 'success'),
+    onCancel: () => showNotification?.('Cancelled!', 'error'),
+    onSelect: (id: string) => showNotification?.(`Selected: ${id}`, 'success'),
+    onChange: (value: unknown) => showNotification?.(`Changed: ${JSON.stringify(value)}`, 'success'),
+    onSubmit: () => showNotification?.('Submitted!', 'success'),
+    onSave: () => showNotification?.('Saved!', 'success'),
   };
 }
 

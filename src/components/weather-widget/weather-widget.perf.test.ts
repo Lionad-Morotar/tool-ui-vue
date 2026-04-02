@@ -1,31 +1,31 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { mount } from "@vue/test-utils";
-import { nextTick } from "vue";
-import WeatherWidget from "./index.vue";
+import { mount } from '@vue/test-utils';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { nextTick } from 'vue';
+import WeatherWidget from './index.vue';
 
 // Mock the WeatherEffectsCanvas component
-vi.mock("./WeatherEffectsCanvas.vue", () => ({
+vi.mock('./WeatherEffectsCanvas.vue', () => ({
   default: {
-    name: "WeatherEffectsCanvas",
-    props: ["className", "layers", "celestial", "cloud", "rain", "lightning", "snow", "interactions", "post"],
+    name: 'WeatherEffectsCanvas',
+    props: ['className', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],
     template: "<div data-testid='effects-canvas' />",
   },
 }));
 
-describe("WeatherWidget Performance", () => {
+describe('WeatherWidget Performance', () => {
   const baseProps = {
-    id: "test-weather",
-    location: { name: "Test City", lat: 0, lon: 0 },
+    id: 'test-weather',
+    location: { name: 'Test City', lat: 0, lon: 0 },
     current: {
       temperature: 20,
       tempMax: 25,
       tempMin: 15,
-      conditionCode: "clear" as const,
+      conditionCode: 'clear' as const,
       humidity: 50,
       windSpeed: 10,
     },
     forecast: [],
-    units: { temperature: "celsius" as const },
+    units: { temperature: 'celsius' as const },
     effects: { enabled: true },
   };
 
@@ -37,8 +37,8 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-01: WebGL Budget Guard
    * Tests GPU memory limit detection and fallback behavior
    */
-  describe("WebGL Budget Guard", () => {
-    it("should detect GPU memory constraints", async () => {
+  describe('WebGL Budget Guard', () => {
+    it('should detect GPU memory constraints', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -49,9 +49,9 @@ describe("WeatherWidget Performance", () => {
       expect(wrapper.find("[data-slot='weather-widget']").exists()).toBe(true);
     });
 
-    it("should handle missing WebGL context gracefully", async () => {
+    it('should handle missing WebGL context gracefully', async () => {
       // Mock console to check for warnings
-      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const wrapper = mount(WeatherWidget, {
         props: {
@@ -68,11 +68,11 @@ describe("WeatherWidget Performance", () => {
       consoleSpy.mockRestore();
     });
 
-    it("should allocate budget per effect layer", async () => {
+    it('should allocate budget per effect layer', async () => {
       const wrapper = mount(WeatherWidget, {
         props: {
           ...baseProps,
-          current: { ...baseProps.current, conditionCode: "thunderstorm" },
+          current: { ...baseProps.current, conditionCode: 'thunderstorm' },
         },
       });
 
@@ -88,8 +88,8 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-02: Canvas Resolver Parity
    * Tests canvas rendering consistency
    */
-  describe("Canvas Resolver Parity", () => {
-    it("should render canvas with consistent dimensions", async () => {
+  describe('Canvas Resolver Parity', () => {
+    it('should render canvas with consistent dimensions', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -100,7 +100,7 @@ describe("WeatherWidget Performance", () => {
       expect(container.exists()).toBe(true);
     });
 
-    it("should handle canvas resize events", async () => {
+    it('should handle canvas resize events', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -109,13 +109,13 @@ describe("WeatherWidget Performance", () => {
 
       // Simulate resize by updating props
       await wrapper.setProps({
-        location: { name: "Updated City", lat: 0, lon: 0 },
+        location: { name: 'Updated City', lat: 0, lon: 0 },
       });
 
       expect(wrapper.find("[data-slot='weather-widget']").exists()).toBe(true);
     });
 
-    it("should maintain render consistency across re-renders", async () => {
+    it('should maintain render consistency across re-renders', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -136,8 +136,8 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-03: Runtime Codegen
    * Tests shader code generation performance
    */
-  describe("Runtime Codegen", () => {
-    it("should generate effect parameters efficiently", async () => {
+  describe('Runtime Codegen', () => {
+    it('should generate effect parameters efficiently', async () => {
       const startTime = performance.now();
 
       const wrapper = mount(WeatherWidget, {
@@ -154,7 +154,7 @@ describe("WeatherWidget Performance", () => {
       expect(wrapper.find("[data-slot='weather-widget']").exists()).toBe(true);
     });
 
-    it("should cache computed effect props", async () => {
+    it('should cache computed effect props', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -163,7 +163,7 @@ describe("WeatherWidget Performance", () => {
 
       // Trigger re-render with same props
       const startTime = performance.now();
-      await wrapper.setProps({ location: { name: "Same City", lat: 0, lon: 0 } });
+      await wrapper.setProps({ location: { name: 'Same City', lat: 0, lon: 0 } });
       await nextTick();
       const endTime = performance.now();
 
@@ -171,7 +171,7 @@ describe("WeatherWidget Performance", () => {
       expect(endTime - startTime).toBeLessThan(50);
     });
 
-    it("should handle rapid prop changes efficiently", async () => {
+    it('should handle rapid prop changes efficiently', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -201,26 +201,26 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-04: Data Overlay Observer
    * Tests weather data update performance
    */
-  describe("Data Overlay Observer", () => {
-    it("should update with minimal re-renders on data changes", async () => {
+  describe('Data Overlay Observer', () => {
+    it('should update with minimal re-renders on data changes', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
 
       await nextTick();
 
-      const renderCount = { count: 0 };
-      const originalRender = wrapper.vm.$forceUpdate;
+      const _renderCount = { count: 0 };
+      const _originalRender = wrapper.vm.$forceUpdate;
 
       // Update weather data
       await wrapper.setProps({
         current: { ...baseProps.current, temperature: 25 },
       });
 
-      expect(wrapper.text()).toContain("25 °C");
+      expect(wrapper.text()).toContain('25 °C');
     });
 
-    it("should batch multiple data updates", async () => {
+    it('should batch multiple data updates', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -239,10 +239,10 @@ describe("WeatherWidget Performance", () => {
       await nextTick();
 
       // Should show final value
-      expect(wrapper.text()).toContain("23 °C");
+      expect(wrapper.text()).toContain('23 °C');
     });
 
-    it("should clean up observers on unmount", async () => {
+    it('should clean up observers on unmount', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -261,12 +261,12 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-05: Parameter Mapper
    * Tests weather parameter transformation performance
    */
-  describe("Parameter Mapper", () => {
-    it("should map weather parameters correctly", async () => {
+  describe('Parameter Mapper', () => {
+    it('should map weather parameters correctly', async () => {
       const wrapper = mount(WeatherWidget, {
         props: {
           ...baseProps,
-          current: { ...baseProps.current, conditionCode: "rain" },
+          current: { ...baseProps.current, conditionCode: 'rain' },
         },
       });
 
@@ -277,7 +277,7 @@ describe("WeatherWidget Performance", () => {
       expect(canvas.exists()).toBe(true);
     });
 
-    it("should handle null/undefined values gracefully", async () => {
+    it('should handle null/undefined values gracefully', async () => {
       const wrapper = mount(WeatherWidget, {
         props: {
           ...baseProps,
@@ -292,11 +292,11 @@ describe("WeatherWidget Performance", () => {
 
       // Should still render correctly
       expect(wrapper.find("[data-slot='weather-widget']").exists()).toBe(true);
-      expect(wrapper.text()).toContain("0 °C");
+      expect(wrapper.text()).toContain('0 °C');
     });
 
-    it("should transform parameters efficiently", async () => {
-      const conditions = ["clear", "rain", "snow", "thunderstorm"] as const;
+    it('should transform parameters efficiently', async () => {
+      const conditions = ['clear', 'rain', 'snow', 'thunderstorm'] as const;
 
       for (const condition of conditions) {
         const startTime = performance.now();
@@ -324,8 +324,8 @@ describe("WeatherWidget Performance", () => {
    * TEST-PERF-06: Glass Style Resolver
    * Tests visual effect calculation performance
    */
-  describe("Glass Style Resolver", () => {
-    it("should compute glass effect styles efficiently", async () => {
+  describe('Glass Style Resolver', () => {
+    it('should compute glass effect styles efficiently', async () => {
       const startTime = performance.now();
 
       const wrapper = mount(WeatherWidget, {
@@ -343,7 +343,7 @@ describe("WeatherWidget Performance", () => {
       expect(endTime - startTime).toBeLessThan(100);
     });
 
-    it("should cache style computations", async () => {
+    it('should cache style computations', async () => {
       const wrapper = mount(WeatherWidget, {
         props: baseProps,
       });
@@ -364,11 +364,11 @@ describe("WeatherWidget Performance", () => {
       expect(endTime - startTime).toBeLessThan(100);
     });
 
-    it("should handle dark theme calculations", async () => {
+    it('should handle dark theme calculations', async () => {
       const wrapper = mount(WeatherWidget, {
         props: {
           ...baseProps,
-          current: { ...baseProps.current, conditionCode: "thunderstorm" },
+          current: { ...baseProps.current, conditionCode: 'thunderstorm' },
           effects: { enabled: true },
         },
       });

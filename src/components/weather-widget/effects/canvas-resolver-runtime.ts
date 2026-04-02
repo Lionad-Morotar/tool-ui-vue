@@ -1,11 +1,11 @@
-import type { WeatherEffectParams } from "./types";
-import { buildCanvasBaseFromWeather } from "./canvas-resolver-base";
+import { buildCanvasBaseFromWeather } from './canvas-resolver-base';
 import {
   applyWeatherEffectsOverrides,
   getNearestCheckpoint,
   type WeatherEffectsTunedPresets,
-} from "./tuning";
-import type { WeatherEffectsCanvasProps } from "./weather-effects-types";
+} from './tuning';
+import type { WeatherEffectParams } from './types';
+import type { WeatherEffectsCanvasProps } from './weather-effects-types';
 
 export interface ResolveRuntimeWeatherEffectsCanvasPropsInput extends WeatherEffectParams {
   tunedPresets?: WeatherEffectsTunedPresets;
@@ -22,7 +22,7 @@ export function resolveWeatherEffectsCanvasRuntimeProps(
   const base = buildCanvasBaseFromWeather(input);
   const explicitTimeOfDay = input.timeOfDay;
 
-  if (typeof explicitTimeOfDay === "number" && base.celestial) {
+  if (typeof explicitTimeOfDay === 'number' && base.celestial) {
     base.celestial.timeOfDay = explicitTimeOfDay;
   }
 

@@ -4,28 +4,13 @@ import {
   ref,
   watch,
   type Ref,
-} from "vue";
-import type { ResolvedWeatherEffectsCanvasProps } from "../effects/weather-effects-types";
-import {
-  releaseWeatherWebglBudgetSlotOnInitFailure,
-  releaseWeatherWebglCanvasBudgetSlot,
-  tryAcquireWeatherWebglCanvasBudgetSlot,
-} from "../effects/weather-webgl-budget";
-import {
-  CELESTIAL_FRAGMENT,
-  CLOUD_FRAGMENT,
-  COMPOSITE_FRAGMENT,
-  FULLSCREEN_VERTEX,
-  LIGHTNING_FRAGMENT,
-  RAIN_FRAGMENT,
-  SNOW_FRAGMENT,
-} from "../effects/weather-effect-shaders";
+} from 'vue';
 import {
   createFramebuffer,
   createProgram,
   resizeFramebuffer,
   type Framebuffer,
-} from "../effects/weather-effect-gl";
+} from '../effects/weather-effect-gl';
 import {
   clearOffscreenPass,
   isLightningPassActive,
@@ -35,7 +20,22 @@ import {
   renderLightningPass,
   renderRainPass,
   renderSnowPass,
-} from "../effects/weather-effect-render-passes";
+} from '../effects/weather-effect-render-passes';
+import {
+  CELESTIAL_FRAGMENT,
+  CLOUD_FRAGMENT,
+  COMPOSITE_FRAGMENT,
+  FULLSCREEN_VERTEX,
+  LIGHTNING_FRAGMENT,
+  RAIN_FRAGMENT,
+  SNOW_FRAGMENT,
+} from '../effects/weather-effect-shaders';
+import {
+  releaseWeatherWebglBudgetSlotOnInitFailure,
+  releaseWeatherWebglCanvasBudgetSlot,
+  tryAcquireWeatherWebglCanvasBudgetSlot,
+} from '../effects/weather-webgl-budget';
+import type { ResolvedWeatherEffectsCanvasProps } from '../effects/weather-effects-types';
 
 interface WeatherEffectsPrograms {
   celestial: WebGLProgram | null;
@@ -194,7 +194,7 @@ export function useWeatherEffects(
       console.error(errorMessage);
     }
 
-    if (warnMessage && typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+    if (warnMessage && typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
       console.warn(warnMessage);
     }
 
@@ -218,9 +218,9 @@ export function useWeatherEffects(
       const ok = tryAcquireWeatherWebglCanvasBudgetSlot(canvas);
       if (!ok) {
         hasWebglBudgetSlotRef.value = false;
-        if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+        if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
           console.warn(
-            "[WeatherEffectsCanvas] Too many WebGL canvases on the page; rendering this widget without effects.",
+            '[WeatherEffectsCanvas] Too many WebGL canvases on the page; rendering this widget without effects.',
           );
         }
         return false;
@@ -231,12 +231,12 @@ export function useWeatherEffects(
     disposeGL();
     isContextLostRef.value = false;
 
-    const gl = canvas.getContext("webgl2");
+    const gl = canvas.getContext('webgl2');
     if (!gl) {
       return failInit({
         canvas,
         warnMessage:
-          "[WeatherEffectsCanvas] WebGL2 not supported; rendering without effects.",
+          '[WeatherEffectsCanvas] WebGL2 not supported; rendering without effects.',
       });
     }
 
@@ -280,7 +280,7 @@ export function useWeatherEffects(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create required WebGL programs",
+        errorMessage: 'Failed to create required WebGL programs',
       });
     }
 
@@ -302,7 +302,7 @@ export function useWeatherEffects(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create WebGL framebuffers",
+        errorMessage: 'Failed to create WebGL framebuffers',
       });
     }
 
@@ -345,7 +345,7 @@ export function useWeatherEffects(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create WebGL buffer",
+        errorMessage: 'Failed to create WebGL buffer',
       });
     }
 
@@ -356,7 +356,7 @@ export function useWeatherEffects(
     // Set up vertex attributes for all programs
     for (const program of Object.values(programsRef.value)) {
       if (!program) continue;
-      const positionLoc = gl.getAttribLocation(program, "a_position");
+      const positionLoc = gl.getAttribLocation(program, 'a_position');
       if (positionLoc >= 0) {
         gl.enableVertexAttribArray(positionLoc);
         gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
@@ -571,14 +571,14 @@ export function useWeatherEffects(
       }
     };
 
-    canvas.addEventListener("webglcontextlost", onContextLost, {
+    canvas.addEventListener('webglcontextlost', onContextLost, {
       passive: false,
     } as AddEventListenerOptions);
-    canvas.addEventListener("webglcontextrestored", onContextRestored);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     // Intersection observer for visibility
     const observer =
-      typeof IntersectionObserver !== "undefined"
+      typeof IntersectionObserver !== 'undefined'
         ? new IntersectionObserver(
             (entries) => {
               const entry = entries[0];
@@ -621,8 +621,8 @@ export function useWeatherEffects(
     // Cleanup
     onUnmounted(() => {
       observer?.disconnect();
-      canvas.removeEventListener("webglcontextlost", onContextLost as EventListener);
-      canvas.removeEventListener("webglcontextrestored", onContextRestored as EventListener);
+      canvas.removeEventListener('webglcontextlost', onContextLost as EventListener);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored as EventListener);
       disposeGL();
       releaseBudgetSlot(canvas);
     });

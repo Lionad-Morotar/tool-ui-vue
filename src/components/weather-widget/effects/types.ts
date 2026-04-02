@@ -1,6 +1,6 @@
-import type { WeatherConditionCode } from "../schema";
+import type { WeatherConditionCode } from '../schema';
 
-export type EffectQuality = "low" | "medium" | "high" | "auto";
+export type EffectQuality = 'low' | 'medium' | 'high' | 'auto';
 
 export interface EffectSettings {
   enabled?: boolean;
@@ -95,7 +95,7 @@ export interface EffectLayerConfig {
 export interface WeatherEffectParams {
   conditionCode: WeatherConditionCode;
   windSpeed?: number;
-  precipitationLevel?: "none" | "light" | "moderate" | "heavy";
+  precipitationLevel?: 'none' | 'light' | 'moderate' | 'heavy';
   visibility?: number;
   timestamp?: string;
   timeOfDay?: number;

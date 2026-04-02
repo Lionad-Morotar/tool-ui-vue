@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useWeatherEffects } from "./composables/useWeatherEffects";
-import type { WeatherEffectsCanvasProps } from "./effects/weather-effects-types";
-import { resolveWeatherEffectsCanvasRuntimeProps } from "./effects/weather-effects-props";
+import { ref } from 'vue';
+import { useWeatherEffects } from './composables/useWeatherEffects';
+import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/weather-effects-props';
+import type { WeatherEffectsCanvasProps } from './effects/weather-effects-types';
 
 const props = defineProps<WeatherEffectsCanvasProps>();
 

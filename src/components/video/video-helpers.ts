@@ -1,10 +1,10 @@
-import type { SerializableVideo } from "./schema";
 import {
   resolveSafeNavigationHref,
   sanitizeHref,
-} from "../../shared/media";
+} from '../../shared/media';
+import type { SerializableVideo } from './schema';
 
-export type VideoMediaEvent = "mute" | "unmute";
+export type VideoMediaEvent = 'mute' | 'unmute';
 
 export interface ResolvedVideoNavigation {
   sanitizedHref: string | undefined;
@@ -20,7 +20,7 @@ export function getMuteMediaEvent(
     return null;
   }
 
-  return nextMuted ? "mute" : "unmute";
+  return nextMuted ? 'mute' : 'unmute';
 }
 
 export function resolveVideoNavigation(
@@ -40,8 +40,8 @@ export function resolveVideoNavigation(
 export function normalizeVideoDataForCallback(
   video: SerializableVideo,
   normalized: {
-    ratio: NonNullable<SerializableVideo["ratio"]>;
-    fit: NonNullable<SerializableVideo["fit"]>;
+    ratio: NonNullable<SerializableVideo['ratio']>;
+    fit: NonNullable<SerializableVideo['fit']>;
     locale: string;
     sanitizedHref: string | undefined;
     sanitizedSourceUrl: string | undefined;

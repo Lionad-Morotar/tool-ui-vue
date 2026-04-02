@@ -1,14 +1,14 @@
-import { describe, expect, test } from "vitest";
-import { mount } from "@vue/test-utils";
-import OrderSummary from "./index.vue";
+import { mount } from '@vue/test-utils';
+import { describe, expect, test } from 'vitest';
+import OrderSummary from './index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {
-    id: "test-order",
-    title: "Order #123",
+    id: 'test-order',
+    title: 'Order #123',
     items: [
-      { id: "1", name: "Widget", quantity: 2, unitPrice: 29.99 },
-      { id: "2", name: "Gadget", quantity: 1, unitPrice: 49.99 },
+      { id: '1', name: 'Widget', quantity: 2, unitPrice: 29.99 },
+      { id: '2', name: 'Gadget', quantity: 1, unitPrice: 49.99 },
     ],
     pricing: {
       subtotal: 109.97,
@@ -16,230 +16,230 @@ function createProps(overrides: Record<string, unknown> = {}) {
       shipping: 10,
       discount: 5,
       total: 123.77,
-      currency: "USD",
+      currency: 'USD',
     },
     ...overrides,
   };
 }
 
-describe("OrderSummary", () => {
-  describe("rendering", () => {
-    test("renders order title", () => {
+describe('OrderSummary', () => {
+  describe('rendering', () => {
+    test('renders order title', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Order #123");
+      expect(wrapper.text()).toContain('Order #123');
     });
 
-    test("renders line items", () => {
+    test('renders line items', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Widget");
-      expect(wrapper.text()).toContain("Gadget");
+      expect(wrapper.text()).toContain('Widget');
+      expect(wrapper.text()).toContain('Gadget');
     });
 
-    test("renders item quantities", () => {
+    test('renders item quantities', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Qty: 2");
+      expect(wrapper.text()).toContain('Qty: 2');
     });
 
-    test("does not show quantity text for single items", () => {
+    test('does not show quantity text for single items', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          items: [{ id: "1", name: "Single Item", quantity: 1, unitPrice: 10 }],
+          items: [{ id: '1', name: 'Single Item', quantity: 1, unitPrice: 10 }],
         }),
       });
-      expect(wrapper.text()).not.toContain("Qty:");
+      expect(wrapper.text()).not.toContain('Qty:');
     });
 
-    test("renders item prices", () => {
+    test('renders item prices', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("$59.98");
-      expect(wrapper.text()).toContain("$49.99");
+      expect(wrapper.text()).toContain('$59.98');
+      expect(wrapper.text()).toContain('$49.99');
     });
 
-    test("renders subtotal", () => {
+    test('renders subtotal', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Subtotal");
-      expect(wrapper.text()).toContain("$109.97");
+      expect(wrapper.text()).toContain('Subtotal');
+      expect(wrapper.text()).toContain('$109.97');
     });
 
-    test("has data-slot attribute", () => {
+    test('has data-slot attribute', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
       expect(wrapper.find('[data-slot="order-summary"]').exists()).toBe(true);
     });
 
-    test("has data-tool-ui-id attribute", () => {
+    test('has data-tool-ui-id attribute', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
       expect(wrapper.find('[data-tool-ui-id="test-order"]').exists()).toBe(true);
     });
 
-    test("has aria-labelledby attribute", () => {
+    test('has aria-labelledby attribute', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.find("article").attributes("aria-labelledby")).toBe("test-order-title");
+      expect(wrapper.find('article').attributes('aria-labelledby')).toBe('test-order-title');
     });
 
-    test("applies custom className", () => {
+    test('applies custom className', () => {
       const wrapper = mount(OrderSummary, {
-        props: createProps({ className: "my-class" }),
+        props: createProps({ className: 'my-class' }),
       });
-      expect(wrapper.find("article").classes()).toContain("my-class");
+      expect(wrapper.find('article').classes()).toContain('my-class');
     });
   });
 
-  describe("calculations", () => {
-    test("calculates total correctly", () => {
+  describe('calculations', () => {
+    test('calculates total correctly', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Total");
-      expect(wrapper.text()).toContain("$123.77");
+      expect(wrapper.text()).toContain('Total');
+      expect(wrapper.text()).toContain('$123.77');
     });
 
-    test("applies tax calculation", () => {
+    test('applies tax calculation', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Tax");
-      expect(wrapper.text()).toContain("$8.80");
+      expect(wrapper.text()).toContain('Tax');
+      expect(wrapper.text()).toContain('$8.80');
     });
 
-    test("applies discount", () => {
+    test('applies discount', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("Discount");
+      expect(wrapper.text()).toContain('Discount');
       // Check for discount amount (format may vary by locale)
       expect(wrapper.text()).toMatch(/5\.00/);
     });
 
-    test("formats currency", () => {
+    test('formats currency', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.text()).toContain("$");
+      expect(wrapper.text()).toContain('$');
       expect(wrapper.text()).toMatch(/\$\d+\.\d{2}/);
     });
 
-    test("handles different currencies", () => {
+    test('handles different currencies', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           pricing: {
             subtotal: 100,
             total: 100,
-            currency: "EUR",
+            currency: 'EUR',
           },
         }),
       });
-      expect(wrapper.text()).toContain("€");
+      expect(wrapper.text()).toContain('€');
     });
 
-    test("handles invalid currency gracefully", () => {
+    test('handles invalid currency gracefully', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           pricing: {
             subtotal: 100,
             total: 100,
-            currency: "INVALID",
+            currency: 'INVALID',
           },
         }),
       });
-      expect(wrapper.text()).toContain("INVALID");
-      expect(wrapper.text()).toContain("100.00");
+      expect(wrapper.text()).toContain('INVALID');
+      expect(wrapper.text()).toContain('100.00');
     });
 
-    test("shows free shipping when shipping is 0", () => {
+    test('shows free shipping when shipping is 0', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           pricing: {
             subtotal: 100,
             shipping: 0,
             total: 100,
-            currency: "USD",
+            currency: 'USD',
           },
         }),
       });
-      expect(wrapper.text()).toContain("Shipping");
-      expect(wrapper.text()).toContain("Free");
+      expect(wrapper.text()).toContain('Shipping');
+      expect(wrapper.text()).toContain('Free');
     });
 
-    test("shows custom tax label", () => {
+    test('shows custom tax label', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           pricing: {
             subtotal: 100,
             tax: 10,
-            taxLabel: "VAT",
+            taxLabel: 'VAT',
             total: 110,
-            currency: "USD",
+            currency: 'USD',
           },
         }),
       });
-      expect(wrapper.text()).toContain("VAT");
-      expect(wrapper.text()).not.toContain("Tax");
+      expect(wrapper.text()).toContain('VAT');
+      expect(wrapper.text()).not.toContain('Tax');
     });
 
-    test("shows custom discount label", () => {
+    test('shows custom discount label', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           pricing: {
             subtotal: 100,
             discount: 10,
-            discountLabel: "SAVE10",
+            discountLabel: 'SAVE10',
             total: 90,
-            currency: "USD",
+            currency: 'USD',
           },
         }),
       });
-      expect(wrapper.text()).toContain("SAVE10");
+      expect(wrapper.text()).toContain('SAVE10');
     });
   });
 
-  describe("item images", () => {
-    test("renders image when imageUrl is provided", () => {
+  describe('item images', () => {
+    test('renders image when imageUrl is provided', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           items: [
-            { id: "1", name: "Item with Image", imageUrl: "https://example.com/image.jpg", unitPrice: 10 },
+            { id: '1', name: 'Item with Image', imageUrl: 'https://example.com/image.jpg', unitPrice: 10 },
           ],
         }),
       });
-      const img = wrapper.find("img");
+      const img = wrapper.find('img');
       expect(img.exists()).toBe(true);
-      expect(img.attributes("src")).toBe("https://example.com/image.jpg");
-      expect(img.attributes("alt")).toBe("Item with Image");
+      expect(img.attributes('src')).toBe('https://example.com/image.jpg');
+      expect(img.attributes('alt')).toBe('Item with Image');
     });
 
-    test("renders Package icon when no imageUrl", () => {
+    test('renders Package icon when no imageUrl', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          items: [{ id: "1", name: "Item without Image", unitPrice: 10 }],
+          items: [{ id: '1', name: 'Item without Image', unitPrice: 10 }],
         }),
       });
-      expect(wrapper.find("img").exists()).toBe(false);
+      expect(wrapper.find('img').exists()).toBe(false);
       // Package icon should be rendered (as svg)
-      expect(wrapper.find("svg").exists()).toBe(true);
+      expect(wrapper.find('svg').exists()).toBe(true);
     });
   });
 
-  describe("variant resolution", () => {
-    test("auto-resolves to receipt when choice is provided", () => {
+  describe('variant resolution', () => {
+    test('auto-resolves to receipt when choice is provided', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          choice: { action: "confirm" as const, orderId: "123" },
+          choice: { action: 'confirm' as const, orderId: '123' },
         }),
       });
       expect(wrapper.find('[data-receipt="true"]').exists()).toBe(true);
@@ -248,14 +248,14 @@ describe("OrderSummary", () => {
     test('explicit variant="summary" overrides auto-resolution', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "summary",
-          choice: { action: "confirm" as const, orderId: "123" },
+          variant: 'summary',
+          choice: { action: 'confirm' as const, orderId: '123' },
         }),
       });
       expect(wrapper.find('[data-receipt="true"]').exists()).toBe(false);
     });
 
-    test("defaults to summary when no choice and no variant", () => {
+    test('defaults to summary when no choice and no variant', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
@@ -263,130 +263,130 @@ describe("OrderSummary", () => {
     });
   });
 
-  describe("receipt mode", () => {
-    test("renders receipt state with CheckCircle icon", () => {
+  describe('receipt mode', () => {
+    test('renders receipt state with CheckCircle icon', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "receipt",
-          choice: { action: "confirm" as const, orderId: "123" },
+          variant: 'receipt',
+          choice: { action: 'confirm' as const, orderId: '123' },
         }),
       });
       expect(wrapper.find('[data-receipt="true"]').exists()).toBe(true);
-      expect(wrapper.find("svg").exists()).toBe(true);
+      expect(wrapper.find('svg').exists()).toBe(true);
     });
 
-    test("renders orderId in receipt badge", () => {
+    test('renders orderId in receipt badge', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "receipt",
-          choice: { action: "confirm" as const, orderId: "ORD-12345" },
+          variant: 'receipt',
+          choice: { action: 'confirm' as const, orderId: 'ORD-12345' },
         }),
       });
-      expect(wrapper.text()).toContain("#ORD-12345");
+      expect(wrapper.text()).toContain('#ORD-12345');
     });
 
-    test("renders confirmedAt date in receipt badge", () => {
+    test('renders confirmedAt date in receipt badge', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "receipt",
-          choice: { action: "confirm" as const, confirmedAt: "2024-01-15T10:30:00Z" },
+          variant: 'receipt',
+          choice: { action: 'confirm' as const, confirmedAt: '2024-01-15T10:30:00Z' },
         }),
       });
       // Date format varies by locale, check for year and day
-      expect(wrapper.text()).toContain("2024");
-      expect(wrapper.text()).toContain("15");
+      expect(wrapper.text()).toContain('2024');
+      expect(wrapper.text()).toContain('15');
     });
 
-    test("handles invalid confirmedAt date gracefully", () => {
+    test('handles invalid confirmedAt date gracefully', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "receipt",
-          choice: { action: "confirm" as const, confirmedAt: "invalid-date" },
+          variant: 'receipt',
+          choice: { action: 'confirm' as const, confirmedAt: 'invalid-date' },
         }),
       });
       expect(wrapper.find('[data-receipt="true"]').exists()).toBe(true);
       // Should not crash and should still render
-      expect(wrapper.text()).toContain("Order");
+      expect(wrapper.text()).toContain('Order');
     });
 
-    test("has role=status in receipt mode", () => {
+    test('has role=status in receipt mode', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
-          variant: "receipt",
-          choice: { action: "confirm" as const },
+          variant: 'receipt',
+          choice: { action: 'confirm' as const },
         }),
       });
       expect(wrapper.find("[role='status']").exists()).toBe(true);
     });
   });
 
-  describe("malformed payload handling", () => {
-    test("renders error state when items is empty array", () => {
+  describe('malformed payload handling', () => {
+    test('renders error state when items is empty array', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({ items: [] }),
       });
-      expect(wrapper.text()).toContain("Unable to render order summary");
+      expect(wrapper.text()).toContain('Unable to render order summary');
     });
 
-    test("renders error state when pricing is null", () => {
+    test('renders error state when pricing is null', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({ pricing: null as unknown as object }),
       });
-      expect(wrapper.text()).toContain("Unable to render order summary");
+      expect(wrapper.text()).toContain('Unable to render order summary');
     });
 
-    test("renders error state when receipt variant without choice", () => {
+    test('renders error state when receipt variant without choice', () => {
       const wrapper = mount(OrderSummary, {
-        props: createProps({ variant: "receipt" }),
+        props: createProps({ variant: 'receipt' }),
       });
-      expect(wrapper.text()).toContain("Unable to render order summary");
+      expect(wrapper.text()).toContain('Unable to render order summary');
     });
 
-    test("error state preserves title", () => {
+    test('error state preserves title', () => {
       const wrapper = mount(OrderSummary, {
-        props: createProps({ items: [], title: "Custom Title" }),
+        props: createProps({ items: [], title: 'Custom Title' }),
       });
-      expect(wrapper.text()).toContain("Custom Title");
+      expect(wrapper.text()).toContain('Custom Title');
     });
   });
 
-  describe("item descriptions", () => {
-    test("renders item description when provided", () => {
+  describe('item descriptions', () => {
+    test('renders item description when provided', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           items: [
-            { id: "1", name: "Item", description: "A great item", unitPrice: 10 },
+            { id: '1', name: 'Item', description: 'A great item', unitPrice: 10 },
           ],
         }),
       });
-      expect(wrapper.text()).toContain("A great item");
+      expect(wrapper.text()).toContain('A great item');
     });
 
-    test("combines description and quantity with separator", () => {
+    test('combines description and quantity with separator', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps({
           items: [
-            { id: "1", name: "Item", description: "A great item", quantity: 3, unitPrice: 10 },
+            { id: '1', name: 'Item', description: 'A great item', quantity: 3, unitPrice: 10 },
           ],
         }),
       });
-      expect(wrapper.text()).toContain("A great item · Qty: 3");
+      expect(wrapper.text()).toContain('A great item · Qty: 3');
     });
   });
 
-  describe("accessibility", () => {
-    test("uses article element for semantic structure", () => {
+  describe('accessibility', () => {
+    test('uses article element for semantic structure', () => {
       const wrapper = mount(OrderSummary, {
         props: createProps(),
       });
-      expect(wrapper.find("article").exists()).toBe(true);
+      expect(wrapper.find('article').exists()).toBe(true);
     });
 
-    test("title has correct id for aria-labelledby", () => {
+    test('title has correct id for aria-labelledby', () => {
       const wrapper = mount(OrderSummary, {
-        props: createProps({ id: "my-order" }),
+        props: createProps({ id: 'my-order' }),
       });
-      expect(wrapper.find("#my-order-title").exists()).toBe(true);
+      expect(wrapper.find('#my-order-title').exists()).toBe(true);
     });
   });
 });

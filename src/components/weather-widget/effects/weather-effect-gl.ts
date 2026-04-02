@@ -22,11 +22,11 @@ function createShader(
     if (!gl.isContextLost()) {
       const kind =
         type === gl.VERTEX_SHADER
-          ? "vertex"
+          ? 'vertex'
           : type === gl.FRAGMENT_SHADER
-            ? "fragment"
+            ? 'fragment'
             : String(type);
-      console.error(`Shader compile error (${kind}):`, info ?? "(no info log)");
+      console.error(`Shader compile error (${kind}):`, info ?? '(no info log)');
     }
     gl.deleteShader(shader);
     return null;
@@ -61,7 +61,7 @@ export function createProgram(
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
     const info = gl.getProgramInfoLog(program);
     if (!gl.isContextLost()) {
-      console.error("Program link error:", info ?? "(no info log)");
+      console.error('Program link error:', info ?? '(no info log)');
     }
     gl.deleteProgram(program);
     gl.deleteShader(vertexShader);
@@ -120,7 +120,7 @@ export function createFramebuffer(
   const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
   if (status !== gl.FRAMEBUFFER_COMPLETE) {
     if (!gl.isContextLost()) {
-      console.error("Framebuffer incomplete:", status);
+      console.error('Framebuffer incomplete:', status);
     }
     gl.deleteFramebuffer(fbo);
     gl.deleteTexture(texture);

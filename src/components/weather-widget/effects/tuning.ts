@@ -1,4 +1,4 @@
-import type { WeatherConditionCode } from "../schema";
+import type { WeatherConditionCode } from '../schema';
 import type {
   WeatherEffectsCanvasProps,
   LayerToggles,
@@ -10,9 +10,9 @@ import type {
   GlassParams,
   InteractionParams,
   PostProcessParams,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
-export type TimeCheckpoint = "dawn" | "noon" | "dusk" | "midnight";
+export type TimeCheckpoint = 'dawn' | 'noon' | 'dusk' | 'midnight';
 
 export const TIME_CHECKPOINTS: Record<TimeCheckpoint, number> = {
   dawn: 0.25,
@@ -22,10 +22,10 @@ export const TIME_CHECKPOINTS: Record<TimeCheckpoint, number> = {
 };
 
 export const TIME_CHECKPOINT_ORDER: TimeCheckpoint[] = [
-  "dawn",
-  "noon",
-  "dusk",
-  "midnight",
+  'dawn',
+  'noon',
+  'dusk',
+  'midnight',
 ];
 
 export interface WeatherEffectsOverrides {
@@ -54,7 +54,7 @@ export type WeatherEffectsTunedPresets = Partial<
 export function getNearestCheckpoint(timeOfDay: number): TimeCheckpoint {
   const normalized = ((timeOfDay % 1) + 1) % 1;
 
-  let nearest: TimeCheckpoint = "noon";
+  let nearest: TimeCheckpoint = 'noon';
   let minDist = Infinity;
 
   for (const checkpoint of TIME_CHECKPOINT_ORDER) {
@@ -62,7 +62,7 @@ export function getNearestCheckpoint(timeOfDay: number): TimeCheckpoint {
     let dist = Math.abs(normalized - value);
     if (dist > 0.5) dist = 1 - dist;
     const isTie = Math.abs(dist - minDist) <= Number.EPSILON;
-    if (dist < minDist || (isTie && checkpoint === "midnight")) {
+    if (dist < minDist || (isTie && checkpoint === 'midnight')) {
       minDist = dist;
       nearest = checkpoint;
     }

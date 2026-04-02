@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { PreferencesPanel } from "../components";
+import { ref } from 'vue';
+import { PreferencesPanel } from '../components';
 
 const prefs = ref({
   email: true,
-  frequency: "daily",
-  theme: "system",
+  frequency: 'daily',
+  theme: 'system',
 });
 
 /**
@@ -86,8 +86,9 @@ const prefs = ref({
   <Story title="PreferencesPanel/All Variants">
     <Variant title="Notification Settings">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-notifications"
+          v-model="prefs"
           title="Notification Settings"
           :sections="[
             {
@@ -114,14 +115,13 @@ const prefs = ref({
               ],
             },
           ]"
-          v-model="prefs"
         />
       </div>
     </Variant>
 
     <Variant title="Appearance Settings">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-appearance"
           title="Appearance"
           :sections="[
@@ -167,7 +167,7 @@ const prefs = ref({
 
     <Variant title="With Custom Actions">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-actions"
           title="Privacy Settings"
           :sections="[
@@ -200,7 +200,7 @@ const prefs = ref({
 
     <Variant title="All Control Types">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-all-types"
           title="All Preference Types"
           :sections="[
@@ -264,7 +264,7 @@ const prefs = ref({
 
     <Variant title="Receipt Mode - Success">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-receipt-success"
           title="Settings Saved"
           :sections="[
@@ -311,7 +311,7 @@ const prefs = ref({
 
     <Variant title="Receipt Mode - With Errors">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-receipt-error"
           title="Settings"
           :sections="[
@@ -343,7 +343,7 @@ const prefs = ref({
 
     <Variant title="Without Title">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-no-title"
           :sections="[
             {
@@ -369,7 +369,7 @@ const prefs = ref({
 
     <Variant title="Without Section Headings">
       <div class="w-full max-w-md">
-        <PreferencesPanel
+        <preferences-panel
           id="preferences-panel-no-headings"
           title="Quick Settings"
           :sections="[

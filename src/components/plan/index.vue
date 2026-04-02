@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { cn } from "./_adapter";
-import type { PlanProps, PlanTodo } from "./schema";
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
+import type { PlanProps, PlanTodo } from './schema';
 
 const props = withDefaults(defineProps<PlanProps>(), {
   maxVisibleTodos: 4,
@@ -28,7 +28,7 @@ const hiddenCount = computed(() => hiddenTodos.value.length);
 
 const progress = computed(() => {
   const total = props.todos.length;
-  const completed = props.todos.filter((t) => t.status === "completed").length;
+  const completed = props.todos.filter((t) => t.status === 'completed').length;
   return {
     total,
     completed,
@@ -69,14 +69,14 @@ function toggleExpand(todoId: string) {
 }
 
 function handleTodoClick(todo: PlanTodo, index: number) {
-  emit("todoClick", todo.id, index);
+  emit('todoClick', todo.id, index);
 }
 </script>
 
 <template>
   <div
     :class="cn(
-      'isolate w-full max-w-xl min-w-80 gap-4 py-4 border-border rounded-2xl border bg-card shadow-sm',
+      'isolate w-full max-w-xl min-w-80 gap-4 rounded-2xl border border-border bg-card py-4 shadow-sm',
       className
     )"
     data-slot="plan"
@@ -86,7 +86,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
     <div class="flex flex-row items-start justify-between gap-4 px-6">
       <div class="space-y-1.5">
         <h2 class="leading-5 font-medium text-pretty">{{ title }}</h2>
-        <p v-if="description" class="text-muted-foreground text-sm">{{ description }}</p>
+        <p v-if="description" class="text-sm text-muted-foreground">{{ description }}</p>
       </div>
       <svg
         v-if="progress.allComplete"
@@ -101,19 +101,19 @@ function handleTodoClick(todo: PlanTodo, index: number) {
         stroke-linejoin="round"
         class="mt-0.5 size-5 shrink-0 text-emerald-500"
       >
-        <path d="M20 6 9 17l-5-5"/>
+        <path d="M20 6 9 17l-5-5" />
       </svg>
     </div>
 
     <div class="min-w-0 px-4">
-      <div class="min-w-0 bg-muted/70 rounded-lg px-6 py-4">
-        <div class="text-muted-foreground mb-2 text-sm">
+      <div class="min-w-0 rounded-lg bg-muted/70 px-6 py-4">
+        <div class="mb-2 text-sm text-muted-foreground">
           {{ progress.completed }} of {{ progress.total }} complete
         </div>
 
         <!-- Progress Bar -->
         <div
-          class="bg-muted relative mb-3 h-1.5 overflow-hidden rounded-full"
+          class="relative mb-3 h-1.5 overflow-hidden rounded-full bg-muted"
           role="progressbar"
           aria-valuemin="0"
           aria-valuemax="100"
@@ -123,7 +123,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
             :class="cn(
               'h-full rounded-full transition-all duration-500',
               progress.percent === 100
-                ? 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500 motion-safe:ease-out'
+                ? 'motion-safe:animate-in motion-safe:fade-in bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 motion-safe:duration-500 motion-safe:ease-out'
                 : 'bg-primary',
             )"
             :style="{
@@ -139,7 +139,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
         </div>
 
         <!-- Todos -->
-        <ul class="min-w-0 space-y-1 mt-4">
+        <ul class="mt-4 min-w-0 space-y-1">
           <li
             v-for="(todo, index) in visibleTodos"
             :key="todo.id"
@@ -150,7 +150,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
           >
             <div
               v-if="index < visibleTodos.length - 1 || hiddenCount > 0"
-              class="bg-border absolute top-6 left-5 w-px"
+              class="absolute top-6 left-5 w-px bg-border"
               :style="{ height: 'calc(100% + 0.25rem)' }"
               aria-hidden="true"
             />
@@ -158,35 +158,68 @@ function handleTodoClick(todo: PlanTodo, index: number) {
               <!-- Status Icon -->
               <span
                 v-if="todo.status === 'pending'"
-                class="border-border bg-card flex size-6 shrink-0 items-center justify-center rounded-full border motion-safe:transition-all motion-safe:duration-200"
+                class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card motion-safe:transition-all motion-safe:duration-200"
                 aria-hidden="true"
               />
               <span
                 v-else-if="todo.status === 'in_progress'"
-                class="border-border bg-card flex size-6 shrink-0 items-center justify-center rounded-full border shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
+                class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
                 aria-hidden="true"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-5 motion-safe:animate-spin">
-                  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="size-5 text-primary motion-safe:animate-spin"
+                >
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                 </svg>
               </span>
               <span
                 v-else-if="todo.status === 'completed'"
-                class="border-primary bg-primary flex size-6 shrink-0 items-center justify-center rounded-full border shadow-sm motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out"
+                class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 flex size-6 shrink-0 items-center justify-center rounded-full border border-primary bg-primary shadow-sm motion-safe:duration-300 motion-safe:ease-out"
                 aria-hidden="true"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-primary-foreground size-4 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both">
-                  <path d="M20 6 9 17l-5-5"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both size-4 text-primary-foreground motion-safe:delay-75 motion-safe:duration-200"
+                >
+                  <path d="M20 6 9 17l-5-5" />
                 </svg>
               </span>
               <span
                 v-else-if="todo.status === 'cancelled'"
-                class="border-destructive bg-destructive flex size-6 shrink-0 items-center justify-center rounded-full border shadow-sm motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out dark:border-red-600 dark:bg-red-600"
+                class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 flex size-6 shrink-0 items-center justify-center rounded-full border border-destructive bg-destructive shadow-sm motion-safe:duration-300 motion-safe:ease-out dark:border-red-600 dark:bg-red-600"
                 aria-hidden="true"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-white motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both">
-                  <path d="M18 6 6 18"/>
-                  <path d="m6 6 12 12"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both size-4 text-white motion-safe:delay-75 motion-safe:duration-200"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
                 </svg>
               </span>
             </div>
@@ -203,7 +236,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
               </span>
               <p
                 v-if="todo.description && expandedTodos.has(todo.id)"
-                class="text-muted-foreground min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words"
+                class="min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words text-muted-foreground"
               >
                 {{ todo.description }}
               </p>
@@ -211,7 +244,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
             <button
               v-if="todo.description"
               type="button"
-              class="text-muted-foreground/50 hover:text-muted-foreground mt-0.5 size-4 shrink-0 transition-colors"
+              class="mt-0.5 size-4 shrink-0 text-muted-foreground/50 transition-colors hover:text-muted-foreground"
               @click.stop="toggleExpand(todo.id)"
             >
               <svg
@@ -227,7 +260,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                 :class="expandedTodos.has(todo.id) ? 'rotate-90' : ''"
                 class="motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.34,1.56,0.64,1)]"
               >
-                <path d="m9 18 6-6-6-6"/>
+                <path d="m9 18 6-6-6-6" />
               </svg>
             </button>
           </li>
@@ -236,13 +269,24 @@ function handleTodoClick(todo: PlanTodo, index: number) {
           <li v-if="hiddenCount > 0" class="mt-1">
             <button
               type="button"
-              class="text-muted-foreground hover:text-primary flex cursor-default items-start justify-start gap-2 py-1 text-sm font-normal"
+              class="flex cursor-default items-start justify-start gap-2 py-1 text-sm font-normal text-muted-foreground hover:text-primary"
               @click="showMoreExpanded = !showMoreExpanded"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground/70 mt-0.5 size-4 shrink-0">
-                <circle cx="12" cy="12" r="1"/>
-                <circle cx="19" cy="12" r="1"/>
-                <circle cx="5" cy="12" r="1"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="mt-0.5 size-4 shrink-0 text-muted-foreground/70"
+              >
+                <circle cx="12" cy="12" r="1" />
+                <circle cx="19" cy="12" r="1" />
+                <circle cx="5" cy="12" r="1" />
               </svg>
               <span>{{ hiddenCount }} more</span>
             </button>
@@ -259,7 +303,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
               >
                 <div
                   v-if="index < hiddenTodos.length - 1"
-                  class="bg-border absolute top-6 left-5 w-px"
+                  class="absolute top-6 left-5 w-px bg-border"
                   :style="{ height: 'calc(100% + 0.25rem)' }"
                   aria-hidden="true"
                 />
@@ -267,35 +311,68 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                   <!-- Status Icon -->
                   <span
                     v-if="todo.status === 'pending'"
-                    class="border-border bg-card flex size-6 shrink-0 items-center justify-center rounded-full border motion-safe:transition-all motion-safe:duration-200"
+                    class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card motion-safe:transition-all motion-safe:duration-200"
                     aria-hidden="true"
                   />
                   <span
                     v-else-if="todo.status === 'in_progress'"
-                    class="border-border bg-card flex size-6 shrink-0 items-center justify-center rounded-full border shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
+                    class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
                     aria-hidden="true"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-5 motion-safe:animate-spin">
-                      <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="size-5 text-primary motion-safe:animate-spin"
+                    >
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                     </svg>
                   </span>
                   <span
                     v-else-if="todo.status === 'completed'"
-                    class="border-primary bg-primary flex size-6 shrink-0 items-center justify-center rounded-full border shadow-sm motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out"
+                    class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 flex size-6 shrink-0 items-center justify-center rounded-full border border-primary bg-primary shadow-sm motion-safe:duration-300 motion-safe:ease-out"
                     aria-hidden="true"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-primary-foreground size-4 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both">
-                      <path d="M20 6 9 17l-5-5"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both size-4 text-primary-foreground motion-safe:delay-75 motion-safe:duration-200"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
                     </svg>
                   </span>
                   <span
                     v-else-if="todo.status === 'cancelled'"
-                    class="border-destructive bg-destructive flex size-6 shrink-0 items-center justify-center rounded-full border shadow-sm motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out dark:border-red-600 dark:bg-red-600"
+                    class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 flex size-6 shrink-0 items-center justify-center rounded-full border border-destructive bg-destructive shadow-sm motion-safe:duration-300 motion-safe:ease-out dark:border-red-600 dark:bg-red-600"
                     aria-hidden="true"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-white motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both">
-                      <path d="M18 6 6 18"/>
-                      <path d="m6 6 12 12"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both size-4 text-white motion-safe:delay-75 motion-safe:duration-200"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
                     </svg>
                   </span>
                 </div>
@@ -312,7 +389,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                   </span>
                   <p
                     v-if="todo.description && expandedTodos.has(todo.id)"
-                    class="text-muted-foreground min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words"
+                    class="min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words text-muted-foreground"
                   >
                     {{ todo.description }}
                   </p>
@@ -320,7 +397,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                 <button
                   v-if="todo.description"
                   type="button"
-                  class="text-muted-foreground/50 hover:text-muted-foreground mt-0.5 size-4 shrink-0 transition-colors"
+                  class="mt-0.5 size-4 shrink-0 text-muted-foreground/50 transition-colors hover:text-muted-foreground"
                   @click.stop="toggleExpand(todo.id)"
                 >
                   <svg
@@ -336,7 +413,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                     :class="expandedTodos.has(todo.id) ? 'rotate-90' : ''"
                     class="motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.34,1.56,0.64,1)]"
                   >
-                    <path d="m9 18 6-6-6-6"/>
+                    <path d="m9 18 6-6-6-6" />
                   </svg>
                 </button>
               </li>

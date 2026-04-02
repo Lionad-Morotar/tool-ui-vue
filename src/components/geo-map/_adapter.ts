@@ -1,9 +1,9 @@
 /**
  * Adapter: UI and utility re-exports for copy-standalone portability.
  */
-export { cn } from "../../utils"
+export { cn } from '../../utils'
 
-import type L from "leaflet"
+import type L from 'leaflet'
 
 // Re-export Leaflet types
 export type { L }
@@ -19,4 +19,4 @@ export {
   LPopup as Popup,
   LTooltip as Tooltip,
   LControlZoom as ZoomControl,
-} from "@vue-leaflet/vue-leaflet"
+} from '@vue-leaflet/vue-leaflet'

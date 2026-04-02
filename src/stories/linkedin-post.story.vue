@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { LinkedInPost } from "../components";
+import { reactive } from 'vue';
+import { LinkedInPost } from '../components';
 
 /**
  * # LinkedInPost
@@ -89,7 +89,7 @@ const interactiveState = reactive({
 });
 
 function handleAction(action: string) {
-  if (action === "like") {
+  if (action === 'like') {
     interactiveState.isLiked = !interactiveState.isLiked;
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
@@ -100,7 +100,7 @@ function handleAction(action: string) {
   <Story title="LinkedInPost/All Variants">
     <Variant title="Text Only">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '1',
             author: {
@@ -122,7 +122,7 @@ function handleAction(action: string) {
 
     <Variant title="With Image">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '2',
             author: {
@@ -149,7 +149,7 @@ function handleAction(action: string) {
 
     <Variant title="With Video">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: 'video-1',
             author: {
@@ -176,7 +176,7 @@ function handleAction(action: string) {
 
     <Variant title="With Link Preview">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '3',
             author: {
@@ -205,7 +205,7 @@ function handleAction(action: string) {
 
     <Variant title="Long Post (Truncated)">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '4',
             author: {
@@ -227,7 +227,7 @@ function handleAction(action: string) {
 
     <Variant title="Celebration Post">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '5',
             author: {
@@ -249,7 +249,7 @@ function handleAction(action: string) {
 
     <Variant title="Without Headline">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '6',
             author: {
@@ -269,7 +269,7 @@ function handleAction(action: string) {
 
     <Variant title="Link Preview without Image">
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: '7',
             author: {
@@ -295,7 +295,7 @@ function handleAction(action: string) {
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <LinkedInPost
+        <linked-in-post
           :post="{
             id: 'interactive',
             author: {

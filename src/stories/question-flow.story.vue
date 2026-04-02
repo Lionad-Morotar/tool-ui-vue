@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import { QuestionFlow } from "../components";
+import { ref, reactive } from 'vue';
+import { QuestionFlow } from '../components';
 
 const progressiveState = reactive({
   step: 1,
@@ -11,7 +11,7 @@ const upfrontAnswers = ref<Record<string, string[]>>({});
 
 function handleSelect(options: string[]) {
   progressiveState.selectedOptions = options;
-  alert(`Selected: ${options.join(", ")}`);
+  alert(`Selected: ${options.join(', ')}`);
 }
 
 function handleComplete(answers: Record<string, string[]>) {
@@ -95,7 +95,7 @@ function handleComplete(answers: Record<string, string[]>) {
   <Story title="QuestionFlow/All Variants">
     <Variant title="Progressive Mode - Step 1">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-progressive-1"
           :step="1"
           title="Project Setup"
@@ -112,7 +112,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Progressive Mode - Step 2">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-progressive-2"
           :step="2"
           title="Choose Framework"
@@ -129,7 +129,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Progressive Mode - Multi Select">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-multi"
           :step="1"
           title="Select Features"
@@ -147,7 +147,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Progressive Mode - With Default Value">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-default"
           :step="1"
           title="Select Plan"
@@ -165,7 +165,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Upfront Mode - Multi Step">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-upfront"
           :steps="[
             {
@@ -207,7 +207,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Upfront Mode - With Disabled Options">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-disabled"
           :steps="[
             {
@@ -227,7 +227,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Receipt Mode">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-receipt"
           :choice="{
             title: 'Project Configuration Complete',
@@ -243,7 +243,7 @@ function handleComplete(answers: Record<string, string[]>) {
 
     <Variant title="Receipt Mode - Multiple Items">
       <div class="w-full max-w-md">
-        <QuestionFlow
+        <question-flow
           id="question-flow-receipt-multi"
           :choice="{
             title: 'Order Summary',
@@ -264,7 +264,7 @@ function handleComplete(answers: Record<string, string[]>) {
         <div v-if="progressiveState.selectedOptions.length > 0" class="rounded-lg bg-muted p-3 text-sm">
           <strong>Selected:</strong> {{ progressiveState.selectedOptions.join(", ") }}
         </div>
-        <QuestionFlow
+        <question-flow
           id="question-flow-interactive"
           :step="progressiveState.step"
           title="Interactive Demo"

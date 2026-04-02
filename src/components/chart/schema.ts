@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/chart/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
  * 图表系列的 Schema 定义
@@ -40,7 +41,7 @@ export const ChartPropsSchema = z
     id: ToolUIIdSchema,
     role: ToolUIRoleSchema.optional(),
     receipt: ToolUIReceiptSchema.optional(),
-    type: z.enum(["bar", "line"]),
+    type: z.enum(['bar', 'line']),
     title: z.string().optional(),
     description: z.string().optional(),
     data: z.array(z.record(z.string(), z.unknown())).min(1),
@@ -55,8 +56,8 @@ export const ChartPropsSchema = z
     value.series.forEach((series, index) => {
       if (seenSeriesKeys.has(series.key)) {
         ctx.addIssue({
-          code: "custom",
-          path: ["series", index, "key"],
+          code: 'custom',
+          path: ['series', index, 'key'],
           message: `Duplicate series key "${series.key}".`,
         });
         return;
@@ -67,17 +68,17 @@ export const ChartPropsSchema = z
     value.data.forEach((row, rowIndex) => {
       if (!(value.xKey in row)) {
         ctx.addIssue({
-          code: "custom",
-          path: ["data", rowIndex, value.xKey],
+          code: 'custom',
+          path: ['data', rowIndex, value.xKey],
           message: `Missing xKey "${value.xKey}" in data row.`,
         });
       } else {
         const xVal = row[value.xKey];
-        const isValidX = typeof xVal === "string" || typeof xVal === "number";
+        const isValidX = typeof xVal === 'string' || typeof xVal === 'number';
         if (!isValidX) {
           ctx.addIssue({
-            code: "custom",
-            path: ["data", rowIndex, value.xKey],
+            code: 'custom',
+            path: ['data', rowIndex, value.xKey],
             message: `Expected "${value.xKey}" to be a string or number.`,
           });
         }
@@ -86,8 +87,8 @@ export const ChartPropsSchema = z
       value.series.forEach((series) => {
         if (!(series.key in row)) {
           ctx.addIssue({
-            code: "custom",
-            path: ["data", rowIndex, series.key],
+            code: 'custom',
+            path: ['data', rowIndex, series.key],
             message: `Missing series key "${series.key}" in data row.`,
           });
           return;
@@ -97,10 +98,10 @@ export const ChartPropsSchema = z
         if (yVal === null) {
           return;
         }
-        if (typeof yVal !== "number" || !Number.isFinite(yVal)) {
+        if (typeof yVal !== 'number' || !Number.isFinite(yVal)) {
           ctx.addIssue({
-            code: "custom",
-            path: ["data", rowIndex, series.key],
+            code: 'custom',
+            path: ['data', rowIndex, series.key],
             message: `Expected "${series.key}" to be a finite number (or null).`,
           });
         }
@@ -134,9 +135,9 @@ export type ChartClientProps = {
  */
 export interface ChartProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
-  type: "bar" | "line";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
+  type: 'bar' | 'line';
   title?: string;
   description?: string;
   data: Record<string, unknown>[];
@@ -161,7 +162,7 @@ export const SerializableChartSchema = ChartPropsSchema;
 export type SerializableChart = z.infer<typeof SerializableChartSchema>;
 
 const SerializableChartSchemaContract = defineToolUiContract(
-  "Chart",
+  'Chart',
   SerializableChartSchema,
 );
 

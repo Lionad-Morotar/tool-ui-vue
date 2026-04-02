@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { ParameterSlider } from "../components";
+import { reactive } from 'vue';
+import { ParameterSlider } from '../components';
 
 const imageAdjustments = reactive({
   exposure: 0.3,
@@ -130,14 +130,14 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Current Values:</p>
-          <p class="text-muted-foreground text-sm">
+          <p class="text-sm text-muted-foreground">
             Exposure: {{ imageAdjustments.exposure > 0 ? '+' : '' }}{{ imageAdjustments.exposure }}EV |
             Contrast: {{ imageAdjustments.contrast > 0 ? '+' : '' }}{{ imageAdjustments.contrast }}% |
             Highlights: {{ imageAdjustments.highlights > 0 ? '+' : '' }}{{ imageAdjustments.highlights }}% |
             Shadows: {{ imageAdjustments.shadows > 0 ? '+' : '' }}{{ imageAdjustments.shadows }}%
           </p>
         </div>
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-photo"
           :sliders="[
             { id: 'exposure', label: 'Exposure', value: imageAdjustments.exposure, min: -3, max: 3, step: 0.1, unit: 'EV', precision: 1 },
@@ -158,11 +158,11 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Color Settings:</p>
-          <p class="text-muted-foreground text-sm">
+          <p class="text-sm text-muted-foreground">
             {{ colorGrading.temperature }}K | Tint: {{ colorGrading.tint > 0 ? '+' : '' }}{{ colorGrading.tint }} | Saturation: {{ colorGrading.saturation > 0 ? '+' : '' }}{{ colorGrading.saturation }}%
           </p>
         </div>
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-color"
           :sliders="[
             { id: 'temperature', label: 'Temperature', value: colorGrading.temperature, min: 2000, max: 10000, step: 100, unit: 'K' },
@@ -182,13 +182,13 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">EQ Settings:</p>
-          <p class="text-muted-foreground text-sm">
+          <p class="text-sm text-muted-foreground">
             Bass: {{ audioEq.bass > 0 ? '+' : '' }}{{ audioEq.bass }}dB |
             Mid: {{ audioEq.mid > 0 ? '+' : '' }}{{ audioEq.mid }}dB |
             Treble: {{ audioEq.treble > 0 ? '+' : '' }}{{ audioEq.treble }}dB
           </p>
         </div>
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-audio"
           :sliders="[
             { id: 'bass', label: 'Bass', value: audioEq.bass, min: -12, max: 12, step: 1, unit: 'dB' },
@@ -208,11 +208,11 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Export Settings:</p>
-          <p class="text-muted-foreground text-sm">
+          <p class="text-sm text-muted-foreground">
             {{ videoExport.bitrate }} Mbps | Keyframe: {{ videoExport.keyframe }}s | CRF: {{ videoExport.quality }}
           </p>
         </div>
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-video"
           :sliders="[
             { id: 'bitrate', label: 'Bitrate', value: videoExport.bitrate, min: 1, max: 50, step: 0.5, unit: 'Mbps', precision: 1 },
@@ -230,7 +230,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
 
     <Variant title="Single Slider">
       <div class="w-full max-w-sm">
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-single"
           :sliders="[
             { id: 'blur', label: 'Background Blur', value: 35, min: 0, max: 100, step: 5, unit: '%' },
@@ -245,7 +245,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
 
     <Variant title="With Disabled Slider">
       <div class="w-full max-w-md">
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-disabled"
           :sliders="[
             { id: 'volume', label: 'Volume', value: 75, min: 0, max: 100, unit: '%' },
@@ -257,7 +257,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
 
     <Variant title="Custom Styling">
       <div class="w-full max-w-md">
-        <ParameterSlider
+        <parameter-slider
           id="parameter-slider-custom"
           :sliders="[
             { id: 'red', label: 'Red', value: 128, min: 0, max: 255, step: 1, trackClassName: 'bg-red-100', fillClassName: 'bg-red-500/30', handleClassName: 'bg-red-600' },

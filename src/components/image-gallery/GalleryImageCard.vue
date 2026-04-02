@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted } from "vue";
-import { ImageOff } from "lucide-vue-next";
-import { cn } from "./_adapter";
-import { useImageGallery } from "./context";
-import type { ImageGalleryItem } from "./schema";
+import { ImageOff } from 'lucide-vue-next';
+import { ref, watch, onUnmounted } from 'vue';
+import { cn } from './_adapter';
+import { useImageGallery } from './context';
+import type { ImageGalleryItem } from './schema';
 
 interface Props {
   image: ImageGalleryItem;
@@ -21,7 +21,7 @@ const { registerImage } = useImageGallery();
 watch(
   () => wrapperRef.value,
   (wrapper) => {
-    const img = wrapper?.querySelector("img");
+    const img = wrapper?.querySelector('img');
     if (img) {
       registerImage(props.image.id, img as HTMLElement);
     }
@@ -38,7 +38,7 @@ onUnmounted(() => {
   <div
     ref="wrapperRef"
     :class="cn(
-      'bg-muted relative h-full w-full overflow-hidden rounded-lg',
+      'relative h-full w-full overflow-hidden rounded-lg bg-muted',
       'transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]',
       'group-hover:scale-[1.02] group-active:scale-[0.98]'
     )"
@@ -47,8 +47,8 @@ onUnmounted(() => {
       v-if="hasError"
       class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4"
     >
-      <ImageOff class="text-muted-foreground h-8 w-8" />
-      <span class="text-muted-foreground line-clamp-2 text-center text-xs">
+      <image-off class="h-8 w-8 text-muted-foreground" />
+      <span class="line-clamp-2 text-center text-xs text-muted-foreground">
         {{ image.alt }}
       </span>
     </div>

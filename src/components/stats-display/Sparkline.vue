@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { cn } from "./_adapter";
-import type { CSSProperties } from "vue";
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import type { CSSProperties } from 'vue';
 
 export interface SparklineProps {
   data: number[];
@@ -15,9 +15,11 @@ export interface SparklineProps {
 }
 
 const props = withDefaults(defineProps<SparklineProps>(), {
-  color: "currentColor",
+  color: 'currentColor',
   width: 64,
   height: 24,
+  className: '',
+  style: undefined,
   showFill: false,
   fillOpacity: 0.09,
 });
@@ -26,7 +28,7 @@ const props = withDefaults(defineProps<SparklineProps>(), {
 const gradientId = computed(() => `sparkline-gradient-${Math.random().toString(36).slice(2, 11)}`);
 
 const linePointsString = computed(() => {
-  if (props.data.length < 2) return "";
+  if (props.data.length < 2) return '';
 
   const minVal = Math.min(...props.data);
   const maxVal = Math.max(...props.data);
@@ -42,11 +44,11 @@ const linePointsString = computed(() => {
     return { x, y };
   });
 
-  return linePoints.map((p) => `${p.x},${p.y}`).join(" ");
+  return linePoints.map((p) => `${p.x},${p.y}`).join(' ');
 });
 
 const areaPointsString = computed(() => {
-  if (props.data.length < 2) return "";
+  if (props.data.length < 2) return '';
 
   const minVal = Math.min(...props.data);
   const maxVal = Math.max(...props.data);
@@ -66,13 +68,13 @@ const areaPointsString = computed(() => {
     `${padding},${props.height}`,
     ...linePoints.map((p) => `${p.x},${p.y}`),
     `${props.width - padding},${props.height}`,
-  ].join(" ");
+  ].join(' ');
 });
 
 const animationDelay = computed(() => {
   const raw = props.style?.animationDelay;
-  if (raw === undefined || raw === null) return "0ms";
-  return typeof raw === "number" ? `${raw}ms` : String(raw);
+  if (raw === undefined || raw === null) return '0ms';
+  return typeof raw === 'number' ? `${raw}ms` : String(raw);
 });
 
 const baseAnimationDelay = animationDelay;
@@ -88,7 +90,13 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
     preserveAspectRatio="none"
   >
     <defs v-if="showFill">
-      <linearGradient :id="gradientId" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient
+        :id="gradientId"
+        x1="0"
+        y1="0"
+        x2="0"
+        y2="1"
+      >
         <stop offset="0%" :stop-color="color" :stop-opacity="fillOpacity" />
         <stop offset="100%" :stop-color="color" :stop-opacity="0" />
       </linearGradient>
@@ -97,7 +105,7 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
       v-if="showFill"
       :points="areaPointsString"
       :fill="`url(#${gradientId})`"
-      class="animate-in fade-in duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+      class="animate-in fade-in fill-mode-both duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
       :style="{ animationDelay: baseAnimationDelay }"
     />
     <!-- Base line -->
@@ -124,7 +132,7 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
       stroke-dasharray="0.36 0.64"
       stroke-dashoffset="0"
       stroke-opacity="0.2"
-      class="opacity-0 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-700 motion-safe:ease-out motion-safe:fill-mode-both"
+      class="motion-safe:animate-in motion-safe:fade-in motion-safe:fill-mode-both opacity-0 motion-safe:duration-700 motion-safe:ease-out"
       :style="{ animationDelay: baseAnimationDelay }"
     />
     <!-- Animated line layer 2 -->
@@ -140,7 +148,7 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
       stroke-dasharray="0.24 0.76"
       stroke-dashoffset="0"
       stroke-opacity="0.65"
-      class="opacity-0 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500 motion-safe:ease-out motion-safe:fill-mode-both"
+      class="motion-safe:animate-in motion-safe:fade-in motion-safe:fill-mode-both opacity-0 motion-safe:duration-500 motion-safe:ease-out"
       :style="{ animationDelay: secondaryAnimationDelay }"
     />
   </svg>

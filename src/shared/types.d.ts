@@ -1,4 +1,4 @@
-declare module "*.js" {
+declare module '*.js' {
   const content: unknown;
   export default content;
 }

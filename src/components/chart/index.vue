@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { cn } from "./_adapter";
-import type { ChartProps, ChartDataPoint } from "./schema";
+import { computed, ref } from 'vue';
+import { cn } from './_adapter';
+import type { ChartProps, ChartDataPoint } from './schema';
 
 const props = defineProps<ChartProps>();
 
@@ -10,11 +10,11 @@ const emit = defineEmits<{
 }>();
 
 const DEFAULT_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)',
 ];
 
 const palette = computed(() =>
@@ -34,7 +34,7 @@ function handleDataPointClick(
   payload: Record<string, unknown>,
   index: number
 ) {
-  emit("dataPointClick", {
+  emit('dataPointClick', {
     seriesKey,
     seriesLabel,
     xValue: payload[props.xKey],
@@ -56,7 +56,7 @@ const allYValues = computed(() => {
   for (const row of props.data) {
     for (const s of props.series) {
       const v = row[s.key];
-      if (typeof v === "number" && Number.isFinite(v)) {
+      if (typeof v === 'number' && Number.isFinite(v)) {
         values.push(v);
       }
     }
@@ -110,7 +110,7 @@ function linePathD(seriesKey: string) {
     y: yScale(Number(row[seriesKey]) || 0),
   }));
 
-  if (points.length === 0) return "";
+  if (points.length === 0) return '';
   if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
 
   let d = `M ${points[0].x} ${points[0].y}`;
@@ -143,14 +143,14 @@ const tooltip = ref<{
   visible: false,
   x: 0,
   y: 0,
-  title: "",
+  title: '',
   items: [],
 });
 
 function showTooltip(
   event: MouseEvent,
   row: Record<string, unknown>,
-  seriesIndex?: number
+  _seriesIndex?: number
 ) {
   const target = event.currentTarget as SVGElement;
   const rect = target.getBoundingClientRect();
@@ -161,7 +161,7 @@ function showTooltip(
     title: String(row[props.xKey]),
     items: props.series.map((s, i) => ({
       label: s.label,
-      value: String(row[s.key] ?? ""),
+      value: String(row[s.key] ?? ''),
       color: seriesColors.value[i],
     })),
   };
@@ -189,7 +189,7 @@ function hideTooltip() {
       :class="
         cn(
           'group relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
-          'border-border bg-card border text-sm shadow-xs'
+          'border border-border bg-card text-sm shadow-xs'
         )
       "
     >
@@ -206,7 +206,7 @@ function hideTooltip() {
         </h3>
         <p
           v-if="description"
-          class="text-muted-foreground mt-1 text-sm leading-snug"
+          class="mt-1 text-sm leading-snug text-muted-foreground"
         >
           {{ description }}
         </p>
@@ -289,11 +289,11 @@ function hideTooltip() {
             />
 
             <circle
-              v-for="(item, i) in data.flatMap((row, rowIndex) =>
+              v-for="item in data.flatMap((row, rowIndex) =>
                 series.map((s, sIndex) => ({ row, rowIndex, s, sIndex }))
               )"
               :key="`dot-${item.rowIndex}-${item.sIndex}`"
-              class="chart-dot transition-all hover:r-6"
+              class="chart-dot hover:r-6 transition-all"
               :cx="xScaleLine(item.rowIndex)"
               :cy="MARGIN.top + yScale(Number(item.row[item.s.key]) || 0)"
               r="4"
@@ -369,7 +369,7 @@ function hideTooltip() {
               class="size-2 rounded-full"
               :style="{ backgroundColor: seriesColors[sIndex] }"
             />
-            <span class="text-muted-foreground text-xs">{{ s.label }}</span>
+            <span class="text-xs text-muted-foreground">{{ s.label }}</span>
           </div>
         </div>
       </div>

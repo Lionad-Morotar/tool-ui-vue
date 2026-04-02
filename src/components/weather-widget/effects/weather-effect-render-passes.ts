@@ -1,4 +1,4 @@
-import type { Framebuffer } from "./weather-effect-gl";
+import type { Framebuffer } from './weather-effect-gl';
 import type {
   CelestialParams,
   CloudParams,
@@ -8,7 +8,7 @@ import type {
   PostProcessParams,
   RainParams,
   SnowParams,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
 export type UniformLocationGetter = (
   program: WebGLProgram,
@@ -144,7 +144,7 @@ function bindSceneTexture(
 ): void {
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, sceneTexture);
-  gl.uniform1i(getUniformLocation(program, "u_sceneTexture"), 0);
+  gl.uniform1i(getUniformLocation(program, 'u_sceneTexture'), 0);
 }
 
 export function clearOffscreenPass(
@@ -173,79 +173,79 @@ export function renderCelestialPass({
 }: CelestialPassInput): void {
   bindOffscreenPass(gl, program, target, displayWidth, displayHeight);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
-  gl.uniform1f(getUniformLocation(program, "u_timeOfDay"), params.timeOfDay);
-  gl.uniform1f(getUniformLocation(program, "u_moonPhase"), params.moonPhase);
+  gl.uniform1f(getUniformLocation(program, 'u_timeOfDay'), params.timeOfDay);
+  gl.uniform1f(getUniformLocation(program, 'u_moonPhase'), params.moonPhase);
   gl.uniform1f(
-    getUniformLocation(program, "u_starDensity"),
+    getUniformLocation(program, 'u_starDensity'),
     params.starDensity,
   );
   gl.uniform2f(
-    getUniformLocation(program, "u_celestialPos"),
+    getUniformLocation(program, 'u_celestialPos'),
     params.celestialX,
     params.celestialY,
   );
-  gl.uniform1f(getUniformLocation(program, "u_sunSize"), params.sunSize);
-  gl.uniform1f(getUniformLocation(program, "u_moonSize"), params.moonSize);
+  gl.uniform1f(getUniformLocation(program, 'u_sunSize'), params.sunSize);
+  gl.uniform1f(getUniformLocation(program, 'u_moonSize'), params.moonSize);
   gl.uniform1f(
-    getUniformLocation(program, "u_sunGlowIntensity"),
+    getUniformLocation(program, 'u_sunGlowIntensity'),
     params.sunGlowIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunGlowSize"),
+    getUniformLocation(program, 'u_sunGlowSize'),
     params.sunGlowSize,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunRayCount"),
+    getUniformLocation(program, 'u_sunRayCount'),
     params.sunRayCount,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunRayLength"),
+    getUniformLocation(program, 'u_sunRayLength'),
     params.sunRayLength,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunRayIntensity"),
+    getUniformLocation(program, 'u_sunRayIntensity'),
     params.sunRayIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunRayShimmer"),
+    getUniformLocation(program, 'u_sunRayShimmer'),
     params.sunRayShimmer,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sunRayShimmerSpeed"),
+    getUniformLocation(program, 'u_sunRayShimmerSpeed'),
     params.sunRayShimmerSpeed,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_moonGlowIntensity"),
+    getUniformLocation(program, 'u_moonGlowIntensity'),
     params.moonGlowIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_moonGlowSize"),
+    getUniformLocation(program, 'u_moonGlowSize'),
     params.moonGlowSize,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_skyBrightness"),
+    getUniformLocation(program, 'u_skyBrightness'),
     params.skyBrightness,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_skySaturation"),
+    getUniformLocation(program, 'u_skySaturation'),
     params.skySaturation,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_skyContrast"),
+    getUniformLocation(program, 'u_skyContrast'),
     params.skyContrast,
   );
 
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, moonTexture);
-  gl.uniform1i(getUniformLocation(program, "u_moonTexture"), 0);
+  gl.uniform1i(getUniformLocation(program, 'u_moonTexture'), 0);
   gl.uniform1i(
-    getUniformLocation(program, "u_hasMoonTexture"),
+    getUniformLocation(program, 'u_hasMoonTexture'),
     moonTextureLoaded ? 1 : 0,
   );
 
@@ -267,47 +267,47 @@ export function renderCloudPass({
   bindOffscreenPass(gl, program, target, displayWidth, displayHeight);
   bindSceneTexture(gl, program, sceneTexture, getUniformLocation);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
-  gl.uniform1f(getUniformLocation(program, "u_timeOfDay"), celestial.timeOfDay);
-  gl.uniform1f(getUniformLocation(program, "u_coverage"), params.coverage);
-  gl.uniform1f(getUniformLocation(program, "u_density"), params.density);
-  gl.uniform1f(getUniformLocation(program, "u_softness"), params.softness);
-  gl.uniform1f(getUniformLocation(program, "u_windSpeed"), params.windSpeed);
-  gl.uniform1f(getUniformLocation(program, "u_windAngle"), params.windAngle);
-  gl.uniform1f(getUniformLocation(program, "u_turbulence"), params.turbulence);
+  gl.uniform1f(getUniformLocation(program, 'u_timeOfDay'), celestial.timeOfDay);
+  gl.uniform1f(getUniformLocation(program, 'u_coverage'), params.coverage);
+  gl.uniform1f(getUniformLocation(program, 'u_density'), params.density);
+  gl.uniform1f(getUniformLocation(program, 'u_softness'), params.softness);
+  gl.uniform1f(getUniformLocation(program, 'u_windSpeed'), params.windSpeed);
+  gl.uniform1f(getUniformLocation(program, 'u_windAngle'), params.windAngle);
+  gl.uniform1f(getUniformLocation(program, 'u_turbulence'), params.turbulence);
   gl.uniform1f(
-    getUniformLocation(program, "u_lightIntensity"),
+    getUniformLocation(program, 'u_lightIntensity'),
     params.lightIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_ambientDarkness"),
+    getUniformLocation(program, 'u_ambientDarkness'),
     params.ambientDarkness,
   );
-  gl.uniform1i(getUniformLocation(program, "u_numLayers"), params.numLayers);
-  gl.uniform1f(getUniformLocation(program, "u_cloudScale"), params.cloudScale);
+  gl.uniform1i(getUniformLocation(program, 'u_numLayers'), params.numLayers);
+  gl.uniform1f(getUniformLocation(program, 'u_cloudScale'), params.cloudScale);
 
   const bodies = resolveCelestialBodyState(celestial);
 
   gl.uniform2f(
-    getUniformLocation(program, "u_celestialPos"),
+    getUniformLocation(program, 'u_celestialPos'),
     celestial.celestialX,
     bodies.activeY,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_celestialSize"),
+    getUniformLocation(program, 'u_celestialSize'),
     bodies.activeSize,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_celestialBrightness"),
+    getUniformLocation(program, 'u_celestialBrightness'),
     bodies.activeBrightness,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_backlightIntensity"),
+    getUniformLocation(program, 'u_backlightIntensity'),
     params.backlightIntensity,
   );
 
@@ -329,39 +329,39 @@ export function renderRainPass({
   bindOffscreenPass(gl, program, target, displayWidth, displayHeight);
   bindSceneTexture(gl, program, sceneTexture, getUniformLocation);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_glassIntensity"),
+    getUniformLocation(program, 'u_glassIntensity'),
     params.glassIntensity,
   );
-  gl.uniform1f(getUniformLocation(program, "u_glassZoom"), params.glassZoom);
+  gl.uniform1f(getUniformLocation(program, 'u_glassZoom'), params.glassZoom);
   gl.uniform1f(
-    getUniformLocation(program, "u_fallingIntensity"),
+    getUniformLocation(program, 'u_fallingIntensity'),
     params.fallingIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_fallingSpeed"),
+    getUniformLocation(program, 'u_fallingSpeed'),
     params.fallingSpeed,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_fallingAngle"),
+    getUniformLocation(program, 'u_fallingAngle'),
     params.fallingAngle,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_fallingStreakLength"),
+    getUniformLocation(program, 'u_fallingStreakLength'),
     params.fallingStreakLength,
   );
   gl.uniform1i(
-    getUniformLocation(program, "u_fallingLayers"),
+    getUniformLocation(program, 'u_fallingLayers'),
     params.fallingLayers,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_refractionStrength"),
+    getUniformLocation(program, 'u_refractionStrength'),
     interactions.rainRefractionStrength,
   );
 
@@ -406,30 +406,30 @@ export function renderLightningPass({
   bindOffscreenPass(gl, program, target, displayWidth, displayHeight);
   bindSceneTexture(gl, program, sceneTexture, getUniformLocation);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
   gl.uniform1i(
-    getUniformLocation(program, "u_enabled"),
+    getUniformLocation(program, 'u_enabled'),
     params.enabled ? 1 : 0,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_flashIntensity"),
+    getUniformLocation(program, 'u_flashIntensity'),
     params.flashIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_branchDensity"),
+    getUniformLocation(program, 'u_branchDensity'),
     params.branchDensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_sceneIllumination"),
+    getUniformLocation(program, 'u_sceneIllumination'),
     interactions.lightningSceneIllumination,
   );
-  gl.uniform1f(getUniformLocation(program, "u_lastFlashTime"), lastFlashTime);
-  gl.uniform1f(getUniformLocation(program, "u_strikeSeed"), strikeSeed);
+  gl.uniform1f(getUniformLocation(program, 'u_lastFlashTime'), lastFlashTime);
+  gl.uniform1f(getUniformLocation(program, 'u_strikeSeed'), strikeSeed);
 
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
@@ -448,29 +448,29 @@ export function renderSnowPass({
   bindOffscreenPass(gl, program, target, displayWidth, displayHeight);
   bindSceneTexture(gl, program, sceneTexture, getUniformLocation);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
-  gl.uniform1f(getUniformLocation(program, "u_intensity"), params.intensity);
-  gl.uniform1i(getUniformLocation(program, "u_layers"), params.layers);
-  gl.uniform1f(getUniformLocation(program, "u_fallSpeed"), params.fallSpeed);
-  gl.uniform1f(getUniformLocation(program, "u_windSpeed"), params.windSpeed);
-  gl.uniform1f(getUniformLocation(program, "u_windAngle"), params.windAngle);
-  gl.uniform1f(getUniformLocation(program, "u_turbulence"), params.turbulence);
-  gl.uniform1f(getUniformLocation(program, "u_drift"), params.drift);
-  gl.uniform1f(getUniformLocation(program, "u_flutter"), params.flutter);
-  gl.uniform1f(getUniformLocation(program, "u_windShear"), params.windShear);
-  gl.uniform1f(getUniformLocation(program, "u_flakeSize"), params.flakeSize);
+  gl.uniform1f(getUniformLocation(program, 'u_intensity'), params.intensity);
+  gl.uniform1i(getUniformLocation(program, 'u_layers'), params.layers);
+  gl.uniform1f(getUniformLocation(program, 'u_fallSpeed'), params.fallSpeed);
+  gl.uniform1f(getUniformLocation(program, 'u_windSpeed'), params.windSpeed);
+  gl.uniform1f(getUniformLocation(program, 'u_windAngle'), params.windAngle);
+  gl.uniform1f(getUniformLocation(program, 'u_turbulence'), params.turbulence);
+  gl.uniform1f(getUniformLocation(program, 'u_drift'), params.drift);
+  gl.uniform1f(getUniformLocation(program, 'u_flutter'), params.flutter);
+  gl.uniform1f(getUniformLocation(program, 'u_windShear'), params.windShear);
+  gl.uniform1f(getUniformLocation(program, 'u_flakeSize'), params.flakeSize);
   gl.uniform1f(
-    getUniformLocation(program, "u_sizeVariation"),
+    getUniformLocation(program, 'u_sizeVariation'),
     params.sizeVariation,
   );
-  gl.uniform1f(getUniformLocation(program, "u_opacity"), params.opacity);
-  gl.uniform1f(getUniformLocation(program, "u_glowAmount"), params.glowAmount);
-  gl.uniform1f(getUniformLocation(program, "u_sparkle"), params.sparkle);
+  gl.uniform1f(getUniformLocation(program, 'u_opacity'), params.opacity);
+  gl.uniform1f(getUniformLocation(program, 'u_glowAmount'), params.glowAmount);
+  gl.uniform1f(getUniformLocation(program, 'u_sparkle'), params.sparkle);
 
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
@@ -494,88 +494,88 @@ export function renderCompositePass({
   gl.useProgram(program);
   bindSceneTexture(gl, program, sceneTexture, getUniformLocation);
 
-  gl.uniform1f(getUniformLocation(program, "u_time"), time);
+  gl.uniform1f(getUniformLocation(program, 'u_time'), time);
   gl.uniform2f(
-    getUniformLocation(program, "u_resolution"),
+    getUniformLocation(program, 'u_resolution'),
     displayWidth,
     displayHeight,
   );
-  gl.uniform1f(getUniformLocation(program, "u_timeOfDay"), celestial.timeOfDay);
+  gl.uniform1f(getUniformLocation(program, 'u_timeOfDay'), celestial.timeOfDay);
 
   const bodies = resolveCelestialBodyState(celestial);
   gl.uniform2f(
-    getUniformLocation(program, "u_sunPos"),
+    getUniformLocation(program, 'u_sunPos'),
     celestial.celestialX,
     bodies.sunY,
   );
-  gl.uniform1f(getUniformLocation(program, "u_sunVisible"), bodies.sunVisible);
+  gl.uniform1f(getUniformLocation(program, 'u_sunVisible'), bodies.sunVisible);
 
-  gl.uniform1f(getUniformLocation(program, "u_lastFlashTime"), lastFlashTime);
-  gl.uniform1f(getUniformLocation(program, "u_strikeSeed"), strikeSeed);
+  gl.uniform1f(getUniformLocation(program, 'u_lastFlashTime'), lastFlashTime);
+  gl.uniform1f(getUniformLocation(program, 'u_strikeSeed'), strikeSeed);
   gl.uniform1f(
-    getUniformLocation(program, "u_lightningSceneIllumination"),
+    getUniformLocation(program, 'u_lightningSceneIllumination'),
     interactions.lightningSceneIllumination,
   );
 
   gl.uniform1i(
-    getUniformLocation(program, "u_postEnabled"),
+    getUniformLocation(program, 'u_postEnabled'),
     post.enabled ? 1 : 0,
   );
 
-  gl.uniform1f(getUniformLocation(program, "u_haze"), post.haze);
-  gl.uniform1f(getUniformLocation(program, "u_hazeHorizon"), post.hazeHorizon);
+  gl.uniform1f(getUniformLocation(program, 'u_haze'), post.haze);
+  gl.uniform1f(getUniformLocation(program, 'u_hazeHorizon'), post.hazeHorizon);
   gl.uniform1f(
-    getUniformLocation(program, "u_hazeDesaturation"),
+    getUniformLocation(program, 'u_hazeDesaturation'),
     post.hazeDesaturation,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_hazeContrast"),
+    getUniformLocation(program, 'u_hazeContrast'),
     post.hazeContrast,
   );
 
   gl.uniform1f(
-    getUniformLocation(program, "u_bloomIntensity"),
+    getUniformLocation(program, 'u_bloomIntensity'),
     post.bloomIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_bloomThreshold"),
+    getUniformLocation(program, 'u_bloomThreshold'),
     post.bloomThreshold,
   );
-  gl.uniform1f(getUniformLocation(program, "u_bloomKnee"), post.bloomKnee);
-  gl.uniform1f(getUniformLocation(program, "u_bloomRadius"), post.bloomRadius);
+  gl.uniform1f(getUniformLocation(program, 'u_bloomKnee'), post.bloomKnee);
+  gl.uniform1f(getUniformLocation(program, 'u_bloomRadius'), post.bloomRadius);
   gl.uniform1f(
-    getUniformLocation(program, "u_bloomTapScale"),
+    getUniformLocation(program, 'u_bloomTapScale'),
     post.bloomTapScale,
   );
 
   gl.uniform1f(
-    getUniformLocation(program, "u_exposureIntensity"),
+    getUniformLocation(program, 'u_exposureIntensity'),
     post.exposureIntensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_exposureDesaturation"),
+    getUniformLocation(program, 'u_exposureDesaturation'),
     post.exposureDesaturation,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_exposureRecovery"),
+    getUniformLocation(program, 'u_exposureRecovery'),
     post.exposureRecovery,
   );
 
   gl.uniform1f(
-    getUniformLocation(program, "u_godRayIntensity"),
+    getUniformLocation(program, 'u_godRayIntensity'),
     post.godRayIntensity,
   );
-  gl.uniform1f(getUniformLocation(program, "u_godRayDecay"), post.godRayDecay);
+  gl.uniform1f(getUniformLocation(program, 'u_godRayDecay'), post.godRayDecay);
   gl.uniform1f(
-    getUniformLocation(program, "u_godRayDensity"),
+    getUniformLocation(program, 'u_godRayDensity'),
     post.godRayDensity,
   );
   gl.uniform1f(
-    getUniformLocation(program, "u_godRayWeight"),
+    getUniformLocation(program, 'u_godRayWeight'),
     post.godRayWeight,
   );
   gl.uniform1i(
-    getUniformLocation(program, "u_godRaySamples"),
+    getUniformLocation(program, 'u_godRaySamples'),
     Math.max(0, Math.min(32, Math.floor(post.godRaySamples))),
   );
 

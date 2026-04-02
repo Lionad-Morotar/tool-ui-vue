@@ -8,20 +8,20 @@
  *
  * @module tool-ui-vue/components/link-preview/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
 
 /**
  * 宽高比的 Schema 定义
  */
 export const AspectRatioSchema = z
-  .enum(["auto", "1:1", "4:3", "16:9", "9:16"])
-  .default("auto");
+  .enum(['auto', '1:1', '4:3', '16:9', '9:16'])
+  .default('auto');
 
 /**
  * 宽高比类型
@@ -32,7 +32,7 @@ export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 /**
  * 媒体适配模式的 Schema 定义
  */
-export const MediaFitSchema = z.enum(["cover", "contain"]).default("cover");
+export const MediaFitSchema = z.enum(['cover', 'contain']).default('cover');
 
 /**
  * 媒体适配模式类型
@@ -69,7 +69,7 @@ export type SerializableLinkPreview = z.infer<
 >;
 
 const SerializableLinkPreviewSchemaContract = defineToolUiContract(
-  "LinkPreview",
+  'LinkPreview',
   SerializableLinkPreviewSchema,
 );
 
@@ -88,9 +88,9 @@ export const safeParseSerializableLinkPreview: (
  */
 export interface LinkPreviewProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;

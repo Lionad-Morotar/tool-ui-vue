@@ -8,13 +8,13 @@
  *
  * @module tool-ui-vue/components/audio/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
 
 /**
  * 音频来源的 Schema 定义
@@ -58,7 +58,7 @@ export const SerializableAudioSchema = z.object({
 export type SerializableAudio = z.infer<typeof SerializableAudioSchema>;
 
 const SerializableAudioSchemaContract = defineToolUiContract(
-  "Audio",
+  'Audio',
   SerializableAudioSchema,
 );
 
@@ -72,7 +72,7 @@ export const safeParseSerializableAudio: (
 /**
  * Audio 组件的变体类型
  */
-export type AudioVariant = "full" | "compact";
+export type AudioVariant = 'full' | 'compact';
 
 /**
  * Audio 组件的 Props 接口
@@ -80,9 +80,9 @@ export type AudioVariant = "full" | "compact";
  */
 export interface AudioProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;

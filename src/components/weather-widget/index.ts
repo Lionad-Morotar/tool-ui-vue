@@ -1,6 +1,6 @@
-export { default as WeatherWidget } from "./index.vue";
-export { default as WeatherDataOverlay } from "./WeatherDataOverlay.vue";
-export { default as EffectCompositor } from "./EffectCompositor.vue";
+export { default as WeatherWidget } from './index.vue';
+export { default as WeatherDataOverlay } from './WeatherDataOverlay.vue';
+export { default as EffectCompositor } from './EffectCompositor.vue';
 export type {
   WeatherWidgetProps,
   SerializableWeatherWidget,
@@ -13,7 +13,7 @@ export type {
   WeatherWidgetLocation,
   WeatherWidgetCurrent,
   WeatherWidgetTime,
-} from "./schema";
+} from './schema';
 export {
   SerializableWeatherWidgetSchema,
   WeatherConditionCodeSchema,
@@ -23,15 +23,15 @@ export {
   EffectSettingsSchema,
   parseSerializableWeatherWidget,
   safeParseSerializableWeatherWidget,
-} from "./schema";
+} from './schema';
 export {
   useGlassStyles,
   DEFAULT_GLASS_OPTIONS,
-} from "./composables/useGlassStyles";
+} from './composables/useGlassStyles';
 export type {
   UseGlassStylesOptions,
   GlassStyles,
-} from "./composables/useGlassStyles";
+} from './composables/useGlassStyles';
 export {
   getSceneBrightnessFromTimeOfDay,
   getWeatherTheme,
@@ -41,15 +41,15 @@ export {
   getMoonPhase,
   mapWeatherToEffects,
   timeOfDayToSunAltitude,
-} from "./effects/parameter-mapper";
-export type { WeatherTheme } from "./effects/parameter-mapper";
+} from './effects/parameter-mapper';
+export type { WeatherTheme } from './effects/parameter-mapper';
 export {
   resolveWeatherTime,
   snapTimeOfDayToNearestCheckpoint,
   timeBucketToTimeOfDay,
-} from "./time";
+} from './time';
 export type {
   ResolveWeatherTimeInput,
   ResolvedWeatherTime,
   WeatherTimeSource,
-} from "./time";
+} from './time';

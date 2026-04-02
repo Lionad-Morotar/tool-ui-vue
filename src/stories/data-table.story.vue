@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { DataTable } from "../components";
+import { reactive } from 'vue';
+import { DataTable } from '../components';
 
 const sortableState = reactive({
-  sort: { by: "score", direction: "desc" as "asc" | "desc" },
+  sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
 });
 
-function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
+function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
   if (sort.by && sort.direction) {
     sortableState.sort = { by: sort.by, direction: sort.direction };
   }
@@ -17,7 +17,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
   <Story title="DataTable/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-basic"
           :columns="[
             { key: 'name', label: 'Name', sortable: true },
@@ -35,7 +35,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="Stock Data (Delta + Currency + Percent)">
       <div class="w-full max-w-3xl">
-        <DataTable
+        <data-table
           id="data-table-stocks"
           :columns="[
             { key: 'symbol', label: 'Symbol', priority: 'primary' },
@@ -59,7 +59,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Formatting">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-formatted"
           :columns="[
             { key: 'product', label: 'Product' },
@@ -78,7 +78,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Status Badges">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-badges"
           :columns="[
             { key: 'task', label: 'Task' },
@@ -101,7 +101,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Column Alignment">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-align"
           :columns="[
             { key: 'item', label: 'Item' },
@@ -120,7 +120,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="Empty State">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-empty"
           :columns="[
             { key: 'name', label: 'Name' },
@@ -134,7 +134,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Default Sort">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-sorted"
           :columns="[
             { key: 'name', label: 'Name', sortable: true },
@@ -155,7 +155,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
         <div class="text-sm text-muted-foreground">
           Current sort: {{ sortableState.sort.by }} {{ sortableState.sort.direction }}
         </div>
-        <DataTable
+        <data-table
           id="data-table-controlled"
           :columns="[
             { key: 'name', label: 'Name', sortable: true },
@@ -175,7 +175,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Max Height">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-scroll"
           :columns="[
             { key: 'id', label: 'ID' },
@@ -199,7 +199,7 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="Layout: Table Mode">
       <div class="w-full max-w-2xl">
-        <DataTable
+        <data-table
           id="data-table-layout-table"
           layout="table"
           :columns="[
@@ -218,10 +218,10 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="Layout: Cards Mode (Mobile View)">
       <div class="w-full max-w-md">
-        <p class="text-sm text-muted-foreground mb-4">
+        <p class="mb-4 text-sm text-muted-foreground">
           Cards layout shows mobile-friendly expandable cards
         </p>
-        <DataTable
+        <data-table
           id="data-table-layout-cards"
           layout="cards"
           :columns="[
@@ -241,10 +241,10 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="Layout: Auto Mode (Responsive)">
       <div class="w-full max-w-2xl">
-        <p class="text-sm text-muted-foreground mb-4">
+        <p class="mb-4 text-sm text-muted-foreground">
           Auto mode shows table on desktop, cards on mobile (resize viewport to see change)
         </p>
-        <DataTable
+        <data-table
           id="data-table-layout-auto"
           layout="auto"
           :columns="[
@@ -264,10 +264,10 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With Column Priority (Mobile Cards)">
       <div class="w-full max-w-md">
-        <p class="text-sm text-muted-foreground mb-4">
+        <p class="mb-4 text-sm text-muted-foreground">
           Columns with priority: primary (always visible), secondary (expandable), tertiary (hidden on mobile)
         </p>
-        <DataTable
+        <data-table
           id="data-table-priority"
           layout="cards"
           :columns="[
@@ -289,10 +289,10 @@ function handleSortChange(sort: { by?: string; direction?: "asc" | "desc" }) {
 
     <Variant title="With hideOnMobile Columns">
       <div class="w-full max-w-md">
-        <p class="text-sm text-muted-foreground mb-4">
+        <p class="mb-4 text-sm text-muted-foreground">
           Columns with hideOnMobile are completely hidden in card view
         </p>
-        <DataTable
+        <data-table
           id="data-table-hide-mobile"
           layout="cards"
           :columns="[

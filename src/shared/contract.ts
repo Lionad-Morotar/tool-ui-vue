@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { parseWithSchema, safeParseWithSchema } from "./parse";
+import { parseWithSchema, safeParseWithSchema } from './parse';
+import type { z } from 'zod';
 
 export interface ToolUiContract<T> {
   schema: z.ZodType<T>;

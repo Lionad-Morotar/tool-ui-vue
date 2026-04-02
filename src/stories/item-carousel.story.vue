@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { ItemCarousel, ItemCard } from "../components";
+import { reactive, ref } from 'vue';
+import { ItemCarousel, ItemCard } from '../components';
 
 const carouselState = reactive({
   items: [
@@ -47,7 +47,7 @@ function scroll(direction: 'left' | 'right') {
   <Story title="ItemCarousel/All Variants">
     <Variant title="Product Cards">
       <div class="w-full max-w-2xl">
-        <ItemCarousel
+        <item-carousel
           id="carousel-products"
           title="Featured Products"
           description="Swipe to explore our collection"
@@ -65,7 +65,7 @@ function scroll(direction: 'left' | 'right') {
 
     <Variant title="Without Images">
       <div class="w-full max-w-xl">
-        <ItemCarousel
+        <item-carousel
           id="carousel-no-images"
           title="Categories"
           :items="[
@@ -80,7 +80,7 @@ function scroll(direction: 'left' | 'right') {
 
     <Variant title="Minimal">
       <div class="w-full max-w-md">
-        <ItemCarousel
+        <item-carousel
           id="carousel-minimal"
           :items="[
             { id: '1', name: 'Option A' },
@@ -96,7 +96,7 @@ function scroll(direction: 'left' | 'right') {
         <p v-if="carouselState.selectedItem" class="rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
           Selected: {{ carouselState.items.find(i => i.id === carouselState.selectedItem)?.name }}
         </p>
-        <ItemCarousel
+        <item-carousel
           id="carousel-interactive"
           title="Clickable Products"
           description="Click any item to select"
@@ -110,14 +110,14 @@ function scroll(direction: 'left' | 'right') {
     <Variant title="With Actions">
       <div class="w-full max-w-2xl space-y-4">
         <div v-if="carouselState.actionLog.length > 0" class="rounded-md bg-muted p-3">
-          <p class="text-xs font-medium text-muted-foreground mb-1">Action Log:</p>
-          <ul class="text-sm space-y-1">
+          <p class="mb-1 text-xs font-medium text-muted-foreground">Action Log:</p>
+          <ul class="space-y-1 text-sm">
             <li v-for="(log, i) in carouselState.actionLog.slice(-5)" :key="i" class="text-foreground">
               {{ log }}
             </li>
           </ul>
         </div>
-        <ItemCarousel
+        <item-carousel
           id="carousel-actions"
           title="Products with Actions"
           :items="[
@@ -132,7 +132,7 @@ function scroll(direction: 'left' | 'right') {
 
     <Variant title="With Multiple Action Variants">
       <div class="w-full max-w-2xl">
-        <ItemCarousel
+        <item-carousel
           id="carousel-action-variants"
           title="Action Variants Demo"
           :items="[
@@ -157,7 +157,7 @@ function scroll(direction: 'left' | 'right') {
             <li><kbd class="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-xs dark:bg-blue-900">End</kbd> Jump to last item</li>
           </ul>
         </div>
-        <ItemCarousel
+        <item-carousel
           id="carousel-keyboard"
           title="Keyboard Accessible Carousel"
           description="Focus the carousel and use arrow keys to navigate"
@@ -178,7 +178,7 @@ function scroll(direction: 'left' | 'right') {
             <li>Vertical scrolling is preserved</li>
           </ul>
         </div>
-        <ItemCarousel
+        <item-carousel
           id="carousel-touch"
           title="Touch-Friendly Carousel"
           description="Swipe to navigate on touch devices"
@@ -219,9 +219,9 @@ function scroll(direction: 'left' | 'right') {
             Scroll Right →
           </button>
         </div>
-        <ItemCarousel
-          ref="carouselRef"
+        <item-carousel
           id="carousel-programmatic"
+          ref="carouselRef"
           title="Programmatic Control Demo"
           description="Use buttons above to control the carousel"
           :items="carouselState.items"
@@ -234,7 +234,7 @@ function scroll(direction: 'left' | 'right') {
 
     <Variant title="Empty State">
       <div class="w-full max-w-2xl">
-        <ItemCarousel
+        <item-carousel
           id="carousel-empty"
           title="No Items"
           description="This carousel has no items to display"
@@ -246,26 +246,26 @@ function scroll(direction: 'left' | 'right') {
     <Variant title="ItemCard - Standalone">
       <div class="flex flex-wrap gap-4 p-4">
         <div class="w-52">
-          <ItemCard
+          <item-card
             :item="{ id: '1', name: 'Standalone Card', subtitle: 'With image', image: 'https://picsum.photos/200/150?random=80' }"
             :interactive="false"
           />
         </div>
         <div class="w-52">
-          <ItemCard
+          <item-card
             :item="{ id: '2', name: 'Color Background', subtitle: 'No image', color: '#8b5cf6' }"
             :interactive="false"
           />
         </div>
         <div class="w-52">
-          <ItemCard
+          <item-card
             :item="{ id: '3', name: 'Interactive Card', subtitle: 'Click me!', image: 'https://picsum.photos/200/150?random=81', color: '#10b981' }"
             :interactive="true"
             @item-click="handleItemClick"
           />
         </div>
         <div class="w-52">
-          <ItemCard
+          <item-card
             :item="{ id: '4', name: 'With Actions', subtitle: 'Two actions', color: '#f59e0b', actions: [{ id: 'view', label: 'View' }, { id: 'buy', label: 'Buy' }] }"
             :interactive="false"
             @item-action="handleItemAction"

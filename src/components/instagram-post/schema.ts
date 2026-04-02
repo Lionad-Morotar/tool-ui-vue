@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/components/instagram-post/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 
 /**
  * Instagram 帖子作者的 Schema 定义
@@ -25,7 +25,7 @@ export const InstagramPostAuthorSchema = z.object({
  * Instagram 帖子媒体的 Schema 定义
  */
 export const InstagramPostMediaSchema = z.object({
-  type: z.enum(["image", "video"]),
+  type: z.enum(['image', 'video']),
   url: z.string(),
   alt: z.string(),
 });
@@ -52,7 +52,7 @@ export interface InstagramPostAuthor {
  * Instagram 帖子媒体类型
  */
 export interface InstagramPostMedia {
-  type: "image" | "video";
+  type: 'image' | 'video';
   url: string;
   alt: string;
 }
@@ -92,7 +92,7 @@ export const SerializableInstagramPostSchema: z.ZodType<InstagramPostData> =
   });
 
 const SerializableInstagramPostSchemaContract = defineToolUiContract(
-  "InstagramPost",
+  'InstagramPost',
   SerializableInstagramPostSchema,
 );
 

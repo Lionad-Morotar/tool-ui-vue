@@ -1,4 +1,4 @@
-import type { SliderConfig, SliderValue } from "./schema";
+import type { SliderConfig, SliderValue } from './schema';
 
 type SliderPercentInput = {
   value: number;
@@ -35,7 +35,7 @@ export function createSliderSignature(sliders: SliderConfig[]): string {
       max,
       step: step ?? 1,
       value,
-      unit: unit ?? "",
+      unit: unit ?? '',
       precision: precision ?? null,
     })),
   );

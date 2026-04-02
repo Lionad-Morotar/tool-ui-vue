@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties } from 'react';
 
 /**
  * `useGlassStyles()` returns an empty object until the element has non-zero

@@ -1,56 +1,56 @@
-import { describe, it, expect, vi } from "vitest";
-import { mount } from "@vue/test-utils";
-import LinkedInPost from "./LinkedInPost.vue";
+import { mount } from '@vue/test-utils';
+import { describe, it, expect } from 'vitest';
+import LinkedInPost from './LinkedInPost.vue';
 
-describe("LinkedInPost", () => {
+describe('LinkedInPost', () => {
   const basePost = {
-    id: "li-1",
+    id: 'li-1',
     author: {
-      name: "Jane Doe",
-      handle: "janedoe",
-      avatarUrl: "https://example.com/avatar.jpg",
-      headline: "Engineer",
+      name: 'Jane Doe',
+      handle: 'janedoe',
+      avatarUrl: 'https://example.com/avatar.jpg',
+      headline: 'Engineer',
     },
-    text: "Excited to share...",
-    createdAt: "2024-01-01T00:00:00Z",
+    text: 'Excited to share...',
+    createdAt: '2024-01-01T00:00:00Z',
     stats: {
       likes: 50,
       isLiked: false,
     },
   };
 
-  describe("rendering", () => {
-    it("renders author name", () => {
+  describe('rendering', () => {
+    it('renders author name', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.text()).toContain("Jane Doe");
+      expect(wrapper.text()).toContain('Jane Doe');
     });
 
-    it("renders author headline", () => {
+    it('renders author headline', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.text()).toContain("Engineer");
+      expect(wrapper.text()).toContain('Engineer');
     });
 
-    it("renders post content", () => {
+    it('renders post content', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.text()).toContain("Excited to share...");
+      expect(wrapper.text()).toContain('Excited to share...');
     });
 
-    it("renders author avatar", () => {
+    it('renders author avatar', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
       const img = wrapper.find('img[alt="Jane Doe avatar"]');
       expect(img.exists()).toBe(true);
-      expect(img.attributes("src")).toBe("https://example.com/avatar.jpg");
+      expect(img.attributes('src')).toBe('https://example.com/avatar.jpg');
     });
 
-    it("renders timestamp", () => {
+    it('renders timestamp', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
@@ -62,24 +62,24 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.text()).toContain("Edited");
+      expect(wrapper.text()).toContain('Edited');
     });
 
-    it("renders correctly without optional fields", () => {
+    it('renders correctly without optional fields', () => {
       const minimalPost = {
-        id: "minimal",
+        id: 'minimal',
         author: {
-          name: "Minimal User",
-          avatarUrl: "https://example.com/avatar.jpg",
+          name: 'Minimal User',
+          avatarUrl: 'https://example.com/avatar.jpg',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: minimalPost },
       });
-      expect(wrapper.text()).toContain("Minimal User");
+      expect(wrapper.text()).toContain('Minimal User');
     });
 
-    it("renders without headline when not provided", () => {
+    it('renders without headline when not provided', () => {
       const postWithoutHeadline = {
         ...basePost,
         author: { ...basePost.author, headline: undefined },
@@ -87,22 +87,22 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithoutHeadline },
       });
-      expect(wrapper.text()).toContain("Jane Doe");
-      expect(wrapper.text()).not.toContain("Engineer");
+      expect(wrapper.text()).toContain('Jane Doe');
+      expect(wrapper.text()).not.toContain('Engineer');
     });
   });
 
-  describe("engagement", () => {
-    it("renders like button with count", () => {
+  describe('engagement', () => {
+    it('renders like button with count', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
       const likeBtn = wrapper.find('button[aria-label="Like"]');
       expect(likeBtn.exists()).toBe(true);
-      expect(wrapper.text()).toContain("50");
+      expect(wrapper.text()).toContain('50');
     });
 
-    it("renders share button", () => {
+    it('renders share button', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
@@ -110,7 +110,7 @@ describe("LinkedInPost", () => {
       expect(shareBtn.exists()).toBe(true);
     });
 
-    it("formats large like counts with K suffix", () => {
+    it('formats large like counts with K suffix', () => {
       const postWithManyLikes = {
         ...basePost,
         stats: { likes: 1500, isLiked: false },
@@ -118,10 +118,10 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithManyLikes },
       });
-      expect(wrapper.text()).toContain("1.5K");
+      expect(wrapper.text()).toContain('1.5K');
     });
 
-    it("formats very large like counts with M suffix", () => {
+    it('formats very large like counts with M suffix', () => {
       const postWithMillions = {
         ...basePost,
         stats: { likes: 2500000, isLiked: false },
@@ -129,10 +129,10 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithMillions },
       });
-      expect(wrapper.text()).toContain("2.5M");
+      expect(wrapper.text()).toContain('2.5M');
     });
 
-    it("applies liked state styling when isLiked is true", () => {
+    it('applies liked state styling when isLiked is true', () => {
       const likedPost = {
         ...basePost,
         stats: { likes: 50, isLiked: true },
@@ -141,10 +141,10 @@ describe("LinkedInPost", () => {
         props: { post: likedPost },
       });
       const html = wrapper.html();
-      expect(html).toContain("text-blue-600");
+      expect(html).toContain('text-blue-600');
     });
 
-    it("renders without stats", () => {
+    it('renders without stats', () => {
       const postWithoutStats = {
         ...basePost,
         stats: undefined,
@@ -157,14 +157,14 @@ describe("LinkedInPost", () => {
     });
   });
 
-  describe("media", () => {
-    it("renders image when provided", () => {
+  describe('media', () => {
+    it('renders image when provided', () => {
       const postWithMedia = {
         ...basePost,
         media: {
-          type: "image" as const,
-          url: "https://example.com/photo.jpg",
-          alt: "A photo",
+          type: 'image' as const,
+          url: 'https://example.com/photo.jpg',
+          alt: 'A photo',
         },
       };
       const wrapper = mount(LinkedInPost, {
@@ -172,33 +172,33 @@ describe("LinkedInPost", () => {
       });
       const img = wrapper.find('img[alt="A photo"]');
       expect(img.exists()).toBe(true);
-      expect(img.attributes("src")).toBe("https://example.com/photo.jpg");
+      expect(img.attributes('src')).toBe('https://example.com/photo.jpg');
     });
 
-    it("renders video when provided", () => {
+    it('renders video when provided', () => {
       const postWithVideo = {
         ...basePost,
         media: {
-          type: "video" as const,
-          url: "https://example.com/video.mp4",
-          alt: "A video",
+          type: 'video' as const,
+          url: 'https://example.com/video.mp4',
+          alt: 'A video',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithVideo },
       });
-      const video = wrapper.find("video");
+      const video = wrapper.find('video');
       expect(video.exists()).toBe(true);
-      expect(video.attributes("src")).toBe("https://example.com/video.mp4");
+      expect(video.attributes('src')).toBe('https://example.com/video.mp4');
     });
 
-    it("applies 16:9 aspect ratio to media", () => {
+    it('applies 16:9 aspect ratio to media', () => {
       const postWithMedia = {
         ...basePost,
         media: {
-          type: "image" as const,
-          url: "https://example.com/photo.jpg",
-          alt: "A photo",
+          type: 'image' as const,
+          url: 'https://example.com/photo.jpg',
+          alt: 'A photo',
         },
       };
       const wrapper = mount(LinkedInPost, {
@@ -208,30 +208,30 @@ describe("LinkedInPost", () => {
       expect(mediaContainer.exists()).toBe(true);
     });
 
-    it("renders link preview when provided", () => {
+    it('renders link preview when provided', () => {
       const postWithLink = {
         ...basePost,
         linkPreview: {
-          url: "https://example.com/article",
-          title: "Article Title",
-          domain: "example.com",
+          url: 'https://example.com/article',
+          title: 'Article Title',
+          domain: 'example.com',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithLink },
       });
-      expect(wrapper.text()).toContain("Article Title");
-      expect(wrapper.text()).toContain("example.com");
+      expect(wrapper.text()).toContain('Article Title');
+      expect(wrapper.text()).toContain('example.com');
     });
 
-    it("renders link preview with image", () => {
+    it('renders link preview with image', () => {
       const postWithLinkAndImage = {
         ...basePost,
         linkPreview: {
-          url: "https://example.com/article",
-          title: "Article Title",
-          imageUrl: "https://example.com/thumb.jpg",
-          domain: "example.com",
+          url: 'https://example.com/article',
+          title: 'Article Title',
+          imageUrl: 'https://example.com/thumb.jpg',
+          domain: 'example.com',
         },
       };
       const wrapper = mount(LinkedInPost, {
@@ -239,77 +239,77 @@ describe("LinkedInPost", () => {
       });
       const img = wrapper.find('img[alt=""]');
       expect(img.exists()).toBe(true);
-      expect(img.attributes("src")).toBe("https://example.com/thumb.jpg");
+      expect(img.attributes('src')).toBe('https://example.com/thumb.jpg');
     });
 
-    it("extracts domain from URL when not provided", () => {
+    it('extracts domain from URL when not provided', () => {
       const postWithLinkNoDomain = {
         ...basePost,
         linkPreview: {
-          url: "https://www.example.com/article",
-          title: "Article Title",
+          url: 'https://www.example.com/article',
+          title: 'Article Title',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithLinkNoDomain },
       });
-      expect(wrapper.text()).toContain("example.com");
+      expect(wrapper.text()).toContain('example.com');
     });
 
-    it("filters unsafe javascript: URLs in link preview", () => {
+    it('filters unsafe javascript: URLs in link preview', () => {
       const postWithUnsafeLink = {
         ...basePost,
         linkPreview: {
           url: "javascript:alert('xss')",
-          title: "Unsafe Link",
+          title: 'Unsafe Link',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithUnsafeLink },
       });
       // Should still render the preview but without clickable link styling
-      expect(wrapper.text()).toContain("Unsafe Link");
+      expect(wrapper.text()).toContain('Unsafe Link');
     });
 
-    it("filters unsafe data: URLs in link preview", () => {
+    it('filters unsafe data: URLs in link preview', () => {
       const postWithDataUrl = {
         ...basePost,
         linkPreview: {
           url: "data:text/html,<script>alert('xss')</script>",
-          title: "Data URL",
+          title: 'Data URL',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithDataUrl },
       });
-      expect(wrapper.text()).toContain("Data URL");
+      expect(wrapper.text()).toContain('Data URL');
     });
 
-    it("allows safe HTTPS URLs in link preview", () => {
+    it('allows safe HTTPS URLs in link preview', () => {
       const postWithSafeLink = {
         ...basePost,
         linkPreview: {
-          url: "https://example.com/article",
-          title: "Safe Link",
+          url: 'https://example.com/article',
+          title: 'Safe Link',
         },
       };
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithSafeLink },
       });
-      expect(wrapper.text()).toContain("Safe Link");
+      expect(wrapper.text()).toContain('Safe Link');
     });
 
-    it("does not render link preview when media is present", () => {
+    it('does not render link preview when media is present', () => {
       const postWithBoth = {
         ...basePost,
         media: {
-          type: "image" as const,
-          url: "https://example.com/photo.jpg",
-          alt: "A photo",
+          type: 'image' as const,
+          url: 'https://example.com/photo.jpg',
+          alt: 'A photo',
         },
         linkPreview: {
-          url: "https://example.com/article",
-          title: "Article Title",
+          url: 'https://example.com/article',
+          title: 'Article Title',
         },
       };
       const wrapper = mount(LinkedInPost, {
@@ -319,45 +319,45 @@ describe("LinkedInPost", () => {
       const img = wrapper.find('img[alt="A photo"]');
       expect(img.exists()).toBe(true);
       // Link preview should not be visible
-      expect(wrapper.text()).not.toContain("Article Title");
+      expect(wrapper.text()).not.toContain('Article Title');
     });
   });
 
-  describe("events", () => {
-    it("emits action event on like click", async () => {
+  describe('events', () => {
+    it('emits action event on like click', async () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
       const likeBtn = wrapper.find('button[aria-label="Like"]');
-      await likeBtn.trigger("click");
-      expect(wrapper.emitted("action")).toBeTruthy();
-      expect(wrapper.emitted("action")![0]).toEqual(["like", basePost]);
+      await likeBtn.trigger('click');
+      expect(wrapper.emitted('action')).toBeTruthy();
+      expect(wrapper.emitted('action')![0]).toEqual(['like', basePost]);
     });
 
-    it("emits action event on share click", async () => {
+    it('emits action event on share click', async () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
       const shareBtn = wrapper.find('button[aria-label="Share"]');
-      await shareBtn.trigger("click");
-      expect(wrapper.emitted("action")).toBeTruthy();
-      expect(wrapper.emitted("action")![0]).toEqual(["share", basePost]);
+      await shareBtn.trigger('click');
+      expect(wrapper.emitted('action')).toBeTruthy();
+      expect(wrapper.emitted('action')![0]).toEqual(['share', basePost]);
     });
 
-    it("emits action event with correct payload", async () => {
-      const customPost = { ...basePost, id: "custom-id" };
+    it('emits action event with correct payload', async () => {
+      const customPost = { ...basePost, id: 'custom-id' };
       const wrapper = mount(LinkedInPost, {
         props: { post: customPost },
       });
       const likeBtn = wrapper.find('button[aria-label="Like"]');
-      await likeBtn.trigger("click");
-      expect(wrapper.emitted("action")![0]).toEqual(["like", customPost]);
+      await likeBtn.trigger('click');
+      expect(wrapper.emitted('action')![0]).toEqual(['like', customPost]);
     });
   });
 
-  describe("text truncation", () => {
-    it("truncates long text and shows see more button", () => {
-      const longText = "A".repeat(300);
+  describe('text truncation', () => {
+    it('truncates long text and shows see more button', () => {
+      const longText = 'A'.repeat(300);
       const postWithLongText = {
         ...basePost,
         text: longText,
@@ -365,11 +365,11 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithLongText },
       });
-      expect(wrapper.text()).toContain("see more");
+      expect(wrapper.text()).toContain('see more');
     });
 
-    it("expands text when see more is clicked", async () => {
-      const longText = "A".repeat(300);
+    it('expands text when see more is clicked', async () => {
+      const longText = 'A'.repeat(300);
       const postWithLongText = {
         ...basePost,
         text: longText,
@@ -377,15 +377,15 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithLongText },
       });
-      const seeMoreBtn = wrapper.find("button");
-      expect(seeMoreBtn.text()).toContain("see more");
-      await seeMoreBtn.trigger("click");
+      const seeMoreBtn = wrapper.find('button');
+      expect(seeMoreBtn.text()).toContain('see more');
+      await seeMoreBtn.trigger('click');
       // After clicking, the full text should be shown
-      expect(wrapper.text()).toContain("A".repeat(100));
+      expect(wrapper.text()).toContain('A'.repeat(100));
     });
 
-    it("does not truncate short text", () => {
-      const shortText = "Short text";
+    it('does not truncate short text', () => {
+      const shortText = 'Short text';
       const postWithShortText = {
         ...basePost,
         text: shortText,
@@ -393,12 +393,12 @@ describe("LinkedInPost", () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: postWithShortText },
       });
-      expect(wrapper.text()).not.toContain("see more");
-      expect(wrapper.text()).toContain("Short text");
+      expect(wrapper.text()).not.toContain('see more');
+      expect(wrapper.text()).toContain('Short text');
     });
 
-    it("does not show see more for text exactly at limit", () => {
-      const exactText = "A".repeat(280);
+    it('does not show see more for text exactly at limit', () => {
+      const exactText = 'A'.repeat(280);
       const postWithExactText = {
         ...basePost,
         text: exactText,
@@ -407,35 +407,35 @@ describe("LinkedInPost", () => {
         props: { post: postWithExactText },
       });
       // Text at exactly 280 chars should not trigger truncation
-      expect(wrapper.text()).not.toContain("see more");
+      expect(wrapper.text()).not.toContain('see more');
     });
   });
 
-  describe("structure", () => {
-    it("has data-slot attribute", () => {
+  describe('structure', () => {
+    it('has data-slot attribute', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.attributes("data-slot")).toBe("linkedin-post");
+      expect(wrapper.attributes('data-slot')).toBe('linkedin-post');
     });
 
-    it("has data-tool-ui-id attribute", () => {
+    it('has data-tool-ui-id attribute', () => {
       const wrapper = mount(LinkedInPost, {
         props: { post: basePost },
       });
-      expect(wrapper.attributes("data-tool-ui-id")).toBe("li-1");
+      expect(wrapper.attributes('data-tool-ui-id')).toBe('li-1');
     });
 
-    it("applies custom className when provided", () => {
+    it('applies custom className when provided', () => {
       const wrapper = mount(LinkedInPost, {
-        props: { post: basePost, className: "custom-class" },
+        props: { post: basePost, className: 'custom-class' },
       });
-      expect(wrapper.classes()).toContain("custom-class");
+      expect(wrapper.classes()).toContain('custom-class');
     });
   });
 
-  describe("time formatting", () => {
-    it("formats recent timestamps correctly", () => {
+  describe('time formatting', () => {
+    it('formats recent timestamps correctly', () => {
       const recentDate = new Date();
       recentDate.setHours(recentDate.getHours() - 2);
       const postWithRecentDate = {
@@ -450,7 +450,7 @@ describe("LinkedInPost", () => {
       expect(text).toMatch(/\d+h/);
     });
 
-    it("formats week-old timestamps with w suffix", () => {
+    it('formats week-old timestamps with w suffix', () => {
       const weekOldDate = new Date();
       weekOldDate.setDate(weekOldDate.getDate() - 10);
       const postWithWeekOldDate = {
@@ -465,8 +465,8 @@ describe("LinkedInPost", () => {
       expect(text).toMatch(/\d+w/);
     });
 
-    it("formats old timestamps as dates", () => {
-      const oldDate = new Date("2020-01-01T00:00:00Z");
+    it('formats old timestamps as dates', () => {
+      const oldDate = new Date('2020-01-01T00:00:00Z');
       const postWithOldDate = {
         ...basePost,
         createdAt: oldDate.toISOString(),

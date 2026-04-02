@@ -1,7 +1,9 @@
-import type { DivIcon, Icon, IconOptions } from "leaflet";
-import type { GeoMapMarker } from "./schema";
+import type { GeoMapMarker } from './schema';
+import type * as LeafletNS from 'leaflet';
+import type { DivIcon, Icon, IconOptions } from 'leaflet';
 
-type LeafletIconRuntime = Pick<typeof import("leaflet"), "divIcon">;
+type LeafletModule = typeof LeafletNS;
+type LeafletIconRuntime = Pick<LeafletModule, 'divIcon'>;
 
 // Helper type to work around vue-leaflet's strict Icon typing
 // DivIcon is a subclass of Icon but the types don't fully align
@@ -14,7 +16,7 @@ function isSafeHttpUrl(value: string | undefined): boolean {
 
   try {
     const parsed = new URL(value);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
   } catch {
     return false;
   }
@@ -22,23 +24,23 @@ function isSafeHttpUrl(value: string | undefined): boolean {
 
 function escapeHtml(value: string): string {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 function createEmojiIcon(
-  icon: Extract<NonNullable<GeoMapMarker["icon"]>, { type: "emoji" }>,
+  icon: Extract<NonNullable<GeoMapMarker['icon']>, { type: 'emoji' }>,
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon {
   const size = icon.size ?? 24;
-  const background = icon.bgColor ?? "var(--card)";
-  const border = icon.borderColor ?? "var(--border)";
+  const background = icon.bgColor ?? 'var(--card)';
+  const border = icon.borderColor ?? 'var(--border)';
 
   return leafletRuntime.divIcon({
-    className: "",
+    className: '',
     html: `<span style="
 display:flex;
 align-items:center;
@@ -60,16 +62,16 @@ box-shadow:0 1px 3px oklch(from var(--foreground) l c h / 0.22);
 }
 
 function createImageIcon(
-  icon: Extract<NonNullable<GeoMapMarker["icon"]>, { type: "image" }>,
+  icon: Extract<NonNullable<GeoMapMarker['icon']>, { type: 'image' }>,
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon {
   const width = icon.width ?? 28;
   const height = icon.height ?? 28;
   const borderRadius = icon.borderRadius ?? Math.min(width, height) / 2;
-  const border = icon.borderColor ?? "var(--border)";
+  const border = icon.borderColor ?? 'var(--border)';
 
   return leafletRuntime.divIcon({
-    className: "",
+    className: '',
     html: `<span style="
 display:block;
 width:${width}px;
@@ -92,11 +94,11 @@ export function createClusterIcon(
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon {
   const size = count >= 100 ? 42 : count >= 10 ? 38 : 34;
-  const background = "var(--primary)";
-  const border = "var(--background)";
+  const background = 'var(--primary)';
+  const border = 'var(--background)';
 
   return leafletRuntime.divIcon({
-    className: "",
+    className: '',
     html: `<span style="
 display:flex;
 align-items:center;
@@ -120,14 +122,14 @@ box-shadow:0 2px 6px oklch(from var(--foreground) l c h / 0.25);
 }
 
 export function resolveMarkerIcon(
-  icon: GeoMapMarker["icon"] | undefined,
+  icon: GeoMapMarker['icon'] | undefined,
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon | null {
-  if (icon?.type === "emoji") {
+  if (icon?.type === 'emoji') {
     return createEmojiIcon(icon, leafletRuntime);
   }
 
-  if (icon?.type === "image" && isSafeHttpUrl(icon.url)) {
+  if (icon?.type === 'image' && isSafeHttpUrl(icon.url)) {
     return createImageIcon(icon, leafletRuntime);
   }
 

@@ -6,14 +6,14 @@ import {
   onMounted,
   onUnmounted,
   nextTick,
-} from "vue";
-import { cn } from "./_adapter";
-import type { ParameterSliderProps, SliderConfig, SliderValue } from "./schema";
+} from 'vue';
+import { cn } from './_adapter';
 import {
   createSliderSignature,
   createSliderValueSnapshot,
   sliderRangeToPercent,
-} from "./math";
+} from './math';
+import type { ParameterSliderProps, SliderConfig, SliderValue } from './schema';
 
 const props = defineProps<ParameterSliderProps>();
 
@@ -262,25 +262,25 @@ function updateSliderValue(sliderId: string, newValue: number, isCommit = false)
   const newValues = currentValues.value.map((v) =>
     v.id === sliderId ? { ...v, value: rounded } : v,
   );
-  emit("change", newValues);
+  emit('change', newValues);
 
   // 如果是最终提交（如拖拽结束），额外触发 commit 事件
   if (isCommit) {
-    emit("commit", newValues);
+    emit('commit', newValues);
   }
 }
 
 function handleReset() {
   localValues.value = {};
-  emit("change", sliderSnapshot.value);
-  emit("action", "reset", sliderSnapshot.value);
+  emit('change', sliderSnapshot.value);
+  emit('action', 'reset', sliderSnapshot.value);
 }
 
 function handleAction(actionId: string) {
-  if (actionId === "reset") {
+  if (actionId === 'reset') {
     handleReset();
   } else {
-    emit("action", actionId, currentValues.value);
+    emit('action', actionId, currentValues.value);
   }
 }
 
@@ -289,10 +289,10 @@ const normalizedActions = computed(() => {
   if (!props.actions) {
     return {
       items: [
-        { id: "reset", label: "Reset", variant: "ghost" as const },
-        { id: "apply", label: "Apply", variant: "default" as const },
+        { id: 'reset', label: 'Reset', variant: 'ghost' as const },
+        { id: 'apply', label: 'Apply', variant: 'default' as const },
       ],
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
@@ -302,9 +302,9 @@ const normalizedActions = computed(() => {
         ...action,
         variant:
           action.variant ||
-          (action.id === "apply" ? "default" : ("ghost" as const)),
+          (action.id === 'apply' ? 'default' : ('ghost' as const)),
       })),
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
@@ -451,7 +451,7 @@ onMounted(() => {
     props.sliders.forEach((slider) => updateLayout(slider.id));
   });
 
-  if (typeof ResizeObserver !== "undefined") {
+  if (typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(() => {
       props.sliders.forEach((slider) => {
         const state = getSliderRowState(slider.id);
@@ -470,12 +470,12 @@ onMounted(() => {
     });
   }
 
-  window.addEventListener("resize", handleWindowResize);
+  window.addEventListener('resize', handleWindowResize);
 });
 
 onUnmounted(() => {
   resizeObserver?.disconnect();
-  window.removeEventListener("resize", handleWindowResize);
+  window.removeEventListener('resize', handleWindowResize);
 });
 
 function handleWindowResize() {
@@ -511,7 +511,7 @@ function handlePointerUp() {
     const state = getSliderRowState(activeSliderId.value);
     state.isDragging = false;
     // 拖拽结束时触发 commit 事件
-    emit("commit", currentValues.value);
+    emit('commit', currentValues.value);
     activeSliderId.value = null;
   }
 }
@@ -535,13 +535,13 @@ function updateValueFromPointer(sliderId: string, event: PointerEvent) {
 
 // Global pointer events for drag
 onMounted(() => {
-  document.addEventListener("pointermove", handlePointerMove);
-  document.addEventListener("pointerup", handlePointerUp);
+  document.addEventListener('pointermove', handlePointerMove);
+  document.addEventListener('pointerup', handlePointerUp);
 });
 
 onUnmounted(() => {
-  document.removeEventListener("pointermove", handlePointerMove);
-  document.removeEventListener("pointerup", handlePointerUp);
+  document.removeEventListener('pointermove', handlePointerMove);
+  document.removeEventListener('pointerup', handlePointerUp);
 });
 
 // Hover handling
@@ -601,13 +601,13 @@ function getFillClipPath(slider: SliderConfig): string {
     toRadixThumbPosition(percent);
   const TERMINAL_EPSILON = 1e-6;
   const snapLeftInset = (percent: number) => {
-    if (percent <= TERMINAL_EPSILON) return "0";
-    if (percent >= 100 - TERMINAL_EPSILON) return "100%";
+    if (percent <= TERMINAL_EPSILON) return '0';
+    if (percent >= 100 - TERMINAL_EPSILON) return '100%';
     return toClipFromLeftInset(percent);
   };
   const snapRightInset = (percent: number) => {
-    if (percent <= TERMINAL_EPSILON) return "100%";
-    if (percent >= 100 - TERMINAL_EPSILON) return "0";
+    if (percent <= TERMINAL_EPSILON) return '100%';
+    if (percent >= 100 - TERMINAL_EPSILON) return '0';
     return toClipFromRightInset(percent);
   };
 
@@ -628,8 +628,8 @@ function getFillClipPath(slider: SliderConfig): string {
 function getFillMaskImage(slider: SliderConfig): string {
   const crossesZero = slider.min < 0 && slider.max > 0;
   return crossesZero
-    ? "linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.7) 100%)"
-    : "linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%)";
+    ? 'linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.7) 100%)'
+    : 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%)';
 }
 
 // Reflection style
@@ -659,10 +659,10 @@ function getReflectionStyle(sliderId: string): Record<string, string> {
   return {
     background: gradient,
     WebkitMask:
-      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-    WebkitMaskComposite: "xor",
-    maskComposite: "exclude",
-    padding: "1px",
+      'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    padding: '1px',
   };
 }
 
@@ -711,7 +711,7 @@ function getThumbSegmentHeights(sliderId: string): {
       bottom: `calc(50% - ${gap / 2 - TEXT_VERTICAL_OFFSET}px)`,
     };
   }
-  return { top: "50%", bottom: "50%" };
+  return { top: '50%', bottom: '50%' };
 }
 
 // Thumb opacity for segments
@@ -740,23 +740,23 @@ function getThumbSegmentOpacity(sliderId: string): number {
 // Thumb width
 function getThumbWidth(sliderId: string): string {
   const state = getSliderRowState(sliderId);
-  if (state.isDragging) return "0.5rem"; // w-2
-  if (state.isHovered) return "0.375rem"; // w-1.5
-  return "1px"; // w-px
+  if (state.isDragging) return '0.5rem'; // w-2
+  if (state.isHovered) return '0.375rem'; // w-1.5
+  return '1px'; // w-px
 }
 
 // Thumb height
 function getThumbHeight(sliderId: string): string {
   const state = getSliderRowState(sliderId);
-  if (state.isDragging) return "56px";
-  if (state.isHovered) return "54px";
-  return "48px"; // h-12
+  if (state.isDragging) return '56px';
+  if (state.isHovered) return '54px';
+  return '48px'; // h-12
 }
 
 // Thumb position calculation
 function getThumbLeftPosition(sliderId: string): string {
   const slider = props.sliders.find((s) => s.id === sliderId);
-  if (!slider) return "0%";
+  if (!slider) return '0%';
   const value = getSliderValue(sliderId);
   const valuePercent = sliderRangeToPercent({
     value,
@@ -766,7 +766,7 @@ function getThumbLeftPosition(sliderId: string): string {
   const offsetPx = getRadixThumbInBoundsOffsetPx(valuePercent);
   return `calc(${valuePercent}% + ${offsetPx}px)`;
 }
-function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): string {
+function getThumbSegmentRadius(sliderId: string, position: 'top' | 'bottom'): string {
   const state = getSliderRowState(sliderId);
   const isActive = state.isHovered || state.isDragging;
   const activeGap = Math.max(
@@ -781,12 +781,12 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
   const hasGap = isActive && gap > 0;
 
   if (hasGap) {
-    return "9999px"; // rounded-full
+    return '9999px'; // rounded-full
   }
   if (isActive) {
-    return position === "top" ? "9999px 9999px 0 0" : "0 0 9999px 9999px";
+    return position === 'top' ? '9999px 9999px 0 0' : '0 0 9999px 9999px';
   }
-  return position === "top" ? "2px 2px 0 0" : "0 0 2px 2px"; // rounded-t-sm / rounded-b-sm
+  return position === 'top' ? '2px 2px 0 0' : '0 0 2px 2px'; // rounded-t-sm / rounded-b-sm
 }
 </script>
 
@@ -805,7 +805,7 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
     <div
       :class="
         cn(
-          'border-border bg-card flex w-full flex-col overflow-hidden rounded-2xl border px-5 py-3 shadow-xs',
+          'flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card px-5 py-3 shadow-xs',
         )
       "
     >
@@ -838,7 +838,7 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
             :class="
               cn(
                 'squircle relative h-12 w-full grow overflow-hidden rounded-sm',
-                'ring-border ring-1 ring-inset',
+                'ring-1 ring-border ring-inset',
                 'dark:ring-white/10',
                 slider.trackClassName ?? 'bg-muted',
               )
@@ -913,7 +913,7 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
                 'group/thumb z-0 block w-3 shrink-0 cursor-grab rounded-sm',
                 'relative bg-transparent outline-none',
                 'transition-[height,opacity] duration-150 ease-[var(--cubic-ease-in-out)]',
-                'focus-visible:outline-ring focus-visible:outline-2 focus-visible:outline-offset-1',
+                'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring',
                 'active:cursor-grabbing',
                 'disabled:pointer-events-none disabled:opacity-50',
               )
@@ -971,13 +971,13 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
           >
             <span
               :ref="(el) => setLabelRef(el as HTMLElement, slider.id)"
-              class="text-primary -mt-px rounded-full px-2 py-px text-sm font-normal tracking-wide"
+              class="-mt-px rounded-full px-2 py-px text-sm font-normal tracking-wide text-primary"
             >
               {{ slider.label }}
             </span>
             <span
               :ref="(el) => setValueRef(el as HTMLElement, slider.id)"
-              class="text-foreground -mt-px -mb-0.5 flex h-6 items-center rounded-full px-2 font-mono text-xs tabular-nums"
+              class="-mt-px -mb-0.5 flex h-6 items-center rounded-full px-2 font-mono text-xs text-foreground tabular-nums"
             >
               {{
                 formatSignedValue(
@@ -1026,10 +1026,10 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
           cn(
             'flex w-full flex-col gap-3',
             normalizedActions.align === 'left'
-              ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-start'
+              ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-start @[240px]/actions:gap-2'
               : normalizedActions.align === 'center'
-                ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-center'
-                : 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-end',
+                ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-center @[240px]/actions:gap-2'
+                : 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-end @[240px]/actions:gap-2',
           )
         "
       >
@@ -1040,7 +1040,7 @@ function getThumbSegmentRadius(sliderId: string, position: "top" | "bottom"): st
           :class="
             cn(
               'inline-flex items-center justify-center rounded-full px-4 text-base font-medium transition-colors',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'disabled:pointer-events-none disabled:opacity-50',
               'min-h-11 w-full text-base',
               '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',

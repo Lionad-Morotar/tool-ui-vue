@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderSummary } from "../components";
+import { OrderSummary } from '../components';
 
 /**
  * ## Props
@@ -66,7 +66,7 @@ import { OrderSummary } from "../components";
   <Story title="OrderSummary/All Variants">
     <Variant title="Summary">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-basic"
           title="Order Summary"
           variant="summary"
@@ -101,7 +101,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="With Discount">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-discount"
           title="Order Summary"
           variant="summary"
@@ -128,7 +128,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Receipt">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-receipt"
           title="Order Confirmed"
           variant="receipt"
@@ -164,7 +164,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Receipt Without Images">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-receipt-no-images"
           title="Order Confirmed"
           variant="receipt"
@@ -198,7 +198,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Single Item">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-single"
           title="Your Order"
           variant="summary"
@@ -222,7 +222,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Many Items">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-many"
           title="Shopping Cart"
           variant="summary"
@@ -244,7 +244,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Different Currency (EUR)">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-eur"
           title="Bestellübersicht"
           variant="summary"
@@ -269,7 +269,7 @@ import { OrderSummary } from "../components";
 
     <Variant title="Malformed Payload (Empty Items)">
       <div class="w-full max-w-md">
-        <OrderSummary
+        <order-summary
           id="order-summary-error"
           title="Order Summary"
           :items="[]"

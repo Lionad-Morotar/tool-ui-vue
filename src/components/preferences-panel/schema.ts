@@ -8,15 +8,16 @@
  *
  * @module tool-ui-vue/components/preferences-panel/schema
  */
-import { z } from "zod";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   SerializableActionSchema,
   SerializableActionsConfigSchema,
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+} from '../../shared/schema';
+import type { Action, SerializableActionsConfig, ToolUIReceipt } from '../../shared/schema';
 
 const PreferenceItemBaseSchema = z.object({
   id: z.string().min(1),
@@ -25,12 +26,12 @@ const PreferenceItemBaseSchema = z.object({
 });
 
 const PreferenceSwitchSchema = PreferenceItemBaseSchema.extend({
-  type: z.literal("switch"),
+  type: z.literal('switch'),
   defaultChecked: z.boolean().optional(),
 });
 
 const PreferenceToggleSchema = PreferenceItemBaseSchema.extend({
-  type: z.literal("toggle"),
+  type: z.literal('toggle'),
   options: z
     .array(
       z.object({
@@ -43,7 +44,7 @@ const PreferenceToggleSchema = PreferenceItemBaseSchema.extend({
 });
 
 const PreferenceSelectSchema = PreferenceItemBaseSchema.extend({
-  type: z.literal("select"),
+  type: z.literal('select'),
   selectOptions: z
     .array(
       z.object({
@@ -55,7 +56,7 @@ const PreferenceSelectSchema = PreferenceItemBaseSchema.extend({
   defaultSelected: z.string().optional(),
 });
 
-const PreferenceItemSchema = z.discriminatedUnion("type", [
+const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
   PreferenceSelectSchema,
@@ -114,12 +115,12 @@ export type SerializablePreferencesPanelReceipt = z.infer<
 >;
 
 const SerializablePreferencesPanelSchemaContract = defineToolUiContract(
-  "PreferencesPanel",
+  'PreferencesPanel',
   SerializablePreferencesPanelSchema,
 );
 
 const SerializablePreferencesPanelReceiptSchemaContract = defineToolUiContract(
-  "PreferencesPanelReceipt",
+  'PreferencesPanelReceipt',
   SerializablePreferencesPanelReceiptSchema,
 );
 
@@ -156,15 +157,15 @@ export interface PreferencesValue {
  */
 export interface PreferencesPanelProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
   className?: string;
   value?: PreferencesValue;
   actions?:
-    | import("../../shared/schema").Action[]
-    | import("../../shared/schema").SerializableActionsConfig;
+    | Action[]
+    | SerializableActionsConfig;
   onChange?: (value: PreferencesValue) => void;
   onAction?: (actionId: string, value: PreferencesValue) => void | Promise<void>;
 }
@@ -174,8 +175,8 @@ export interface PreferencesPanelProps {
  */
 export interface PreferencesPanelReceiptProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
   choice: Record<string, string | boolean>;

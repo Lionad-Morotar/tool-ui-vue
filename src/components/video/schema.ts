@@ -9,22 +9,22 @@
  * @module tool-ui-vue/components/video/schema
  */
 
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
 
 export const AspectRatioSchema = z
-  .enum(["auto", "1:1", "4:3", "16:9", "9:16"])
-  .default("auto");
+  .enum(['auto', '1:1', '4:3', '16:9', '9:16'])
+  .default('auto');
 
 export type AspectRatio = z.infer<typeof AspectRatioSchema>;
 
 /** MediaFitSchema Zod Schema */
-export const MediaFitSchema = z.enum(["cover", "contain"]).default("cover");
+export const MediaFitSchema = z.enum(['cover', 'contain']).default('cover');
 
 export type MediaFit = z.infer<typeof MediaFitSchema>;
 
@@ -61,7 +61,7 @@ export const SerializableVideoSchema = z.object({
 export type SerializableVideo = z.infer<typeof SerializableVideoSchema>;
 
 const SerializableVideoSchemaContract = defineToolUiContract(
-  "Video",
+  'Video',
   SerializableVideoSchema,
 );
 
@@ -75,9 +75,9 @@ export const safeParseSerializableVideo: (
 /** VideoProps 组件属性接口 */
 export interface VideoProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;

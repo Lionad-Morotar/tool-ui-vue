@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from "vue";
-import { cn, prefersReducedMotion } from "../../shared/utils";
-import ItemCard from "./ItemCard.vue";
-import type { ItemCarouselProps } from "./schema";
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
+import ItemCard from './ItemCard.vue';
+import { cn, prefersReducedMotion } from '../../shared/utils';
+import type { ItemCarouselProps } from './schema';
 
 const props = defineProps<ItemCarouselProps & { interactive?: boolean }>();
 
@@ -60,7 +60,7 @@ function updateCurrentIndex() {
   if (!container) return;
 
   const itemElements = Array.from(
-    container.querySelectorAll<HTMLElement>("[data-carousel-item]")
+    container.querySelectorAll<HTMLElement>('[data-carousel-item]')
   );
   if (itemElements.length === 0) return;
 
@@ -83,7 +83,7 @@ function updateCurrentIndex() {
 
   if (currentIndex.value !== newIndex) {
     currentIndex.value = newIndex;
-    emit("slideChange", newIndex);
+    emit('slideChange', newIndex);
   }
 }
 
@@ -103,7 +103,7 @@ function smoothScrollTo(element: HTMLElement, target: number, duration = SCROLL_
 
   // Temporarily disable scroll snap during animation
   const originalSnapType = element.style.scrollSnapType;
-  element.style.scrollSnapType = "none";
+  element.style.scrollSnapType = 'none';
 
   return new Promise<void>((resolve) => {
     const step = () => {
@@ -128,7 +128,7 @@ function smoothScrollTo(element: HTMLElement, target: number, duration = SCROLL_
   });
 }
 
-async function scroll(direction: "left" | "right") {
+async function scroll(direction: 'left' | 'right') {
   const container = scrollRef.value;
   if (!container || isAnimating.value) return;
 
@@ -138,7 +138,7 @@ async function scroll(direction: "left" | "right") {
     : 0;
 
   const itemElements = Array.from(
-    container.querySelectorAll<HTMLElement>("[data-carousel-item]")
+    container.querySelectorAll<HTMLElement>('[data-carousel-item]')
   );
   if (itemElements.length === 0) return;
 
@@ -184,7 +184,7 @@ async function scroll(direction: "left" | "right") {
       : 1;
 
   const targetIndex =
-    direction === "right"
+    direction === 'right'
       ? Math.min(currentIdx + pageIndexStep, itemElements.length - 1)
       : Math.max(currentIdx - pageIndexStep, 0);
 
@@ -202,7 +202,7 @@ function scrollToIndex(index: number) {
   if (!container || isAnimating.value) return;
 
   const itemElements = Array.from(
-    container.querySelectorAll<HTMLElement>("[data-carousel-item]")
+    container.querySelectorAll<HTMLElement>('[data-carousel-item]')
   );
   if (index < 0 || index >= itemElements.length) return;
 
@@ -224,11 +224,11 @@ function handleScroll() {
 }
 
 function handleItemClick(itemId: string) {
-  emit("itemClick", itemId);
+  emit('itemClick', itemId);
 }
 
 function handleItemAction(itemId: string, actionId: string) {
-  emit("itemAction", itemId, actionId);
+  emit('itemAction', itemId, actionId);
 }
 
 // Touch event handlers for swipe support
@@ -284,29 +284,29 @@ function handleTouchEnd(event: TouchEvent) {
   if (isFastSwipe || isLongSwipe) {
     event.preventDefault();
     if (deltaX > 0 && canScrollRight.value) {
-      scroll("right");
+      scroll('right');
     } else if (deltaX < 0 && canScrollLeft.value) {
-      scroll("left");
+      scroll('left');
     }
   }
 }
 
 // Keyboard navigation
 function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === "ArrowLeft") {
+  if (event.key === 'ArrowLeft') {
     event.preventDefault();
     if (canScrollLeft.value) {
-      scroll("left");
+      scroll('left');
     }
-  } else if (event.key === "ArrowRight") {
+  } else if (event.key === 'ArrowRight') {
     event.preventDefault();
     if (canScrollRight.value) {
-      scroll("right");
+      scroll('right');
     }
-  } else if (event.key === "Home") {
+  } else if (event.key === 'Home') {
     event.preventDefault();
     scrollToIndex(0);
-  } else if (event.key === "End") {
+  } else if (event.key === 'End') {
     event.preventDefault();
     scrollToIndex(props.items.length - 1);
   }
@@ -322,7 +322,7 @@ onMounted(() => {
 
   // Set up resize observer
   const container = scrollRef.value;
-  if (container && typeof ResizeObserver !== "undefined") {
+  if (container && typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(() => {
       updateScrollState();
     });
@@ -350,13 +350,13 @@ defineExpose({
   <div
     v-if="!hasItems"
     :class="cn(
-      'flex h-48 items-center justify-center border-border rounded-2xl border bg-card',
+      'flex h-48 items-center justify-center rounded-2xl border border-border bg-card',
       $attrs.class as string
     )"
     data-slot="item-carousel"
     :data-tool-ui-id="id"
   >
-    <p class="text-muted-foreground text-sm">No items to display</p>
+    <p class="text-sm text-muted-foreground">No items to display</p>
   </div>
 
   <!-- Carousel -->
@@ -364,7 +364,7 @@ defineExpose({
     v-else
     ref="containerRef"
     :class="cn(
-      'bg-background border-border @container relative isolate w-full gap-0 overflow-hidden rounded-2xl border p-0',
+      '@container relative isolate w-full gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0',
       $attrs.class as string
     )"
     :data-tool-ui-id="id"
@@ -380,7 +380,7 @@ defineExpose({
       <h3 v-if="title" class="text-[15px] leading-tight font-semibold tracking-tight">
         {{ title }}
       </h3>
-      <p v-if="description" class="text-muted-foreground mt-1 text-sm leading-snug">
+      <p v-if="description" class="mt-1 text-sm leading-snug text-muted-foreground">
         {{ description }}
       </p>
     </div>
@@ -391,7 +391,7 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'bg-background/60 absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl bg-background/60 backdrop-blur-lg',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
           '@md:flex',
           'left-1.5',
@@ -403,8 +403,19 @@ defineExpose({
         :disabled="!canScrollLeft"
         @click="scroll('left')"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-          <path d="m15 18-6-6 6-6"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4"
+        >
+          <path d="m15 18-6-6 6-6" />
         </svg>
       </button>
 
@@ -412,7 +423,7 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'bg-background/60 absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl bg-background/60 backdrop-blur-lg',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
           '@md:flex',
           'right-1.5',
@@ -424,8 +435,19 @@ defineExpose({
         :disabled="!canScrollRight"
         @click="scroll('right')"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-          <path d="m9 18 6-6-6-6"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4"
+        >
+          <path d="m9 18 6-6-6-6" />
         </svg>
       </button>
 
@@ -453,7 +475,7 @@ defineExpose({
           class="flex snap-start snap-always"
           :aria-label="`Item ${index + 1} of ${items.length}`"
         >
-          <ItemCard
+          <item-card
             :item="item"
             :interactive="isInteractive"
             @item-click="handleItemClick"

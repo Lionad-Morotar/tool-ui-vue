@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { XPost } from "../components";
+import { reactive } from 'vue';
+import { XPost } from '../components';
 
 /**
  * # XPost
@@ -84,7 +84,7 @@ const interactiveState = reactive({
 });
 
 function handleAction(action: string) {
-  if (action === "like") {
+  if (action === 'like') {
     interactiveState.isLiked = !interactiveState.isLiked;
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
@@ -95,7 +95,7 @@ function handleAction(action: string) {
   <Story title="XPost/All Variants">
     <Variant title="Text Only">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '1',
             author: {
@@ -117,7 +117,7 @@ function handleAction(action: string) {
 
     <Variant title="With Image">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '2',
             author: {
@@ -144,7 +144,7 @@ function handleAction(action: string) {
 
     <Variant title="With Video">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: 'video-1',
             author: {
@@ -171,7 +171,7 @@ function handleAction(action: string) {
 
     <Variant title="With Link Preview">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '3',
             author: {
@@ -201,7 +201,7 @@ function handleAction(action: string) {
 
     <Variant title="Quoted Post">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '4',
             author: {
@@ -232,7 +232,7 @@ function handleAction(action: string) {
 
     <Variant title="Quoted Post with Media">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '4b',
             author: {
@@ -267,7 +267,7 @@ function handleAction(action: string) {
 
     <Variant title="Long Text">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '6',
             author: {
@@ -289,7 +289,7 @@ function handleAction(action: string) {
 
     <Variant title="Unverified Author">
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: '7',
             author: {
@@ -310,7 +310,7 @@ function handleAction(action: string) {
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <XPost
+        <x-post
           :post="{
             id: 'interactive',
             author: {

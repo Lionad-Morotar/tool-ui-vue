@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { CodeBlock } from "../components";
+import { reactive } from 'vue';
+import { CodeBlock } from '../components';
 
 const exampleCode = `interface User {
   id: string;
@@ -61,28 +61,28 @@ console.log(greet("Alice", "Hi"));`;
 
 const interactiveState = reactive({
   code: interactiveCode,
-  language: "typescript",
-  filename: "interactive.ts",
-  lineNumbers: "visible" as const,
+  language: 'typescript',
+  filename: 'interactive.ts',
+  lineNumbers: 'visible' as const,
   highlightLines: [2, 7] as number[] | undefined,
 });
 
 // Props documentation
 const props = [
-  { name: "id", type: "string", required: true, description: "Unique identifier for the code block" },
-  { name: "code", type: "string", required: true, description: "The code content to display" },
-  { name: "language", type: "string", default: "text", description: "Programming language for syntax highlighting" },
-  { name: "filename", type: "string", description: "Optional filename to display in the header" },
-  { name: "lineNumbers", type: "'visible' | 'hidden'", default: "visible", description: "Whether to show line numbers" },
-  { name: "highlightLines", type: "number[]", description: "Array of line numbers to highlight" },
-  { name: "maxCollapsedLines", type: "number", description: "Maximum lines to show before collapsing" },
-  { name: "className", type: "string", description: "Additional CSS classes" },
+  { name: 'id', type: 'string', required: true, description: 'Unique identifier for the code block' },
+  { name: 'code', type: 'string', required: true, description: 'The code content to display' },
+  { name: 'language', type: 'string', default: 'text', description: 'Programming language for syntax highlighting' },
+  { name: 'filename', type: 'string', description: 'Optional filename to display in the header' },
+  { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: 'Whether to show line numbers' },
+  { name: 'highlightLines', type: 'number[]', description: 'Array of line numbers to highlight' },
+  { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines to show before collapsing' },
+  { name: 'className', type: 'string', description: 'Additional CSS classes' },
 ];
 
 const languages = [
-  "typescript", "javascript", "python", "tsx", "jsx",
-  "json", "bash", "shell", "css", "html",
-  "markdown", "sql", "yaml", "go", "rust", "text"
+  'typescript', 'javascript', 'python', 'tsx', 'jsx',
+  'json', 'bash', 'shell', 'css', 'html',
+  'markdown', 'sql', 'yaml', 'go', 'rust', 'text'
 ];
 </script>
 
@@ -90,23 +90,23 @@ const languages = [
   <Story title="CodeBlock/All">
     <Variant title="Props">
       <div class="w-full max-w-4xl p-6">
-        <h2 class="text-2xl font-bold mb-4">CodeBlock Props</h2>
+        <h2 class="mb-4 text-2xl font-bold">CodeBlock Props</h2>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b">
-                <th class="text-left py-2 px-4 font-semibold">Name</th>
-                <th class="text-left py-2 px-4 font-semibold">Type</th>
-                <th class="text-left py-2 px-4 font-semibold">Default</th>
-                <th class="text-left py-2 px-4 font-semibold">Description</th>
+                <th class="px-4 py-2 text-left font-semibold">Name</th>
+                <th class="px-4 py-2 text-left font-semibold">Type</th>
+                <th class="px-4 py-2 text-left font-semibold">Default</th>
+                <th class="px-4 py-2 text-left font-semibold">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="prop in props" :key="prop.name" class="border-b">
-                <td class="py-2 px-4 font-mono text-emerald-600">{{ prop.name }}</td>
-                <td class="py-2 px-4 font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="py-2 px-4 text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td class="py-2 px-4">{{ prop.description }}</td>
+                <td class="px-4 py-2 font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="px-4 py-2 font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="px-4 py-2 text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="px-4 py-2">{{ prop.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -116,12 +116,12 @@ const languages = [
 
     <Variant title="Supported Languages">
       <div class="w-full max-w-4xl p-6">
-        <h2 class="text-2xl font-bold mb-4">Supported Languages</h2>
+        <h2 class="mb-4 text-2xl font-bold">Supported Languages</h2>
         <div class="flex flex-wrap gap-2">
           <span
             v-for="lang in languages"
             :key="lang"
-            class="px-3 py-1 bg-muted rounded-full text-sm font-mono"
+            class="rounded-full bg-muted px-3 py-1 font-mono text-sm"
           >
             {{ lang }}
           </span>
@@ -131,7 +131,7 @@ const languages = [
 
     <Variant title="TypeScript">
       <div class="w-full max-w-2xl">
-        <CodeBlock
+        <code-block
           id="code-typescript"
           language="typescript"
           filename="example.ts"
@@ -142,7 +142,7 @@ const languages = [
 
     <Variant title="JavaScript">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-javascript"
           language="javascript"
           filename="utils.js"
@@ -158,7 +158,7 @@ console.log(result); // 8"
 
     <Variant title="Python">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-python"
           language="python"
           filename="script.py"
@@ -175,7 +175,7 @@ for i in range(10):
 
     <Variant title="CSS">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-css"
           language="css"
           filename="styles.css"
@@ -192,7 +192,7 @@ for i in range(10):
 
     <Variant title="With Highlighted Lines">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-highlight"
           language="typescript"
           filename="api.ts"
@@ -215,24 +215,24 @@ for i in range(10):
 
     <Variant title="Without Line Numbers">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-no-lines"
           language="json"
           line-numbers="hidden"
-          code='{
-  "name": "my-project",
-  "version": "1.0.0",
-  "dependencies": {
-    "vue": "^3.5.0"
+          code="{
+  &quot;name&quot;: &quot;my-project&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;dependencies&quot;: {
+    &quot;vue&quot;: &quot;^3.5.0&quot;
   }
-}'
+}"
         />
       </div>
     </Variant>
 
     <Variant title="Collapsed (Long Code)">
       <div class="w-full max-w-2xl">
-        <CodeBlock
+        <code-block
           id="code-collapsed"
           language="typescript"
           filename="useCounter.ts"
@@ -244,7 +244,7 @@ for i in range(10):
 
     <Variant title="No Filename">
       <div class="w-full max-w-xl">
-        <CodeBlock
+        <code-block
           id="code-no-filename"
           language="bash"
           code="npm install vue@latest
@@ -254,8 +254,8 @@ npm run dev"
     </Variant>
 
     <Variant title="Dark Theme">
-      <div class="w-full max-w-xl dark">
-        <CodeBlock
+      <div class="dark w-full max-w-xl">
+        <code-block
           id="code-dark"
           language="typescript"
           filename="dark-mode.ts"
@@ -271,7 +271,7 @@ const colors = {
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
-        <div class="flex items-center gap-4 p-4 bg-muted rounded-lg">
+        <div class="flex items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
             <label class="text-sm font-medium">Language:</label>
             <select
@@ -294,7 +294,7 @@ const colors = {
             Show Line Numbers
           </label>
         </div>
-        <CodeBlock
+        <code-block
           id="code-interactive"
           v-bind="interactiveState"
         />

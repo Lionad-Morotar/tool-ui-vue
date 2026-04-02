@@ -8,9 +8,9 @@
  *
  * @module tool-ui-vue/components/approval-card/schema
  */
-import { z } from "zod";
-import { ToolUIIdSchema, ToolUIRoleSchema } from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
 /**
  * 元数据项的 Schema 定义
@@ -30,7 +30,7 @@ export type MetadataItem = z.infer<typeof MetadataItemSchema>;
 /**
  * 审批决策类型的 Schema 定义
  */
-export const ApprovalDecisionSchema = z.enum(["approved", "denied"]);
+export const ApprovalDecisionSchema = z.enum(['approved', 'denied']);
 
 /**
  * 审批决策类型
@@ -51,7 +51,7 @@ export const SerializableApprovalCardSchema = z.object({
   icon: z.string().optional(),
   metadata: z.array(MetadataItemSchema).optional(),
 
-  variant: z.enum(["default", "destructive"]).optional(),
+  variant: z.enum(['default', 'destructive']).optional(),
 
   confirmLabel: z.string().optional(),
   cancelLabel: z.string().optional(),
@@ -68,7 +68,7 @@ export type SerializableApprovalCard = z.infer<
 >;
 
 const SerializableApprovalCardSchemaContract = defineToolUiContract(
-  "ApprovalCard",
+  'ApprovalCard',
   SerializableApprovalCardSchema,
 );
 
@@ -87,12 +87,12 @@ export const safeParseSerializableApprovalCard: (
  */
 export interface ApprovalCardBaseProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   title: string;
   description?: string;
   icon?: string;
   metadata?: MetadataItem[];
-  variant?: "default" | "destructive";
+  variant?: 'default' | 'destructive';
   confirmLabel?: string;
   cancelLabel?: string;
   choice?: ApprovalDecision;

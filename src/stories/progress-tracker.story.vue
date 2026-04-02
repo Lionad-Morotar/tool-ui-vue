@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { ProgressTracker } from "../components";
+import { reactive } from 'vue';
+import { ProgressTracker } from '../components';
 
 /**
  * # ProgressTracker
@@ -78,7 +78,7 @@ function advanceStep() {
   <Story title="ProgressTracker/All Variants">
     <Variant title="Horizontal Steps">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-horizontal"
           :steps="[
             { id: '1', label: 'Account', status: 'completed' },
@@ -92,7 +92,7 @@ function advanceStep() {
 
     <Variant title="With Descriptions">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-descriptions"
           :steps="[
             { id: '1', label: 'Upload', description: 'Add your files', status: 'completed' },
@@ -106,7 +106,7 @@ function advanceStep() {
 
     <Variant title="With Failed Step">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-failed"
           :steps="[
             { id: '1', label: 'Build', status: 'completed' },
@@ -120,7 +120,7 @@ function advanceStep() {
 
     <Variant title="All Completed">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-complete"
           :steps="[
             { id: '1', label: 'Design', status: 'completed' },
@@ -134,7 +134,7 @@ function advanceStep() {
 
     <Variant title="With Elapsed Time">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-time"
           :steps="[
             { id: '1', label: 'Compile', status: 'completed' },
@@ -148,7 +148,7 @@ function advanceStep() {
 
     <Variant title="Receipt - Success">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-receipt-success"
           :steps="[
             { id: '1', label: 'Upload', status: 'completed' },
@@ -163,7 +163,7 @@ function advanceStep() {
 
     <Variant title="Receipt - Failed">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-receipt-failed"
           :steps="[
             { id: '1', label: 'Build', status: 'completed' },
@@ -179,12 +179,12 @@ function advanceStep() {
     <Variant title="Interactive - Click to Advance">
       <div class="w-full max-w-3xl">
         <button
-          @click="advanceStep"
           class="mb-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          @click="advanceStep"
         >
           Advance Step
         </button>
-        <ProgressTracker
+        <progress-tracker
           id="progress-interactive"
           :steps="interactiveProgress.steps"
         />
@@ -193,7 +193,7 @@ function advanceStep() {
 
     <Variant title="Non-linear Progress">
       <div class="w-full max-w-3xl">
-        <ProgressTracker
+        <progress-tracker
           id="progress-nonlinear"
           :steps="[
             { id: '1', label: 'Step A', status: 'completed' },

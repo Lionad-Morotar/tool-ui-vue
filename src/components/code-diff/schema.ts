@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/code-diff/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
  * CodeDiff 基础 Props Schema
@@ -26,10 +27,10 @@ const CodeDiffPropsSchemaBase = z.object({
   oldCode: z.string().optional(),
   newCode: z.string().optional(),
   patch: z.string().optional(),
-  language: z.string().trim().min(1).default("text"),
+  language: z.string().trim().min(1).default('text'),
   filename: z.string().optional(),
-  lineNumbers: z.enum(["visible", "hidden"]).default("visible"),
-  diffStyle: z.enum(["unified", "split"]).default("unified"),
+  lineNumbers: z.enum(['visible', 'hidden']).default('visible'),
+  diffStyle: z.enum(['unified', 'split']).default('unified'),
   maxCollapsedLines: z.number().min(1).optional(),
   className: z.string().optional(),
 });
@@ -47,17 +48,17 @@ function validateCodeDiffInputMode(
 
   if (!hasPatch && !hasFiles) {
     ctx.addIssue({
-      code: "custom",
+      code: 'custom',
       message:
-        "Provide either a patch string or at least one of oldCode/newCode",
+        'Provide either a patch string or at least one of oldCode/newCode',
     });
   }
 
   if (hasPatch && hasFiles) {
     ctx.addIssue({
-      code: "custom",
+      code: 'custom',
       message:
-        "Cannot mix patch mode with oldCode/newCode — use one or the other",
+        'Cannot mix patch mode with oldCode/newCode — use one or the other',
     });
   }
 }
@@ -76,15 +77,15 @@ export const CodeDiffPropsSchema = CodeDiffPropsSchemaBase.superRefine(
  */
 export interface CodeDiffProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   oldCode?: string;
   newCode?: string;
   patch?: string;
   language?: string;
   filename?: string;
-  lineNumbers?: "visible" | "hidden";
-  diffStyle?: "unified" | "split";
+  lineNumbers?: 'visible' | 'hidden';
+  diffStyle?: 'unified' | 'split';
   maxCollapsedLines?: number;
   className?: string;
 }
@@ -103,7 +104,7 @@ export const SerializableCodeDiffSchema = CodeDiffPropsSchemaBase.omit({
 export type SerializableCodeDiff = z.infer<typeof SerializableCodeDiffSchema>;
 
 const SerializableCodeDiffSchemaContract = defineToolUiContract(
-  "CodeDiff",
+  'CodeDiff',
   SerializableCodeDiffSchema,
 );
 

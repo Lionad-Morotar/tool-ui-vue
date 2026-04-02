@@ -2,15 +2,15 @@
  * Utility functions for Tool UI Vue components
  */
 
-export { cn } from "../utils"
+export { cn } from '../utils'
 
 /**
  * Check if user prefers reduced motion
  */
 export function prefersReducedMotion(): boolean {
   return (
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   );
 }
 
@@ -40,8 +40,8 @@ export function formatCount(count: number): string {
  */
 export function getDomain(url: string): string {
   try {
-    return new URL(url).hostname.replace(/^www\./, "");
+    return new URL(url).hostname.replace(/^www\./, '');
   } catch {
-    return "";
+    return '';
   }
 }

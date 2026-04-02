@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/components/linkedin-post/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 
 /**
  * LinkedIn 帖子作者的 Schema 定义
@@ -25,7 +25,7 @@ export const LinkedInPostAuthorSchema = z.object({
  * LinkedIn 帖子媒体的 Schema 定义
  */
 export const LinkedInPostMediaSchema = z.object({
-  type: z.enum(["image", "video"]),
+  type: z.enum(['image', 'video']),
   url: z.string(),
   alt: z.string(),
 });
@@ -96,7 +96,7 @@ export type LinkedInPostLinkPreview = z.infer<
 export type LinkedInPostStats = z.infer<typeof LinkedInPostStatsSchema>;
 
 const SerializableLinkedInPostSchemaContract = defineToolUiContract(
-  "LinkedInPost",
+  'LinkedInPost',
   SerializableLinkedInPostSchema,
 );
 

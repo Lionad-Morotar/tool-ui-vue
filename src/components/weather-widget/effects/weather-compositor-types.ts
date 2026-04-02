@@ -2,7 +2,7 @@ import type {
   LayerToggles,
   PostProcessParams,
   SnowParams,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
 export interface WeatherCompositorCelestialParams {
   timeOfDay: number;

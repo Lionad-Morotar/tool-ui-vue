@@ -1,6 +1,6 @@
-import { getTimeOfDay } from "./effects/parameter-mapper";
-import { getNearestCheckpoint, TIME_CHECKPOINTS } from "./effects/tuning";
-import type { WeatherWidgetTime } from "./schema";
+import { getTimeOfDay } from './effects/parameter-mapper';
+import { getNearestCheckpoint, TIME_CHECKPOINTS } from './effects/tuning';
+import type { WeatherWidgetTime } from './schema';
 
 export interface ResolveWeatherTimeInput {
   time?: WeatherWidgetTime;
@@ -8,10 +8,10 @@ export interface ResolveWeatherTimeInput {
 }
 
 export type WeatherTimeSource =
-  | "timeBucket"
-  | "localTimeOfDay"
-  | "updatedAt"
-  | "defaultNoon";
+  | 'timeBucket'
+  | 'localTimeOfDay'
+  | 'updatedAt'
+  | 'defaultNoon';
 
 export interface ResolvedWeatherTime {
   timeOfDay: number;
@@ -39,29 +39,29 @@ export function resolveWeatherTime(
 ): ResolvedWeatherTime {
   const { time, updatedAt } = input;
 
-  if (typeof time?.timeBucket === "number") {
+  if (typeof time?.timeBucket === 'number') {
     return {
       timeOfDay: timeBucketToTimeOfDay(time.timeBucket),
-      source: "timeBucket",
+      source: 'timeBucket',
     };
   }
 
-  if (typeof time?.localTimeOfDay === "number") {
+  if (typeof time?.localTimeOfDay === 'number') {
     return {
       timeOfDay: normalizeTimeOfDay(time.localTimeOfDay),
-      source: "localTimeOfDay",
+      source: 'localTimeOfDay',
     };
   }
 
-  if (typeof updatedAt === "string") {
+  if (typeof updatedAt === 'string') {
     return {
       timeOfDay: getTimeOfDay(updatedAt),
-      source: "updatedAt",
+      source: 'updatedAt',
     };
   }
 
   return {
     timeOfDay: 0.5,
-    source: "defaultNoon",
+    source: 'defaultNoon',
   };
 }

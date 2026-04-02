@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { InstagramPost } from "../components";
+import { reactive } from 'vue';
+import { InstagramPost } from '../components';
 
 /**
  * # InstagramPost
@@ -85,7 +85,7 @@ const interactiveState = reactive({
 });
 
 function handleAction(action: string) {
-  if (action === "like") {
+  if (action === 'like') {
     interactiveState.isLiked = !interactiveState.isLiked;
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
@@ -96,7 +96,7 @@ function handleAction(action: string) {
   <Story title="InstagramPost/All Variants">
     <Variant title="Single Image">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '1',
             author: {
@@ -121,7 +121,7 @@ function handleAction(action: string) {
 
     <Variant title="Multiple Images (2)">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '2',
             author: {
@@ -146,7 +146,7 @@ function handleAction(action: string) {
 
     <Variant title="Multiple Images (3)">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '3-grid',
             author: {
@@ -172,7 +172,7 @@ function handleAction(action: string) {
 
     <Variant title="Multiple Images (4+)">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '4-grid',
             author: {
@@ -201,7 +201,7 @@ function handleAction(action: string) {
 
     <Variant title="Video Post">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '3',
             author: {
@@ -226,7 +226,7 @@ function handleAction(action: string) {
 
     <Variant title="Caption Only">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '4',
             author: {
@@ -246,7 +246,7 @@ function handleAction(action: string) {
 
     <Variant title="Long Caption">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '5',
             author: {
@@ -270,7 +270,7 @@ function handleAction(action: string) {
 
     <Variant title="Unverified Author">
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: '6',
             author: {
@@ -294,7 +294,7 @@ function handleAction(action: string) {
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <InstagramPost
+        <instagram-post
           :post="{
             id: 'interactive',
             author: {

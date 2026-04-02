@@ -8,9 +8,9 @@
  *
  * @module tool-ui-vue/components/question-flow/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
-import { ToolUIIdSchema, ToolUIRoleSchema } from "../../shared/schema";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
 /**
  * 问题流程选项的 Schema 定义
@@ -36,7 +36,7 @@ export const QuestionFlowStepDefinitionSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   options: z.array(QuestionFlowOptionSchema).min(1),
-  selectionMode: z.enum(["single", "multi"]).optional(),
+  selectionMode: z.enum(['single', 'multi']).optional(),
 });
 
 /**
@@ -90,7 +90,7 @@ export const SerializableProgressiveModeSchema = BaseSchema.extend({
   title: z.string().min(1),
   description: z.string().optional(),
   options: z.array(QuestionFlowOptionSchema).min(1),
-  selectionMode: z.enum(["single", "multi"]).optional(),
+  selectionMode: z.enum(['single', 'multi']).optional(),
 });
 
 /**
@@ -150,7 +150,7 @@ export type SerializableQuestionFlow = z.infer<
 >;
 
 const SerializableQuestionFlowSchemaContract = defineToolUiContract(
-  "QuestionFlow",
+  'QuestionFlow',
   SerializableQuestionFlowSchema,
 );
 
@@ -168,13 +168,13 @@ export const safeParseSerializableQuestionFlow: (
  */
 export interface QuestionFlowProgressiveProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   step: number;
   title: string;
   description?: string;
   className?: string;
   options: QuestionFlowOption[];
-  selectionMode?: "single" | "multi";
+  selectionMode?: 'single' | 'multi';
   defaultValue?: string[];
   onSelect?: (optionIds: string[]) => void | Promise<void>;
   onBack?: () => void;
@@ -185,7 +185,7 @@ export interface QuestionFlowProgressiveProps {
  */
 export interface QuestionFlowUpfrontProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   steps: QuestionFlowStepDefinition[];
   className?: string;
   onStepChange?: (stepId: string) => void;
@@ -197,7 +197,7 @@ export interface QuestionFlowUpfrontProps {
  */
 export interface QuestionFlowReceiptProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   choice: QuestionFlowChoice;
   className?: string;
 }

@@ -8,59 +8,60 @@
  *
  * @module tool-ui-vue/components/data-table/schema
  */
-import { z } from "zod";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
-const AlignEnum = z.enum(["left", "right", "center"]);
-const PriorityEnum = z.enum(["primary", "secondary", "tertiary"]);
+const AlignEnum = z.enum(['left', 'right', 'center']);
+const PriorityEnum = z.enum(['primary', 'secondary', 'tertiary']);
 
-const formatSchema = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("text") }),
+const formatSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('text') }),
   z.object({
-    kind: z.literal("number"),
+    kind: z.literal('number'),
     decimals: z.number().optional(),
     unit: z.string().optional(),
     compact: z.boolean().optional(),
     showSign: z.boolean().optional(),
   }),
   z.object({
-    kind: z.literal("currency"),
+    kind: z.literal('currency'),
     currency: z.string(),
     decimals: z.number().optional(),
   }),
   z.object({
-    kind: z.literal("percent"),
+    kind: z.literal('percent'),
     decimals: z.number().optional(),
     showSign: z.boolean().optional(),
-    basis: z.enum(["fraction", "unit"]).optional(),
+    basis: z.enum(['fraction', 'unit']).optional(),
   }),
   z.object({
-    kind: z.literal("date"),
-    dateFormat: z.enum(["short", "long", "relative"]).optional(),
+    kind: z.literal('date'),
+    dateFormat: z.enum(['short', 'long', 'relative']).optional(),
   }),
   z.object({
-    kind: z.literal("delta"),
+    kind: z.literal('delta'),
     decimals: z.number().optional(),
     upIsPositive: z.boolean().optional(),
     showSign: z.boolean().optional(),
   }),
   z.object({
-    kind: z.literal("status"),
+    kind: z.literal('status'),
     statusMap: z.record(
       z.string(),
       z.object({
-        tone: z.enum(["success", "warning", "danger", "info", "neutral"]),
+        tone: z.enum(['success', 'warning', 'danger', 'info', 'neutral']),
         label: z.string().optional(),
       }),
     ),
   }),
   z.object({
-    kind: z.literal("boolean"),
+    kind: z.literal('boolean'),
     labels: z
       .object({
         true: z.string(),
@@ -69,21 +70,21 @@ const formatSchema = z.discriminatedUnion("kind", [
       .optional(),
   }),
   z.object({
-    kind: z.literal("link"),
+    kind: z.literal('link'),
     hrefKey: z.string().optional(),
     external: z.boolean().optional(),
   }),
   z.object({
-    kind: z.literal("badge"),
+    kind: z.literal('badge'),
     colorMap: z
       .record(
         z.string(),
-        z.enum(["success", "warning", "danger", "info", "neutral"]),
+        z.enum(['success', 'warning', 'danger', 'info', 'neutral']),
       )
       .optional(),
   }),
   z.object({
-    kind: z.literal("array"),
+    kind: z.literal('array'),
     maxVisible: z.number().optional(),
   }),
 ]);
@@ -145,23 +146,23 @@ export const SerializableDataTableSchema = z.object({
   defaultSort: z
     .object({
       by: z.string().optional(),
-      direction: z.enum(["asc", "desc"]).optional(),
+      direction: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
   sort: z
     .object({
       by: z.string().optional(),
-      direction: z.enum(["asc", "desc"]).optional(),
+      direction: z.enum(['asc', 'desc']).optional(),
     })
     .optional(),
   emptyMessage: z.string().optional(),
   maxHeight: z.string().optional(),
   locale: z.string().optional(),
-  layout: z.enum(["auto", "table", "cards"]).optional(),
+  layout: z.enum(['auto', 'table', 'cards']).optional(),
 });
 
 const SerializableDataTableSchemaContract = defineToolUiContract(
-  "DataTable",
+  'DataTable',
   SerializableDataTableSchema,
 );
 
@@ -189,17 +190,17 @@ export function safeParseSerializableDataTable(
  */
 export interface DataTableProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   columns: Column[];
   data: RowData[];
   rowIdKey?: string;
-  defaultSort?: { by?: string; direction?: "asc" | "desc" };
-  sort?: { by?: string; direction?: "asc" | "desc" };
+  defaultSort?: { by?: string; direction?: 'asc' | 'desc' };
+  sort?: { by?: string; direction?: 'asc' | 'desc' };
   emptyMessage?: string;
   maxHeight?: string;
   locale?: string;
   className?: string;
-  layout?: "auto" | "table" | "cards";
-  onSortChange?: (sort: { by?: string; direction?: "asc" | "desc" }) => void;
+  layout?: 'auto' | 'table' | 'cards';
+  onSortChange?: (sort: { by?: string; direction?: 'asc' | 'desc' }) => void;
 }

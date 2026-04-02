@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { MessageDraft } from "../components";
+import { ref } from 'vue';
+import { MessageDraft } from '../components';
 
 const emailState = ref({
-  outcome: undefined as "sent" | "cancelled" | undefined,
+  outcome: undefined as 'sent' | 'cancelled' | undefined,
 });
 
 const slackState = ref({
-  outcome: undefined as "sent" | "cancelled" | undefined,
+  outcome: undefined as 'sent' | 'cancelled' | undefined,
 });
 
 function handleEmailSend() {
-  emailState.value.outcome = "sent";
+  emailState.value.outcome = 'sent';
 }
 
 function handleEmailCancel() {
-  emailState.value.outcome = "cancelled";
+  emailState.value.outcome = 'cancelled';
 }
 
 function handleSlackSend() {
-  slackState.value.outcome = "sent";
+  slackState.value.outcome = 'sent';
 }
 
 function handleSlackCancel() {
-  slackState.value.outcome = "cancelled";
+  slackState.value.outcome = 'cancelled';
 }
 
 function resetEmail() {
@@ -121,7 +121,7 @@ function resetSlack() {
         >
           Reset
         </button>
-        <MessageDraft
+        <message-draft
           id="message-draft-email"
           channel="email"
           subject="Q4 Planning Meeting"
@@ -140,7 +140,7 @@ Thanks!"
 
     <Variant title="Email with CC/BCC">
       <div class="w-full max-w-2xl">
-        <MessageDraft
+        <message-draft
           id="message-draft-cc"
           channel="email"
           subject="Project Update"
@@ -159,7 +159,7 @@ Best regards"
 
     <Variant title="Email with Long Body">
       <div class="w-full max-w-2xl">
-        <MessageDraft
+        <message-draft
           id="message-draft-long"
           channel="email"
           subject="Quarterly Review - Detailed Analysis"
@@ -206,7 +206,7 @@ The CEO"
         >
           Reset
         </button>
-        <MessageDraft
+        <message-draft
           id="message-draft-slack-channel"
           channel="slack"
           :target="{ type: 'channel', name: 'general', memberCount: 45 }"
@@ -220,7 +220,7 @@ The CEO"
 
     <Variant title="Slack DM">
       <div class="w-full max-w-xl">
-        <MessageDraft
+        <message-draft
           id="message-draft-slack-dm"
           channel="slack"
           :target="{ type: 'dm', name: 'john.doe' }"
@@ -231,7 +231,7 @@ The CEO"
 
     <Variant title="Sent Receipt">
       <div class="w-full max-w-2xl">
-        <MessageDraft
+        <message-draft
           id="message-draft-sent"
           channel="email"
           subject="Meeting Confirmation"
@@ -248,10 +248,10 @@ Best regards"
 
     <Variant title="Cancelled">
       <div class="w-full max-w-2xl">
-        <p class="text-muted-foreground text-sm mb-2">
+        <p class="mb-2 text-sm text-muted-foreground">
           Cancelled state renders nothing (as per design)
         </p>
-        <MessageDraft
+        <message-draft
           id="message-draft-cancelled"
           channel="email"
           subject="Draft Message"

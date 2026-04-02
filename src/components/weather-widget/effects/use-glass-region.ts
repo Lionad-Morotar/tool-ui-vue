@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   useState,
@@ -6,7 +6,7 @@ import {
   useCallback,
   useRef,
   type RefObject,
-} from "react";
+} from 'react';
 
 export interface GlassRegion {
   x: number;
@@ -87,14 +87,14 @@ export function useGlassRegion({
       containerObserver.observe(containerRef.current);
     }
 
-    window.addEventListener("resize", scheduleUpdate);
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
 
     return () => {
       targetObserver.disconnect();
       containerObserver.disconnect();
-      window.removeEventListener("resize", scheduleUpdate);
-      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      window.removeEventListener('scroll', scheduleUpdate);
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
       }
@@ -108,7 +108,7 @@ export function useContainerQuery(
   ref: RefObject<HTMLElement | null>,
   breakpoints: { name: string; minWidth: number }[],
 ): string {
-  const [activeBreakpoint, setActiveBreakpoint] = useState<string>("");
+  const [activeBreakpoint, setActiveBreakpoint] = useState<string>('');
 
   useEffect(() => {
     if (!ref.current) return;
@@ -118,7 +118,7 @@ export function useContainerQuery(
       if (!entry) return;
 
       const width = entry.contentRect.width;
-      let active = "";
+      let active = '';
 
       for (const bp of breakpoints) {
         if (width >= bp.minWidth) {
@@ -145,35 +145,35 @@ export function useAdaptiveGlassParams(
   specularIntensity: number;
 } {
   const breakpoint = useContainerQuery(containerRef, [
-    { name: "xs", minWidth: 0 },
-    { name: "sm", minWidth: 320 },
-    { name: "md", minWidth: 480 },
-    { name: "lg", minWidth: 640 },
+    { name: 'xs', minWidth: 0 },
+    { name: 'sm', minWidth: 320 },
+    { name: 'md', minWidth: 480 },
+    { name: 'lg', minWidth: 640 },
   ]);
 
   switch (breakpoint) {
-    case "xs":
+    case 'xs':
       return {
         refractionScale: 20,
         edgeWidth: 0.2,
         chromaticAberration: 0.8,
         specularIntensity: 1.0,
       };
-    case "sm":
+    case 'sm':
       return {
         refractionScale: 25,
         edgeWidth: 0.18,
         chromaticAberration: 1.0,
         specularIntensity: 1.2,
       };
-    case "md":
+    case 'md':
       return {
         refractionScale: 30,
         edgeWidth: 0.15,
         chromaticAberration: 1.2,
         specularIntensity: 1.5,
       };
-    case "lg":
+    case 'lg':
     default:
       return {
         refractionScale: 35,

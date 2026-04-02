@@ -8,9 +8,9 @@
  *
  * @module tool-ui-vue/components/order-summary/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
-import { ToolUIIdSchema, ToolUIRoleSchema } from "../../shared/schema";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
 /**
  * 订单项的 Schema 定义
@@ -41,7 +41,7 @@ const OrderItemsSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: `Duplicate item id: "${item.id}"`,
-          path: [index, "id"],
+          path: [index, 'id'],
         });
       }
 
@@ -72,7 +72,7 @@ export type Pricing = z.infer<typeof PricingSchema>;
 /**
  * 订单摘要变体的 Schema 定义
  */
-export const OrderSummaryVariantSchema = z.enum(["summary", "receipt"]);
+export const OrderSummaryVariantSchema = z.enum(['summary', 'receipt']);
 
 /**
  * 订单摘要变体类型
@@ -84,7 +84,7 @@ export type OrderSummaryVariant = z.infer<typeof OrderSummaryVariantSchema>;
  * 订单决策的 Schema 定义
  */
 export const OrderDecisionSchema = z.object({
-  action: z.literal("confirm"),
+  action: z.literal('confirm'),
   orderId: z.string().optional(),
   confirmedAt: z.string().datetime().optional(),
 });
@@ -111,19 +111,19 @@ export const SerializableOrderSummarySchema = z
   })
   .strict()
   .superRefine((value, ctx) => {
-    if (value.variant === "receipt" && value.choice === undefined) {
+    if (value.variant === 'receipt' && value.choice === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Receipt variant requires "choice".',
-        path: ["choice"],
+        path: ['choice'],
       });
     }
 
-    if (value.variant === "summary" && value.choice !== undefined) {
+    if (value.variant === 'summary' && value.choice !== undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Summary variant cannot include "choice".',
-        path: ["choice"],
+        path: ['choice'],
       });
     }
   });
@@ -137,7 +137,7 @@ export type SerializableOrderSummary = z.infer<
 >;
 
 const SerializableOrderSummarySchemaContract = defineToolUiContract(
-  "OrderSummary",
+  'OrderSummary',
   SerializableOrderSummarySchema,
 );
 
@@ -156,7 +156,7 @@ export const safeParseSerializableOrderSummary: (
  */
 export interface OrderSummaryProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   title?: string;
   variant?: OrderSummaryVariant;
   items: OrderItem[];

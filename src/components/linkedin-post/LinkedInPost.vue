@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { cn } from "./_adapter";
-import type { LinkedInPostProps, LinkedInPostData } from "./schema";
+import { ref, computed } from 'vue';
+import { cn } from './_adapter';
+import type { LinkedInPostProps, LinkedInPostData } from './schema';
 
 const props = defineProps<LinkedInPostProps>();
 
@@ -37,9 +37,9 @@ function formatRelativeTime(dateStr: string): string {
 
 function getDomain(url: string): string {
   try {
-    return new URL(url).hostname.replace(/^www\./, "");
+    return new URL(url).hostname.replace(/^www\./, '');
   } catch {
-    return "";
+    return '';
   }
 }
 
@@ -54,21 +54,21 @@ function sanitizeHref(href?: string): string | undefined {
   if (!candidate) return undefined;
 
   if (
-    candidate.startsWith("/") ||
-    candidate.startsWith("./") ||
-    candidate.startsWith("../") ||
-    candidate.startsWith("?") ||
-    candidate.startsWith("#")
+    candidate.startsWith('/') ||
+    candidate.startsWith('./') ||
+    candidate.startsWith('../') ||
+    candidate.startsWith('?') ||
+    candidate.startsWith('#')
   ) {
-    if (candidate.startsWith("//")) return undefined;
-    // eslint-disable-next-line no-control-regex -- intentionally matching control characters
+    if (candidate.startsWith('//')) return undefined;
+     
     if (/[\u0000-\u001F\u007F]/.test(candidate)) return undefined;
     return candidate;
   }
 
   try {
     const url = new URL(candidate);
-    if (url.protocol === "http:" || url.protocol === "https:") {
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
       return url.toString();
     }
   } catch {
@@ -93,13 +93,13 @@ function resolveSafeNavigationHref(
 }
 
 function handleAction(action: string) {
-  emit("action", action, props.post);
+  emit('action', action, props.post);
 }
 
 function handleLinkClick(url: string) {
   const safeUrl = resolveSafeNavigationHref(url);
-  if (safeUrl && typeof window !== "undefined") {
-    window.open(safeUrl, "_blank", "noopener,noreferrer");
+  if (safeUrl && typeof window !== 'undefined') {
+    window.open(safeUrl, '_blank', 'noopener,noreferrer');
   }
 }
 
@@ -108,7 +108,7 @@ const shouldTruncate = computed(() => {
 });
 
 const displayText = computed(() => {
-  if (!props.post.text) return "";
+  if (!props.post.text) return '';
   if (shouldTruncate.value && !isExpanded.value) {
     return props.post.text.slice(0, TEXT_PREVIEW_LENGTH);
   }
@@ -117,7 +117,6 @@ const displayText = computed(() => {
 </script>
 
 <script lang="ts">
-import { computed } from "vue";
 </script>
 
 <template>
@@ -126,7 +125,7 @@ import { computed } from "vue";
     :data-tool-ui-id="post.id"
     data-slot="linkedin-post"
   >
-    <article class="bg-card border-border flex flex-col gap-3 rounded-lg border p-3 shadow-sm">
+    <article class="flex flex-col gap-3 rounded-lg border border-border bg-card p-3 shadow-sm">
       <!-- Header -->
       <header class="flex items-start gap-3">
         <img
@@ -138,10 +137,10 @@ import { computed } from "vue";
         />
         <div class="flex min-w-0 flex-1 flex-col leading-tight">
           <span class="text-sm font-semibold">{{ post.author.name }}</span>
-          <span v-if="post.author.headline" class="text-muted-foreground line-clamp-1 text-xs">
+          <span v-if="post.author.headline" class="line-clamp-1 text-xs text-muted-foreground">
             {{ post.author.headline }}
           </span>
-          <div v-if="post.createdAt" class="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
+          <div v-if="post.createdAt" class="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
             <span>{{ formatRelativeTime(post.createdAt) }}</span>
             <span>·</span>
             <span>Edited</span>
@@ -173,8 +172,8 @@ import { computed } from "vue";
         <template v-if="shouldTruncate && !isExpanded">
           ...
           <button
+            class="ml-1 font-medium text-muted-foreground hover:text-foreground hover:underline"
             @click="isExpanded = true"
-            class="text-muted-foreground hover:text-foreground ml-1 font-medium hover:underline"
           >
             see more
           </button>
@@ -206,7 +205,7 @@ import { computed } from "vue";
         v-if="post.linkPreview && !post.media"
         :class="cn(
           'block overflow-hidden rounded-lg border',
-          resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer hover:bg-muted/50 transition-colors'
+          resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
         )"
         @click="post.linkPreview.url && handleLinkClick(post.linkPreview.url)"
       >
@@ -221,7 +220,7 @@ import { computed } from "vue";
           <div v-if="post.linkPreview.title" class="line-clamp-2 font-medium text-pretty">
             {{ post.linkPreview.title }}
           </div>
-          <div v-if="post.linkPreview.domain || getDomain(post.linkPreview.url)" class="text-muted-foreground mt-1 text-xs">
+          <div v-if="post.linkPreview.domain || getDomain(post.linkPreview.url)" class="mt-1 text-xs text-muted-foreground">
             {{ post.linkPreview.domain || getDomain(post.linkPreview.url) }}
           </div>
         </div>
@@ -233,7 +232,7 @@ import { computed } from "vue";
           type="button"
           :class="cn(
             'h-auto gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted',
-            post.stats?.isLiked ? 'text-blue-600 fill-blue-600' : ''
+            post.stats?.isLiked ? 'fill-blue-600 text-blue-600' : ''
           )"
           aria-label="Like"
           @click="handleAction('like')"
@@ -250,7 +249,7 @@ import { computed } from "vue";
             stroke-linejoin="round"
             class="size-4"
           >
-            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
           </svg>
           <span>Like</span>
           <span v-if="post.stats?.likes" class="text-muted-foreground">
@@ -275,9 +274,14 @@ import { computed } from "vue";
             stroke-linejoin="round"
             class="size-4"
           >
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-            <polyline points="16 6 12 2 8 6"/>
-            <line x1="12" x2="12" y1="2" y2="15"/>
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line
+              x1="12"
+              x2="12"
+              y1="2"
+              y2="15"
+            />
           </svg>
           <span>Share</span>
         </button>

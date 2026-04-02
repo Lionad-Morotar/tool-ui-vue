@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import {
   Sun,
   Cloud,
@@ -11,20 +10,21 @@ import {
   Snowflake,
   CloudHail,
   Wind,
-} from "lucide-vue-next";
-import { cn } from "./_adapter";
-import type {
-  ForecastDay,
-  TemperatureUnit,
-  WeatherConditionCode,
-} from "./schema";
+} from 'lucide-vue-next';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { cn } from './_adapter';
+import { useGlassStyles } from './composables/useGlassStyles';
 import {
   getSceneBrightnessFromTimeOfDay,
   getTimeOfDay,
   getWeatherTheme,
   type WeatherTheme,
-} from "./effects/parameter-mapper";
-import { useGlassStyles } from "./composables/useGlassStyles";
+} from './effects/parameter-mapper';
+import type {
+  ForecastDay,
+  TemperatureUnit,
+  WeatherConditionCode,
+} from './schema';
 
 interface GlassEffectParams {
   enabled?: boolean;
@@ -54,8 +54,13 @@ interface WeatherDataOverlayProps {
 
 const props = withDefaults(defineProps<WeatherDataOverlayProps>(), {
   forecast: () => [],
-  unit: "fahrenheit",
+  unit: 'fahrenheit',
+  theme: undefined,
+  timeOfDay: undefined,
+  timestamp: undefined,
+  className: '',
   reducedMotion: false,
+  glassParams: undefined,
 });
 
 // Glow state for mouse interaction
@@ -74,10 +79,10 @@ const pendingGlowFrame = ref<number | null>(null);
 
 // Resolved time of day
 const resolvedTimeOfDay = computed(() => {
-  if (typeof props.timeOfDay === "number") {
+  if (typeof props.timeOfDay === 'number') {
     return props.timeOfDay;
   }
-  if (typeof props.timestamp === "string") {
+  if (typeof props.timestamp === 'string') {
     return getTimeOfDay(props.timestamp);
   }
   return 0.5;
@@ -93,18 +98,18 @@ const theme = computed(() => {
   return getWeatherTheme(brightness);
 });
 
-const isDark = computed(() => theme.value === "dark");
+const isDark = computed(() => theme.value === 'dark');
 
 // Text colors based on theme
-const textPrimary = computed(() => (isDark.value ? "text-white" : "text-black"));
+const textPrimary = computed(() => (isDark.value ? 'text-white' : 'text-black'));
 const textPrimarySoft = computed(() =>
-  isDark.value ? "text-white/90" : "text-black/85"
+  isDark.value ? 'text-white/90' : 'text-black/85'
 );
 const textSecondary = computed(() =>
-  isDark.value ? "text-white/80" : "text-black/80"
+  isDark.value ? 'text-white/80' : 'text-black/80'
 );
 const textSubtle = computed(() =>
-  isDark.value ? "text-white/40" : "text-black/40"
+  isDark.value ? 'text-white/40' : 'text-black/40'
 );
 
 // Peak intensity for lighting effects
@@ -148,8 +153,8 @@ const forecastTextShadow = computed(() => {
 
 const shadowStyle = computed(() =>
   isDark.value
-    ? "0 1px 8px rgba(0,0,0,0.3)"
-    : "0 1px 8px rgba(255,255,255,0.3)"
+    ? '0 1px 8px rgba(0,0,0,0.3)'
+    : '0 1px 8px rgba(255,255,255,0.3)'
 );
 
 // Glass effect styles
@@ -283,7 +288,7 @@ onMounted(() => {
 
   // Resize observer for card dimensions
   let resizeObserver: ResizeObserver | null = null;
-  if (cardRef.value && typeof ResizeObserver !== "undefined") {
+  if (cardRef.value && typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(updateCardDimensions);
     resizeObserver.observe(cardRef.value);
   }
@@ -291,15 +296,15 @@ onMounted(() => {
   // Mouse events for glow effect
   const container = containerRef.value;
   if (container && !props.reducedMotion) {
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseleave", handleMouseLeave);
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseleave', handleMouseLeave);
   }
 
   onUnmounted(() => {
     resizeObserver?.disconnect();
     if (container) {
-      container.removeEventListener("mousemove", handleMouseMove);
-      container.removeEventListener("mouseleave", handleMouseLeave);
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
     }
     cancelPendingGlowFrame();
   });
@@ -318,13 +323,13 @@ watch(
 // Condition icons mapping
 const conditionIcons: Record<WeatherConditionCode, typeof Sun> = {
   clear: Sun,
-  "partly-cloudy": CloudSun,
+  'partly-cloudy': CloudSun,
   cloudy: Cloud,
   overcast: Cloud,
   fog: CloudFog,
   drizzle: CloudDrizzle,
   rain: CloudRain,
-  "heavy-rain": CloudRain,
+  'heavy-rain': CloudRain,
   thunderstorm: CloudLightning,
   snow: Snowflake,
   sleet: CloudHail,
@@ -334,9 +339,9 @@ const conditionIcons: Record<WeatherConditionCode, typeof Sun> = {
 
 // Formatting helpers
 const roundedTemperature = computed(() => Math.round(props.temperature));
-const unitSymbol = computed(() => (props.unit === "celsius" ? "C" : "F"));
+const unitSymbol = computed(() => (props.unit === 'celsius' ? 'C' : 'F'));
 const spokenUnit = computed(() =>
-  props.unit === "celsius" ? "Celsius" : "Fahrenheit"
+  props.unit === 'celsius' ? 'Celsius' : 'Fahrenheit'
 );
 
 // Font styles - computed to avoid template escaping issues
@@ -345,31 +350,31 @@ const fontFeatureSettings = '"tnum" 1, "case" 1';
 
 // Location text style
 const locationStyle = computed(() => ({
-  fontSize: "clamp(13px, 7.5cqmin, 17px)",
+  fontSize: 'clamp(13px, 7.5cqmin, 17px)',
   fontFamily: forecastFontFamily,
   textShadow: shadowStyle.value,
 }));
 
 // Temperature style
 const temperatureStyle = computed(() => ({
-  fontSize: "clamp(48px, 32cqmin, 72px)",
+  fontSize: 'clamp(48px, 32cqmin, 72px)',
   fontFamily: forecastFontFamily,
   fontFeatureSettings,
   textShadow: isDark.value
-    ? "0 2px 20px rgba(0,0,0,0.25)"
-    : "0 2px 20px rgba(255,255,255,0.3)",
+    ? '0 2px 20px rgba(0,0,0,0.25)'
+    : '0 2px 20px rgba(255,255,255,0.3)',
 }));
 
 // Degree symbol style
 const degreeStyle = computed(() => ({
-  fontSize: "clamp(18px, 12cqmin, 28px)",
+  fontSize: 'clamp(18px, 12cqmin, 28px)',
   fontFamily: forecastFontFamily,
   fontFeatureSettings,
 }));
 
 // Hi/Lo style
 const hiLoStyle = computed(() => ({
-  fontSize: "clamp(11px, 6.5cqmin, 15px)",
+  fontSize: 'clamp(11px, 6.5cqmin, 15px)',
 }));
 
 // Hi/Lo container style
@@ -403,7 +408,7 @@ function sineEasedGradient(
       `rgba(255,255,255,${opacity.toFixed(4)}) ${position.toFixed(1)}%`
     );
   }
-  return `radial-gradient(circle ${radius}px at ${x}px ${y}px, ${stops.join(", ")})`;
+  return `radial-gradient(circle ${radius}px at ${x}px ${y}px, ${stops.join(', ')})`;
 }
 
 // Edge shine style
@@ -415,10 +420,10 @@ const edgeShineStyle = computed(() => ({
     100,
     isDark.value ? 0.6 : 1
   ),
-  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-  maskComposite: "exclude",
-  WebkitMaskComposite: "xor",
-  padding: "0.5px",
+  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+  maskComposite: 'exclude',
+  WebkitMaskComposite: 'xor',
+  padding: '0.5px',
 }));
 
 // Forecast card style
@@ -444,7 +449,7 @@ const innerGlowStyle = computed(() => ({
     ref="containerRef"
     :class="
       cn(
-        'pointer-events-auto absolute inset-0 z-10 flex select-none flex-col',
+        'pointer-events-auto absolute inset-0 z-10 flex flex-col select-none',
         props.className
       )
     "
@@ -453,7 +458,7 @@ const innerGlowStyle = computed(() => ({
     <div class="px-6 pt-6">
       <div class="flex flex-col items-start">
         <h2
-          :class="cn('font-medium leading-[1.08] tracking-tight', textSecondary)"
+          :class="cn('leading-[1.08] font-medium tracking-tight', textSecondary)"
           :style="locationStyle"
         >
           {{ location }}
@@ -463,7 +468,7 @@ const innerGlowStyle = computed(() => ({
           <span
             :class="
               cn(
-                'font-[250] tabular-nums leading-[1.02] tracking-[-0.015em]',
+                'leading-[1.02] font-[250] tracking-[-0.015em] tabular-nums',
                 textPrimarySoft
               )
             "
@@ -539,7 +544,7 @@ const innerGlowStyle = computed(() => ({
               <span
                 :class="
                   cn(
-                    'text-[10px] uppercase tracking-[0.08em]',
+                    'text-[10px] tracking-[0.08em] uppercase',
                     index === 0 ? 'font-semibold' : 'font-medium',
                     textPrimary
                   )
@@ -564,7 +569,7 @@ const innerGlowStyle = computed(() => ({
                 <span
                   :class="
                     cn(
-                      'text-[15px] tabular-nums leading-[1.2] tracking-[-0.01em]',
+                      'text-[15px] leading-[1.2] tracking-[-0.01em] tabular-nums',
                       index === 0 ? 'font-semibold' : 'font-medium',
                       textPrimary
                     )
@@ -575,7 +580,7 @@ const innerGlowStyle = computed(() => ({
                 <span
                   :class="
                     cn(
-                      'font-normal text-[12px] tabular-nums leading-[1.3]',
+                      'text-[12px] leading-[1.3] font-normal tabular-nums',
                       textPrimary
                     )
                   "

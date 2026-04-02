@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/code-block/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
  * CodeBlock 的可序列化数据 Schema
@@ -25,8 +26,8 @@ export const CodeBlockPropsSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   code: z.string(),
-  language: z.string().trim().min(1).default("text"),
-  lineNumbers: z.enum(["visible", "hidden"]).default("visible"),
+  language: z.string().trim().min(1).default('text'),
+  lineNumbers: z.enum(['visible', 'hidden']).default('visible'),
   filename: z.string().optional(),
   highlightLines: z.array(z.number().int().positive()).optional(),
   maxCollapsedLines: z.number().min(1).optional(),
@@ -39,11 +40,11 @@ export const CodeBlockPropsSchema = z.object({
  */
 export interface CodeBlockProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   code: string;
   language?: string;
-  lineNumbers?: "visible" | "hidden";
+  lineNumbers?: 'visible' | 'hidden';
   filename?: string;
   highlightLines?: number[];
   maxCollapsedLines?: number;
@@ -53,7 +54,7 @@ export interface CodeBlockProps {
 /**
  * 代码块行号显示模式类型
  */
-export type CodeBlockLineNumbersMode = "visible" | "hidden";
+export type CodeBlockLineNumbersMode = 'visible' | 'hidden';
 
 /**
  * CodeBlock 的可序列化数据 Schema（排除 className）
@@ -69,7 +70,7 @@ export const SerializableCodeBlockSchema = CodeBlockPropsSchema.omit({
 export type SerializableCodeBlock = z.infer<typeof SerializableCodeBlockSchema>;
 
 const SerializableCodeBlockSchemaContract = defineToolUiContract(
-  "CodeBlock",
+  'CodeBlock',
   SerializableCodeBlockSchema,
 );
 

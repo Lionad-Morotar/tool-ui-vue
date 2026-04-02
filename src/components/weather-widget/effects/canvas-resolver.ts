@@ -1,16 +1,16 @@
-import type { WeatherEffectParams } from "./types";
 import {
   buildCanvasBaseFromWeather,
   createStudioTimestamp,
-} from "./canvas-resolver-base";
-import { resolveInterpolatedOverridesForTime } from "./checkpoint-overrides";
+} from './canvas-resolver-base';
+import { resolveInterpolatedOverridesForTime } from './checkpoint-overrides';
 import {
   applyWeatherEffectsOverrides,
   getNearestCheckpoint,
   TIME_CHECKPOINTS,
   type TimeCheckpoint,
   type WeatherEffectsTunedPresets,
-} from "./tuning";
+} from './tuning';
+import type { WeatherEffectParams } from './types';
 import type {
   CloudParams,
   InteractionParams,
@@ -18,13 +18,13 @@ import type {
   PostProcessParams,
   RainParams,
   WeatherEffectsCanvasProps,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
-export { mapWeatherCompositorParamsToCanvasProps } from "./canvas-resolver-base";
-export type { WeatherStudioCompositorParams } from "./canvas-resolver-base";
-export { resolveConditionCheckpointOverridesForTime } from "./checkpoint-overrides";
+export { mapWeatherCompositorParamsToCanvasProps } from './canvas-resolver-base';
+export type { WeatherStudioCompositorParams } from './canvas-resolver-base';
+export { resolveConditionCheckpointOverridesForTime } from './checkpoint-overrides';
 
-export type WeatherEffectsCheckpointMode = "nearest" | "interpolated";
+export type WeatherEffectsCheckpointMode = 'nearest' | 'interpolated';
 
 export interface ResolveWeatherEffectsCanvasPropsInput extends WeatherEffectParams {
   tunedPresets?: WeatherEffectsTunedPresets;
@@ -51,10 +51,10 @@ function resolveBaseForCheckpoint(
 export function resolveWeatherEffectsCanvasProps(
   input: ResolveWeatherEffectsCanvasPropsInput,
 ): WeatherEffectsCanvasProps {
-  const checkpointMode = input.checkpointMode ?? "nearest";
+  const checkpointMode = input.checkpointMode ?? 'nearest';
   const base = buildCanvasBaseFromWeather(input);
   const explicitTimeOfDay = input.timeOfDay;
-  if (typeof explicitTimeOfDay === "number" && base.celestial) {
+  if (typeof explicitTimeOfDay === 'number' && base.celestial) {
     base.celestial.timeOfDay = explicitTimeOfDay;
   }
 
@@ -64,7 +64,7 @@ export function resolveWeatherEffectsCanvasProps(
     return base;
   }
 
-  if (checkpointMode === "interpolated") {
+  if (checkpointMode === 'interpolated') {
     const interpolated = resolveInterpolatedOverridesForTime({
       checkpointOverrides: conditionCheckpoints,
       timeOfDay,

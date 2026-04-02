@@ -1,4 +1,4 @@
-import { ref, computed, watch, type Ref } from "vue";
+import { ref, computed, watch, type Ref } from 'vue';
 
 interface GlassEffectOptions {
   depth: number;
@@ -59,7 +59,7 @@ function buildDisplacementMapSvg({
     </g>
   </svg>`;
 
-  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
 interface DisplacementFilterParams extends DisplacementMapParams {
@@ -109,7 +109,7 @@ function buildDisplacementFilterUrl({
     </defs>
   </svg>`;
 
-  return "data:image/svg+xml;utf8," + encodeURIComponent(svg) + "#displace";
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '#displace';
 }
 
 interface BackdropFilterParams {
@@ -130,10 +130,10 @@ function buildBackdropFilterValue({
 
 // Check if backdrop-filter is supported
 function supportsBackdropFilter(): boolean {
-  if (typeof CSS === "undefined") return false;
+  if (typeof CSS === 'undefined') return false;
   return (
-    CSS.supports("backdrop-filter", "blur(1px)") ||
-    CSS.supports("-webkit-backdrop-filter", "blur(1px)")
+    CSS.supports('backdrop-filter', 'blur(1px)') ||
+    CSS.supports('-webkit-backdrop-filter', 'blur(1px)')
   );
 }
 

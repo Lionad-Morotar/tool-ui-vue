@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { Video } from "../components";
+import { reactive, ref } from 'vue';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Video is used in template as <video> (kebab-case)
+import { Video } from '../components';
 
 const interactiveState = reactive({
-  src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  assetId: "demo-video-interactive",
-  title: "Interactive Video",
-  description: "Adjust the properties to see different states",
-  ratio: "16:9" as const,
-  fit: "cover" as const,
+  src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  assetId: 'demo-video-interactive',
+  title: 'Interactive Video',
+  description: 'Adjust the properties to see different states',
+  ratio: '16:9' as const,
+  fit: 'cover' as const,
   autoPlay: false,
 });
 
@@ -44,7 +45,7 @@ function clearNavigateLog() {
   <Story title="Video/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-basic"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           asset-id="demo-video-1"
@@ -54,7 +55,7 @@ function clearNavigateLog() {
 
     <Variant title="With Poster">
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-poster"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           asset-id="demo-video-2"
@@ -66,7 +67,7 @@ function clearNavigateLog() {
 
     <Variant title="With Description">
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-description"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
           asset-id="demo-video-3"
@@ -80,7 +81,7 @@ function clearNavigateLog() {
 
     <Variant title="With Navigation">
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-nav"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-nav"
@@ -96,7 +97,7 @@ function clearNavigateLog() {
 
     <Variant title="Square Format">
       <div class="w-full max-w-sm">
-        <Video
+        <video
           id="video-square"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-4"
@@ -108,7 +109,7 @@ function clearNavigateLog() {
 
     <Variant title="Vertical Format">
       <div class="w-full max-w-xs">
-        <Video
+        <video
           id="video-vertical"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
           asset-id="demo-video-5"
@@ -121,7 +122,7 @@ function clearNavigateLog() {
     <Variant title="With Event Logging" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-events"
             src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             asset-id="demo-video-events"
@@ -134,7 +135,7 @@ function clearNavigateLog() {
         </div>
 
         <div class="w-full max-w-lg rounded-lg border border-border bg-card p-4">
-          <div class="flex items-center justify-between mb-2">
+          <div class="mb-2 flex items-center justify-between">
             <h4 class="text-sm font-semibold">Event Log</h4>
             <button
               type="button"
@@ -159,7 +160,7 @@ function clearNavigateLog() {
     <Variant title="Interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-interactive"
             v-bind="interactiveState"
             @media-event="handleMediaEvent"
@@ -209,7 +210,7 @@ function clearNavigateLog() {
         </div>
 
         <div v-if="navigateLog.length > 0" class="w-full max-w-lg rounded-lg border border-border bg-card p-4">
-          <div class="flex items-center justify-between mb-2">
+          <div class="mb-2 flex items-center justify-between">
             <h4 class="text-sm font-semibold">Navigation Log</h4>
             <button
               type="button"

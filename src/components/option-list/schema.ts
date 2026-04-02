@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/components/option-list/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ActionSchema,
   SerializableActionSchema,
@@ -17,7 +17,8 @@ import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { Action, SerializableActionsConfig } from '../../shared/schema';
 
 /**
  * 选项列表中单个选项的 Schema 定义
@@ -51,7 +52,7 @@ type OptionListSchemaInvariantInput = {
 
 function selectionToIds(selection: OptionListSelection | undefined): string[] {
   if (selection == null) return [];
-  if (typeof selection === "string") return [selection];
+  if (typeof selection === 'string') return [selection];
   return Array.isArray(selection) ? selection : [];
 }
 
@@ -66,8 +67,8 @@ function validateOptionListInvariants(
   ) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      path: ["minSelections"],
-      message: "`minSelections` cannot be greater than `maxSelections`.",
+      path: ['minSelections'],
+      message: '`minSelections` cannot be greater than `maxSelections`.',
     });
   }
 
@@ -79,7 +80,7 @@ function validateOptionListInvariants(
     if (optionIds.has(optionId)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["options", index, "id"],
+        path: ['options', index, 'id'],
         message: `Duplicate option id "${optionId}" is not allowed.`,
       });
     } else {
@@ -88,11 +89,11 @@ function validateOptionListInvariants(
   }
 
   const selectionFields: Array<
-    ["value" | "defaultValue" | "choice", OptionListSelection | undefined]
+    ['value' | 'defaultValue' | 'choice', OptionListSelection | undefined]
   > = [
-      ["value", data.value],
-      ["defaultValue", data.defaultValue],
-      ["choice", data.choice],
+      ['value', data.value],
+      ['defaultValue', data.defaultValue],
+      ['choice', data.choice],
     ];
 
   for (const [fieldName, selection] of selectionFields) {
@@ -104,7 +105,7 @@ function validateOptionListInvariants(
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path:
-            typeof selection === "string" ? [fieldName] : [fieldName, index],
+            typeof selection === 'string' ? [fieldName] : [fieldName, index],
           message: `Selection id "${selectionId}" must exist in options.`,
         });
       }
@@ -117,7 +118,7 @@ const OptionListPropsSchemaBase = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   options: z.array(OptionListOptionSchema).min(1),
-  selectionMode: z.enum(["multi", "single"]).optional(),
+  selectionMode: z.enum(['multi', 'single']).optional(),
   value: OptionListSelectionSchema,
   defaultValue: OptionListSelectionSchema,
   choice: OptionListSelectionSchema,
@@ -153,21 +154,21 @@ export interface OptionListOption {
  */
 export interface OptionListProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: {
-    outcome: "success" | "partial" | "failed" | "cancelled";
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
     summary: string;
     identifiers?: Record<string, string>;
     at: string;
   };
   options: OptionListOption[];
-  selectionMode?: "multi" | "single";
+  selectionMode?: 'multi' | 'single';
   value?: OptionListSelection;
   defaultValue?: OptionListSelection;
   choice?: OptionListSelection;
   actions?:
-  | import("../../shared/schema").Action[]
-  | import("../../shared/schema").SerializableActionsConfig;
+    | Action[]
+    | SerializableActionsConfig;
   minSelections?: number;
   maxSelections?: number;
   onChange?: (value: OptionListSelection) => void;
@@ -203,7 +204,7 @@ export type SerializableOptionList = z.infer<
 >;
 
 const SerializableOptionListSchemaContract = defineToolUiContract(
-  "OptionList",
+  'OptionList',
   SerializableOptionListSchema,
 );
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { usePreferredReducedMotion } from "@vueuse/core";
-import { cn } from "./_adapter";
-import type { WeatherWidgetProps } from "./schema";
-import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from "./effects/parameter-mapper";
-import { getNearestCheckpoint } from "./effects/tuning";
-import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from "./effects/generated/tuned-presets.generated";
-import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from "./time";
-import EffectCompositor from "./EffectCompositor.vue";
-import WeatherDataOverlay from "./WeatherDataOverlay.vue";
+import { usePreferredReducedMotion } from '@vueuse/core';
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import EffectCompositor from './EffectCompositor.vue';
+import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
+import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from './effects/parameter-mapper';
+import { getNearestCheckpoint } from './effects/tuning';
+import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from './time';
+import WeatherDataOverlay from './WeatherDataOverlay.vue';
+import type { WeatherWidgetProps } from './schema';
 
 const props = defineProps<WeatherWidgetProps>();
 
@@ -18,11 +18,11 @@ const preferredReducedMotion = usePreferredReducedMotion();
 // Resolve reduced motion from props or system preference
 const reducedMotion = computed(() => {
   // If explicitly set in props.effects, use that
-  if (typeof props.effects?.reducedMotion === "boolean") {
+  if (typeof props.effects?.reducedMotion === 'boolean') {
     return props.effects.reducedMotion;
   }
   // Otherwise use system preference
-  return preferredReducedMotion.value === "reduce";
+  return preferredReducedMotion.value === 'reduce';
 });
 
 // Determine if effects are enabled
@@ -69,17 +69,17 @@ const weatherTheme = computed(() => {
   return getWeatherTheme(brightness.value);
 });
 
-const isWeatherDark = computed(() => weatherTheme.value === "dark");
+const isWeatherDark = computed(() => weatherTheme.value === 'dark');
 
 // Units with default fallback
 const units = computed(() => {
-  return props.units ?? { temperature: "celsius" as const };
+  return props.units ?? { temperature: 'celsius' as const };
 });
 
 const backgroundClass = computed(() => {
   return isWeatherDark.value
-    ? "bg-gradient-to-b from-zinc-950 via-zinc-900/70 to-zinc-950"
-    : "bg-gradient-to-b from-sky-50 via-sky-100/70 to-white";
+    ? 'bg-gradient-to-b from-zinc-950 via-zinc-900/70 to-zinc-950'
+    : 'bg-gradient-to-b from-sky-50 via-sky-100/70 to-white';
 });
 </script>
 
@@ -92,13 +92,13 @@ const backgroundClass = computed(() => {
     <div
       :class="
         cn(
-          '@container/weather relative aspect-[4/3] overflow-clip rounded-2xl border-0 p-0 shadow-none [container-type:size]',
+          '@container/weather [container-type:size] relative aspect-[4/3] overflow-clip rounded-2xl border-0 p-0 shadow-none',
           backgroundClass
         )
       "
     >
       <!-- Effects Layer -->
-      <EffectCompositor
+      <effect-compositor
         v-if="effectsEnabled"
         class="absolute inset-0"
         :condition-code="current.conditionCode"
@@ -111,7 +111,7 @@ const backgroundClass = computed(() => {
       />
 
       <!-- Weather Data Overlay -->
-      <WeatherDataOverlay
+      <weather-data-overlay
         :location="location.name"
         :condition-code="current.conditionCode"
         :temperature="current.temperature"

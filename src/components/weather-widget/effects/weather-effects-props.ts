@@ -7,11 +7,11 @@ import {
   DEFAULT_POST,
   DEFAULT_RAIN,
   DEFAULT_SNOW,
-} from "./weather-effects-defaults";
+} from './weather-effects-defaults';
 import type {
   ResolvedWeatherEffectsCanvasProps,
   WeatherEffectsCanvasProps,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
 function mergeDefined<T extends object>(
   defaults: T,

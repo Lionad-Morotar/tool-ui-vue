@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { useMediaControls } from "@vueuse/core";
-import { cn } from "./_adapter";
-import { useLocalAudio } from "./context";
-import type { AudioProps, AudioVariant } from "./schema";
+import { useMediaControls } from '@vueuse/core';
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
+import { useLocalAudio } from './context';
+import type { AudioProps, AudioVariant } from './schema';
 // formatDuration is available from shared/media if needed for future enhancements
 
 const props = withDefaults(defineProps<AudioProps>(), {
-  variant: "full" as AudioVariant,
+  variant: 'full' as AudioVariant,
 });
 
 const emit = defineEmits<{
-  mediaEvent: [type: "play" | "pause" | "mute" | "unmute" | "error"];
+  mediaEvent: [type: 'play' | 'pause' | 'mute' | 'unmute' | 'error'];
 }>();
 
-const FALLBACK_LOCALE = "en-US";
+const FALLBACK_LOCALE = 'en-US';
 
 const audioRef = ref<HTMLAudioElement | null>(null);
 const isSeeking = ref(false);
@@ -56,7 +56,7 @@ watch(
 );
 
 const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
-const isCompact = computed(() => props.variant === "compact");
+const isCompact = computed(() => props.variant === 'compact');
 
 // Use duration from props if available, otherwise from media controls
 const displayDuration = computed(() => {
@@ -81,10 +81,10 @@ const progress = computed(() => {
 });
 
 function formatTime(seconds: number): string {
-  if (!Number.isFinite(seconds)) return "0:00";
+  if (!Number.isFinite(seconds)) return '0:00';
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
 function handlePlayPause() {
@@ -106,15 +106,15 @@ function handleSeekEnd() {
 }
 
 function handlePlayEvent() {
-  emit("mediaEvent", "play");
+  emit('mediaEvent', 'play');
 }
 
 function handlePauseEvent() {
-  emit("mediaEvent", "pause");
+  emit('mediaEvent', 'pause');
 }
 
 function handleErrorEvent() {
-  emit("mediaEvent", "error");
+  emit('mediaEvent', 'error');
 }
 
 // Watch for media events from the controls
@@ -122,9 +122,9 @@ watch(
   () => mediaControls.playing.value,
   (newValue, oldValue) => {
     if (newValue && !oldValue) {
-      emit("mediaEvent", "play");
+      emit('mediaEvent', 'play');
     } else if (!newValue && oldValue) {
-      emit("mediaEvent", "pause");
+      emit('mediaEvent', 'pause');
     }
   }
 );
@@ -135,7 +135,7 @@ watch(
   () => state.muted,
   (newValue) => {
     if (previousMuted !== newValue) {
-      emit("mediaEvent", newValue ? "mute" : "unmute");
+      emit('mediaEvent', newValue ? 'mute' : 'unmute');
       previousMuted = newValue;
     }
   }
@@ -147,7 +147,7 @@ watch(
     :class="
       cn(
         '@container/actions relative w-full',
-        isCompact ? 'min-w-72 max-w-md' : 'min-w-52 max-w-sm',
+        isCompact ? 'max-w-md min-w-72' : 'max-w-sm min-w-52',
         className
       )
     "
@@ -159,7 +159,7 @@ watch(
       :class="
         cn(
           'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden',
-          'border-border bg-card border text-sm shadow-xs',
+          'border border-border bg-card text-sm shadow-xs',
           'rounded-xl'
         )
       "
@@ -170,7 +170,7 @@ watch(
           <!-- Artwork -->
           <div
             v-if="artwork"
-            class="bg-muted relative aspect-[4/3] w-full overflow-hidden"
+            class="relative aspect-[4/3] w-full overflow-hidden bg-muted"
           >
             <img
               :src="artwork"
@@ -188,13 +188,13 @@ watch(
             <div v-if="title || description" class="space-y-0.5">
               <div
                 v-if="title"
-                class="text-foreground line-clamp-2 font-semibold leading-snug"
+                class="line-clamp-2 leading-snug font-semibold text-foreground"
               >
                 {{ title }}
               </div>
               <div
                 v-if="description"
-                class="text-muted-foreground line-clamp-2 text-sm leading-snug"
+                class="line-clamp-2 text-sm leading-snug text-muted-foreground"
               >
                 {{ description }}
               </div>
@@ -205,15 +205,15 @@ watch(
               <div class="flex flex-1 flex-col gap-2">
                 <!-- Progress Slider -->
                 <div
-                  class="relative flex w-full touch-none select-none items-center py-2"
+                  class="relative flex w-full touch-none items-center py-2 select-none"
                 >
                   <!-- Track Background -->
                   <div
-                    class="bg-foreground/20 absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full"
+                    class="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-foreground/20"
                   />
                   <!-- Track Fill -->
                   <div
-                    class="bg-foreground absolute left-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full"
+                    class="absolute top-1/2 left-0 h-1.5 -translate-y-1/2 rounded-full bg-foreground"
                     :style="{ width: `${progress}%` }"
                   />
                   <!-- Range Input -->
@@ -236,7 +236,7 @@ watch(
                 </div>
                 <!-- Time Display -->
                 <div
-                  class="text-muted-foreground flex items-center justify-between text-xs tabular-nums"
+                  class="flex items-center justify-between text-xs text-muted-foreground tabular-nums"
                 >
                   <span>{{ currentTimeDisplay }}</span>
                   <span>{{ durationDisplay }}</span>
@@ -262,8 +262,18 @@ watch(
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
+                  <rect
+                    x="6"
+                    y="4"
+                    width="4"
+                    height="16"
+                  />
+                  <rect
+                    x="14"
+                    y="4"
+                    width="4"
+                    height="16"
+                  />
                 </svg>
                 <svg
                   v-else
@@ -297,17 +307,17 @@ watch(
               :src="artwork"
               alt=""
               aria-hidden="true"
-              class="pointer-events-none absolute -left-1/4 top-1/2 h-[200%] w-auto -translate-y-1/2 object-cover opacity-40 blur-2xl saturate-150"
+              class="pointer-events-none absolute top-1/2 -left-1/4 h-[200%] w-auto -translate-y-1/2 object-cover opacity-40 blur-2xl saturate-150"
             />
             <div
-              class="from-card/60 to-card/90 pointer-events-none absolute inset-0 bg-gradient-to-r"
+              class="pointer-events-none absolute inset-0 bg-gradient-to-r from-card/60 to-card/90"
             />
           </template>
 
           <!-- Artwork thumbnail -->
           <div
             v-if="artwork"
-            class="ring-background/20 relative size-12 shrink-0 overflow-hidden rounded-lg shadow-lg ring-1"
+            class="relative size-12 shrink-0 overflow-hidden rounded-lg shadow-lg ring-1 ring-background/20"
           >
             <img
               :src="artwork"
@@ -323,27 +333,27 @@ watch(
           <div class="relative flex min-w-0 flex-1 flex-col justify-center">
             <div
               v-if="title"
-              class="text-foreground truncate text-sm font-semibold leading-tight"
+              class="truncate text-sm leading-tight font-semibold text-foreground"
             >
               {{ title }}
             </div>
             <div
               v-if="description"
-              class="text-muted-foreground mt-0.5 truncate text-xs leading-tight"
+              class="mt-0.5 truncate text-xs leading-tight text-muted-foreground"
             >
               {{ description }}
             </div>
             <!-- Progress bar -->
             <div v-if="displayDuration > 0" class="mt-1 flex items-center gap-2">
               <div
-                class="bg-foreground/20 relative h-1 flex-1 overflow-hidden rounded-full"
+                class="relative h-1 flex-1 overflow-hidden rounded-full bg-foreground/20"
               >
                 <div
-                  class="bg-foreground absolute inset-y-0 left-0 rounded-full transition-all duration-150"
+                  class="absolute inset-y-0 left-0 rounded-full bg-foreground transition-all duration-150"
                   :style="{ width: `${progress}%` }"
                 />
               </div>
-              <span class="text-muted-foreground text-xs tabular-nums">
+              <span class="text-xs text-muted-foreground tabular-nums">
                 {{ currentTimeDisplay }}
               </span>
             </div>
@@ -368,8 +378,18 @@ watch(
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <rect x="6" y="4" width="4" height="16" />
-              <rect x="14" y="4" width="4" height="16" />
+              <rect
+                x="6"
+                y="4"
+                width="4"
+                height="16"
+              />
+              <rect
+                x="14"
+                y="4"
+                width="4"
+                height="16"
+              />
             </svg>
             <svg
               v-else

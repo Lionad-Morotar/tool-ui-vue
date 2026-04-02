@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { ImageGallery } from "../components";
+import { reactive } from 'vue';
+import { ImageGallery } from '../components';
 
 const galleryState = reactive({
   clickCount: 0,
@@ -70,7 +70,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
   <Story title="ImageGallery/All Variants">
     <Variant title="Grid Layout">
       <div class="w-full max-w-2xl">
-        <ImageGallery
+        <image-gallery
           id="image-gallery-grid"
           title="Photo Collection"
           description="A selection of nature photography"
@@ -81,10 +81,10 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Waterfall Layout (Masonry)">
       <div class="w-full max-w-2xl">
-        <p class="text-muted-foreground mb-4 text-sm">
+        <p class="mb-4 text-sm text-muted-foreground">
           Portrait images (height > width) automatically span 2 rows
         </p>
-        <ImageGallery
+        <image-gallery
           id="image-gallery-waterfall"
           title="Waterfall Gallery"
           description="Mixed orientation images demonstrating masonry layout"
@@ -95,7 +95,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="With Titles">
       <div class="w-full max-w-2xl">
-        <ImageGallery
+        <image-gallery
           id="image-gallery-titles"
           :images="titledImages"
         />
@@ -104,10 +104,10 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="With Source Attribution">
       <div class="w-full max-w-2xl">
-        <p class="text-muted-foreground mb-4 text-sm">
+        <p class="mb-4 text-sm text-muted-foreground">
           Images can include source information with optional links
         </p>
-        <ImageGallery
+        <image-gallery
           id="image-gallery-sourced"
           title="Curated Collection"
           description="Images with source attribution"
@@ -118,7 +118,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Single Image">
       <div class="w-full max-w-md">
-        <ImageGallery
+        <image-gallery
           id="image-gallery-single"
           :images="singleImage"
         />
@@ -127,13 +127,13 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Interactive - Lightbox Demo">
       <div class="w-full max-w-2xl">
-        <p class="text-muted-foreground mb-4 text-sm">
+        <p class="mb-4 text-sm text-muted-foreground">
           Click count: {{ galleryState.clickCount }}
           <span v-if="galleryState.lastClickedImage" class="ml-2 text-primary">
             (Last: Image {{ galleryState.lastClickedImage }})
           </span>
         </p>
-        <ImageGallery
+        <image-gallery
           id="image-gallery-interactive"
           title="Click to Open Lightbox"
           description="Images open in fullscreen lightbox with keyboard navigation (Arrow keys, Escape)"
@@ -145,7 +145,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Different Image Counts - 2 Images">
       <div class="w-full max-w-md">
-        <ImageGallery
+        <image-gallery
           id="image-gallery-2"
           :images="twoImages"
         />
@@ -154,7 +154,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Different Image Counts - 9 Images">
       <div class="w-full max-w-2xl">
-        <ImageGallery
+        <image-gallery
           id="image-gallery-9"
           title="Photo Grid"
           :images="nineImages"
@@ -164,9 +164,9 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
     <Variant title="Lightbox Features">
       <div class="w-full max-w-2xl space-y-4">
-        <div class="text-muted-foreground text-sm space-y-2">
+        <div class="space-y-2 text-sm text-muted-foreground">
           <p>The lightbox supports:</p>
-          <ul class="list-disc list-inside space-y-1">
+          <ul class="list-inside list-disc space-y-1">
             <li><strong>Keyboard navigation:</strong> Arrow keys to navigate, Escape to close</li>
             <li><strong>Touch gestures:</strong> Swipe left/right to navigate (on touch devices)</li>
             <li><strong>Image counter:</strong> Shows current position (e.g., "2 / 4")</li>
@@ -174,7 +174,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
             <li><strong>Reduced motion:</strong> Respects user's motion preferences</li>
           </ul>
         </div>
-        <ImageGallery
+        <image-gallery
           id="image-gallery-features"
           title="Feature Demo"
           description="Try the keyboard navigation and explore the lightbox"

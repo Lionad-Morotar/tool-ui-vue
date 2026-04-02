@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { ApprovalCard } from "../components";
+import { reactive } from 'vue';
+import { ApprovalCard } from '../components';
 
 /**
  * # ApprovalCard
@@ -47,21 +47,21 @@ import { ApprovalCard } from "../components";
  */
 
 const interactiveState = reactive({
-  title: "Deploy to Production",
-  description: "This will push the latest changes to all users.",
-  variant: "default" as const,
-  icon: "rocket",
-  confirmLabel: "Deploy",
-  cancelLabel: "Cancel",
-  choice: undefined as "approved" | "denied" | undefined,
+  title: 'Deploy to Production',
+  description: 'This will push the latest changes to all users.',
+  variant: 'default' as const,
+  icon: 'rocket',
+  confirmLabel: 'Deploy',
+  cancelLabel: 'Cancel',
+  choice: undefined as 'approved' | 'denied' | undefined,
 });
 
 function handleConfirm() {
-  interactiveState.choice = "approved";
+  interactiveState.choice = 'approved';
 }
 
 function handleCancel() {
-  interactiveState.choice = "denied";
+  interactiveState.choice = 'denied';
 }
 
 function resetChoice() {
@@ -72,30 +72,30 @@ function resetChoice() {
 <template>
   <Story title="ApprovalCard/Basic">
     <Variant title="Default">
-      <ApprovalCard
+      <approval-card
         id="approval-card-basic"
         title="Deploy to Production"
         description="This will push the latest changes to all users."
         icon="rocket"
-        confirmLabel="Deploy"
-        cancelLabel="Cancel"
+        confirm-label="Deploy"
+        cancel-label="Cancel"
       />
     </Variant>
 
     <Variant title="Destructive">
-      <ApprovalCard
+      <approval-card
         id="approval-card-destructive"
         title="Delete Project"
         description="This action cannot be undone. All files, settings, and history will be permanently removed."
         variant="destructive"
         icon="trash-2"
-        confirmLabel="Delete Project"
-        cancelLabel="Keep Project"
+        confirm-label="Delete Project"
+        cancel-label="Keep Project"
       />
     </Variant>
 
     <Variant title="With Metadata">
-      <ApprovalCard
+      <approval-card
         id="approval-card-metadata"
         title="Send Email Campaign"
         description="Review the details before sending to your subscribers."
@@ -105,50 +105,50 @@ function resetChoice() {
           { key: 'Subject', value: 'Your Weekly Digest' },
           { key: 'Scheduled', value: 'Immediately' },
         ]"
-        confirmLabel="Send Now"
-        cancelLabel="Cancel"
+        confirm-label="Send Now"
+        cancel-label="Cancel"
       />
     </Variant>
 
     <Variant title="Minimal">
-      <ApprovalCard
+      <approval-card
         id="approval-card-minimal"
         title="Confirm action?"
       />
     </Variant>
 
     <Variant title="Receipt State (Approved)">
-      <ApprovalCard
+      <approval-card
         id="approval-card-receipt-approved"
         title="Back up database"
         choice="approved"
-        confirmLabel="Approved"
+        confirm-label="Approved"
       />
     </Variant>
 
     <Variant title="Receipt State (Denied)">
-      <ApprovalCard
+      <approval-card
         id="approval-card-receipt-denied"
         title="Delete all project files"
         choice="denied"
-        cancelLabel="Denied"
+        cancel-label="Denied"
       />
     </Variant>
 
     <Variant title="Custom Labels">
-      <ApprovalCard
+      <approval-card
         id="approval-card-custom"
         title="Submit proposal?"
         description="This will send the proposal to the client"
         icon="file-text"
-        confirmLabel="Submit"
-        cancelLabel="Save Draft"
+        confirm-label="Submit"
+        cancel-label="Save Draft"
       />
     </Variant>
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
-        <ApprovalCard
+        <approval-card
           id="approval-card-interactive"
           v-bind="interactiveState"
           @confirm="handleConfirm"

@@ -1,4 +1,4 @@
-import { inject, provide, ref, shallowRef, type InjectionKey } from "vue";
+import { inject, provide, ref, shallowRef, type InjectionKey } from 'vue';
 
 export interface AudioPlaybackState {
   playing: boolean;
@@ -13,12 +13,12 @@ export interface AudioContextValue {
   setAudioElement: (node: HTMLAudioElement | null) => void;
 }
 
-const AudioContextKey: InjectionKey<AudioContextValue> = Symbol("audio-context");
+const AudioContextKey: InjectionKey<AudioContextValue> = Symbol('audio-context');
 
 export function useAudio(): AudioContextValue {
   const ctx = inject(AudioContextKey);
   if (!ctx) {
-    throw new Error("useAudio must be used within an <AudioProvider />");
+    throw new Error('useAudio must be used within an <AudioProvider />');
   }
   return ctx;
 }

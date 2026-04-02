@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import type { WeatherConditionCode } from "../schema";
-import type { EffectSettings } from "./effects/types";
-import type { WeatherEffectsCanvasProps } from "./effects/weather-effects-types";
-import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from "./effects/generated/tuned-presets.generated";
-import type { WeatherEffectsTunedPresets } from "./effects/tuning";
-import { resolveWeatherEffectsCanvasRuntimeProps } from "./effects/canvas-resolver-runtime";
+import { ref, computed, onMounted } from 'vue';
+import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/canvas-resolver-runtime';
 import {
   resolveEffectCanvasDpr,
   resolveEffectQuality,
-} from "./effects/effect-compositor-quality";
-import WeatherEffectsCanvas from "./WeatherEffectsCanvas.vue";
+} from './effects/effect-compositor-quality';
+import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
+import WeatherEffectsCanvas from './WeatherEffectsCanvas.vue';
+import type { WeatherConditionCode } from '../schema';
+import type { WeatherEffectsTunedPresets } from './effects/tuning';
+import type { EffectSettings } from './effects/types';
+import type { WeatherEffectsCanvasProps } from './effects/weather-effects-types';
 
 const DEFAULT_TUNED_PRESETS: WeatherEffectsTunedPresets =
   TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES;
@@ -18,7 +18,7 @@ const DEFAULT_TUNED_PRESETS: WeatherEffectsTunedPresets =
 interface EffectCompositorProps {
   conditionCode: WeatherConditionCode;
   windSpeed?: number;
-  precipitationLevel?: "none" | "light" | "moderate" | "heavy";
+  precipitationLevel?: 'none' | 'light' | 'moderate' | 'heavy';
   visibility?: number;
   timestamp?: string;
   timeOfDay?: number;
@@ -38,7 +38,7 @@ const enabled = computed(() => props.settings?.enabled !== false);
 const reducedMotion = computed(() => props.settings?.reducedMotion ?? false);
 
 const resolvedQuality = computed(() =>
-  resolveEffectQuality(props.settings?.quality ?? "auto")
+  resolveEffectQuality(props.settings?.quality ?? 'auto')
 );
 
 const dpr = computed(() => resolveEffectCanvasDpr(resolvedQuality.value));
@@ -80,7 +80,7 @@ const shouldRender = computed(() => {
     "
     aria-hidden="true"
   >
-    <WeatherEffectsCanvas
+    <weather-effects-canvas
       class="absolute inset-0"
       :dpr="dpr"
       v-bind="canvasProps!"

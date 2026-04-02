@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from "./_adapter";
-import type { InstagramPostProps, InstagramPostData } from "./schema";
+import { cn } from './_adapter';
+import type { InstagramPostProps, InstagramPostData } from './schema';
 
 const props = defineProps<InstagramPostProps>();
 
@@ -25,7 +25,7 @@ function formatRelativeTime(dateStr: string): string {
 }
 
 function handleAction(action: string) {
-  emit("action", action, props.post);
+  emit('action', action, props.post);
 }
 </script>
 
@@ -35,7 +35,7 @@ function handleAction(action: string) {
     :data-tool-ui-id="post.id"
     data-slot="instagram-post"
   >
-    <article class="bg-card border-border overflow-hidden rounded-lg border shadow-sm">
+    <article class="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <!-- Header -->
       <header class="flex items-center gap-3 p-3">
         <img
@@ -61,7 +61,7 @@ function handleAction(action: string) {
           </svg>
           <template v-if="post.createdAt">
             <span class="text-muted-foreground">·</span>
-            <span class="text-muted-foreground text-sm">{{ formatRelativeTime(post.createdAt) }}</span>
+            <span class="text-sm text-muted-foreground">{{ formatRelativeTime(post.createdAt) }}</span>
           </template>
         </div>
         <!-- Instagram Logo -->
@@ -125,7 +125,7 @@ function handleAction(action: string) {
           <button
             v-if="post.media[0].type === 'image'"
             type="button"
-            class="bg-muted relative block size-full overflow-hidden"
+            class="relative block size-full overflow-hidden bg-muted"
             @click="handleAction('open-media')"
           >
             <img
@@ -149,7 +149,7 @@ function handleAction(action: string) {
             v-for="(item, index) in post.media"
             :key="index"
             type="button"
-            class="bg-muted relative block size-full overflow-hidden"
+            class="relative block size-full overflow-hidden bg-muted"
             @click="handleAction('open-media')"
           >
             <img
@@ -173,7 +173,7 @@ function handleAction(action: string) {
           <div class="h-full">
             <button
               type="button"
-              class="bg-muted relative block size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="handleAction('open-media')"
             >
               <img
@@ -196,7 +196,7 @@ function handleAction(action: string) {
               v-for="(item, index) in post.media.slice(1)"
               :key="index + 1"
               type="button"
-              class="bg-muted relative block size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="handleAction('open-media')"
             >
               <img
@@ -225,7 +225,7 @@ function handleAction(action: string) {
           >
             <button
               type="button"
-              class="bg-muted relative block size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="handleAction('open-media')"
             >
               <img
@@ -261,7 +261,7 @@ function handleAction(action: string) {
             type="button"
             :class="cn(
               'h-auto rounded-md px-3 py-2 transition-colors hover:opacity-60',
-              post.stats?.isLiked ? 'text-red-500 fill-red-500' : ''
+              post.stats?.isLiked ? 'fill-red-500 text-red-500' : ''
             )"
             aria-label="Like"
             @click="handleAction('like')"
@@ -278,7 +278,7 @@ function handleAction(action: string) {
               stroke-linejoin="round"
               class="size-5"
             >
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
             </svg>
           </button>
           <button
@@ -299,9 +299,14 @@ function handleAction(action: string) {
               stroke-linejoin="round"
               class="size-5"
             >
-              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-              <polyline points="16 6 12 2 8 6"/>
-              <line x1="12" x2="12" y1="2" y2="15"/>
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line
+                x1="12"
+                x2="12"
+                y1="2"
+                y2="15"
+              />
             </svg>
           </button>
         </div>

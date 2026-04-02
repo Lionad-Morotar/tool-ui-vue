@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { cn } from "./_adapter";
-import type { OptionListProps, OptionListSelection, OptionListOption } from "./schema";
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
+import type { OptionListProps, OptionListSelection, OptionListOption } from './schema';
 
 const props = defineProps<OptionListProps & { modelValue?: OptionListSelection }>();
 
 const emit = defineEmits<{
   change: [value: OptionListSelection];
   action: [actionId: string, value: OptionListSelection];
-  "update:modelValue": [value: OptionListSelection];
+  'update:modelValue': [value: OptionListSelection];
 }>();
 
 // Normalize actions config
@@ -16,10 +16,10 @@ const normalizedActions = computed(() => {
   if (!props.actions) {
     return {
       items: [
-        { id: "cancel", label: "Clear", variant: "ghost" as const },
-        { id: "confirm", label: "Confirm", variant: "default" as const },
+        { id: 'cancel', label: 'Clear', variant: 'ghost' as const },
+        { id: 'confirm', label: 'Confirm', variant: 'default' as const },
       ],
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
@@ -28,9 +28,9 @@ const normalizedActions = computed(() => {
     return {
       items: props.actions.map((action) => ({
         ...action,
-        variant: action.variant || (action.id === "confirm" ? "default" : "ghost"),
+        variant: action.variant || (action.id === 'confirm' ? 'default' : 'ghost'),
       })),
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
@@ -42,14 +42,14 @@ const normalizedActions = computed(() => {
 const actionsWithDisabledState = computed(() => {
   return normalizedActions.value.items.map((action) => {
     const isDisabledByValidation =
-      (action.id === "confirm" && isConfirmDisabled.value) ||
-      (action.id === "cancel" && hasNothingToClear.value);
+      (action.id === 'confirm' && isConfirmDisabled.value) ||
+      (action.id === 'cancel' && hasNothingToClear.value);
     return {
       ...action,
       disabled: action.disabled || isDisabledByValidation,
       label:
-        action.id === "confirm" &&
-        resolvedSelectionMode.value === "multi" &&
+        action.id === 'confirm' &&
+        resolvedSelectionMode.value === 'multi' &&
         selectedCount.value > 0
           ? `${action.label} (${selectedCount.value})`
           : action.label,
@@ -68,11 +68,11 @@ const optionRefs = ref<(HTMLButtonElement | null)[]>([]);
 const isReceipt = computed(() => props.choice !== undefined && props.choice !== null);
 
 // Determine selection mode
-const resolvedSelectionMode = computed(() => props.selectionMode ?? "single");
+const resolvedSelectionMode = computed(() => props.selectionMode ?? 'single');
 
 // Effective max selections (single mode = 1)
 const effectiveMaxSelections = computed(() =>
-  resolvedSelectionMode.value === "single" ? 1 : props.maxSelections
+  resolvedSelectionMode.value === 'single' ? 1 : props.maxSelections
 );
 
 // Min selections (default 1)
@@ -91,7 +91,7 @@ const selectedIds = computed(() => {
   const selection = isReceipt.value ? props.choice : currentSelection.value;
   const ids = new Set<string>();
   if (selection === null) return ids;
-  if (typeof selection === "string") ids.add(selection);
+  if (typeof selection === 'string') ids.add(selection);
   if (Array.isArray(selection)) selection.forEach((id) => ids.add(id));
   return ids;
 });
@@ -105,7 +105,7 @@ function isSelected(optionId: string): boolean {
 
 // Check if an option is disabled due to max selections
 function isSelectionLocked(optionId: string): boolean {
-  if (resolvedSelectionMode.value === "single") return false;
+  if (resolvedSelectionMode.value === 'single') return false;
   if (effectiveMaxSelections.value === undefined) return false;
   if (selectedCount.value < effectiveMaxSelections.value) return false;
   return !isSelected(optionId);
@@ -130,7 +130,7 @@ const selectedOptions = computed(() => {
 
 // Convert selection to proper format
 function convertToSelection(ids: Set<string>): OptionListSelection {
-  if (resolvedSelectionMode.value === "single") {
+  if (resolvedSelectionMode.value === 'single') {
     const [first] = ids;
     return first ?? null;
   }
@@ -143,8 +143,8 @@ function updateSelection(newIds: Set<string>) {
   if (props.value === undefined && props.modelValue === undefined) {
     internalValue.value = newValue;
   }
-  emit("change", newValue);
-  emit("update:modelValue", newValue);
+  emit('change', newValue);
+  emit('update:modelValue', newValue);
 }
 
 // Handle option click
@@ -154,7 +154,7 @@ function handleOptionClick(option: OptionListOption) {
   const currentIds = new Set(selectedIds.value);
   const isCurrentlySelected = currentIds.has(option.id);
 
-  if (resolvedSelectionMode.value === "single") {
+  if (resolvedSelectionMode.value === 'single') {
     if (isCurrentlySelected) {
       currentIds.delete(option.id);
     } else {
@@ -209,35 +209,35 @@ function handleListboxKeyDown(event: KeyboardEvent) {
 
   const key = event.key;
 
-  if (key === "ArrowDown") {
+  if (key === 'ArrowDown') {
     event.preventDefault();
     event.stopPropagation();
     focusOptionAt(findNextEnabledIndex(activeIndex.value, 1));
     return;
   }
 
-  if (key === "ArrowUp") {
+  if (key === 'ArrowUp') {
     event.preventDefault();
     event.stopPropagation();
     focusOptionAt(findNextEnabledIndex(activeIndex.value, -1));
     return;
   }
 
-  if (key === "Home") {
+  if (key === 'Home') {
     event.preventDefault();
     event.stopPropagation();
     focusOptionAt(findFirstEnabledIndex());
     return;
   }
 
-  if (key === "End") {
+  if (key === 'End') {
     event.preventDefault();
     event.stopPropagation();
     focusOptionAt(findLastEnabledIndex());
     return;
   }
 
-  if (key === "Enter" || key === " ") {
+  if (key === 'Enter' || key === ' ') {
     event.preventDefault();
     event.stopPropagation();
     const option = props.options[activeIndex.value];
@@ -247,7 +247,7 @@ function handleListboxKeyDown(event: KeyboardEvent) {
     return;
   }
 
-  if (key === "Escape") {
+  if (key === 'Escape') {
     event.preventDefault();
     event.stopPropagation();
     if (selectedCount.value > 0) {
@@ -262,26 +262,26 @@ function handleClear() {
     internalValue.value = null;
   }
   const newValue = null;
-  emit("change", newValue);
-  emit("update:modelValue", newValue);
-  emit("action", "cancel", newValue);
+  emit('change', newValue);
+  emit('update:modelValue', newValue);
+  emit('action', 'cancel', newValue);
 }
 
 // Handle confirm action
 function handleConfirm() {
   const currentValue = currentSelection.value;
-  emit("action", "confirm", currentValue);
+  emit('action', 'confirm', currentValue);
 }
 
 // Handle action button click
 async function handleAction(actionId: string) {
-  if (actionId === "cancel") {
+  if (actionId === 'cancel') {
     handleClear();
-  } else if (actionId === "confirm") {
+  } else if (actionId === 'confirm') {
     handleConfirm();
   } else {
     // Custom action
-    emit("action", actionId, currentSelection.value);
+    emit('action', actionId, currentSelection.value);
   }
 }
 
@@ -308,7 +308,7 @@ const hasNothingToClear = computed(() => selectedCount.value === 0);
 
 // Simple SVG icons matching Lucide style
 const CheckIcon = {
-  template: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
 };
 
 // Icon mapping for common icons
@@ -330,7 +330,7 @@ function getIconComponent(iconName: string | undefined) {
       cn(
         '@container/option-list flex w-full max-w-md min-w-80 flex-col',
         'text-foreground',
-        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:fill-mode-both',
+        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
         props.className,
       )
     "
@@ -340,12 +340,23 @@ function getIconComponent(iconName: string | undefined) {
     role="status"
     aria-label="Confirmed selection"
   >
-    <div class="bg-card/60 border-border flex w-full flex-col overflow-hidden rounded-2xl border px-5 py-2.5 shadow-xs">
+    <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 px-5 py-2.5 shadow-xs">
       <template v-for="(option, index) in selectedOptions" :key="option.id">
         <div class="flex items-start gap-3 py-1">
           <span class="flex h-6 items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4 shrink-0">
-              <path d="M20 6 9 17l-5-5"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="size-4 shrink-0 text-primary"
+            >
+              <path d="M20 6 9 17l-5-5" />
             </svg>
           </span>
           <span v-if="option.icon" class="flex h-6 items-center">
@@ -360,12 +371,12 @@ function getIconComponent(iconName: string | undefined) {
           </span>
           <div class="flex flex-col text-left">
             <span class="text-base leading-6 font-medium text-pretty @md/option-list:text-sm">{{ option.label }}</span>
-            <span v-if="option.description" class="text-muted-foreground text-sm font-normal text-pretty">
+            <span v-if="option.description" class="text-sm font-normal text-pretty text-muted-foreground">
               {{ option.description }}
             </span>
           </div>
         </div>
-        <hr v-if="index < selectedOptions.length - 1" class="border-border my-1.5" />
+        <hr v-if="index < selectedOptions.length - 1" class="my-1.5 border-border" />
       </template>
     </div>
   </div>
@@ -387,7 +398,7 @@ function getIconComponent(iconName: string | undefined) {
   >
     <div
       :class="cn(
-        'group/list border-border bg-card flex w-full flex-col overflow-hidden rounded-2xl border px-4 py-1.5 shadow-xs',
+        'group/list flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card px-4 py-1.5 shadow-xs',
       )"
       role="listbox"
       :aria-multiselectable="resolvedSelectionMode === 'multi'"
@@ -419,7 +430,7 @@ function getIconComponent(iconName: string | undefined) {
         >
           <span
             :class="cn(
-              'bg-primary/5 absolute inset-0 -mx-3 -my-0.5 rounded-xl opacity-0 transition-opacity group-hover:opacity-100',
+              'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100',
             )"
           />
           <div class="relative flex items-start gap-3">
@@ -431,7 +442,7 @@ function getIconComponent(iconName: string | undefined) {
                     'flex size-4 shrink-0 items-center justify-center border-2 transition-colors',
                     resolvedSelectionMode === 'single' ? 'rounded-full' : 'rounded',
                     getOptionState(option).isSelected
-                      ? 'border-primary bg-primary text-primary-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out'
+                      ? 'motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 border-primary bg-primary text-primary-foreground motion-safe:duration-300 motion-safe:ease-out'
                       : 'border-muted-foreground/50',
                     getOptionState(option).isDisabled ? 'opacity-50' : undefined,
                   )
@@ -440,15 +451,21 @@ function getIconComponent(iconName: string | undefined) {
                 <svg
                   v-if="resolvedSelectionMode === 'multi' && getOptionState(option).isSelected"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="12" height="12"
-                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-                  class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both motion-safe:delay-75 motion-safe:duration-200"
                 >
-                  <path d="M20 6 9 17l-5-5"/>
+                  <path d="M20 6 9 17l-5-5" />
                 </svg>
                 <span
                   v-if="resolvedSelectionMode === 'single' && getOptionState(option).isSelected"
-                  class="size-2 rounded-full bg-current motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out"
+                  class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 size-2 rounded-full bg-current motion-safe:duration-300 motion-safe:ease-out"
                 />
               </span>
             </span>
@@ -470,7 +487,7 @@ function getIconComponent(iconName: string | undefined) {
               <span class="leading-6 text-pretty">{{ option.label }}</span>
               <span
                 v-if="option.description"
-                class="text-muted-foreground text-sm font-normal text-pretty"
+                class="text-sm font-normal text-pretty text-muted-foreground"
               >
                 {{ option.description }}
               </span>
@@ -485,9 +502,9 @@ function getIconComponent(iconName: string | undefined) {
       <div
         :class="cn(
           'flex w-full flex-col gap-3',
-          normalizedActions.align === 'left' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-start' :
-          normalizedActions.align === 'center' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-center' :
-          'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:gap-2 @[240px]/actions:justify-end',
+          normalizedActions.align === 'left' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-start @[240px]/actions:gap-2' :
+          normalizedActions.align === 'center' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-center @[240px]/actions:gap-2' :
+          'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-end @[240px]/actions:gap-2',
         )"
       >
         <button
@@ -496,19 +513,19 @@ function getIconComponent(iconName: string | undefined) {
           type="button"
           :class="cn(
             'inline-flex items-center justify-center rounded-full px-4 text-base font-medium transition-colors',
-            'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             'min-h-11 w-full text-base',
             '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',
             action.variant === 'destructive'
               ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
               : action.variant === 'secondary'
-              ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-              : action.variant === 'ghost'
-              ? 'hover:bg-accent hover:text-accent-foreground'
-              : action.variant === 'outline'
-              ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
-              : 'bg-primary text-primary-foreground hover:bg-primary/90',
+                ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                : action.variant === 'ghost'
+                  ? 'hover:bg-accent hover:text-accent-foreground'
+                  : action.variant === 'outline'
+                    ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90',
           )"
           :disabled="action.disabled"
           @click="handleAction(action.id)"

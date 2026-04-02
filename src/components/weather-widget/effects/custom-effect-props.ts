@@ -1,9 +1,9 @@
 export type WeatherEffectLayer =
-  | "celestial"
-  | "clouds"
-  | "rain"
-  | "lightning"
-  | "snow";
+  | 'celestial'
+  | 'clouds'
+  | 'rain'
+  | 'lightning'
+  | 'snow';
 
 /**
  * Custom effect layer props for direct control.

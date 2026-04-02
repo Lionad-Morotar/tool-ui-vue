@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import { OptionList } from "../components";
+import { ref, reactive } from 'vue';
+import { OptionList } from '../components';
 
 /**
  * # OptionList
@@ -57,7 +57,7 @@ const interactiveOptions = [
 
 const interactiveState = reactive({
   options: interactiveOptions,
-  selectionMode: "single" as const,
+  selectionMode: 'single' as const,
   minSelections: 0,
   maxSelections: 2,
 });
@@ -67,30 +67,30 @@ const interactiveState = reactive({
   <Story title="OptionList/All Variants">
     <Variant title="Single Select">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-single"
+          v-model="singleSelection"
           :options="[
             { id: 'walk', label: 'Walking', description: 'Sidewalk-friendly route' },
             { id: 'drive', label: 'Driving', description: 'Fastest ETA for this route' },
             { id: 'transit', label: 'Transit', description: 'Use subway and buses' },
           ]"
           selection-mode="single"
-          v-model="singleSelection"
         />
       </div>
     </Variant>
 
     <Variant title="Multi Select">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-multi"
+          v-model="multiSelection"
           :options="[
             { id: 'good', label: 'Good', description: 'High quality work' },
             { id: 'fast', label: 'Fast', description: 'Quick turnaround' },
             { id: 'cheap', label: 'Cheap', description: 'Low cost' },
           ]"
           selection-mode="multi"
-          v-model="multiSelection"
           :min-selections="1"
           :max-selections="2"
         />
@@ -99,7 +99,7 @@ const interactiveState = reactive({
 
     <Variant title="With Actions">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-actions"
           :options="[
             { id: 'option-a', label: 'Option A', description: 'First choice' },
@@ -117,7 +117,7 @@ const interactiveState = reactive({
 
     <Variant title="With Disabled Options">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-disabled"
           :options="[
             { id: 'available', label: 'Available', description: 'This option is available' },
@@ -131,7 +131,7 @@ const interactiveState = reactive({
 
     <Variant title="Receipt State (Single)">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-receipt-single"
           :options="[
             { id: 'walk', label: 'Walking', description: 'Sidewalk-friendly route' },
@@ -146,7 +146,7 @@ const interactiveState = reactive({
 
     <Variant title="Receipt State (Multi)">
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-receipt-multi"
           :options="[
             { id: 'feature-a', label: 'Feature A', description: 'Core functionality' },
@@ -161,7 +161,7 @@ const interactiveState = reactive({
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-sm">
-        <OptionList
+        <option-list
           id="option-list-interactive"
           v-bind="interactiveState"
         />

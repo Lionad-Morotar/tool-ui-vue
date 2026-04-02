@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { cn } from "./_adapter";
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
 import type {
   QuestionFlowProps,
   QuestionFlowOption,
   QuestionFlowStepDefinition,
   QuestionFlowChoice,
-} from "./schema";
+} from './schema';
 
 const props = defineProps<QuestionFlowProps>();
 
@@ -47,10 +47,10 @@ const exitingStepData = ref<{
   title: string;
   description?: string;
   options: QuestionFlowOption[];
-  selectionMode: "single" | "multi";
+  selectionMode: 'single' | 'multi';
   selectedIds: Set<string>;
 } | null>(null);
-const transitionDirection = ref<"forward" | "backward">("forward");
+const transitionDirection = ref<'forward' | 'backward'>('forward');
 
 // State for progressive mode
 const selectedIds = ref<Set<string>>(new Set());
@@ -121,7 +121,7 @@ const currentTitle = computed(() => {
   if (currentStep.value) {
     return currentStep.value.title;
   }
-  return "";
+  return '';
 });
 
 // Get current description
@@ -136,14 +136,14 @@ const currentDescription = computed(() => {
 });
 
 // Get current selection mode
-const currentSelectionMode = computed<"single" | "multi">(() => {
+const currentSelectionMode = computed<'single' | 'multi'>(() => {
   if (progressiveProps.value) {
-    return progressiveProps.value.selectionMode ?? "single";
+    return progressiveProps.value.selectionMode ?? 'single';
   }
   if (currentStep.value) {
-    return currentStep.value.selectionMode ?? "single";
+    return currentStep.value.selectionMode ?? 'single';
   }
-  return "single";
+  return 'single';
 });
 
 // Get current selected IDs
@@ -170,7 +170,7 @@ function toggleOption(optionId: string) {
   if (progressiveProps.value) {
     // Progressive mode - update selectedIds directly
     const next = new Set(selectedIds.value);
-    if (mode === "single") {
+    if (mode === 'single') {
       if (next.has(optionId)) {
         next.delete(optionId);
       } else {
@@ -191,7 +191,7 @@ function toggleOption(optionId: string) {
     const current = answers.value[stepId] ?? [];
     let next: string[];
 
-    if (mode === "single") {
+    if (mode === 'single') {
       next = current.includes(optionId) ? [] : [optionId];
     } else {
       next = current.includes(optionId)
@@ -209,9 +209,9 @@ function handleNext() {
 
   if (isLastStep.value) {
     if (upfrontProps.value) {
-      emit("complete", answers.value);
+      emit('complete', answers.value);
     } else if (progressiveProps.value) {
-      emit("select", Array.from(selectedIds.value));
+      emit('select', Array.from(selectedIds.value));
     }
   } else {
     // Save exiting step data for animation
@@ -221,15 +221,15 @@ function handleNext() {
         title: currentStep.value.title,
         description: currentStep.value.description,
         options: currentStep.value.options,
-        selectionMode: currentStep.value.selectionMode ?? "single",
+        selectionMode: currentStep.value.selectionMode ?? 'single',
         selectedIds: new Set(answers.value[currentStep.value.id] ?? []),
       };
     }
-    transitionDirection.value = "forward";
+    transitionDirection.value = 'forward';
     currentStepIndex.value++;
 
     if (currentStep.value) {
-      emit("stepChange", currentStep.value.id);
+      emit('stepChange', currentStep.value.id);
     }
 
     // Clear exiting step data after animation
@@ -242,7 +242,7 @@ function handleNext() {
 // Handle back button
 function handleBack() {
   if (progressiveProps.value) {
-    emit("back");
+    emit('back');
   } else if (currentStepIndex.value > 0) {
     // Save exiting step data for animation
     if (currentStep.value) {
@@ -251,15 +251,15 @@ function handleBack() {
         title: currentStep.value.title,
         description: currentStep.value.description,
         options: currentStep.value.options,
-        selectionMode: currentStep.value.selectionMode ?? "single",
+        selectionMode: currentStep.value.selectionMode ?? 'single',
         selectedIds: new Set(answers.value[currentStep.value.id] ?? []),
       };
     }
-    transitionDirection.value = "backward";
+    transitionDirection.value = 'backward';
     currentStepIndex.value--;
 
     if (currentStep.value) {
-      emit("stepChange", currentStep.value.id);
+      emit('stepChange', currentStep.value.id);
     }
 
     // Clear exiting step data after animation
@@ -306,31 +306,31 @@ function handleKeyDown(event: KeyboardEvent) {
 
   const key = event.key;
 
-  if (key === "ArrowDown") {
+  if (key === 'ArrowDown') {
     event.preventDefault();
     focusOptionAt(findNextEnabledIndex(activeIndex.value, 1));
     return;
   }
 
-  if (key === "ArrowUp") {
+  if (key === 'ArrowUp') {
     event.preventDefault();
     focusOptionAt(findNextEnabledIndex(activeIndex.value, -1));
     return;
   }
 
-  if (key === "Home") {
+  if (key === 'Home') {
     event.preventDefault();
     focusOptionAt(findFirstEnabledIndex());
     return;
   }
 
-  if (key === "End") {
+  if (key === 'End') {
     event.preventDefault();
     focusOptionAt(findLastEnabledIndex());
     return;
   }
 
-  if (key === "Enter" || key === " ") {
+  if (key === 'Enter' || key === ' ') {
     event.preventDefault();
     const option = currentOptions.value[activeIndex.value];
     if (option && !option.disabled) {
@@ -391,25 +391,25 @@ const canProceed = computed(() => currentSelectedIds.value.size > 0);
 
 // Get step IDs for aria attributes
 function getStepIds(stepKey: string) {
-  const safeId = encodeURIComponent(props.id).replace(/%/g, "_");
-  const safeStepKey = encodeURIComponent(stepKey).replace(/%/g, "_");
+  const safeId = encodeURIComponent(props.id).replace(/%/g, '_');
+  const safeStepKey = encodeURIComponent(stepKey).replace(/%/g, '_');
   return {
     titleId: `${safeId}-${safeStepKey}-title`,
     descriptionId: `${safeId}-${safeStepKey}-description`,
   };
 }
 
-const currentStepKey = computed(() => currentStep.value?.id ?? "current");
+const currentStepKey = computed(() => currentStep.value?.id ?? 'current');
 const { titleId, descriptionId } = getStepIds(currentStepKey.value);
 
 // Chevron left icon
 const ChevronLeftIcon = {
-  template: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`,
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
 };
 
 // Check icon
 const CheckIcon = {
-  template: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
 };
 </script>
 
@@ -419,9 +419,9 @@ const CheckIcon = {
     v-if="isReceipt && receiptProps"
     :class="
       cn(
-        '@container/question-flow flex w-full min-w-80 max-w-md flex-col',
+        '@container/question-flow flex w-full max-w-md min-w-80 flex-col',
         'text-foreground',
-        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:duration-300 motion-safe:ease-out motion-safe:fill-mode-both',
+        'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-out',
         receiptProps.className
       )
     "
@@ -432,7 +432,7 @@ const CheckIcon = {
     :aria-label="receiptProps.choice?.title"
   >
     <div
-      class="bg-card/60 border-border flex w-full flex-col gap-3 rounded-2xl border px-5 py-4 shadow-xs"
+      class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card/60 px-5 py-4 shadow-xs"
     >
       <div class="flex items-center justify-between gap-3">
         <span class="text-base font-medium">{{ receiptProps.choice?.title ?? 'Completed' }}</span>
@@ -443,9 +443,9 @@ const CheckIcon = {
       </div>
       <div v-if="receiptProps.choice?.summary" class="flex flex-col">
         <template v-for="(item, index) in receiptProps.choice.summary" :key="item.label">
-          <hr v-if="index > 0" class="border-border my-2" />
+          <hr v-if="index > 0" class="my-2 border-border" />
           <div
-            class="flex flex-col gap-0.5 text-sm motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:slide-in-from-bottom-1 motion-safe:duration-300 motion-safe:ease-out motion-safe:fill-mode-both"
+            class="motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:slide-in-from-bottom-1 motion-safe:fill-mode-both flex flex-col gap-0.5 text-sm motion-safe:duration-300 motion-safe:ease-out"
             :style="{ animationDelay: `${150 + index * 75}ms` }"
           >
             <span class="text-muted-foreground">{{ item.label }}</span>
@@ -461,7 +461,7 @@ const CheckIcon = {
     v-else
     :class="
       cn(
-        '@container/question-flow flex w-full min-w-80 max-w-md flex-col gap-3',
+        '@container/question-flow flex w-full max-w-md min-w-80 flex-col gap-3',
         'text-foreground',
         (progressiveProps?.className || upfrontProps?.className)
       )
@@ -473,13 +473,13 @@ const CheckIcon = {
     :aria-describedby="currentDescription ? descriptionId : undefined"
   >
     <div
-      class="bg-card border-border flex w-full flex-col gap-4 rounded-2xl border p-5 shadow-xs"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
     >
       <!-- Progress -->
       <div class="flex flex-col gap-1">
         <div class="flex flex-col gap-2">
           <span
-            class="text-muted-foreground text-xs font-medium uppercase tracking-wide"
+            class="text-xs font-medium tracking-wide text-muted-foreground uppercase"
             :aria-label="`Step ${currentStepNumber} of ${totalSteps}`"
           >
             Step {{ currentStepNumber }} of {{ totalSteps }}
@@ -522,8 +522,8 @@ const CheckIcon = {
           aria-hidden="true"
         >
           <div class="flex flex-col gap-1">
-            <h2 class="text-lg font-semibold leading-tight">{{ exitingStepData.title }}</h2>
-            <p v-if="exitingStepData.description" class="text-muted-foreground text-sm">
+            <h2 class="text-lg leading-tight font-semibold">{{ exitingStepData.title }}</h2>
+            <p v-if="exitingStepData.description" class="text-sm text-muted-foreground">
               {{ exitingStepData.description }}
             </p>
           </div>
@@ -581,7 +581,7 @@ const CheckIcon = {
                     <span class="leading-6 text-pretty">{{ option.label }}</span>
                     <span
                       v-if="option.description"
-                      class="text-muted-foreground text-sm font-normal text-pretty"
+                      class="text-sm font-normal text-pretty text-muted-foreground"
                     >
                       {{ option.description }}
                     </span>
@@ -601,8 +601,8 @@ const CheckIcon = {
           } : undefined"
         >
           <div class="flex flex-col gap-1">
-            <h2 :id="titleId" class="text-lg font-semibold leading-tight">{{ currentTitle }}</h2>
-            <p v-if="currentDescription" :id="descriptionId" class="text-muted-foreground text-sm">
+            <h2 :id="titleId" class="text-lg leading-tight font-semibold">{{ currentTitle }}</h2>
+            <p v-if="currentDescription" :id="descriptionId" class="text-sm text-muted-foreground">
               {{ currentDescription }}
             </p>
           </div>
@@ -640,7 +640,7 @@ const CheckIcon = {
               >
                 <span
                   :class="cn(
-                    'bg-primary/5 absolute inset-0 -mx-3 -my-0.5 rounded-xl opacity-0 transition-opacity group-hover:opacity-100',
+                    'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100',
                   )"
                 />
                 <div class="relative flex items-start gap-3">
@@ -652,7 +652,7 @@ const CheckIcon = {
                           'motion-safe:transition-colors motion-safe:duration-200',
                           currentSelectionMode === 'single' ? 'rounded-full' : 'rounded',
                           isSelected(option.id)
-                            ? 'border-primary bg-primary text-primary-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out'
+                            ? 'motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 border-primary bg-primary text-primary-foreground motion-safe:duration-300 motion-safe:ease-out'
                             : 'border-muted-foreground/50',
                           option.disabled ? 'opacity-50' : undefined,
                         )
@@ -669,13 +669,13 @@ const CheckIcon = {
                         stroke-width="3"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:delay-75 motion-safe:duration-200 motion-safe:fill-mode-both"
+                        class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both motion-safe:delay-75 motion-safe:duration-200"
                       >
                         <path d="M20 6 9 17l-5-5" />
                       </svg>
                       <span
                         v-if="currentSelectionMode === 'single' && isSelected(option.id)"
-                        class="size-2 rounded-full bg-current motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:duration-300 motion-safe:ease-out"
+                        class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 size-2 rounded-full bg-current motion-safe:duration-300 motion-safe:ease-out"
                       />
                     </span>
                   </span>
@@ -683,7 +683,7 @@ const CheckIcon = {
                     <span class="leading-6 text-pretty">{{ option.label }}</span>
                     <span
                       v-if="option.description"
-                      class="text-muted-foreground text-sm font-normal text-pretty"
+                      class="text-sm font-normal text-pretty text-muted-foreground"
                     >
                       {{ option.description }}
                     </span>
@@ -705,7 +705,7 @@ const CheckIcon = {
             cn(
               'inline-flex items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
               'text-muted-foreground hover:bg-accent',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'disabled:pointer-events-none disabled:opacity-50',
             )
           "
@@ -722,7 +722,7 @@ const CheckIcon = {
             cn(
               'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors',
               'bg-primary text-primary-foreground hover:bg-primary/90',
-              'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+              'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
               'disabled:pointer-events-none disabled:opacity-50',
             )
           "

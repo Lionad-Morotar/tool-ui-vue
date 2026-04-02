@@ -1,4 +1,3 @@
-import type { WeatherConditionCode } from "../schema";
 import {
   getNearestCheckpoint,
   TIME_CHECKPOINTS,
@@ -7,8 +6,9 @@ import {
   type WeatherEffectsCheckpointOverrides,
   type WeatherEffectsOverrides,
   type WeatherEffectsTunedPresets,
-} from "./tuning";
-import type { WeatherEffectsCanvasProps } from "./weather-effects-types";
+} from './tuning';
+import type { WeatherConditionCode } from '../schema';
+import type { WeatherEffectsCanvasProps } from './weather-effects-types';
 
 interface SurroundingCheckpoints {
   before: TimeCheckpoint;
@@ -52,8 +52,8 @@ function getSurroundingCheckpoints(timeOfDay: number): SurroundingCheckpoints {
   }
 
   return {
-    before: "midnight",
-    after: "dawn",
+    before: 'midnight',
+    after: 'dawn',
     t: 0,
   };
 }
@@ -100,12 +100,12 @@ function interpolatePartialObject<T extends object>(
       continue;
     }
 
-    if (typeof from === "number" && typeof to === "number") {
+    if (typeof from === 'number' && typeof to === 'number') {
       result[key] = lerp(from, to, t) as T[keyof T];
       continue;
     }
 
-    if (typeof from === "boolean") {
+    if (typeof from === 'boolean') {
       result[key] = (t < 0.5 ? from : to) as T[keyof T];
       continue;
     }
@@ -224,13 +224,13 @@ export function resolveConditionCheckpointOverridesForTime(opts: {
   conditionCode: WeatherConditionCode;
   timeOfDay: number;
   tunedPresets: WeatherEffectsTunedPresets;
-  checkpointMode?: "nearest" | "interpolated";
+  checkpointMode?: 'nearest' | 'interpolated';
 }): WeatherEffectsOverrides | undefined {
-  const checkpointMode = opts.checkpointMode ?? "nearest";
+  const checkpointMode = opts.checkpointMode ?? 'nearest';
   const conditionCheckpoints = opts.tunedPresets[opts.conditionCode];
   if (!conditionCheckpoints) return undefined;
 
-  if (checkpointMode === "interpolated") {
+  if (checkpointMode === 'interpolated') {
     const { before, after, t } = getSurroundingCheckpoints(opts.timeOfDay);
     return interpolateWeatherEffectsOverrides(
       conditionCheckpoints[before],

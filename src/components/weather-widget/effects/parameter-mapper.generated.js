@@ -17,7 +17,7 @@ export function getMoonPhase(timestamp) {
   }
   const date = new Date(timestamp);
   date.setUTCHours(0, 0, 0, 0);
-  const knownNewMoon = new Date("2000-01-06T00:00:00Z");
+  const knownNewMoon = new Date('2000-01-06T00:00:00Z');
   const daysSinceNewMoon =
     (date.getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
   const synodicMonth = 29.530588853;
@@ -46,20 +46,20 @@ export function isNightTime(sunAltitude) {
 }
 const CONDITION_BRIGHTNESS = {
   clear: 1.0,
-  "partly-cloudy": 0.9,
+  'partly-cloudy': 0.9,
   cloudy: 0.8,
   overcast: 0.65,
   fog: 0.7,
   drizzle: 0.7,
   rain: 0.6,
-  "heavy-rain": 0.45,
+  'heavy-rain': 0.45,
   thunderstorm: 0.3,
   snow: 0.8,
   sleet: 0.65,
   hail: 0.5,
   windy: 0.9,
 };
-export function getSceneBrightness(timestamp, conditionCode = "clear") {
+export function getSceneBrightness(timestamp, conditionCode = 'clear') {
   const sunAltitude = getSunAltitude(timestamp);
   let solarBrightness;
   if (sunAltitude < 0) {
@@ -75,12 +75,12 @@ export function getWeatherTheme(brightness, currentTheme) {
   const DARK_THRESHOLD = 0.35;
   const LIGHT_THRESHOLD = 0.45;
   if (brightness < DARK_THRESHOLD) {
-    return "dark";
+    return 'dark';
   }
   if (brightness > LIGHT_THRESHOLD) {
-    return "light";
+    return 'light';
   }
-  return currentTheme ?? "dark";
+  return currentTheme ?? 'dark';
 }
 export function timeOfDayToSunAltitude(timeOfDay) {
   const hours = timeOfDay * 24;
@@ -96,7 +96,7 @@ export function timeOfDayToSunAltitude(timeOfDay) {
 }
 export function getSceneBrightnessFromTimeOfDay(
   timeOfDay,
-  conditionCode = "clear",
+  conditionCode = 'clear',
 ) {
   const sunAltitude = timeOfDayToSunAltitude(timeOfDay);
   let solarBrightness;
@@ -116,11 +116,11 @@ function mapWindSpeed(mph = 0) {
 }
 function mapPrecipitation(level) {
   switch (level) {
-    case "light":
+    case 'light':
       return 0.3;
-    case "moderate":
+    case 'moderate':
       return 0.6;
-    case "heavy":
+    case 'heavy':
       return 1.0;
     default:
       return 0;
@@ -154,13 +154,13 @@ const UNIFIED_CELESTIAL = {
 };
 const CELESTIAL_PRESETS = {
   clear: UNIFIED_CELESTIAL,
-  "partly-cloudy": UNIFIED_CELESTIAL,
+  'partly-cloudy': UNIFIED_CELESTIAL,
   cloudy: UNIFIED_CELESTIAL,
   overcast: UNIFIED_CELESTIAL,
   fog: UNIFIED_CELESTIAL,
   drizzle: UNIFIED_CELESTIAL,
   rain: UNIFIED_CELESTIAL,
-  "heavy-rain": UNIFIED_CELESTIAL,
+  'heavy-rain': UNIFIED_CELESTIAL,
   thunderstorm: UNIFIED_CELESTIAL,
   snow: UNIFIED_CELESTIAL,
   sleet: UNIFIED_CELESTIAL,
@@ -171,7 +171,7 @@ const CONDITION_PRESETS = {
   clear: {
     cloud: { coverage: 0.1, speed: 0.3, darkness: 0, turbulence: 0.2 },
   },
-  "partly-cloudy": {
+  'partly-cloudy': {
     cloud: { coverage: 0.4, speed: 0.4, darkness: 0.1, turbulence: 0.3 },
   },
   cloudy: {
@@ -191,7 +191,7 @@ const CONDITION_PRESETS = {
     cloud: { coverage: 0.85, speed: 0.5, darkness: 0.4, turbulence: 0.4 },
     rain: { intensity: 0.6, glassDrops: true, fallingRain: true, angle: 5 },
   },
-  "heavy-rain": {
+  'heavy-rain': {
     cloud: { coverage: 0.95, speed: 0.6, darkness: 0.55, turbulence: 0.5 },
     rain: { intensity: 1.0, glassDrops: true, fallingRain: true, angle: 8 },
   },
@@ -297,15 +297,15 @@ export function mapWeatherToEffects(params) {
   const cloudCoverage = config.cloud?.coverage ?? 0;
   const hasClouds = cloudCoverage > 0.001;
   const bloomConditionBoost =
-    conditionCode === "fog"
+    conditionCode === 'fog'
       ? 0.18
-      : conditionCode === "thunderstorm"
+      : conditionCode === 'thunderstorm'
         ? 0.12
-        : conditionCode === "heavy-rain"
+        : conditionCode === 'heavy-rain'
           ? 0.1
-          : conditionCode === "overcast"
+          : conditionCode === 'overcast'
             ? 0.08
-            : conditionCode === "cloudy" || conditionCode === "partly-cloudy"
+            : conditionCode === 'cloudy' || conditionCode === 'partly-cloudy'
               ? 0.06
               : 0.04;
   const bloomIntensity = clamp01(0.04 + bloomConditionBoost + haze * 0.22);

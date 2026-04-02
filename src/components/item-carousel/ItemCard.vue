@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { cn } from "./_adapter";
-import type { Item } from "./schema";
+import { computed } from 'vue';
+import { cn } from './_adapter';
+import type { Item } from './schema';
 
 interface ItemCardProps {
   item: Item;
@@ -19,12 +19,12 @@ const isCardInteractive = computed(() => props.interactive);
 
 function handleCardClick() {
   if (!isCardInteractive.value) return;
-  emit("itemClick", props.item.id);
+  emit('itemClick', props.item.id);
 }
 
 function handleActionClick(actionId: string, event: Event) {
   event.stopPropagation();
-  emit("itemAction", props.item.id, actionId);
+  emit('itemAction', props.item.id, actionId);
 }
 </script>
 
@@ -32,7 +32,7 @@ function handleActionClick(actionId: string, event: Event) {
   <div
     :class="cn(
       'group @container/card relative flex w-52 min-w-48 flex-col gap-0 self-stretch overflow-clip rounded-md p-0 @lg:w-56',
-      'bg-card border',
+      'border bg-card',
       isCardInteractive && 'cursor-pointer hover:shadow',
       'touch-manipulation'
     )"
@@ -45,13 +45,13 @@ function handleActionClick(actionId: string, event: Event) {
       :class="cn(
         'absolute inset-0 z-10 rounded-md',
         'cursor-pointer touch-manipulation',
-        'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none'
       )"
       @click="handleCardClick"
     />
 
     <!-- Image/Color Area -->
-    <div class="bg-muted relative aspect-square w-full overflow-hidden">
+    <div class="relative aspect-square w-full overflow-hidden bg-muted">
       <img
         v-if="item.image"
         :src="item.image"
@@ -82,7 +82,7 @@ function handleActionClick(actionId: string, event: Event) {
         <h3 class="line-clamp-2 text-sm leading-tight font-medium">
           {{ item.name }}
         </h3>
-        <p v-if="item.subtitle" class="text-muted-foreground line-clamp-1 text-sm">
+        <p v-if="item.subtitle" class="line-clamp-1 text-sm text-muted-foreground">
           {{ item.subtitle }}
         </p>
       </div>
@@ -101,7 +101,7 @@ function handleActionClick(actionId: string, event: Event) {
           :disabled="action.disabled"
           :class="cn(
             'inline-flex items-center justify-center rounded-md px-3 text-sm font-medium transition-colors',
-            'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             'min-h-11 w-full md:min-h-8 @[176px]/card:h-8 @[176px]/card:w-auto @[176px]/card:flex-1',
             action.variant === 'destructive'

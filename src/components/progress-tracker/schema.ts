@@ -8,13 +8,13 @@
  *
  * @module tool-ui-vue/components/progress-tracker/schema
  */
-import { z } from "zod";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUISurfaceSchema,
   ToolUIReceiptSchema,
   type ToolUIReceipt,
-} from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+} from '../../shared/schema';
 
 /**
  * ProgressTracker 选择类型
@@ -28,7 +28,7 @@ export const ProgressStepSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
   description: z.string().optional(),
-  status: z.enum(["pending", "in-progress", "completed", "failed"]),
+  status: z.enum(['pending', 'in-progress', 'completed', 'failed']),
 });
 
 /**
@@ -48,7 +48,7 @@ const ProgressStepsSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: `Duplicate step id: "${step.id}"`,
-          path: [index, "id"],
+          path: [index, 'id'],
         });
       }
 
@@ -79,7 +79,7 @@ export type SerializableProgressTracker = z.infer<
 >;
 
 const SerializableProgressTrackerSchemaContract = defineToolUiContract(
-  "ProgressTracker",
+  'ProgressTracker',
   SerializableProgressTrackerSchema,
 );
 
@@ -99,7 +99,7 @@ export const safeParseSerializableProgressTracker: (
  */
 export interface ProgressTrackerProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   steps: ProgressStep[];
   elapsedTime?: number;
   choice?: ProgressTrackerChoice;

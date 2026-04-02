@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 
 interface GlassEffectOptions {
   depth: number;
@@ -61,7 +61,7 @@ function buildDisplacementMapSvg({
     </g>
   </svg>`;
 
-  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
 interface DisplacementFilterParams extends DisplacementMapParams {
@@ -109,7 +109,7 @@ function buildDisplacementFilterUrl({
     </defs>
   </svg>`;
 
-  return "data:image/svg+xml;utf8," + encodeURIComponent(svg) + "#displace";
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '#displace';
 }
 
 interface BackdropFilterParams {
@@ -133,8 +133,8 @@ function useSupportsBackdropFilter(): boolean {
 
   useEffect(() => {
     const hasSupport =
-      CSS.supports("backdrop-filter", "blur(1px)") ||
-      CSS.supports("-webkit-backdrop-filter", "blur(1px)");
+      CSS.supports('backdrop-filter', 'blur(1px)') ||
+      CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
     setSupported(hasSupport);
   }, []);
 

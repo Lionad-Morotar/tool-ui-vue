@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { Plan } from "../components";
-import type { PlanTodoStatus } from "../components/plan/schema";
+import { reactive } from 'vue';
+import { Plan } from '../components';
+import type { PlanTodoStatus } from '../components/plan/schema';
 
 /**
  * # Plan
@@ -71,7 +71,7 @@ function cycleStatus(index: number) {
   <Story title="Plan/All Variants">
     <Variant title="Basic Todo List">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-basic"
           title="Deployment Plan"
           description="Steps to deploy the new feature"
@@ -88,7 +88,7 @@ function cycleStatus(index: number) {
 
     <Variant title="With Descriptions">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-descriptions"
           title="Project Setup"
           description="Initial configuration tasks"
@@ -104,7 +104,7 @@ function cycleStatus(index: number) {
 
     <Variant title="All Statuses">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-all-statuses"
           title="Task Overview"
           :todos="[
@@ -119,7 +119,7 @@ function cycleStatus(index: number) {
 
     <Variant title="All Complete">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-complete"
           title="Project Complete"
           description="All tasks finished successfully"
@@ -135,8 +135,8 @@ function cycleStatus(index: number) {
 
     <Variant title="Interactive - Click to Cycle Status">
       <div class="w-full max-w-md">
-        <p class="text-muted-foreground mb-4 text-sm">Click on any todo item to cycle through statuses</p>
-        <Plan
+        <p class="mb-4 text-sm text-muted-foreground">Click on any todo item to cycle through statuses</p>
+        <plan
           id="plan-interactive"
           title="Interactive Plan"
           description="Click items to change status"
@@ -148,7 +148,7 @@ function cycleStatus(index: number) {
 
     <Variant title="With Progress">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-progress"
           title="Project Milestones"
           description="Track overall project completion"
@@ -165,7 +165,7 @@ function cycleStatus(index: number) {
 
     <Variant title="Minimal">
       <div class="w-full max-w-md">
-        <Plan
+        <plan
           id="plan-minimal"
           title="Simple Plan"
           :todos="[

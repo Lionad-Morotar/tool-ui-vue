@@ -7,7 +7,7 @@ import type {
   PostProcessParams,
   RainParams,
   SnowParams,
-} from "./weather-effects-types";
+} from './weather-effects-types';
 
 export const DEFAULT_LAYERS: LayerToggles = {
   celestial: true,

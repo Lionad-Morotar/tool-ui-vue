@@ -8,36 +8,36 @@
  *
  * @module tool-ui-vue/components/stats-display/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
-import { ToolUIIdSchema, ToolUIRoleSchema } from "../../shared/schema";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
 const TextFormatSchema = z.object({
-  kind: z.literal("text"),
+  kind: z.literal('text'),
 });
 
 const NumberFormatSchema = z.object({
-  kind: z.literal("number"),
+  kind: z.literal('number'),
   decimals: z.number().int().min(0).optional(),
   compact: z.boolean().optional(),
 });
 
 const CurrencyFormatSchema = z.object({
-  kind: z.literal("currency"),
+  kind: z.literal('currency'),
   currency: z.string().min(1),
   decimals: z.number().int().min(0).optional(),
 });
 
 const PercentFormatSchema = z.object({
-  kind: z.literal("percent"),
+  kind: z.literal('percent'),
   decimals: z.number().int().min(0).optional(),
-  basis: z.enum(["fraction", "unit"]).optional(),
+  basis: z.enum(['fraction', 'unit']).optional(),
 });
 
 /**
  * 统计格式 Schema 定义
  */
-export const StatFormatSchema = z.discriminatedUnion("kind", [
+export const StatFormatSchema = z.discriminatedUnion('kind', [
   TextFormatSchema,
   NumberFormatSchema,
   CurrencyFormatSchema,
@@ -119,7 +119,7 @@ export type SerializableStatsDisplay = z.infer<
 >;
 
 const SerializableStatsDisplaySchemaContract = defineToolUiContract(
-  "StatsDisplay",
+  'StatsDisplay',
   SerializableStatsDisplaySchema,
 );
 
@@ -138,7 +138,7 @@ export const safeParseSerializableStatsDisplay: (
  */
 export interface StatsDisplayProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   title?: string;
   description?: string;
   stats: StatItem[];

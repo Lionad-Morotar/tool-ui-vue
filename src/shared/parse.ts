@@ -1,12 +1,12 @@
-import { z } from "zod";
+import type { z } from 'zod';
 
 function formatZodPath(path: Array<string | number | symbol>): string {
-  if (path.length === 0) return "root";
+  if (path.length === 0) return 'root';
   return path
     .map((segment) =>
-      typeof segment === "number" ? `[${segment}]` : String(segment),
+      typeof segment === 'number' ? `[${segment}]` : String(segment),
     )
-    .join(".");
+    .join('.');
 }
 
 /**
@@ -18,7 +18,7 @@ export function formatZodError(error: z.ZodError): string {
     return `${path}: ${issue.message}`;
   });
 
-  return Array.from(new Set(parts)).join("; ");
+  return Array.from(new Set(parts)).join('; ');
 }
 
 /**

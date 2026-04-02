@@ -1,6 +1,6 @@
-export { default as GeoMap } from "./index.vue";
-export { default as GeoMapEngine } from "./GeoMapEngine.vue";
-export { default as GeoMapOverlays } from "./GeoMapOverlays.vue";
+export { default as GeoMap } from './index.vue';
+export { default as GeoMapEngine } from './GeoMapEngine.vue';
+export { default as GeoMapOverlays } from './GeoMapOverlays.vue';
 export type {
   GeoMapProps,
   SerializableGeoMap,
@@ -11,7 +11,7 @@ export type {
   GeoMapViewport,
   GeoMapClientProps,
   GeoMapStyle,
-} from "./schema";
+} from './schema';
 export {
   SerializableGeoMapSchema,
   GeoMapMarkerSchema,
@@ -21,4 +21,4 @@ export {
   GeoMapViewportSchema,
   parseSerializableGeoMap,
   safeParseSerializableGeoMap,
-} from "./schema";
+} from './schema';

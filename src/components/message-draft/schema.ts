@@ -8,14 +8,14 @@
  *
  * @module tool-ui-vue/components/message-draft/schema
  */
-import { z } from "zod";
-import { ToolUIIdSchema, ToolUIRoleSchema } from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
+import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
 /**
  * 消息草稿渠道的 Schema 定义
  */
-export const MessageDraftChannelSchema = z.enum(["email", "slack"]);
+export const MessageDraftChannelSchema = z.enum(['email', 'slack']);
 
 /**
  * 消息草稿渠道类型
@@ -26,7 +26,7 @@ export type MessageDraftChannel = z.infer<typeof MessageDraftChannelSchema>;
 /**
  * 消息草稿结果的 Schema 定义
  */
-export const MessageDraftOutcomeSchema = z.enum(["sent", "cancelled"]);
+export const MessageDraftOutcomeSchema = z.enum(['sent', 'cancelled']);
 
 /**
  * 消息草稿结果类型
@@ -34,13 +34,13 @@ export const MessageDraftOutcomeSchema = z.enum(["sent", "cancelled"]);
  */
 export type MessageDraftOutcome = z.infer<typeof MessageDraftOutcomeSchema>;
 
-const SlackTargetSchema = z.discriminatedUnion("type", [
+const SlackTargetSchema = z.discriminatedUnion('type', [
   z.object({
-    type: z.literal("channel"),
+    type: z.literal('channel'),
     name: z.string().min(1),
     memberCount: z.number().optional(),
   }),
-  z.object({ type: z.literal("dm"), name: z.string().min(1) }),
+  z.object({ type: z.literal('dm'), name: z.string().min(1) }),
 ]);
 
 /**
@@ -57,7 +57,7 @@ export const SerializableEmailDraftSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   body: z.string().min(1),
   outcome: MessageDraftOutcomeSchema.optional(),
-  channel: z.literal("email"),
+  channel: z.literal('email'),
   subject: z.string().min(1),
   from: z.string().optional(),
   to: z.array(z.string()).min(1),
@@ -73,7 +73,7 @@ export const SerializableSlackDraftSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   body: z.string().min(1),
   outcome: MessageDraftOutcomeSchema.optional(),
-  channel: z.literal("slack"),
+  channel: z.literal('slack'),
   target: SlackTargetSchema,
 });
 
@@ -81,7 +81,7 @@ export const SerializableSlackDraftSchema = z.object({
  * MessageDraft 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
-export const SerializableMessageDraftSchema = z.discriminatedUnion("channel", [
+export const SerializableMessageDraftSchema = z.discriminatedUnion('channel', [
   SerializableEmailDraftSchema,
   SerializableSlackDraftSchema,
 ]);
@@ -111,7 +111,7 @@ export type SerializableSlackDraft = z.infer<
 >;
 
 const SerializableMessageDraftSchemaContract = defineToolUiContract(
-  "MessageDraft",
+  'MessageDraft',
   SerializableMessageDraftSchema,
 );
 
@@ -130,10 +130,10 @@ export const safeParseSerializableMessageDraft: (
  */
 export interface MessageDraftProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   body: string;
-  outcome?: "sent" | "cancelled";
-  channel: "email" | "slack";
+  outcome?: 'sent' | 'cancelled';
+  channel: 'email' | 'slack';
   className?: string;
   undoGracePeriod?: number;
   onSend?: () => void | Promise<void>;
@@ -146,7 +146,7 @@ export interface MessageDraftProps {
  * 继承自 MessageDraftProps
  */
 export interface EmailDraftProps extends MessageDraftProps {
-  channel: "email";
+  channel: 'email';
   subject: string;
   from?: string;
   to: string[];
@@ -159,7 +159,7 @@ export interface EmailDraftProps extends MessageDraftProps {
  * 继承自 MessageDraftProps
  */
 export interface SlackDraftProps extends MessageDraftProps {
-  channel: "slack";
+  channel: 'slack';
   target: SlackTarget;
 }
 

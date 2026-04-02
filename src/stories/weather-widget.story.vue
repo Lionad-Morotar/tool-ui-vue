@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
-import { WeatherWidget } from "../components";
-import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from "../components/weather-widget/schema";
+import { reactive, computed } from 'vue';
+import { WeatherWidget } from '../components';
+import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '../components/weather-widget/schema';
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,
@@ -89,7 +89,7 @@ function getTimeOfDayValue(hour: number): number {
   <Story title="WeatherWidget/All Variants">
     <Variant title="Sunny">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-sunny"
           :location="{ name: 'Los Angeles, CA' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -113,7 +113,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="Cloudy">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-cloudy"
           :location="{ name: 'Seattle, WA' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -137,7 +137,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="Rainy">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-rainy"
           :location="{ name: 'London, UK' }"
           :units="{ temperature: 'celsius' }"
@@ -161,7 +161,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="Snowy">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-snowy"
           :location="{ name: 'Denver, CO' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -185,7 +185,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="Thunderstorm">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-storm"
           :location="{ name: 'Miami, FL' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -210,7 +210,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="Celsius">
       <div class="w-full max-w-sm">
-        <WeatherWidget
+        <weather-widget
           id="weather-celsius"
           :location="{ name: 'Tokyo, Japan' }"
           :units="{ temperature: 'celsius' }"
@@ -239,21 +239,21 @@ function getTimeOfDayValue(hour: number): number {
             <button
               v-for="cond in conditions"
               :key="cond.code"
-              @click="setCondition(cond.code, cond.temp)"
               :class="[
                 'rounded-md px-3 py-1 text-xs font-medium transition-colors',
                 weatherState.condition === cond.code
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted hover:bg-muted/80'
               ]"
+              @click="setCondition(cond.code, cond.temp)"
             >
               {{ cond.label }}
             </button>
           </div>
           <div class="flex items-center gap-4">
             <button
-              @click="toggleUnit"
               class="rounded-md bg-muted px-3 py-1 text-sm font-medium hover:bg-muted/80"
+              @click="toggleUnit"
             >
               Toggle °{{ weatherState.unit === 'fahrenheit' ? 'F' : 'C' }}
             </button>
@@ -267,7 +267,7 @@ function getTimeOfDayValue(hour: number): number {
             <span class="w-12 text-right text-sm font-medium">{{ weatherState.temperature }}°</span>
           </div>
         </div>
-        <WeatherWidget
+        <weather-widget
           id="weather-interactive"
           :location="{ name: weatherState.location }"
           :units="{ temperature: weatherState.unit }"
@@ -281,7 +281,7 @@ function getTimeOfDayValue(hour: number): number {
 
     <Variant title="All Weather Conditions">
       <div class="grid grid-cols-2 gap-4">
-        <WeatherWidget
+        <weather-widget
           id="weather-all-sunny"
           :location="{ name: 'Phoenix, AZ' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -289,7 +289,7 @@ function getTimeOfDayValue(hour: number): number {
           :forecast="[{ label: 'Tue', conditionCode: 'clear', tempMin: 78, tempMax: 96 }]"
           :updated-at="new Date().toISOString()"
         />
-        <WeatherWidget
+        <weather-widget
           id="weather-all-foggy"
           :location="{ name: 'San Francisco, CA' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -297,7 +297,7 @@ function getTimeOfDayValue(hour: number): number {
           :forecast="[{ label: 'Tue', conditionCode: 'fog', tempMin: 52, tempMax: 60 }]"
           :updated-at="new Date().toISOString()"
         />
-        <WeatherWidget
+        <weather-widget
           id="weather-all-windy"
           :location="{ name: 'Chicago, IL' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -305,7 +305,7 @@ function getTimeOfDayValue(hour: number): number {
           :forecast="[{ label: 'Tue', conditionCode: 'windy', tempMin: 36, tempMax: 48 }]"
           :updated-at="new Date().toISOString()"
         />
-        <WeatherWidget
+        <weather-widget
           id="weather-all-sleet"
           :location="{ name: 'Boston, MA' }"
           :units="{ temperature: 'fahrenheit' }"
@@ -325,13 +325,13 @@ function getTimeOfDayValue(hour: number): number {
               <button
                 v-for="hour in [6, 12, 18, 0]"
                 :key="hour"
-                @click="setTimeOfDay(hour)"
                 :class="[
                   'rounded-md px-3 py-1 text-xs font-medium transition-colors',
                   timeOfDayState.hour === hour
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted hover:bg-muted/80'
                 ]"
+                @click="setTimeOfDay(hour)"
               >
                 {{ formatTime(hour) }}
               </button>
@@ -343,13 +343,13 @@ function getTimeOfDayValue(hour: number): number {
               <button
                 v-for="cond in timeOfDayConditions"
                 :key="cond.code"
-                @click="setTimeOfDayCondition(cond.code)"
                 :class="[
                   'rounded-md px-3 py-1 text-xs font-medium transition-colors',
                   timeOfDayState.condition === cond.code
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted hover:bg-muted/80'
                 ]"
+                @click="setTimeOfDayCondition(cond.code)"
               >
                 {{ cond.label }}
               </button>
@@ -357,7 +357,7 @@ function getTimeOfDayValue(hour: number): number {
           </div>
         </div>
         <div class="w-full max-w-sm">
-          <WeatherWidget
+          <weather-widget
             id="weather-time-of-day"
             :location="{ name: 'Demo City' }"
             :units="{ temperature: 'fahrenheit' }"
@@ -402,7 +402,7 @@ function getTimeOfDayValue(hour: number): number {
           </label>
         </div>
         <div class="w-full max-w-sm">
-          <WeatherWidget
+          <weather-widget
             id="weather-reduced-motion"
             :location="{ name: 'Accessible City' }"
             :units="{ temperature: 'fahrenheit' }"
@@ -423,7 +423,7 @@ function getTimeOfDayValue(hour: number): number {
             :effects="effectsState"
           />
         </div>
-        <div class="text-xs text-muted-foreground space-y-1">
+        <div class="space-y-1 text-xs text-muted-foreground">
           <p>
             <strong>Reduced Motion:</strong> When enabled, WebGL effects are disabled and mouse-driven
             glow effects are suppressed. This respects the user's system preference for reduced motion
@@ -445,20 +445,20 @@ function getTimeOfDayValue(hour: number): number {
             <button
               v-for="quality in ['low', 'medium', 'high', 'auto']"
               :key="quality"
-              @click="effectsState.quality = quality as 'low' | 'medium' | 'high' | 'auto'"
               :class="[
-                'rounded-md px-3 py-1 text-xs font-medium transition-colors capitalize',
+                'rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors',
                 effectsState.quality === quality
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted hover:bg-muted/80'
               ]"
+              @click="effectsState.quality = quality as 'low' | 'medium' | 'high' | 'auto'"
             >
               {{ quality }}
             </button>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-4">
-          <WeatherWidget
+          <weather-widget
             id="weather-quality-rain"
             :location="{ name: 'Rainy City' }"
             :units="{ temperature: 'fahrenheit' }"
@@ -475,7 +475,7 @@ function getTimeOfDayValue(hour: number): number {
             :updated-at="new Date().toISOString()"
             :effects="{ enabled: true, quality: effectsState.quality }"
           />
-          <WeatherWidget
+          <weather-widget
             id="weather-quality-snow"
             :location="{ name: 'Snowy Town' }"
             :units="{ temperature: 'fahrenheit' }"

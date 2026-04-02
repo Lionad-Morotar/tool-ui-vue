@@ -8,13 +8,14 @@
  *
  * @module tool-ui-vue/components/item-carousel/schema
  */
-import { z } from "zod";
-import { defineToolUiContract } from "../../shared/contract";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ActionSchema,
   SerializableActionSchema,
   ToolUIIdSchema,
-} from "../../shared/schema";
+} from '../../shared/schema';
+import type { Action } from '../../shared/schema';
 
 /**
  * 轮播项的 Schema 定义
@@ -48,7 +49,7 @@ export interface Item {
   subtitle?: string;
   image?: string;
   color?: string;
-  actions?: import("../../shared/schema").Action[];
+  actions?: Action[];
 }
 
 /**
@@ -90,7 +91,7 @@ export const SerializableItemCarouselSchema = ItemCarouselPropsSchema.omit({
       if (firstSeenAt !== undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ["items", index, "id"],
+          path: ['items', index, 'id'],
           message: `duplicate item id '${item.id}' (first seen at index ${firstSeenAt})`,
         });
         return;
@@ -114,7 +115,7 @@ export type SerializableItemCarousel = z.infer<
 >;
 
 const SerializableItemCarouselSchemaContract = defineToolUiContract(
-  "ItemCarousel",
+  'ItemCarousel',
   SerializableItemCarouselSchema,
 );
 

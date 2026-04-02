@@ -1,11 +1,11 @@
 import type {
-  LayerToggles,
-  WeatherEffectsCanvasProps,
-} from "./weather-effects-types";
-import type {
   CustomEffectProps,
   WeatherEffectLayer,
-} from "./custom-effect-props";
+} from './custom-effect-props';
+import type {
+  LayerToggles,
+  WeatherEffectsCanvasProps,
+} from './weather-effects-types';
 
 function sunAltitudeToLightIntensity(sunAltitude: number): number {
   const light =
@@ -16,7 +16,7 @@ function sunAltitudeToLightIntensity(sunAltitude: number): number {
 }
 
 function isLayerEnabled(
-  enabledLayers: CustomEffectProps["enabledLayers"],
+  enabledLayers: CustomEffectProps['enabledLayers'],
   layer: WeatherEffectLayer,
   hasConfig: boolean,
 ): boolean {
@@ -30,27 +30,27 @@ export function mapCustomEffectPropsToCanvasProps(
 ): WeatherEffectsCanvasProps | null {
   const hasCelestial = isLayerEnabled(
     custom.enabledLayers,
-    "celestial",
+    'celestial',
     custom.celestial !== undefined,
   );
   const hasCloud = isLayerEnabled(
     custom.enabledLayers,
-    "clouds",
+    'clouds',
     custom.cloud !== undefined,
   );
   const hasRain = isLayerEnabled(
     custom.enabledLayers,
-    "rain",
+    'rain',
     custom.rain !== undefined,
   );
   const hasLightning = isLayerEnabled(
     custom.enabledLayers,
-    "lightning",
+    'lightning',
     custom.lightning !== undefined,
   );
   const hasSnow = isLayerEnabled(
     custom.enabledLayers,
-    "snow",
+    'snow',
     custom.snow !== undefined,
   );
   const hasPost = custom.post !== undefined;
@@ -75,7 +75,7 @@ export function mapCustomEffectPropsToCanvasProps(
   };
 
   const interactions: Partial<
-    NonNullable<WeatherEffectsCanvasProps["interactions"]>
+    NonNullable<WeatherEffectsCanvasProps['interactions']>
   > = {};
   if (custom.rain?.fallingRefraction !== undefined) {
     interactions.rainRefractionStrength = custom.rain.fallingRefraction;

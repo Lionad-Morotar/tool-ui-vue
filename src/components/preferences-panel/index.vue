@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { useVModel } from "@vueuse/core";
-import { Check, AlertCircle } from "lucide-vue-next";
-import { cn } from "./_adapter";
+import { useVModel } from '@vueuse/core';
+import { Check, AlertCircle } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
+import { cn } from './_adapter';
 import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,
   PreferencesValue,
   PreferenceItem,
   PreferenceSection,
-} from "./schema";
+} from './schema';
 
 const props = defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { className?: string }>();
 
@@ -17,21 +17,21 @@ const emit = defineEmits<{
   change: [value: PreferencesValue];
   action: [actionId: string, value: PreferencesValue];
   beforeAction: [actionId: string, value: PreferencesValue];
-  "update:value": [value: PreferencesValue];
+  'update:value': [value: PreferencesValue];
 }>();
 
 // Determine if we're in receipt mode
-const isReceipt = computed(() => "choice" in props && props.choice !== undefined);
+const isReceipt = computed(() => 'choice' in props && props.choice !== undefined);
 
 // Get initial value for an item
 function getInitialValue(item: PreferenceItem): string | boolean {
   switch (item.type) {
-    case "switch":
+    case 'switch':
       return item.defaultChecked ?? false;
-    case "toggle":
-      return item.defaultValue ?? item.options?.[0]?.value ?? "";
-    case "select":
-      return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? "";
+    case 'toggle':
+      return item.defaultValue ?? item.options?.[0]?.value ?? '';
+    case 'select':
+      return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? '';
   }
 }
 
@@ -55,11 +55,11 @@ const initialValues = computed(() => computeInitialValues(sections.value));
 // Uncontrolled mode: use local ref
 const localValues = ref<PreferencesValue>({});
 const controlledValue = computed(() =>
-  !isReceipt.value && "value" in props ? props.value : undefined
+  !isReceipt.value && 'value' in props ? props.value : undefined
 );
 
 // Use VueUse's useVModel for controlled state
-const modelValue = useVModel(props, "value", emit, {
+const modelValue = useVModel(props, 'value', emit, {
   passive: true,
   defaultValue: initialValues.value,
 });
@@ -104,7 +104,7 @@ function updateValue(itemId: string, value: string | boolean) {
   } else {
     // Uncontrolled mode
     localValues.value = { ...localValues.value, [itemId]: value };
-    emit("change", currentValues.value);
+    emit('change', currentValues.value);
   }
 }
 
@@ -118,12 +118,12 @@ const isDirty = computed(() => {
 
 // Format display value
 function formatDisplayValue(item: PreferenceItem, value: string | boolean): string {
-  if (item.type === "switch") {
-    return typeof value === "boolean" && value ? "On" : "Off";
+  if (item.type === 'switch') {
+    return typeof value === 'boolean' && value ? 'On' : 'Off';
   }
 
-  const stringValue = typeof value === "string" ? value : "";
-  const options = item.type === "toggle" ? item.options : item.selectOptions;
+  const stringValue = typeof value === 'string' ? value : '';
+  const options = item.type === 'toggle' ? item.options : item.selectOptions;
   const option = options?.find((opt) => opt.value === stringValue);
 
   return option?.label ?? stringValue;
@@ -137,10 +137,10 @@ const normalizedActions = computed(() => {
   if (!actionsProp) {
     return {
       items: [
-        { id: "cancel", label: "Cancel", variant: "ghost" as const },
-        { id: "save", label: "Save Changes", variant: "default" as const },
+        { id: 'cancel', label: 'Cancel', variant: 'ghost' as const },
+        { id: 'save', label: 'Save Changes', variant: 'default' as const },
       ],
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
@@ -149,16 +149,16 @@ const normalizedActions = computed(() => {
     return {
       items: actionsProp.map((action) => ({
         ...action,
-        variant: action.variant || (action.id === "save" ? "default" : "ghost"),
+        variant: action.variant || (action.id === 'save' ? 'default' : 'ghost'),
       })),
-      align: "right" as const,
+      align: 'right' as const,
     };
   }
 
   // Handle actions config object
   return {
     items: actionsProp.items,
-    align: actionsProp.align ?? "right",
+    align: actionsProp.align ?? 'right',
   };
 });
 
@@ -167,7 +167,7 @@ const actionsWithState = computed(() => {
   if (!normalizedActions.value) return [];
 
   return normalizedActions.value.items.map((action) => {
-    const isSaveAction = action.id === "save";
+    const isSaveAction = action.id === 'save';
     const baseDisabled = action.disabled ?? false;
     const shouldDisable = baseDisabled || (isSaveAction && !isDirty.value);
 
@@ -184,24 +184,24 @@ function handleCancel() {
   } else {
     localValues.value = {};
   }
-  emit("change", initialValues.value);
-  emit("action", "cancel", initialValues.value);
+  emit('change', initialValues.value);
+  emit('action', 'cancel', initialValues.value);
 }
 
 async function handleAction(actionId: string) {
   // Emit beforeAction for interception
-  emit("beforeAction", actionId, currentValues.value);
+  emit('beforeAction', actionId, currentValues.value);
 
-  if (actionId === "cancel") {
+  if (actionId === 'cancel') {
     handleCancel();
   } else {
-    emit("action", actionId, currentValues.value);
+    emit('action', actionId, currentValues.value);
   }
 }
 
 // Check if switch is on
 function isSwitchValue(value: string | boolean): boolean {
-  return typeof value === "boolean" ? value : value === "true";
+  return typeof value === 'boolean' ? value : value === 'true';
 }
 
 // Check if there are errors (receipt mode only)
@@ -220,7 +220,7 @@ function getItemError(item: PreferenceItem): string | undefined {
 
 // Reset state when sections change (signature reset)
 watch(
-  () => sections.value.map((s: PreferenceSection) => s.items.map((i: PreferenceItem) => i.id).join(",")).join("|"),
+  () => sections.value.map((s: PreferenceSection) => s.items.map((i: PreferenceItem) => i.id).join(',')).join('|'),
   () => {
     if (!isReceipt.value && controlledValue.value === undefined) {
       localValues.value = {};
@@ -242,23 +242,23 @@ watch(
     :aria-busy="false"
     :aria-label="hasErrors ? 'Preferences with errors' : 'Confirmed preferences'"
   >
-    <div class="bg-card/60 border-border flex w-full flex-col overflow-hidden rounded-2xl border opacity-95 shadow-xs">
+    <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 opacity-95 shadow-xs">
       <!-- Header -->
       <template v-if="props.title">
         <div class="flex items-center justify-between gap-3 px-5 py-4">
           <h2 class="text-base leading-none font-semibold">{{ props.title }}</h2>
           <span
             v-if="hasErrors"
-            class="text-destructive flex items-center gap-1.5 text-xs font-medium"
+            class="flex items-center gap-1.5 text-xs font-medium text-destructive"
           >
-            <AlertCircle class="size-3.5" />
+            <alert-circle class="size-3.5" />
             Error
           </span>
           <span
             v-else
             class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500"
           >
-            <Check class="size-3.5" />
+            <check class="size-3.5" />
             Saved
           </span>
         </div>
@@ -269,37 +269,37 @@ watch(
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
           <fieldset v-if="section.heading" class="flex flex-col">
-            <legend class="text-muted-foreground pb-1 text-xs tracking-widest uppercase">
+            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
-                <hr v-if="itemIndex > 0" class="border-border my-1" />
+                <hr v-if="itemIndex > 0" class="my-1 border-border" />
                 <div class="flex items-start justify-between gap-4 py-3">
                   <div class="flex flex-col gap-1">
                     <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                     <span
                       v-if="getItemError(item)"
-                      class="text-destructive text-sm font-normal text-pretty"
+                      class="text-sm font-normal text-pretty text-destructive"
                     >
                       {{ getItemError(item) }}
                     </span>
                     <span
                       v-else-if="item.description"
-                      class="text-muted-foreground text-sm font-normal text-pretty"
+                      class="text-sm font-normal text-pretty text-muted-foreground"
                     >
                       {{ item.description }}
                     </span>
                   </div>
                   <div class="flex shrink-0 items-center gap-2">
-                    <span class="text-muted-foreground text-sm font-medium">
+                    <span class="text-sm font-medium text-muted-foreground">
                       {{ formatDisplayValue(item, getItemValue(item)) }}
                     </span>
-                    <AlertCircle
+                    <alert-circle
                       v-if="getItemError(item)"
-                      class="text-destructive size-3.5"
+                      class="size-3.5 text-destructive"
                     />
-                    <Check
+                    <check
                       v-else-if="hasErrors"
                       class="size-3.5 text-emerald-600 dark:text-emerald-500"
                     />
@@ -312,7 +312,7 @@ watch(
             <template v-for="(item, itemIndex) in section.items" :key="item.id">
               <hr
                 v-if="itemIndex > 0"
-                class="border-border my-1"
+                class="my-1 border-border"
               />
               <div
                 :class="cn(
@@ -324,29 +324,29 @@ watch(
                   <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                   <span
                     v-if="getItemError(item)"
-                    class="text-destructive text-sm font-normal text-pretty"
+                    class="text-sm font-normal text-pretty text-destructive"
                   >
                     {{ getItemError(item) }}
                   </span>
                   <span
                     v-else-if="item.description"
-                    class="text-muted-foreground text-sm font-normal text-pretty"
+                    class="text-sm font-normal text-pretty text-muted-foreground"
                   >
                     {{ item.description }}
                   </span>
                 </div>
                 <div class="flex shrink-0 items-center gap-2">
-                  <span class="text-muted-foreground text-sm font-medium">
+                  <span class="text-sm font-medium text-muted-foreground">
                     {{ formatDisplayValue(item, getItemValue(item)) }}
                   </span>
-                  <AlertCircle
+                  <alert-circle
                     v-if="getItemError(item)"
-                    class="text-destructive size-3.5"
+                    class="size-3.5 text-destructive"
                   />
-                  <Check
-                      v-else-if="hasErrors"
-                      class="size-3.5 text-emerald-600 dark:text-emerald-500"
-                    />
+                  <check
+                    v-else-if="hasErrors"
+                    class="size-3.5 text-emerald-600 dark:text-emerald-500"
+                  />
                 </div>
               </div>
             </template>
@@ -359,14 +359,14 @@ watch(
   <!-- Interactive State -->
   <article
     v-else
-    :class="cn('text-foreground @container/preferences-panel flex w-full max-w-md min-w-80 flex-col gap-3', props.className)"
+    :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col gap-3 text-foreground', props.className)"
     data-slot="preferences-panel"
     :data-tool-ui-id="props.id"
     role="form"
     lang="en"
     :aria-busy="false"
   >
-    <div class="bg-card border-border flex w-full flex-col overflow-hidden rounded-2xl border shadow-xs">
+    <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
       <!-- Header -->
       <template v-if="props.title">
         <div class="px-5 py-4">
@@ -379,12 +379,12 @@ watch(
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
           <fieldset v-if="section.heading" class="flex flex-col">
-            <legend class="text-muted-foreground pb-1 text-xs tracking-widest uppercase">
+            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
-                <hr v-if="itemIndex > 0" class="border-border my-1" />
+                <hr v-if="itemIndex > 0" class="my-1 border-border" />
                 <div
                   :class="cn(
                     'flex items-start justify-between gap-4',
@@ -401,7 +401,7 @@ watch(
                     </label>
                     <p
                       v-if="item.description"
-                      class="text-muted-foreground text-sm font-normal text-pretty"
+                      class="text-sm font-normal text-pretty text-muted-foreground"
                     >
                       {{ item.description }}
                     </p>
@@ -415,7 +415,7 @@ watch(
                       role="switch"
                       :aria-checked="isSwitchValue(getItemValue(item))"
                       :class="cn(
-                        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
                         isSwitchValue(getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
                       )"
                       @click="updateValue(item.id, !isSwitchValue(getItemValue(item)))"
@@ -439,7 +439,7 @@ watch(
                         :key="option.value"
                         type="button"
                         :class="cn(
-                          'px-3 py-1.5 text-sm rounded-full transition-colors',
+                          'rounded-full px-3 py-1.5 text-sm transition-colors',
                           getItemValue(item) === option.value
                             ? 'bg-primary text-primary-foreground'
                             : 'hover:bg-accent'
@@ -457,7 +457,7 @@ watch(
                       :value="String(getItemValue(item))"
                       :class="cn(
                         'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
                       )"
                       @change="updateValue(item.id, ($event.target as HTMLSelectElement).value)"
                     >
@@ -478,7 +478,7 @@ watch(
             <template v-for="(item, itemIndex) in section.items" :key="item.id">
               <hr
                 v-if="itemIndex > 0"
-                class="border-border my-1"
+                class="my-1 border-border"
               />
               <div
                 :class="cn(
@@ -496,7 +496,7 @@ watch(
                   </label>
                   <p
                     v-if="item.description"
-                    class="text-muted-foreground text-sm font-normal text-pretty"
+                    class="text-sm font-normal text-pretty text-muted-foreground"
                   >
                     {{ item.description }}
                   </p>
@@ -510,7 +510,7 @@ watch(
                     role="switch"
                     :aria-checked="isSwitchValue(getItemValue(item))"
                     :class="cn(
-                      'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                      'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
                       isSwitchValue(getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
                     )"
                     @click="updateValue(item.id, !isSwitchValue(getItemValue(item)))"
@@ -534,7 +534,7 @@ watch(
                       :key="option.value"
                       type="button"
                       :class="cn(
-                        'px-3 py-1.5 text-sm rounded-full transition-colors',
+                        'rounded-full px-3 py-1.5 text-sm transition-colors',
                         getItemValue(item) === option.value
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:bg-accent'
@@ -552,7 +552,7 @@ watch(
                     :value="String(getItemValue(item))"
                     :class="cn(
                       'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
                     )"
                     @change="updateValue(item.id, ($event.target as HTMLSelectElement).value)"
                   >
@@ -588,19 +588,19 @@ watch(
           type="button"
           :class="cn(
             'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+            'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             'h-9',
             normalizedActions.align === 'right' ? 'w-full @[240px]:w-auto' : '',
             action.variant === 'destructive'
               ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
               : action.variant === 'secondary'
-              ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-              : action.variant === 'ghost'
-              ? 'hover:bg-accent hover:text-accent-foreground'
-              : action.variant === 'outline'
-              ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
-              : 'bg-primary text-primary-foreground hover:bg-primary/90',
+                ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                : action.variant === 'ghost'
+                  ? 'hover:bg-accent hover:text-accent-foreground'
+                  : action.variant === 'outline'
+                    ? 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90',
           )"
           :disabled="action.disabled"
           @click="handleAction(action.id)"

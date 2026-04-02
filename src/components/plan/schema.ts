@@ -8,22 +8,23 @@
  *
  * @module tool-ui-vue/components/plan/schema
  */
-import { z } from "zod";
+import { z } from 'zod';
+import { defineToolUiContract } from '../../shared/contract';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from "../../shared/schema";
-import { defineToolUiContract } from "../../shared/contract";
+} from '../../shared/schema';
+import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
  * 计划待办事项状态的 Schema 定义
  */
 export const PlanTodoStatusSchema = z.enum([
-  "pending",
-  "in_progress",
-  "completed",
-  "cancelled",
+  'pending',
+  'in_progress',
+  'completed',
+  'cancelled',
 ]);
 
 /**
@@ -67,8 +68,8 @@ export const PlanPropsSchema = z
     value.todos.forEach((todo, index) => {
       if (seenTodoIds.has(todo.id)) {
         ctx.addIssue({
-          code: "custom",
-          path: ["todos", index, "id"],
+          code: 'custom',
+          path: ['todos', index, 'id'],
           message: `Duplicate todo id "${todo.id}".`,
         });
         return;
@@ -83,8 +84,8 @@ export const PlanPropsSchema = z
  */
 export interface PlanProps {
   id: string;
-  role?: "information" | "decision" | "control" | "state" | "composite";
-  receipt?: import("../../shared/schema").ToolUIReceipt;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: ToolUIReceipt;
   title: string;
   description?: string;
   todos: PlanTodo[];
@@ -104,7 +105,7 @@ export const SerializablePlanSchema = PlanPropsSchema;
 export type SerializablePlan = z.infer<typeof SerializablePlanSchema>;
 
 const SerializablePlanSchemaContract = defineToolUiContract(
-  "Plan",
+  'Plan',
   SerializablePlanSchema,
 );
 

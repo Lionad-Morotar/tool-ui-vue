@@ -1,26 +1,12 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef } from "react";
-import {
-  releaseWeatherWebglBudgetSlotOnInitFailure,
-  releaseWeatherWebglCanvasBudgetSlot,
-  tryAcquireWeatherWebglCanvasBudgetSlot,
-} from "./weather-webgl-budget";
-import {
-  CELESTIAL_FRAGMENT,
-  CLOUD_FRAGMENT,
-  COMPOSITE_FRAGMENT,
-  FULLSCREEN_VERTEX,
-  LIGHTNING_FRAGMENT,
-  RAIN_FRAGMENT,
-  SNOW_FRAGMENT,
-} from "./weather-effect-shaders";
+import { useCallback, useEffect, useRef } from 'react';
 import {
   createFramebuffer,
   createProgram,
   resizeFramebuffer,
   type Framebuffer,
-} from "./weather-effect-gl";
+} from './weather-effect-gl';
 import {
   clearOffscreenPass,
   isLightningPassActive,
@@ -30,8 +16,22 @@ import {
   renderLightningPass,
   renderRainPass,
   renderSnowPass,
-} from "./weather-effect-render-passes";
-import type { ResolvedWeatherEffectsCanvasProps } from "./weather-effects-types";
+} from './weather-effect-render-passes';
+import {
+  CELESTIAL_FRAGMENT,
+  CLOUD_FRAGMENT,
+  COMPOSITE_FRAGMENT,
+  FULLSCREEN_VERTEX,
+  LIGHTNING_FRAGMENT,
+  RAIN_FRAGMENT,
+  SNOW_FRAGMENT,
+} from './weather-effect-shaders';
+import {
+  releaseWeatherWebglBudgetSlotOnInitFailure,
+  releaseWeatherWebglCanvasBudgetSlot,
+  tryAcquireWeatherWebglCanvasBudgetSlot,
+} from './weather-webgl-budget';
+import type { ResolvedWeatherEffectsCanvasProps } from './weather-effects-types';
 
 interface WeatherEffectsPrograms {
   celestial: WebGLProgram | null;
@@ -186,7 +186,7 @@ export function useWeatherEffectsRenderer(
         console.error(errorMessage);
       }
 
-      if (warnMessage && typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+      if (warnMessage && typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
         console.warn(warnMessage);
       }
 
@@ -212,9 +212,9 @@ export function useWeatherEffectsRenderer(
       const ok = tryAcquireWeatherWebglCanvasBudgetSlot(canvas);
       if (!ok) {
         hasWebglBudgetSlotRef.current = false;
-        if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+        if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
           console.warn(
-            "[WeatherEffectsCanvas] Too many WebGL canvases on the page; rendering this widget without effects.",
+            '[WeatherEffectsCanvas] Too many WebGL canvases on the page; rendering this widget without effects.',
           );
         }
         return false;
@@ -225,12 +225,12 @@ export function useWeatherEffectsRenderer(
     disposeGL();
     isContextLostRef.current = false;
 
-    const gl = canvas.getContext("webgl2");
+    const gl = canvas.getContext('webgl2');
     if (!gl) {
       return failInit({
         canvas,
         warnMessage:
-          "[WeatherEffectsCanvas] WebGL2 not supported; rendering without effects.",
+          '[WeatherEffectsCanvas] WebGL2 not supported; rendering without effects.',
       });
     }
 
@@ -285,7 +285,7 @@ export function useWeatherEffectsRenderer(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create required WebGL programs",
+        errorMessage: 'Failed to create required WebGL programs',
       });
     }
 
@@ -306,7 +306,7 @@ export function useWeatherEffectsRenderer(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create WebGL framebuffers",
+        errorMessage: 'Failed to create WebGL framebuffers',
       });
     }
 
@@ -330,7 +330,7 @@ export function useWeatherEffectsRenderer(
       moonTextureRef.current = moonTexture;
 
       const image = new Image();
-      image.crossOrigin = "anonymous";
+      image.crossOrigin = 'anonymous';
       image.onload = () => {
         const glCurrent = glRef.current;
         if (!glCurrent || moonTextureRef.current !== moonTexture) return;
@@ -364,7 +364,7 @@ export function useWeatherEffectsRenderer(
         moonTextureLoadedRef.current = true;
       };
       image.src = new URL(
-        "../assets/moon-texture.jpg",
+        '../assets/moon-texture.jpg',
         import.meta.url,
       ).toString();
     }
@@ -385,7 +385,7 @@ export function useWeatherEffectsRenderer(
 
       return failInit({
         canvas,
-        errorMessage: "Failed to create WebGL buffer",
+        errorMessage: 'Failed to create WebGL buffer',
       });
     }
 
@@ -395,7 +395,7 @@ export function useWeatherEffectsRenderer(
 
     for (const program of Object.values(programsRef.current)) {
       if (!program) continue;
-      const positionLoc = gl.getAttribLocation(program, "a_position");
+      const positionLoc = gl.getAttribLocation(program, 'a_position');
       if (positionLoc >= 0) {
         gl.enableVertexAttribArray(positionLoc);
         gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
@@ -598,13 +598,13 @@ export function useWeatherEffectsRenderer(
       }
     };
 
-    canvas.addEventListener("webglcontextlost", onContextLost, {
+    canvas.addEventListener('webglcontextlost', onContextLost, {
       passive: false,
     } as AddEventListenerOptions);
-    canvas.addEventListener("webglcontextrestored", onContextRestored);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     const observer =
-      typeof IntersectionObserver !== "undefined"
+      typeof IntersectionObserver !== 'undefined'
         ? new IntersectionObserver(
             (entries) => {
               const entry = entries[0];
@@ -646,11 +646,11 @@ export function useWeatherEffectsRenderer(
     return () => {
       observer?.disconnect();
       canvas.removeEventListener(
-        "webglcontextlost",
+        'webglcontextlost',
         onContextLost as EventListener,
       );
       canvas.removeEventListener(
-        "webglcontextrestored",
+        'webglcontextrestored',
         onContextRestored as EventListener,
       );
       disposeGL();

@@ -1,36 +1,37 @@
 <script setup lang="ts">
 import {
-  ref,
-  computed,
-  watch,
-  onMounted,
-  onUnmounted,
-  nextTick,
-} from "vue";
-import type { Map as LeafletMap } from "leaflet";
-import Supercluster from "supercluster";
-import {
   LMap,
   LTileLayer,
   LMarker,
   LCircleMarker,
   LPolyline,
   LControlZoom,
-} from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
-import GeoMapOverlays from "./GeoMapOverlays.vue";
-import { createClusterIcon, resolveMarkerIcon } from "./geo-map-icons";
+} from '@vue-leaflet/vue-leaflet';
+import Supercluster from 'supercluster';
+import {
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onUnmounted,
+  nextTick,
+} from 'vue';
+import 'leaflet/dist/leaflet.css';
+import { createClusterIcon, resolveMarkerIcon } from './geo-map-icons';
+import GeoMapOverlays from './GeoMapOverlays.vue';
 import type {
   GeoMapClustering,
   GeoMapMarker,
   GeoMapRoute,
   GeoMapViewport,
-} from "./schema";
+} from './schema';
+import type { Map as LeafletMap, Icon as LeafletIcon } from 'leaflet';
+import type * as LeafletNS from 'leaflet';
 
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-const ROUTE_DEFAULT_COLOR = "var(--primary)";
+const ROUTE_DEFAULT_COLOR = 'var(--primary)';
 const ROUTE_DEFAULT_WEIGHT = 3;
 const ROUTE_DEFAULT_OPACITY = 0.85;
 
@@ -73,8 +74,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  "marker-click": [marker: GeoMapMarker];
-  "route-click": [route: GeoMapRoute];
+  'marker-click': [marker: GeoMapMarker];
+  'route-click': [route: GeoMapRoute];
   ready: [isReady: boolean];
 }>();
 
@@ -82,7 +83,8 @@ const emit = defineEmits<{
 const leafletReady = ref(false);
 const mapInstance = ref<LeafletMap | null>(null);
 const viewportState = ref<MapViewportState | null>(null);
-const leafletModule = ref<typeof import("leaflet") | null>(null);
+type LeafletModule = typeof LeafletNS;
+const leafletModule = ref<LeafletModule | null>(null);
 
 // Leaflet runtime computed from module
 const leafletRuntime = computed(() => {
@@ -95,14 +97,14 @@ const leafletRuntime = computed(() => {
 
 // Load Leaflet dynamically
 onMounted(async () => {
-  const L = await import("leaflet");
+  const L = await import('leaflet');
   leafletModule.value = L;
   leafletReady.value = true;
-  emit("ready", true);
+  emit('ready', true);
 });
 
 onUnmounted(() => {
-  emit("ready", false);
+  emit('ready', false);
 });
 
 // Watch for map instance changes to set aria-label
@@ -111,8 +113,8 @@ watch(
   (map) => {
     if (map) {
       const container = map.getContainer();
-      container.setAttribute("role", "region");
-      container.setAttribute("aria-label", props.mapAriaLabel);
+      container.setAttribute('role', 'region');
+      container.setAttribute('aria-label', props.mapAriaLabel);
     }
   }
 );
@@ -120,13 +122,13 @@ watch(
 // Escape key handler
 onMounted(() => {
   const handleEscape = (event: KeyboardEvent) => {
-    if (event.key === "Escape" && mapInstance.value) {
+    if (event.key === 'Escape' && mapInstance.value) {
       mapInstance.value.closePopup();
     }
   };
-  document.addEventListener("keydown", handleEscape);
+  document.addEventListener('keydown', handleEscape);
   onUnmounted(() => {
-    document.removeEventListener("keydown", handleEscape);
+    document.removeEventListener('keydown', handleEscape);
   });
 });
 
@@ -164,7 +166,7 @@ function areViewportStatesEqual(
 function serializeFitPoints(points: [number, number][]): string {
   return points
     .map(([lat, lng]) => `${roundCoordinate(lat)},${roundCoordinate(lng)}`)
-    .join("|");
+    .join('|');
 }
 
 function readViewportState(map: LeafletMap): MapViewportState {
@@ -181,7 +183,7 @@ function readViewportState(map: LeafletMap): MapViewportState {
 }
 
 function isValidLatLng(lat: number | undefined, lng: number | undefined): lat is number {
-  return typeof lat === "number" && typeof lng === "number" &&
+  return typeof lat === 'number' && typeof lng === 'number' &&
     Number.isFinite(lat) && Number.isFinite(lng) &&
     lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 }
@@ -189,17 +191,17 @@ function isValidLatLng(lat: number | undefined, lng: number | undefined): lat is
 function collectFitPoints(
   markers: GeoMapMarker[],
   routes: GeoMapRoute[],
-  target: "markers" | "routes" | "all"
+  target: 'markers' | 'routes' | 'all'
 ): GeoMapLatLng[] {
   const markerPoints =
-    target === "markers" || target === "all"
+    target === 'markers' || target === 'all'
       ? markers
           .filter((marker) => isValidLatLng(marker.lat, marker.lng))
           .map((marker) => [marker.lat, marker.lng] as GeoMapLatLng)
       : [];
 
   const routePoints =
-    target === "routes" || target === "all"
+    target === 'routes' || target === 'all'
       ? routes.flatMap((route) =>
           route.points
             .filter((point) => isValidLatLng(point.lat, point.lng))
@@ -213,11 +215,11 @@ function collectFitPoints(
 function resolveFitPointsWithFallback(
   markers: GeoMapMarker[],
   routes: GeoMapRoute[],
-  target: "markers" | "routes" | "all"
+  target: 'markers' | 'routes' | 'all'
 ): GeoMapLatLng[] {
   const selected = collectFitPoints(markers, routes, target);
   if (selected.length > 0) return selected;
-  if (target !== "markers") return collectFitPoints(markers, routes, "markers");
+  if (target !== 'markers') return collectFitPoints(markers, routes, 'markers');
   return [];
 }
 
@@ -247,14 +249,14 @@ function resolveInitialView(
   routes: GeoMapRoute[],
   viewport: GeoMapViewport | undefined
 ): { center: [number, number]; zoom: number } {
-  if (viewport?.mode === "center") {
+  if (viewport?.mode === 'center') {
     return {
       center: [viewport.center.lat, viewport.center.lng],
       zoom: viewport.zoom,
     };
   }
 
-  const fitTarget = viewport?.target ?? "all";
+  const fitTarget = viewport?.target ?? 'all';
   const fitPoints = resolveFitPointsWithFallback(markers, routes, fitTarget);
 
   if (fitPoints.length === 1) {
@@ -274,11 +276,11 @@ function getClusterFeatureKey(
 ): string {
   const properties = feature.properties ?? {};
 
-  if (properties.cluster && typeof properties.cluster_id === "number") {
+  if (properties.cluster && typeof properties.cluster_id === 'number') {
     return `cluster:${properties.cluster_id}`;
   }
 
-  if (typeof properties.markerId === "string" && properties.markerId.length > 0) {
+  if (typeof properties.markerId === 'string' && properties.markerId.length > 0) {
     return `marker:${properties.markerId}`;
   }
 
@@ -329,16 +331,16 @@ function resolveMarkerAriaLabel(marker: GeoMapMarker): string {
 }
 
 // Helper functions for dot icon properties
-function getDotRadius(icon: GeoMapMarker["icon"]): number {
-  return icon?.type === "dot" ? icon.radius ?? 7 : 7;
+function getDotRadius(icon: GeoMapMarker['icon']): number {
+  return icon?.type === 'dot' ? icon.radius ?? 7 : 7;
 }
 
-function getDotBorderColor(icon: GeoMapMarker["icon"]): string {
-  return icon?.type === "dot" ? icon.borderColor ?? "var(--border)" : "var(--border)";
+function getDotBorderColor(icon: GeoMapMarker['icon']): string {
+  return icon?.type === 'dot' ? icon.borderColor ?? 'var(--border)' : 'var(--border)';
 }
 
-function getDotFillColor(icon: GeoMapMarker["icon"]): string {
-  return icon?.type === "dot" ? icon.color ?? "var(--primary)" : "var(--primary)";
+function getDotFillColor(icon: GeoMapMarker['icon']): string {
+  return icon?.type === 'dot' ? icon.color ?? 'var(--primary)' : 'var(--primary)';
 }
 
 // Computed values
@@ -376,10 +378,10 @@ const clusterIndex = computed<Supercluster<MarkerClusterPointProperties> | null>
   const points = props.markers.map((marker, idx) => {
     const markerId = marker.id ?? `marker-${idx}`;
     return {
-      type: "Feature" as const,
+      type: 'Feature' as const,
       id: markerId,
       geometry: {
-        type: "Point" as const,
+        type: 'Point' as const,
         coordinates: [marker.lng, marker.lat] as [number, number],
       },
       properties: {
@@ -436,7 +438,7 @@ watch(
 
     await nextTick();
 
-    if (viewport?.mode === "center") {
+    if (viewport?.mode === 'center') {
       const viewportKey = `center:${roundCoordinate(viewport.center.lat)}:${roundCoordinate(viewport.center.lng)}:${viewport.zoom}`;
       if (lastAppliedViewportRef.value === viewportKey) return;
 
@@ -448,7 +450,7 @@ watch(
       return;
     }
 
-    const fitTarget = viewport?.target ?? "all";
+    const fitTarget = viewport?.target ?? 'all';
     const fitPoints = resolveFitPointsWithFallback(markers, routes, fitTarget);
     if (fitPoints.length === 0) return;
 
@@ -468,7 +470,7 @@ watch(
     }
 
     const padding = viewport?.padding ?? DEFAULT_VIEWPORT_PADDING;
-    const viewportKey = `fit:${fitTarget}:${padding}:${maxZoom ?? "none"}:${serializeFitPoints(fitPoints)}`;
+    const viewportKey = `fit:${fitTarget}:${padding}:${maxZoom ?? 'none'}:${serializeFitPoints(fitPoints)}`;
     if (lastAppliedViewportRef.value === viewportKey) return;
 
     lastAppliedViewportRef.value = viewportKey;
@@ -498,18 +500,18 @@ function handleClusterClick(lat: number, lng: number, clusterId: number) {
 
 // Handle marker click
 function handleMarkerClick(marker: GeoMapMarker) {
-  emit("marker-click", marker);
+  emit('marker-click', marker);
 }
 
 // Handle route click
 function handleRouteClick(route: GeoMapRoute) {
-  emit("route-click", route);
+  emit('route-click', route);
 }
 </script>
 
 <template>
   <div v-if="!leafletReady" class="h-full w-full" />
-  <LMap
+  <l-map
     v-else
     :center="initialView.center"
     :zoom="initialView.zoom"
@@ -520,11 +522,11 @@ function handleRouteClick(route: GeoMapRoute) {
     @moveend="handleViewportChange"
     @zoomend="handleViewportChange"
   >
-    <LTileLayer :attribution="TILE_ATTRIBUTION" :url="tileUrl" />
-    <LControlZoom v-if="showZoomControl" position="topright" />
+    <l-tile-layer :attribution="TILE_ATTRIBUTION" :url="tileUrl" />
+    <l-control-zoom v-if="showZoomControl" position="topright" />
 
     <!-- Routes -->
-    <LPolyline
+    <l-polyline
       v-for="(route, routeIndex) in resolvedRoutes"
       :key="route.id ?? `${id}-route-${routeIndex}`"
       :lat-lngs="route.points.map((p) => [p.lat, p.lng])"
@@ -536,7 +538,7 @@ function handleRouteClick(route: GeoMapRoute) {
       }"
       @click="handleRouteClick(route)"
     >
-      <GeoMapOverlays
+      <geo-map-overlays
         :tooltip-mode="route.tooltip ?? 'hover'"
         :tooltip-content="route.label ?? route.description"
         :label="route.label"
@@ -544,7 +546,7 @@ function handleRouteClick(route: GeoMapRoute) {
         :tooltip-class-name="tooltipClassName"
         :popup-class-name="popupClassName"
       />
-    </LPolyline>
+    </l-polyline>
 
     <!-- Clustered Markers -->
     <template v-if="clusterConfig.enabled && clusterIndex && viewportState">
@@ -557,12 +559,12 @@ function handleRouteClick(route: GeoMapRoute) {
         "
       >
         <!-- Cluster -->
-        <LMarker
+        <l-marker
           v-if="feature.properties?.cluster && typeof feature.properties.cluster_id === 'number'"
           :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
           :icon="
             leafletRuntime
-              ? (createClusterIcon(feature.properties.point_count ?? 0, leafletRuntime) as import('leaflet').Icon)
+              ? (createClusterIcon(feature.properties.point_count ?? 0, leafletRuntime) as LeafletIcon)
               : undefined
           "
           :title="`Cluster containing ${feature.properties.point_count ?? 0} locations`"
@@ -578,22 +580,21 @@ function handleRouteClick(route: GeoMapRoute) {
         <!-- Individual Marker from Cluster -->
         <template v-else>
           <!-- Custom Icon Marker -->
-          <LMarker
+          <l-marker
             v-if="
               leafletRuntime &&
-              markerById.get(feature.properties?.markerId ?? '')?.icon &&
-              resolveMarkerIcon(
-                markerById.get(feature.properties?.markerId ?? '')?.icon,
-                leafletRuntime
-              )
+                markerById.get(feature.properties?.markerId ?? '')?.icon &&
+                resolveMarkerIcon(
+                  markerById.get(feature.properties?.markerId ?? '')?.icon,
+                  leafletRuntime
+                )
             "
             :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
             :icon="
               resolveMarkerIcon(
                 markerById.get(feature.properties?.markerId ?? '')?.icon,
                 leafletRuntime!
-              )! as import('leaflet').Icon
-            "
+              )! as LeafletIcon "
             :title="
               resolveMarkerAriaLabel(
                 markerById.get(feature.properties?.markerId ?? '')!
@@ -605,14 +606,14 @@ function handleRouteClick(route: GeoMapRoute) {
               )
             "
           >
-            <GeoMapOverlays
+            <geo-map-overlays
               :tooltip-mode="
                 markerById.get(feature.properties?.markerId ?? '')?.tooltip ??
-                'hover'
+                  'hover'
               "
               :tooltip-content="
                 markerById.get(feature.properties?.markerId ?? '')?.label ??
-                markerById.get(feature.properties?.markerId ?? '')?.description
+                  markerById.get(feature.properties?.markerId ?? '')?.description
               "
               :label="markerById.get(feature.properties?.markerId ?? '')?.label"
               :description="
@@ -621,10 +622,10 @@ function handleRouteClick(route: GeoMapRoute) {
               :tooltip-class-name="tooltipClassName"
               :popup-class-name="popupClassName"
             />
-          </LMarker>
+          </l-marker>
 
           <!-- Circle Marker (default) -->
-          <LCircleMarker
+          <l-circle-marker
             v-else
             :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
             :radius="getDotRadius(markerById.get(feature.properties?.markerId ?? '')?.icon)"
@@ -640,14 +641,14 @@ function handleRouteClick(route: GeoMapRoute) {
               )
             "
           >
-            <GeoMapOverlays
+            <geo-map-overlays
               :tooltip-mode="
                 markerById.get(feature.properties?.markerId ?? '')?.tooltip ??
-                'hover'
+                  'hover'
               "
               :tooltip-content="
                 markerById.get(feature.properties?.markerId ?? '')?.label ??
-                markerById.get(feature.properties?.markerId ?? '')?.description
+                  markerById.get(feature.properties?.markerId ?? '')?.description
               "
               :label="markerById.get(feature.properties?.markerId ?? '')?.label"
               :description="
@@ -656,7 +657,7 @@ function handleRouteClick(route: GeoMapRoute) {
               :tooltip-class-name="tooltipClassName"
               :popup-class-name="popupClassName"
             />
-          </LCircleMarker>
+          </l-circle-marker>
         </template>
       </template>
     </template>
@@ -665,14 +666,14 @@ function handleRouteClick(route: GeoMapRoute) {
     <template v-else>
       <template v-for="(marker, index) in markers" :key="marker.id ?? `${id}-marker-${index}`">
         <!-- Custom Icon Marker -->
-        <LMarker
+        <l-marker
           v-if="leafletRuntime && marker.icon && resolveMarkerIcon(marker.icon, leafletRuntime)"
           :lat-lng="[marker.lat, marker.lng]"
-          :icon="resolveMarkerIcon(marker.icon, leafletRuntime)! as import('leaflet').Icon"
+          :icon="resolveMarkerIcon(marker.icon, leafletRuntime)! as LeafletIcon"
           :title="resolveMarkerAriaLabel(marker)"
           @click="handleMarkerClick(marker)"
         >
-          <GeoMapOverlays
+          <geo-map-overlays
             :tooltip-mode="marker.tooltip ?? 'hover'"
             :tooltip-content="marker.label ?? marker.description"
             :label="marker.label"
@@ -680,10 +681,10 @@ function handleRouteClick(route: GeoMapRoute) {
             :tooltip-class-name="tooltipClassName"
             :popup-class-name="popupClassName"
           />
-        </LMarker>
+        </l-marker>
 
         <!-- Circle Marker (default) -->
-        <LCircleMarker
+        <l-circle-marker
           v-else
           :lat-lng="[marker.lat, marker.lng]"
           :radius="getDotRadius(marker.icon)"
@@ -695,7 +696,7 @@ function handleRouteClick(route: GeoMapRoute) {
           }"
           @click="handleMarkerClick(marker)"
         >
-          <GeoMapOverlays
+          <geo-map-overlays
             :tooltip-mode="marker.tooltip ?? 'hover'"
             :tooltip-content="marker.label ?? marker.description"
             :label="marker.label"
@@ -703,8 +704,8 @@ function handleRouteClick(route: GeoMapRoute) {
             :tooltip-class-name="tooltipClassName"
             :popup-class-name="popupClassName"
           />
-        </LCircleMarker>
+        </l-circle-marker>
       </template>
     </template>
-  </LMap>
+  </l-map>
 </template>

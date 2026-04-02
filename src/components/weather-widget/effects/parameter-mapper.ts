@@ -1,10 +1,10 @@
-import type { WeatherConditionCode } from "../schema";
+import type { WeatherConditionCode } from '../schema';
 import type {
   EffectLayerConfig,
   WeatherEffectParams,
   AtmosphereConfig,
   PostProcessConfig,
-} from "./types";
+} from './types';
 
 /**
  * Calculate time of day from timestamp (0-1 scale).
@@ -36,7 +36,7 @@ export function getMoonPhase(timestamp?: string): number {
   // Normalize to midnight UTC so phase only changes day-to-day, not hour-to-hour
   date.setUTCHours(0, 0, 0, 0);
   // Known new moon reference: January 6, 2000
-  const knownNewMoon = new Date("2000-01-06T00:00:00Z");
+  const knownNewMoon = new Date('2000-01-06T00:00:00Z');
   const daysSinceNewMoon =
     (date.getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
   const synodicMonth = 29.530588853;
@@ -88,13 +88,13 @@ export function isNightTime(sunAltitude: number): boolean {
  */
 const CONDITION_BRIGHTNESS: Record<WeatherConditionCode, number> = {
   clear: 1.0,
-  "partly-cloudy": 0.9,
+  'partly-cloudy': 0.9,
   cloudy: 0.8,
   overcast: 0.65,
   fog: 0.7,
   drizzle: 0.7,
   rain: 0.6,
-  "heavy-rain": 0.45,
+  'heavy-rain': 0.45,
   thunderstorm: 0.3,
   snow: 0.8,
   sleet: 0.65,
@@ -111,7 +111,7 @@ const CONDITION_BRIGHTNESS: Record<WeatherConditionCode, number> = {
  */
 export function getSceneBrightness(
   timestamp?: string,
-  conditionCode: WeatherConditionCode = "clear",
+  conditionCode: WeatherConditionCode = 'clear',
 ): number {
   const sunAltitude = getSunAltitude(timestamp);
 
@@ -141,7 +141,7 @@ export function getSceneBrightness(
  * Determine UI theme based on scene brightness.
  * Includes hysteresis to prevent rapid toggling at threshold.
  */
-export type WeatherTheme = "light" | "dark";
+export type WeatherTheme = 'light' | 'dark';
 
 export function getWeatherTheme(
   brightness: number,
@@ -152,14 +152,14 @@ export function getWeatherTheme(
   const LIGHT_THRESHOLD = 0.45;
 
   if (brightness < DARK_THRESHOLD) {
-    return "dark";
+    return 'dark';
   }
   if (brightness > LIGHT_THRESHOLD) {
-    return "light";
+    return 'light';
   }
 
   // In the hysteresis zone (0.35-0.45): keep current theme
-  return currentTheme ?? "dark";
+  return currentTheme ?? 'dark';
 }
 
 /**
@@ -191,7 +191,7 @@ export function timeOfDayToSunAltitude(timeOfDay: number): number {
  */
 export function getSceneBrightnessFromTimeOfDay(
   timeOfDay: number,
-  conditionCode: WeatherConditionCode = "clear",
+  conditionCode: WeatherConditionCode = 'clear',
 ): number {
   const sunAltitude = timeOfDayToSunAltitude(timeOfDay);
 
@@ -222,14 +222,14 @@ function mapWindSpeed(mph: number = 0): number {
  * Map precipitation level to intensity (0-1).
  */
 function mapPrecipitation(
-  level?: "none" | "light" | "moderate" | "heavy",
+  level?: 'none' | 'light' | 'moderate' | 'heavy',
 ): number {
   switch (level) {
-    case "light":
+    case 'light':
       return 0.3;
-    case "moderate":
+    case 'moderate':
       return 0.6;
-    case "heavy":
+    case 'heavy':
       return 1.0;
     default:
       return 0;
@@ -311,13 +311,13 @@ const UNIFIED_CELESTIAL: CelestialPreset = {
 
 const CELESTIAL_PRESETS: Record<WeatherConditionCode, CelestialPreset> = {
   clear: UNIFIED_CELESTIAL,
-  "partly-cloudy": UNIFIED_CELESTIAL,
+  'partly-cloudy': UNIFIED_CELESTIAL,
   cloudy: UNIFIED_CELESTIAL,
   overcast: UNIFIED_CELESTIAL,
   fog: UNIFIED_CELESTIAL,
   drizzle: UNIFIED_CELESTIAL,
   rain: UNIFIED_CELESTIAL,
-  "heavy-rain": UNIFIED_CELESTIAL,
+  'heavy-rain': UNIFIED_CELESTIAL,
   thunderstorm: UNIFIED_CELESTIAL,
   snow: UNIFIED_CELESTIAL,
   sleet: UNIFIED_CELESTIAL,
@@ -331,13 +331,13 @@ const CELESTIAL_PRESETS: Record<WeatherConditionCode, CelestialPreset> = {
  */
 const CONDITION_PRESETS: Record<
   WeatherConditionCode,
-  Omit<EffectLayerConfig, "atmosphere" | "celestial">
+  Omit<EffectLayerConfig, 'atmosphere' | 'celestial'>
 > = {
   clear: {
     cloud: { coverage: 0.1, speed: 0.3, darkness: 0, turbulence: 0.2 },
   },
 
-  "partly-cloudy": {
+  'partly-cloudy': {
     cloud: { coverage: 0.4, speed: 0.4, darkness: 0.1, turbulence: 0.3 },
   },
 
@@ -363,7 +363,7 @@ const CONDITION_PRESETS: Record<
     rain: { intensity: 0.6, glassDrops: true, fallingRain: true, angle: 5 },
   },
 
-  "heavy-rain": {
+  'heavy-rain': {
     cloud: { coverage: 0.95, speed: 0.6, darkness: 0.55, turbulence: 0.5 },
     rain: { intensity: 1.0, glassDrops: true, fallingRain: true, angle: 8 },
   },
@@ -507,15 +507,15 @@ export function mapWeatherToEffects(
   // Bloom should read as forward scatter: stronger in hazier air and for
   // dramatic conditions, but still subtle by default.
   const bloomConditionBoost =
-    conditionCode === "fog"
+    conditionCode === 'fog'
       ? 0.18
-      : conditionCode === "thunderstorm"
+      : conditionCode === 'thunderstorm'
         ? 0.12
-        : conditionCode === "heavy-rain"
+        : conditionCode === 'heavy-rain'
           ? 0.1
-          : conditionCode === "overcast"
+          : conditionCode === 'overcast'
             ? 0.08
-            : conditionCode === "cloudy" || conditionCode === "partly-cloudy"
+            : conditionCode === 'cloudy' || conditionCode === 'partly-cloudy'
               ? 0.06
               : 0.04;
 
