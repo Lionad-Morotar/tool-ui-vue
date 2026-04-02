@@ -9,6 +9,7 @@
  * @module tool-ui-vue/components/stats-display/schema
  */
 import { z } from 'zod';
+import type { CSSProperties } from 'vue';
 import { defineToolUiContract } from '../../shared/contract';
 import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
 
@@ -154,4 +155,18 @@ export interface StatsDisplayProps {
   stats: StatItem[];
   css?: { root?: string; header?: string; stat?: string; sparkline?: string };
   locale?: string;
+}
+
+/**
+ * Sparkline 子组件的 Props 接口
+ */
+export interface SparklineProps {
+  data: number[];
+  color?: string;
+  width?: number;
+  height?: number;
+  css?: { root?: string };
+  style?: CSSProperties;
+  showFill?: boolean;
+  fillOpacity?: number;
 }

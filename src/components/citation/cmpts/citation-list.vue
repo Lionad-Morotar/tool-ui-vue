@@ -2,16 +2,7 @@
 import { ref, computed, onUnmounted } from 'vue';
 import { cn } from '../_adapter';
 import Citation from '../index.vue';
-import type { CitationType, SerializableCitation } from '../schema';
-
-export interface CitationListProps {
-  id: string;
-  citations: SerializableCitation[];
-  variant?: 'default' | 'inline' | 'stacked';
-  maxVisible?: number;
-  css?: { root?: string };
-  onNavigate?: (href: string, citation: SerializableCitation) => void;
-}
+import type { CitationType, SerializableCitation, CitationListProps } from '../schema';
 
 defineOptions({ name: 'cmpt-citation-list', inheritAttrs: false })
 

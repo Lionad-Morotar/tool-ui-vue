@@ -1,18 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from '../_adapter';
-import type { CSSProperties } from 'vue';
-
-export interface SparklineProps {
-  data: number[];
-  color?: string;
-  width?: number;
-  height?: number;
-  css?: { root?: string };
-  style?: CSSProperties;
-  showFill?: boolean;
-  fillOpacity?: number;
-}
+import type { SparklineProps } from '../schema';
 
 defineOptions({ name: 'cmpt-sparkline', inheritAttrs: false })
 
