@@ -1,0 +1,40 @@
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import dts from "vite-plugin-dts";
+import { resolve } from "path";
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    dts({
+      insertTypesEntry: true,
+      rollupTypes: false,
+      include: ["src/**/*"],
+      skipDiagnostics: true,  // 跳过类型诊断
+    }),
+  ],
+  build: {
+    lib: {
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "ToolUiVue",
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
+    },
+    rollupOptions: {
+      external: ["vue", "zod", "clsx", "tailwind-merge"],
+      output: {
+        globals: {
+          vue: "Vue",
+          zod: "zod",
+          clsx: "clsx",
+          "tailwind-merge": "tailwindMerge",
+        },
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
+});

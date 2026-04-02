@@ -1,0 +1,37 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+dist-histoire
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env.*.local
+!.env.example
+
+# VSCode
+code-counter.db
+
+# db migration temp files
+server/db/chats/backup
+
+*.backup
+# GSD planning directory
+.planning/
+.claude
+
+zRefs

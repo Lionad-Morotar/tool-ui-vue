@@ -1,0 +1,245 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { cn } from "./_adapter";
+import type { StatsDisplayProps, StatItem, StatFormat, StatDiff } from "./schema";
+import Sparkline from "./Sparkline.vue";
+
+const props = defineProps<StatsDisplayProps>();
+
+const locale = computed(() => {
+  return props.locale ?? (typeof navigator !== "undefined" ? navigator.language : "en");
+});
+
+const hasHeader = computed(() => Boolean(props.title || props.description));
+const isSingle = computed(() => props.stats.length === 1);
+
+function deltaClasses(diff: StatDiff): string {
+  const { value, upIsPositive = true } = diff;
+  const isPositive = value > 0;
+  const isNegative = value < 0;
+
+  const isGood = upIsPositive ? isPositive : isNegative;
+  const isBad = upIsPositive ? isNegative : isPositive;
+
+  const colorClass = isGood
+    ? "text-green-600 dark:text-green-400"
+    : isBad
+      ? "text-red-600 dark:text-red-500"
+      : "text-muted-foreground";
+
+  const bgClass = isGood
+    ? "bg-green-500/10 dark:bg-green-600/15"
+    : isBad
+      ? "bg-red-500/10 dark:bg-red-500/15"
+      : "bg-muted";
+
+  return cn(colorClass, bgClass);
+}
+
+function deltaDisplay(diff: StatDiff): string {
+  const { value, decimals = 1 } = diff;
+  const formatted = Math.abs(value).toFixed(decimals);
+  const sign = value < 0 ? "−" : "+";
+  return `${sign}${formatted}%`;
+}
+
+function deltaArrow(diff: StatDiff): string | null {
+  if (diff.upIsPositive !== false) return null;
+  const isPositive = diff.value > 0;
+  const isNegative = diff.value < 0;
+  const isGood = isPositive ? false : isNegative ? true : false;
+  return isGood ? "↓" : "↑";
+}
+
+function formatCompactNumberParts(value: number, decimals: number) {
+  return new Intl.NumberFormat(locale.value, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+    notation: "compact",
+  }).formatToParts(value);
+}
+
+function formatCompactFullNumber(value: number) {
+  return new Intl.NumberFormat(locale.value).format(value);
+}
+
+function formatCurrency(value: number, currency: string, decimals: number) {
+  return new Intl.NumberFormat(locale.value, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value);
+}
+
+function formatCurrencySpoken(value: number, currency: string, decimals: number) {
+  return new Intl.NumberFormat(locale.value, {
+    style: "currency",
+    currency,
+    currencyDisplay: "name",
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value);
+}
+
+function formatNumber(value: number, decimals: number) {
+  return new Intl.NumberFormat(locale.value, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value);
+}
+
+function formatPercent(value: number, decimals: number, basis: "fraction" | "unit") {
+  const numeric = basis === "fraction" ? value * 100 : value;
+  return numeric.toFixed(decimals);
+}
+</script>
+
+<template>
+  <article
+    :class="cn(
+      'w-full min-w-80 max-w-xl',
+      isSingle && 'max-w-sm',
+      className
+    )"
+    data-slot="stats-display"
+    :data-tool-ui-id="id"
+    lang="en"
+    aria-busy="false"
+  >
+    <div
+      :class="cn(
+        'border-border overflow-clip rounded-2xl border bg-card shadow-sm !pb-0 !pt-2',
+        hasHeader && '!gap-0'
+      )"
+    >
+      <!-- Header -->
+      <div
+        v-if="hasHeader"
+        class="border-b border-border px-6 pt-3 pb-4"
+      >
+        <h2 v-if="title" class="text-base font-semibold text-pretty">{{ title }}</h2>
+        <p v-if="description" class="text-muted-foreground text-sm text-pretty">{{ description }}</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="@container overflow-hidden p-0">
+        <div
+          class="grid @[440px]:-ml-px @[440px]:-mt-px"
+          :style="{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }"
+        >
+          <div
+            v-for="(stat, index) in stats"
+            :key="stat.key"
+            :class="cn(
+              'overflow-clip py-3 first:pt-0 @[440px]:py-3 @[440px]:first:pt-3 @[440px]:border-l @[440px]:border-t @[440px]:border-border',
+              index > 0 && 'border-t border-border'
+            )"
+          >
+            <div
+              :class="cn(
+                'relative flex min-h-28 flex-col gap-1 px-6',
+                isSingle ? 'justify-center' : 'justify-end'
+              )"
+            >
+              <!-- Sparkline -->
+              <Sparkline
+                v-if="stat.sparkline"
+                :data="stat.sparkline.data"
+                :color="stat.sparkline.color || 'var(--muted-foreground)'"
+                :show-fill="true"
+                :fill-opacity="0.09"
+                class="pointer-events-none absolute inset-x-0 top-2 bottom-2 animate-in fade-in slide-in-from-bottom-12 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                :style="{ animationDelay: `${index * 175}ms` }"
+              />
+
+              <!-- Label -->
+              <span
+                class="text-muted-foreground relative text-xs font-normal tracking-wider uppercase opacity-90 animate-in fade-in slide-in-from-bottom-1 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                :style="{ animationDelay: `${index * 175 + 75}ms` }"
+              >
+                {{ stat.label }}
+              </span>
+
+              <!-- Value and Diff -->
+              <div
+                class="relative flex items-baseline gap-2 pb-2 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] fill-mode-both"
+                :style="{ animationDelay: `${index * 175 + 150}ms` }"
+              >
+                <span
+                  :class="cn(
+                    'font-light tracking-normal',
+                    isSingle ? 'text-5xl' : 'text-3xl'
+                  )"
+                >
+                  <!-- number compact -->
+                  <span
+                    v-if="stat.format?.kind === 'number' && stat.format?.compact"
+                    class="font-light tabular-nums"
+                    :aria-label="formatCompactFullNumber(Number(stat.value))"
+                  >
+                    <template
+                      v-for="(part, i) in formatCompactNumberParts(Number(stat.value), stat.format.decimals ?? 0)"
+                      :key="i"
+                    >
+                      <span
+                        v-if="part.type === 'compact'"
+                        class="ml-0.5 text-[0.65em] opacity-80"
+                        aria-hidden="true"
+                      >
+                        {{ part.value }}
+                      </span>
+                      <span v-else>{{ part.value }}</span>
+                    </template>
+                  </span>
+
+                  <!-- currency -->
+                  <span
+                    v-else-if="stat.format?.kind === 'currency'"
+                    class="font-light tabular-nums"
+                    :aria-label="formatCurrencySpoken(Number(stat.value), stat.format.currency, stat.format.decimals ?? 2)"
+                  >
+                    {{ formatCurrency(Number(stat.value), stat.format.currency, stat.format.decimals ?? 2) }}
+                  </span>
+
+                  <!-- percent -->
+                  <span
+                    v-else-if="stat.format?.kind === 'percent'"
+                    class="font-light tabular-nums"
+                    :aria-label="`${formatPercent(Number(stat.value), stat.format.decimals ?? 2, stat.format.basis ?? 'fraction')} percent`"
+                  >
+                    {{ formatPercent(Number(stat.value), stat.format.decimals ?? 2, stat.format.basis ?? 'fraction') }}
+                    <span class="ml-0.5 text-[0.65em] opacity-80" aria-hidden="true">%</span>
+                  </span>
+
+                  <!-- default text / number -->
+                  <span v-else class="font-light tabular-nums">
+                    <template v-if="stat.format?.kind === 'number'">
+                      {{ formatNumber(Number(stat.value), stat.format.decimals ?? 0) }}
+                    </template>
+                    <template v-else>
+                      {{ String(stat.value) }}
+                    </template>
+                  </span>
+                </span>
+
+                <!-- Diff Badge -->
+                <span
+                  v-if="stat.diff"
+                  :class="cn(
+                    'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs tabular-nums',
+                    deltaClasses(stat.diff)
+                  )"
+                >
+                  <span v-if="deltaArrow(stat.diff)" class="text-[0.9em]">{{ deltaArrow(stat.diff) }}</span>
+                  {{ deltaDisplay(stat.diff) }}
+                  <span v-if="stat.diff.label" class="text-muted-foreground font-normal">{{ stat.diff.label }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</template>
