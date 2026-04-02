@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
-import { useImageGallery } from '../states';
 import GalleryGrid from '../cmpts/gallery-grid.vue';
 import GalleryLightbox from '../cmpts/gallery-lightbox.vue';
 import ImageGallery from '../index.vue';
+import { useImageGallery } from '../states';
 
 const IMAGES = [
   { id: '1', src: 'https://example.com/a.jpg', alt: 'Image A', width: 400, height: 400 },

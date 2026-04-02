@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { cn } from '../../utils';
-import { provideImageGallery } from './states';
+import { reactive } from 'vue';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';
+import { useGallery } from './states';
+import { cn } from '../../utils';
 import type { ImageGalleryProps, ImageGalleryItem } from './schema';
 
-defineOptions({ name: 'cmpt-image-gallery', inheritAttrs: false })
+defineOptions({ name: 'CmptImageGallery', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ImageGalleryProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
@@ -14,21 +14,13 @@ const props = withDefaults(defineProps<ImageGalleryProps & { css?: { root?: stri
 
 const emit = defineEmits<{
   imageClick: [imageId: string, image: ImageGalleryItem];
-}>();
+}>()
 
-// Provide the gallery context
-provideImageGallery({
-  images: props.images,
-});
-
-const hasHeader = computed(() => props.title || props.description);
-
-function handleImageClick(imageId: string) {
-  const image = props.images.find((img) => img.id === imageId);
-  if (image) {
-    emit('imageClick', imageId, image);
-  }
-}
+// All business logic delegated to states layer
+const galleryState = reactive(useGallery({
+  ...props,
+  emit,
+}));
 </script>
 
 <template>
@@ -50,7 +42,7 @@ function handleImageClick(imageId: string) {
     >
       <!-- Header -->
       <div
-        v-if="hasHeader"
+        v-if="galleryState.hasHeader"
         class="border-b border-border/60 px-4 pt-4 pb-3"
       >
         <h3
@@ -69,7 +61,7 @@ function handleImageClick(imageId: string) {
 
       <!-- Grid -->
       <div class="p-3">
-        <gallery-grid :on-image-click="handleImageClick" />
+        <gallery-grid :on-image-click="galleryState.handleImageClick" />
       </div>
     </div>
 

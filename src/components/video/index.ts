@@ -16,10 +16,13 @@ export {
 } from './schema';
 export {
   useVideo,
-  useLocalVideo,
-  provideVideo,
+  usePlayback,
+  useEvents,
+  createDomEventHandlers,
   type VideoPlaybackState,
-  type VideoContextValue,
+  type VideoPlaybackActions,
+  type MediaEventType,
+  type EventEmits,
 } from './states';
 export {
   getMuteMediaEvent,
