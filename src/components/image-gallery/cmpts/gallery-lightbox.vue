@@ -6,8 +6,8 @@ import {
 } from '@vueuse/core';
 import { X } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
-import { cn } from './_adapter';
-import { useImageGallery } from './context';
+import { cn } from '../_adapter';
+import { useImageGallery } from '../context';
 
 const dialogRef = ref<HTMLDialogElement | null>(null);
 const contentRef = ref<HTMLDivElement | null>(null);

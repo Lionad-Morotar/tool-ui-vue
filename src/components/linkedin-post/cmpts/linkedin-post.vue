@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { cn } from './_adapter';
-import type { LinkedInPostProps, LinkedInPostData } from './schema';
+import { cn } from '../_adapter';
+import type { LinkedInPostProps, LinkedInPostData } from '../schema';
 
 defineOptions({ name: 'cmpt-linkedin-post', inheritAttrs: false })
 

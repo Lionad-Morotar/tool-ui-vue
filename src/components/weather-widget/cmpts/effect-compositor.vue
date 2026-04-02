@@ -2,17 +2,17 @@
 import { ref, computed, onMounted } from 'vue';
 
 defineOptions({ name: 'cmpt-effect-compositor', inheritAttrs: false })
-import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/canvas-resolver-runtime';
+import { resolveWeatherEffectsCanvasRuntimeProps } from '../effects/canvas-resolver-runtime';
 import {
   resolveEffectCanvasDpr,
   resolveEffectQuality,
-} from './effects/effect-compositor-quality';
-import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
-import WeatherEffectsCanvas from './WeatherEffectsCanvas.vue';
+} from '../effects/effect-compositor-quality';
+import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from '../effects/generated/tuned-presets.generated';
+import WeatherEffectsCanvas from './weather-effects-canvas.vue';
 import type { WeatherConditionCode } from '../schema';
-import type { WeatherEffectsTunedPresets } from './effects/tuning';
-import type { EffectSettings } from './effects/types';
-import type { WeatherEffectsCanvasProps } from './effects/weather-effects-types';
+import type { WeatherEffectsTunedPresets } from '../effects/tuning';
+import type { EffectSettings } from '../effects/types';
+import type { WeatherEffectsCanvasProps } from '../effects/weather-effects-types';
 
 const DEFAULT_TUNED_PRESETS: WeatherEffectsTunedPresets =
   TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES;

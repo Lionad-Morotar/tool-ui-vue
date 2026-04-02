@@ -1,6 +1,6 @@
 export { default as GeoMap } from './index.vue';
-export { default as GeoMapEngine } from './GeoMapEngine.vue';
-export { default as GeoMapOverlays } from './GeoMapOverlays.vue';
+export { default as GeoMapEngine } from './cmpts/geo-map-engine.vue';
+export { default as GeoMapOverlays } from './cmpts/geo-map-overlays.vue';
 export type {
   GeoMapProps,
   SerializableGeoMap,

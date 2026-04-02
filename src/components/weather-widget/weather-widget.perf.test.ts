@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import WeatherWidget from './index.vue';
 
 // Mock the WeatherEffectsCanvas component
-vi.mock('./WeatherEffectsCanvas.vue', () => ({
+vi.mock('./cmpts/weather-effects-canvas.vue', () => ({
   default: {
     name: 'WeatherEffectsCanvas',
     props: ['css', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],

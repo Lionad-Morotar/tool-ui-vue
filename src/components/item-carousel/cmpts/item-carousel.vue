@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
-import ItemCard from './ItemCard.vue';
-import { cn, prefersReducedMotion } from '../../shared/utils';
-import type { ItemCarouselProps } from './schema';
+import ItemCard from './item-card.vue';
+import { cn, prefersReducedMotion } from '../../../shared/utils';
+import type { ItemCarouselProps } from '../schema';
 
 const props = defineProps<ItemCarouselProps & { interactive?: boolean }>();
 

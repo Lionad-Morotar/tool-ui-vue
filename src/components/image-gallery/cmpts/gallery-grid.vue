@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from './_adapter';
-import { useImageGallery } from './context';
-import GalleryImageCard from './GalleryImageCard.vue';
-import type { ImageGalleryItem } from './schema';
+import { cn } from '../_adapter';
+import { useImageGallery } from '../context';
+import GalleryImageCard from './gallery-image-card.vue';
+import type { ImageGalleryItem } from '../schema';
 
 const props = defineProps<{
   onImageClick?: (imageId: string) => void;

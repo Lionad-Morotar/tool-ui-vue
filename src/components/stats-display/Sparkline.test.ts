@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
-import SparkLine from './SparkLine.vue';
+import SparkLine from './cmpts/sparkline.vue';
 
 describe('SparkLine', () => {
   describe('rendering', () => {

@@ -1,6 +1,6 @@
 export { default as WeatherWidget } from './index.vue';
-export { default as WeatherDataOverlay } from './WeatherDataOverlay.vue';
-export { default as EffectCompositor } from './EffectCompositor.vue';
+export { default as WeatherDataOverlay } from './cmpts/weather-data-overlay.vue';
+export { default as EffectCompositor } from './cmpts/effect-compositor.vue';
 export type {
   WeatherWidgetProps,
   SerializableWeatherWidget,

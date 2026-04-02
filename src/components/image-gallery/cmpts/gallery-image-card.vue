@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ImageOff } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
-import { cn } from './_adapter';
-import { useImageGallery } from './context';
-import type { ImageGalleryItem } from './schema';
+import { cn } from '../_adapter';
+import { useImageGallery } from '../context';
+import type { ImageGalleryItem } from '../schema';
 
 interface Props {
   image: ImageGalleryItem;

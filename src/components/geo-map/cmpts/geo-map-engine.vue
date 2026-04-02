@@ -17,14 +17,14 @@ import {
   nextTick,
 } from 'vue';
 import 'leaflet/dist/leaflet.css';
-import { createClusterIcon, resolveMarkerIcon } from './geo-map-icons';
-import GeoMapOverlays from './GeoMapOverlays.vue';
+import { createClusterIcon, resolveMarkerIcon } from '../geo-map-icons';
+import GeoMapOverlays from './geo-map-overlays.vue';
 import type {
   GeoMapClustering,
   GeoMapMarker,
   GeoMapRoute,
   GeoMapViewport,
-} from './schema';
+} from '../schema';
 import type { Map as LeafletMap, Icon as LeafletIcon } from 'leaflet';
 import type * as LeafletNS from 'leaflet';
 

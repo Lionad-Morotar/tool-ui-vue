@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { cn } from './_adapter';
 import { provideImageGallery } from './context';
-import GalleryGrid from './GalleryGrid.vue';
-import GalleryLightbox from './GalleryLightbox.vue';
+import GalleryGrid from './cmpts/gallery-grid.vue';
+import GalleryLightbox from './cmpts/gallery-lightbox.vue';
 import type { ImageGalleryProps, ImageGalleryItem } from './schema';
 
 defineOptions({ name: 'cmpt-image-gallery', inheritAttrs: false })

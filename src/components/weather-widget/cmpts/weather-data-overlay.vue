@@ -14,19 +14,19 @@ import {
   Wind,
 } from 'lucide-vue-next';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { cn } from './_adapter';
-import { useGlassStyles } from './composables/useGlassStyles';
+import { cn } from '../_adapter';
+import { useGlassStyles } from '../composables/useGlassStyles';
 import {
   getSceneBrightnessFromTimeOfDay,
   getTimeOfDay,
   getWeatherTheme,
   type WeatherTheme,
-} from './effects/parameter-mapper';
+} from '../effects/parameter-mapper';
 import type {
   ForecastDay,
   TemperatureUnit,
   WeatherConditionCode,
-} from './schema';
+} from '../schema';
 
 interface GlassEffectParams {
   enabled?: boolean;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
-import type { Item } from './schema';
+import { cn } from '../_adapter';
+import type { Item } from '../schema';
 
 interface ItemCardProps {
   item: Item;

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
 import { nextTick } from 'vue';
-import WeatherDataOverlay from './WeatherDataOverlay.vue';
+import WeatherDataOverlay from './cmpts/weather-data-overlay.vue';
 import type { WeatherConditionCode, ForecastDay } from './schema';
 
 // Mock ResizeObserver

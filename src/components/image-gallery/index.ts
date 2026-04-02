@@ -1,6 +1,6 @@
 export { default as ImageGallery } from './index.vue';
-export { default as GalleryGrid } from './GalleryGrid.vue';
-export { default as GalleryLightbox } from './GalleryLightbox.vue';
+export { default as GalleryGrid } from './cmpts/gallery-grid.vue';
+export { default as GalleryLightbox } from './cmpts/gallery-lightbox.vue';
 export {
   useImageGallery,
   provideImageGallery,

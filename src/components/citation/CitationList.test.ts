@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
-import CitationList from './CitationList.vue';
+import CitationList from './cmpts/citation-list.vue';
 import type { SerializableCitation } from './schema';
 
 function createCitations(count: number): SerializableCitation[] {

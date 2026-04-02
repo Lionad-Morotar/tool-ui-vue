@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
 import { nextTick } from 'vue';
-import EffectCompositor from './EffectCompositor.vue';
+import EffectCompositor from './cmpts/effect-compositor.vue';
 import type { WeatherConditionCode } from '../schema';
 
 const WeatherEffectsCanvasStub = {

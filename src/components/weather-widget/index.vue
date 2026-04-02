@@ -2,12 +2,12 @@
 import { usePreferredReducedMotion } from '@vueuse/core';
 import { computed } from 'vue';
 import { cn } from './_adapter';
-import EffectCompositor from './EffectCompositor.vue';
+import EffectCompositor from './cmpts/effect-compositor.vue';
 import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
 import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from './effects/parameter-mapper';
 import { getNearestCheckpoint } from './effects/tuning';
 import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from './time';
-import WeatherDataOverlay from './WeatherDataOverlay.vue';
+import WeatherDataOverlay from './cmpts/weather-data-overlay.vue';
 import type { WeatherWidgetProps } from './schema';
 
 defineOptions({ name: 'cmpt-weather-widget', inheritAttrs: false })

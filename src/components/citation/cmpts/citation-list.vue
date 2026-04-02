@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue';
-import { cn } from './_adapter';
-import Citation from './index.vue';
-import type { CitationType, SerializableCitation } from './schema';
+import { cn } from '../_adapter';
+import Citation from '../index.vue';
+import type { CitationType, SerializableCitation } from '../schema';
 
 export interface CitationListProps {
   id: string;

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
-import LinkedInPost from './LinkedInPost.vue';
+import LinkedInPost from './cmpts/linkedin-post.vue';
 
 describe('LinkedInPost', () => {
   const basePost = {

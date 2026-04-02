@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted, nextTick } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../_adapter';
 import type {
   RuntimeMessageDraftProps,
   SerializableEmailDraft,
   SerializableSlackDraft,
-} from './schema';
+} from '../schema';
 
 defineOptions({ name: 'cmpt-message-draft', inheritAttrs: false })
 

@@ -2,9 +2,9 @@
 defineOptions({ name: 'cmpt-weather-effects-canvas', inheritAttrs: false })
 
 import { ref } from 'vue';
-import { useWeatherEffects } from './composables/useWeatherEffects';
-import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/weather-effects-props';
-import type { WeatherEffectsCanvasProps } from './effects/weather-effects-types';
+import { useWeatherEffects } from '../composables/useWeatherEffects';
+import { resolveWeatherEffectsCanvasRuntimeProps } from '../effects/weather-effects-props';
+import type { WeatherEffectsCanvasProps } from '../effects/weather-effects-types';
 
 const props = defineProps<WeatherEffectsCanvasProps & { css?: { root?: string } }>();
 

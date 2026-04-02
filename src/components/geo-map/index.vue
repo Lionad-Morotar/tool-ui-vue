@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { cn } from './_adapter';
 import styles from './geo-map-theme.module.css';
-import GeoMapEngine from './GeoMapEngine.vue';
+import GeoMapEngine from './cmpts/geo-map-engine.vue';
 import type { GeoMapMarker, GeoMapProps, GeoMapRoute, GeoMapStyle } from './schema';
 
 const LIGHT_TILE_URL =

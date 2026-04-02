@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
-import MessageDraft from './MessageDraft.vue';
+import MessageDraft from './cmpts/message-draft.vue';
 
 function createEmailProps(overrides: Record<string, unknown> = {}) {
   return {

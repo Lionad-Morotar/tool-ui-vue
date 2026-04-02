@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../_adapter';
 import type { CSSProperties } from 'vue';
 
 export interface SparklineProps {

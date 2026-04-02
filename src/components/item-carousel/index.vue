@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
-import ItemCard from './ItemCard.vue';
+import ItemCard from './cmpts/item-card.vue';
 import { cn, prefersReducedMotion } from '../../shared/utils';
 import type { ItemCarouselProps } from './schema';
 
