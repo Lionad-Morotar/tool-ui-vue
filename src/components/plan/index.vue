@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { reactive } from 'vue';
+import { usePlan } from './states';
 import { cn } from '../../utils';
-import type { PlanProps, PlanTodo } from './schema';
+import type { PlanProps } from './schema';
 
-defineOptions({ name: 'cmpt-plan', inheritAttrs: false })
+defineOptions({ name: 'CmptPlan', inheritAttrs: false })
 
 const props = withDefaults(defineProps<PlanProps & { css?: { root?: string } }>(), {
   maxVisibleTodos: 4,
@@ -14,66 +15,11 @@ const emit = defineEmits<{
   todoClick: [todoId: string, index: number];
 }>();
 
-const expandedTodos = ref<Set<string>>(new Set());
-const isCelebrating = ref(false);
-const prevProgress = ref(0);
-const showMoreExpanded = ref(false);
-
-const visibleTodos = computed(() => {
-  return props.todos.slice(0, props.maxVisibleTodos);
-});
-
-const hiddenTodos = computed(() => {
-  return props.todos.slice(props.maxVisibleTodos);
-});
-
-const hiddenCount = computed(() => hiddenTodos.value.length);
-
-const progress = computed(() => {
-  const total = props.todos.length;
-  const completed = props.todos.filter((t) => t.status === 'completed').length;
-  return {
-    total,
-    completed,
-    percent: total > 0 ? Math.round((completed / total) * 100) : 0,
-    allComplete: completed === total && total > 0,
-  };
-});
-
-// Celebrate when reaching milestones
-watch(
-  () => progress.value.percent,
-  (newPercent, oldPercent) => {
-    if (oldPercent !== undefined) {
-      prevProgress.value = oldPercent;
-    }
-    // Celebrate on 25%, 50%, 75%, 100% milestones
-    const milestones = [25, 50, 75, 100];
-    const crossedMilestone = milestones.some(
-      (m) => prevProgress.value < m && newPercent >= m
-    );
-    if (crossedMilestone) {
-      isCelebrating.value = true;
-      setTimeout(() => {
-        isCelebrating.value = false;
-      }, 1000);
-    }
-  }
-);
-
-function toggleExpand(todoId: string) {
-  const newSet = new Set(expandedTodos.value);
-  if (newSet.has(todoId)) {
-    newSet.delete(todoId);
-  } else {
-    newSet.add(todoId);
-  }
-  expandedTodos.value = newSet;
-}
-
-function handleTodoClick(todo: PlanTodo, index: number) {
-  emit('todoClick', todo.id, index);
-}
+// All business logic delegated to states layer
+const state = reactive(usePlan({
+  ...props,
+  emit,
+}));
 </script>
 
 <template>
@@ -93,7 +39,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
         <p v-if="description" class="text-sm text-muted-foreground">{{ description }}</p>
       </div>
       <svg
-        v-if="progress.allComplete"
+        v-if="state.progress.allComplete"
         xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
@@ -112,7 +58,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
     <div class="min-w-0 px-4">
       <div class="min-w-0 rounded-lg bg-muted/70 px-6 py-4">
         <div class="mb-2 text-sm text-muted-foreground">
-          {{ progress.completed }} of {{ progress.total }} complete
+          {{ state.progress.completed }} of {{ state.progress.total }} complete
         </div>
 
         <!-- Progress Bar -->
@@ -121,22 +67,22 @@ function handleTodoClick(todo: PlanTodo, index: number) {
           role="progressbar"
           aria-valuemin="0"
           aria-valuemax="100"
-          :aria-valuenow="progress.percent"
+          :aria-valuenow="state.progress.percent"
         >
           <div
             :class="cn(
               'h-full rounded-full transition-all duration-500',
-              progress.percent === 100
+              state.progress.percent === 100
                 ? 'motion-safe:animate-in motion-safe:fade-in bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 motion-safe:duration-500 motion-safe:ease-out'
                 : 'bg-primary',
             )"
             :style="{
-              width: `${progress.percent}%`,
+              width: `${state.progress.percent}%`,
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.2)',
             }"
           />
           <div
-            v-if="isCelebrating"
+            v-if="state.isCelebrating"
             class="pointer-events-none absolute inset-0 rounded-full motion-safe:animate-pulse"
             :style="{ boxShadow: '0 0 20px rgba(16, 185, 129, 0.6)' }"
           />
@@ -145,15 +91,15 @@ function handleTodoClick(todo: PlanTodo, index: number) {
         <!-- Todos -->
         <ul class="mt-4 min-w-0 space-y-1">
           <li
-            v-for="(todo, index) in visibleTodos"
+            v-for="(todo, index) in state.visibleTodos"
             :key="todo.id"
             :class="cn(
               'relative -mx-2 flex cursor-default items-start gap-3 rounded-md px-2 py-1.5',
             )"
-            @click="handleTodoClick(todo, index)"
+            @click="state.handleTodoClick(todo, index)"
           >
             <div
-              v-if="index < visibleTodos.length - 1 || hiddenCount > 0"
+              v-if="index < state.visibleTodos.length - 1 || state.hiddenCount > 0"
               class="absolute top-6 left-5 w-px bg-border"
               :style="{ height: 'calc(100% + 0.25rem)' }"
               aria-hidden="true"
@@ -239,7 +185,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                 {{ todo.label }}
               </span>
               <p
-                v-if="todo.description && expandedTodos.has(todo.id)"
+                v-if="todo.description && state.expandedTodos.has(todo.id)"
                 class="min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words text-muted-foreground"
               >
                 {{ todo.description }}
@@ -249,7 +195,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
               v-if="todo.description"
               type="button"
               class="mt-0.5 size-4 shrink-0 text-muted-foreground/50 transition-colors hover:text-muted-foreground"
-              @click.stop="toggleExpand(todo.id)"
+              @click.stop="state.toggleExpand(todo.id)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +207,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                :class="expandedTodos.has(todo.id) ? 'rotate-90' : ''"
+                :class="state.expandedTodos.has(todo.id) ? 'rotate-90' : ''"
                 class="motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.34,1.56,0.64,1)]"
               >
                 <path d="m9 18 6-6-6-6" />
@@ -270,11 +216,11 @@ function handleTodoClick(todo: PlanTodo, index: number) {
           </li>
 
           <!-- Show More -->
-          <li v-if="hiddenCount > 0" class="mt-1">
+          <li v-if="state.hiddenCount > 0" class="mt-1">
             <button
               type="button"
               class="flex cursor-default items-start justify-start gap-2 py-1 text-sm font-normal text-muted-foreground hover:text-primary"
-              @click="showMoreExpanded = !showMoreExpanded"
+              @click="state.showMoreExpanded = !state.showMoreExpanded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -292,21 +238,21 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                 <circle cx="19" cy="12" r="1" />
                 <circle cx="5" cy="12" r="1" />
               </svg>
-              <span>{{ hiddenCount }} more</span>
+              <span>{{ state.hiddenCount }} more</span>
             </button>
 
             <!-- Hidden Todos -->
-            <ul v-if="showMoreExpanded" class="-mx-2 space-y-2 px-2 pt-2">
+            <ul v-if="state.showMoreExpanded" class="-mx-2 space-y-2 px-2 pt-2">
               <li
-                v-for="(todo, index) in hiddenTodos"
+                v-for="(todo, index) in state.hiddenTodos"
                 :key="todo.id"
                 :class="cn(
                   'relative -mx-2 flex cursor-default items-start gap-3 rounded-md px-2 py-1.5',
                 )"
-                @click="handleTodoClick(todo, visibleTodos.length + index)"
+                @click="state.handleTodoClick(todo, state.visibleTodos.length + index)"
               >
                 <div
-                  v-if="index < hiddenTodos.length - 1"
+                  v-if="index < state.hiddenTodos.length - 1"
                   class="absolute top-6 left-5 w-px bg-border"
                   :style="{ height: 'calc(100% + 0.25rem)' }"
                   aria-hidden="true"
@@ -392,7 +338,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                     {{ todo.label }}
                   </span>
                   <p
-                    v-if="todo.description && expandedTodos.has(todo.id)"
+                    v-if="todo.description && state.expandedTodos.has(todo.id)"
                     class="min-w-0 pr-2 pb-1.5 text-sm text-pretty break-words text-muted-foreground"
                   >
                     {{ todo.description }}
@@ -402,7 +348,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                   v-if="todo.description"
                   type="button"
                   class="mt-0.5 size-4 shrink-0 text-muted-foreground/50 transition-colors hover:text-muted-foreground"
-                  @click.stop="toggleExpand(todo.id)"
+                  @click.stop="state.toggleExpand(todo.id)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -414,7 +360,7 @@ function handleTodoClick(todo: PlanTodo, index: number) {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    :class="expandedTodos.has(todo.id) ? 'rotate-90' : ''"
+                    :class="state.expandedTodos.has(todo.id) ? 'rotate-90' : ''"
                     class="motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.34,1.56,0.64,1)]"
                   >
                     <path d="m9 18 6-6-6-6" />

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Check, X, icons } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { reactive, toRef } from 'vue';
+import { Check, X } from 'lucide-vue-next';
+import { useApprovalCard } from './states';
 import { cn } from '../../utils';
 import type { ApprovalCardBaseProps } from './schema';
 
-defineOptions({ name: 'cmpt-approval-card', inheritAttrs: false })
+defineOptions({ name: 'CmptApprovalCard', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ApprovalCardBaseProps & { css?: { root?: string; header?: string; content?: string; actions?: string } }>(), {
   css: () => ({ root: '', header: '', content: '', actions: '' })
@@ -15,48 +16,14 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const resolvedVariant = computed(() => props.variant ?? 'default');
-const resolvedConfirmLabel = computed(() => props.confirmLabel ?? 'Approve');
-const resolvedCancelLabel = computed(() => props.cancelLabel ?? 'Deny');
-const isDestructive = computed(() => resolvedVariant.value === 'destructive');
+// All business logic delegated to states layer
+const state = reactive(useApprovalCard({
+  ...props,
+  emit,
+}));
 
-// Dynamic icon lookup using lucide-vue-next
-const IconComponent = computed(() => {
-  if (!props.icon) return null;
-
-  // Convert kebab-case to PascalCase for icon lookup
-  const pascalName = props.icon
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('');
-
-  const Icon = icons[pascalName as keyof typeof icons];
-  return Icon ?? null;
-});
-
-// Receipt display label - follows React logic
-const receiptLabel = computed(() => {
-  // Use the appropriate label based on choice
-  if (props.choice === 'approved') {
-    return resolvedConfirmLabel.value;
-  }
-  return resolvedCancelLabel.value;
-});
-
-function handleConfirm() {
-  emit('confirm');
-}
-
-function handleCancel() {
-  emit('cancel');
-}
-
-function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault();
-    emit('cancel');
-  }
-}
+// Keep computed refs reactive
+const IconComponent = toRef(state, 'IconComponent');
 </script>
 
 <template>
@@ -76,7 +43,7 @@ function handleKeyDown(event: KeyboardEvent) {
     :data-tool-ui-id="id"
     data-receipt="true"
     role="status"
-    :aria-label="receiptLabel"
+    :aria-label="state.receiptLabel"
   >
     <div
       :class="
@@ -99,7 +66,7 @@ function handleKeyDown(event: KeyboardEvent) {
         />
       </span>
       <div class="flex flex-col">
-        <span class="text-sm font-medium">{{ receiptLabel }}</span>
+        <span class="text-sm font-medium">{{ state.receiptLabel }}</span>
         <span class="text-sm text-muted-foreground">{{ title }}</span>
       </div>
     </div>
@@ -122,7 +89,7 @@ function handleKeyDown(event: KeyboardEvent) {
     :aria-labelledby="`${id}-title`"
     :aria-describedby="description ? `${id}-description` : undefined"
     tabindex="-1"
-    @keydown="handleKeyDown"
+    @keydown="state.handleKeyDown"
   >
     <div
       class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
@@ -133,7 +100,7 @@ function handleKeyDown(event: KeyboardEvent) {
           :class="
             cn(
               'flex size-10 shrink-0 items-center justify-center rounded-xl',
-              isDestructive
+              state.isDestructive
                 ? 'bg-destructive/10 text-destructive'
                 : 'bg-primary/10 text-primary',
             )
@@ -195,9 +162,9 @@ function handleKeyDown(event: KeyboardEvent) {
               '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',
             )
           "
-          @click="handleCancel"
+          @click="state.handleCancel"
         >
-          {{ resolvedCancelLabel }}
+          {{ state.resolvedCancelLabel }}
         </button>
         <button
           type="button"
@@ -208,14 +175,14 @@ function handleKeyDown(event: KeyboardEvent) {
               'disabled:pointer-events-none disabled:opacity-50',
               'min-h-11 w-full text-base',
               '@[240px]/actions:min-h-0 @[240px]/actions:w-auto @[240px]/actions:px-3 @[240px]/actions:py-2 @[240px]/actions:text-sm',
-              isDestructive
+              state.isDestructive
                 ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
                 : 'bg-primary text-primary-foreground hover:bg-primary/90',
             )
           "
-          @click="handleConfirm"
+          @click="state.handleConfirm"
         >
-          {{ resolvedConfirmLabel }}
+          {{ state.resolvedConfirmLabel }}
         </button>
       </div>
     </div>

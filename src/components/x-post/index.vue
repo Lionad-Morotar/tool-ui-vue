@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
+import { useXPost } from './states';
 import { cn } from '../../utils';
 import type { XPostProps, XPostData } from './schema';
 
-defineOptions({ name: 'cmpt-x-post', inheritAttrs: false })
+defineOptions({ name: 'CmptXPost', inheritAttrs: false })
 
 const props = withDefaults(defineProps<XPostProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
@@ -10,104 +12,13 @@ const props = withDefaults(defineProps<XPostProps & { css?: { root?: string } }>
 
 const emit = defineEmits<{
   action: [action: string, post: XPostData];
-}>();
+}>()
 
-function formatCount(count: number): string {
-  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
-  return count.toString();
-}
-
-function formatRelativeTime(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffSecs < 60) return `${diffSecs}s`;
-  if (diffMins < 60) return `${diffMins}m`;
-  if (diffHours < 24) return `${diffHours}h`;
-  if (diffDays < 30) return `${diffDays}d`;
-  return date.toLocaleDateString();
-}
-
-function getDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return '';
-  }
-}
-
-function getAspectRatio(ratio?: string): string {
-  if (ratio === '1:1') return '1';
-  if (ratio === '4:3') return '4/3';
-  if (ratio === '9:16') return '9/16';
-  return '16/9';
-}
-
-/**
- * Sanitize a URL to ensure it's safe for use in href attributes.
- * Allows absolute http(s) URLs and relative URLs.
- * @returns The sanitized URL string, or undefined if invalid/unsafe
- */
-function sanitizeHref(href?: string): string | undefined {
-  if (!href) return undefined;
-  const candidate = href.trim();
-  if (!candidate) return undefined;
-
-  if (
-    candidate.startsWith('/') ||
-    candidate.startsWith('./') ||
-    candidate.startsWith('../') ||
-    candidate.startsWith('?') ||
-    candidate.startsWith('#')
-  ) {
-    if (candidate.startsWith('//')) return undefined;
-     
-    if (/[\u0000-\u001F\u007F]/.test(candidate)) return undefined;
-    return candidate;
-  }
-
-  try {
-    const url = new URL(candidate);
-    if (url.protocol === 'http:' || url.protocol === 'https:') {
-      return url.toString();
-    }
-  } catch {
-    return undefined;
-  }
-  return undefined;
-}
-
-/**
- * Resolve the first safe navigation href from candidates.
- */
-function resolveSafeNavigationHref(
-  ...candidates: Array<string | null | undefined>
-): string | undefined {
-  for (const candidate of candidates) {
-    const safeHref = sanitizeHref(candidate ?? undefined);
-    if (safeHref) {
-      return safeHref;
-    }
-  }
-  return undefined;
-}
-
-function handleAction(action: string) {
-  emit('action', action, props.post);
-}
-
-function handleLinkClick(url: string) {
-  const safeUrl = resolveSafeNavigationHref(url);
-  if (safeUrl) {
-    window.open(safeUrl, '_blank', 'noopener,noreferrer');
-  }
-}
+// All business logic delegated to states layer
+const state = reactive(useXPost({
+  ...props,
+  emit,
+}));
 </script>
 
 <template>
@@ -146,7 +57,7 @@ function handleLinkClick(url: string) {
               </svg>
               <span class="truncate text-muted-foreground">@{{ post.author.handle }}</span>
               <span v-if="post.createdAt" class="text-muted-foreground">·</span>
-              <span v-if="post.createdAt" class="text-muted-foreground">{{ formatRelativeTime(post.createdAt) }}</span>
+              <span v-if="post.createdAt" class="text-muted-foreground">{{ state.formatRelativeTime(post.createdAt) }}</span>
             </div>
             <!-- X Logo -->
             <svg
@@ -169,7 +80,7 @@ function handleLinkClick(url: string) {
           <div
             v-if="post.media"
             class="mt-2 w-full overflow-hidden rounded-xl bg-muted"
-            :style="{ aspectRatio: getAspectRatio(post.media.aspectRatio) }"
+            :style="{ aspectRatio: state.getAspectRatio(post.media.aspectRatio) }"
           >
             <img
               v-if="post.media.type === 'image'"
@@ -212,7 +123,7 @@ function handleLinkClick(url: string) {
               </svg>
               <span class="truncate text-muted-foreground">@{{ post.quotedPost.author.handle }}</span>
               <span v-if="post.quotedPost.createdAt" class="shrink-0 text-muted-foreground">·</span>
-              <span v-if="post.quotedPost.createdAt" class="shrink-0 text-muted-foreground">{{ formatRelativeTime(post.quotedPost.createdAt) }}</span>
+              <span v-if="post.quotedPost.createdAt" class="shrink-0 text-muted-foreground">{{ state.formatRelativeTime(post.quotedPost.createdAt) }}</span>
             </div>
             <p v-if="post.quotedPost.text" class="mt-1.5">{{ post.quotedPost.text }}</p>
             <img
@@ -228,9 +139,9 @@ function handleLinkClick(url: string) {
             v-if="post.linkPreview && !post.quotedPost"
             :class="cn(
               'mt-2 block overflow-hidden rounded-xl border',
-              resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
+              state.resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
             )"
-            @click="post.linkPreview.url && handleLinkClick(post.linkPreview.url)"
+            @click="post.linkPreview.url && state.handleLinkClick(post.linkPreview.url)"
           >
             <img
               v-if="post.linkPreview.imageUrl"
@@ -240,8 +151,8 @@ function handleLinkClick(url: string) {
               loading="lazy"
             />
             <div class="p-3">
-              <div v-if="post.linkPreview.domain || getDomain(post.linkPreview.url)" class="text-xs text-muted-foreground">
-                {{ post.linkPreview.domain || getDomain(post.linkPreview.url) }}
+              <div v-if="post.linkPreview.domain || state.getDomain(post.linkPreview.url)" class="text-xs text-muted-foreground">
+                {{ post.linkPreview.domain || state.getDomain(post.linkPreview.url) }}
               </div>
               <div v-if="post.linkPreview.title" class="font-medium text-pretty">{{ post.linkPreview.title }}</div>
               <div v-if="post.linkPreview.description" class="line-clamp-2 text-sm text-pretty text-muted-foreground">
@@ -259,7 +170,7 @@ function handleLinkClick(url: string) {
                 'hover:bg-pink-500/10 hover:text-pink-500',
                 post.stats?.isLiked && 'text-pink-500'
               )"
-              @click="handleAction('like')"
+              @click="state.handleAction('like')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -275,12 +186,12 @@ function handleLinkClick(url: string) {
               >
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
               </svg>
-              <span v-if="post.stats?.likes">{{ formatCount(post.stats.likes) }}</span>
+              <span v-if="post.stats?.likes">{{ state.formatCount(post.stats.likes) }}</span>
             </button>
             <button
               type="button"
               class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm transition-colors hover:bg-blue-500/10 hover:text-blue-500"
-              @click="handleAction('share')"
+              @click="state.handleAction('share')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

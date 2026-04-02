@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { cn } from '../../utils';
 import type { DataTableProps, Column, RowData } from './schema';
 
-defineOptions({ name: 'cmpt-data-table', inheritAttrs: false })
+defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
 
 const props = withDefaults(defineProps<DataTableProps & { css?: { root?: string } }>(), {
   layout: 'auto',
@@ -14,6 +14,7 @@ const emit = defineEmits<{
   sortChange: [sort: { by?: string; direction?: 'asc' | 'desc' }];
 }>();
 
+// ==================== Sort State ====================
 const currentSort = ref(props.sort || props.defaultSort);
 
 watch(
@@ -26,24 +27,7 @@ watch(
   { deep: true },
 );
 
-function isNumericFormat(format?: Column['format']): boolean {
-  const kind = format?.kind;
-  return kind === 'number' || kind === 'currency' || kind === 'percent' || kind === 'delta';
-}
-
-function getAlignmentClass(align?: 'left' | 'right' | 'center'): string {
-  if (align === 'right') return 'text-right';
-  if (align === 'center') return 'text-center';
-  return 'text-left';
-}
-
-function getColumnAlign(column: Column, columnIndex: number, rowValue?: unknown): 'left' | 'right' | 'center' {
-  if (column.align) return column.align;
-  if (columnIndex === 0) return 'left';
-  if (isNumericFormat(column.format)) return 'right';
-  if (typeof rowValue === 'number') return 'right';
-  return 'left';
-}
+const collator = computed(() => new Intl.Collator(props.locale || 'en-US', { numeric: true, sensitivity: 'base' }));
 
 function parseNumericLike(input: string): number | null {
   let s = input.replace(/[\u00A0\u202F\s]/g, '').trim();
@@ -107,8 +91,6 @@ function parseNumericLike(input: string): number | null {
   }
   return null;
 }
-
-const collator = computed(() => new Intl.Collator(props.locale || 'en-US', { numeric: true, sensitivity: 'base' }));
 
 const sortedData = computed(() => {
   if (!currentSort.value?.by) return props.data;
@@ -193,14 +175,42 @@ function getSortIconClass(column: Column): string {
   return '';
 }
 
-function getRelativeTime(date: Date, locale?: string): string {
+const sortAnnouncement = computed(() => {
+  const col = props.columns.find((c) => c.key === currentSort.value?.by);
+  const label = col?.label ?? currentSort.value?.by;
+  return currentSort.value?.by && currentSort.value?.direction
+    ? `Sorted by ${label}, ${currentSort.value.direction === 'asc' ? 'ascending' : 'descending'}`
+    : '';
+});
+
+// ==================== Format Utilities ====================
+function isNumericFormat(format?: Column['format']): boolean {
+  const kind = format?.kind;
+  return kind === 'number' || kind === 'currency' || kind === 'percent' || kind === 'delta';
+}
+
+function getAlignmentClass(align?: 'left' | 'right' | 'center'): string {
+  if (align === 'right') return 'text-right';
+  if (align === 'center') return 'text-center';
+  return 'text-left';
+}
+
+function getColumnAlign(column: Column, columnIndex: number, rowValue?: unknown): 'left' | 'right' | 'center' {
+  if (column.align) return column.align;
+  if (columnIndex === 0) return 'left';
+  if (isNumericFormat(column.format)) return 'right';
+  if (typeof rowValue === 'number') return 'right';
+  return 'left';
+}
+
+function getRelativeTime(date: Date): string {
   const now = new Date();
   const diffInSeconds = Math.trunc((date.getTime() - now.getTime()) / 1000);
   const absDiffInSeconds = Math.abs(diffInSeconds);
 
   if (absDiffInSeconds < 60) return 'just now';
 
-  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(props.locale, { numeric: 'auto' });
   if (absDiffInSeconds < 3600) {
     return rtf.format(Math.trunc(diffInSeconds / 60), 'minute');
   }
@@ -210,7 +220,7 @@ function getRelativeTime(date: Date, locale?: string): string {
   if (absDiffInSeconds < 604800) {
     return rtf.format(Math.trunc(diffInSeconds / 86400), 'day');
   }
-  return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat(props.locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
 }
 
 function resolveSafeNavigationHref(rawHref: string): string | null {
@@ -228,8 +238,8 @@ function resolveSafeNavigationHref(rawHref: string): string | null {
   }
 }
 
-function formatCellValue(value: unknown, column: Column, locale?: string): string {
-  if (value == null || value === '') return '\u2014'; // em dash
+function formatCellValue(value: unknown, column: Column): string {
+  if (value == null || value === '') return '\u2014';
 
   const format = column.format;
   if (!format) {
@@ -241,7 +251,7 @@ function formatCellValue(value: unknown, column: Column, locale?: string): strin
     case 'number': {
       const num = typeof value === 'number' ? value : parseFloat(String(value));
       if (Number.isNaN(num)) return String(value);
-      const formatted = new Intl.NumberFormat(locale || 'en-US', {
+      const formatted = new Intl.NumberFormat(props.locale || 'en-US', {
         minimumFractionDigits: format.decimals ?? 0,
         maximumFractionDigits: format.decimals ?? 0,
         notation: format.compact ? 'compact' : 'standard',
@@ -252,7 +262,7 @@ function formatCellValue(value: unknown, column: Column, locale?: string): strin
     case 'currency': {
       const num = typeof value === 'number' ? value : parseFloat(String(value));
       if (Number.isNaN(num)) return String(value);
-      return new Intl.NumberFormat(locale || 'en-US', {
+      return new Intl.NumberFormat(props.locale || 'en-US', {
         style: 'currency',
         currency: format.currency,
         minimumFractionDigits: format.decimals ?? 2,
@@ -263,7 +273,7 @@ function formatCellValue(value: unknown, column: Column, locale?: string): strin
       const num = typeof value === 'number' ? value : parseFloat(String(value));
       if (Number.isNaN(num)) return String(value);
       const numeric = format.basis === 'unit' ? num / 100 : num;
-      return new Intl.NumberFormat(locale || 'en-US', {
+      return new Intl.NumberFormat(props.locale || 'en-US', {
         style: 'percent',
         minimumFractionDigits: format.decimals ?? 0,
         maximumFractionDigits: format.decimals ?? 0,
@@ -275,7 +285,7 @@ function formatCellValue(value: unknown, column: Column, locale?: string): strin
       if (Number.isNaN(num)) return String(value);
       const decimals = format.decimals ?? 2;
       const absValue = Math.abs(num);
-      const formatted = new Intl.NumberFormat(locale || 'en-US', {
+      const formatted = new Intl.NumberFormat(props.locale || 'en-US', {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
       }).format(absValue);
@@ -289,11 +299,11 @@ function formatCellValue(value: unknown, column: Column, locale?: string): strin
       const date = new Date(String(value));
       if (Number.isNaN(date.getTime())) return String(value);
       const dateFormat = format.dateFormat ?? 'short';
-      if (dateFormat === 'relative') return getRelativeTime(date, locale);
+      if (dateFormat === 'relative') return getRelativeTime(date);
       if (dateFormat === 'long') {
-        return new Intl.DateTimeFormat(locale || 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+        return new Intl.DateTimeFormat(props.locale || 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
       }
-      return new Intl.DateTimeFormat(locale || 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
+      return new Intl.DateTimeFormat(props.locale || 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
     }
     case 'status': {
       const status = format.statusMap[String(value)];
@@ -371,27 +381,11 @@ function getArrayItems(value: unknown, maxVisible?: number): { items: (string | 
   return { items: visible, remaining: remaining > 0 ? remaining : 0 };
 }
 
-function getRowId(row: RowData, index: number): string {
-  if (props.rowIdKey && row[props.rowIdKey] != null) {
-    return String(row[props.rowIdKey]);
-  }
-  return `row-${index}`;
-}
-
-const sortAnnouncement = computed(() => {
-  const col = props.columns.find((c) => c.key === currentSort.value?.by);
-  const label = col?.label ?? currentSort.value?.by;
-  return currentSort.value?.by && currentSort.value?.direction
-    ? `Sorted by ${label}, ${currentSort.value.direction === 'asc' ? 'ascending' : 'descending'}`
-    : '';
-});
-
-// Mobile description ID for accessibility
+// ==================== Layout State ====================
 const mobileDescriptionId = computed(() => {
   return `${props.id || 'data-table'}-mobile-table-description`;
 });
 
-// Categorize columns for mobile view
 interface CategorizedColumns {
   primary: Column[];
   secondary: Column[];
@@ -424,11 +418,17 @@ function categorizeColumns(columns: Column[]): CategorizedColumns {
   return { primary, secondary };
 }
 
+function getRowId(row: RowData, index: number): string {
+  if (props.rowIdKey && row[props.rowIdKey] != null) {
+    return String(row[props.rowIdKey]);
+  }
+  return `row-${index}`;
+}
+
 function getDataTableRowDomId(rowKey: string): string {
   return encodeURIComponent(rowKey).replace(/%/g, '_');
 }
 
-// Accordion state for mobile cards
 const expandedRows = ref<Set<string>>(new Set());
 
 function toggleRowExpansion(rowKey: string) {
@@ -443,18 +443,21 @@ function isRowExpanded(rowKey: string): boolean {
   return expandedRows.value.has(rowKey);
 }
 
-// Layout class computed
 const tableContainerClass = computed(() => {
   if (props.layout === 'table') return 'block';
   if (props.layout === 'cards') return 'hidden';
-  return 'hidden @md:block'; // auto mode
+  return 'hidden @md:block';
 });
 
 const cardsContainerClass = computed(() => {
   if (props.layout === 'cards') return '';
   if (props.layout === 'table') return 'hidden';
-  return '@md:hidden'; // auto mode
+  return '@md:hidden';
 });
+
+const categorizedColumns = computed(() => categorizeColumns(props.columns));
+const primaryColumns = computed(() => categorizedColumns.value.primary);
+const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
 // Warn about missing rowIdKey (once)
 if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
@@ -587,7 +590,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                     <!-- Delta -->
                     <template v-if="column.format?.kind === 'delta'">
                       <span :class="cn('tabular-nums', getDeltaClasses(row[column.key], column))">
-                        {{ formatCellValue(row[column.key], column, locale) }}
+                        {{ formatCellValue(row[column.key], column) }}
                       </span>
                     </template>
 
@@ -599,7 +602,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         getToneClasses(getStatusTone(row[column.key], column)),
                       )"
                     >
-                      {{ formatCellValue(row[column.key], column, locale) }}
+                      {{ formatCellValue(row[column.key], column) }}
                     </span>
 
                     <!-- Badge -->
@@ -610,7 +613,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         getToneClasses(getBadgeTone(row[column.key], column)),
                       )"
                     >
-                      {{ formatCellValue(row[column.key], column, locale) }}
+                      {{ formatCellValue(row[column.key], column) }}
                     </span>
 
                     <!-- Link -->
@@ -620,10 +623,10 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         :target="column.format.external ? '_blank' : undefined"
                         :rel="column.format.external ? 'noopener noreferrer' : undefined"
                         class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
-                        :aria-label="column.format.external ? `${formatCellValue(row[column.key], column, locale)} (opens in a new tab)` : undefined"
+                        :aria-label="column.format.external ? `${formatCellValue(row[column.key], column)} (opens in a new tab)` : undefined"
                         @click.stop
                       >
-                        {{ formatCellValue(row[column.key], column, locale) }}
+                        {{ formatCellValue(row[column.key], column) }}
                         <span v-if="column.format.external" class="ml-1 inline-block" aria-label="Opens in new tab">↗</span>
                       </a>
                     </template>
@@ -657,14 +660,14 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                             : 'border border-border bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
                         )"
                       >
-                        {{ formatCellValue(row[column.key], column, locale) }}
+                        {{ formatCellValue(row[column.key], column) }}
                       </span>
                     </template>
 
                     <!-- Default -->
                     <template v-else>
                       <span :class="cn(isNumericFormat(column.format) && 'tabular-nums')">
-                        {{ formatCellValue(row[column.key], column, locale) }}
+                        {{ formatCellValue(row[column.key], column) }}
                       </span>
                     </template>
                   </td>
@@ -709,7 +712,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
         >
           <!-- Accordion Card -->
           <div
-            v-if="categorizeColumns(columns).secondary.length > 0"
+            v-if="secondaryColumns.length > 0"
             class="group"
           >
             <button
@@ -726,26 +729,26 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
               <div class="flex min-w-0 flex-1 flex-col gap-2">
                 <!-- Primary Column -->
                 <div
-                  v-if="categorizeColumns(columns).primary[0]"
+                  v-if="primaryColumns[0]"
                   class="truncate font-medium"
                 >
-                  {{ formatCellValue(row[categorizeColumns(columns).primary[0].key], categorizeColumns(columns).primary[0], locale) }}
+                  {{ formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
                 </div>
 
                 <!-- Remaining Primary Columns Summary -->
                 <div
-                  v-if="categorizeColumns(columns).primary.slice(1).length > 0"
+                  v-if="primaryColumns.slice(1).length > 0"
                   class="flex w-full flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground"
                 >
                   <span
-                    v-for="col in categorizeColumns(columns).primary.slice(1)"
+                    v-for="col in primaryColumns.slice(1)"
                     :key="col.key"
                     class="flex min-w-0 gap-1 font-normal"
                   >
                     <span class="sr-only">{{ col.label }}:</span>
                     <span aria-hidden="true">{{ col.label }}:</span>
                     <span class="truncate">
-                      {{ formatCellValue(row[col.key], col, locale) }}
+                      {{ formatCellValue(row[col.key], col) }}
                     </span>
                   </span>
                 </div>
@@ -781,7 +784,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
             >
               <dl class="flex flex-col gap-2 pt-4">
                 <div
-                  v-for="col in categorizeColumns(columns).secondary"
+                  v-for="col in secondaryColumns"
                   :key="col.key"
                   class="flex items-start justify-between gap-4"
                 >
@@ -798,7 +801,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                     <!-- Delta -->
                     <template v-if="col.format?.kind === 'delta'">
                       <span :class="cn('tabular-nums', getDeltaClasses(row[col.key], col))">
-                        {{ formatCellValue(row[col.key], col, locale) }}
+                        {{ formatCellValue(row[col.key], col) }}
                       </span>
                     </template>
 
@@ -810,7 +813,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         getToneClasses(getStatusTone(row[col.key], col)),
                       )"
                     >
-                      {{ formatCellValue(row[col.key], col, locale) }}
+                      {{ formatCellValue(row[col.key], col) }}
                     </span>
 
                     <!-- Badge -->
@@ -821,7 +824,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         getToneClasses(getBadgeTone(row[col.key], col)),
                       )"
                     >
-                      {{ formatCellValue(row[col.key], col, locale) }}
+                      {{ formatCellValue(row[col.key], col) }}
                     </span>
 
                     <!-- Link -->
@@ -833,7 +836,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                         class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
                         @click.stop
                       >
-                        {{ formatCellValue(row[col.key], col, locale) }}
+                        {{ formatCellValue(row[col.key], col) }}
                         <span v-if="col.format.external" class="ml-1 inline-block">↗</span>
                       </a>
                     </template>
@@ -859,7 +862,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
 
                     <!-- Boolean -->
                     <template v-else-if="col.format?.kind === 'boolean'">
-                      <span
+                    <span
                         :class="cn(
                           'inline-flex items-center rounded-full border border-border px-2.5 py-0.5 text-xs font-medium',
                           (row[col.key] === true || row[col.key] === 'true' || row[col.key] === 1)
@@ -867,14 +870,14 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                             : 'border border-border bg-transparent shadow-sm',
                         )"
                       >
-                        {{ formatCellValue(row[col.key], col, locale) }}
+                        {{ formatCellValue(row[col.key], col) }}
                       </span>
                     </template>
 
                     <!-- Default -->
                     <template v-else>
                       <span :class="cn(isNumericFormat(col.format) && 'tabular-nums')">
-                        {{ formatCellValue(row[col.key], col, locale) }}
+                        {{ formatCellValue(row[col.key], col) }}
                       </span>
                     </template>
                   </dd>
@@ -889,14 +892,14 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
             class="flex flex-col gap-2 p-4"
           >
             <div
-              v-if="categorizeColumns(columns).primary[0]"
+              v-if="primaryColumns[0]"
               class="font-medium"
             >
-              {{ formatCellValue(row[categorizeColumns(columns).primary[0].key], categorizeColumns(columns).primary[0], locale) }}
+              {{ formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
             </div>
 
             <div
-              v-for="col in categorizeColumns(columns).primary.slice(1)"
+              v-for="col in primaryColumns.slice(1)"
               :key="col.key"
               class="flex items-start justify-between gap-4"
             >
@@ -910,7 +913,7 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
                   col.align === 'center' && 'text-center',
                 )"
               >
-                {{ formatCellValue(row[col.key], col, locale) }}
+                {{ formatCellValue(row[col.key], col) }}
               </span>
             </div>
           </div>

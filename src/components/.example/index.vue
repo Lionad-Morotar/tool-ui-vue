@@ -9,9 +9,8 @@
 import CountActions from './cmpts/count-actions.vue'
 import { useExampleStates } from './states'
 
-const cmptName = 'cmpt-example'
 defineOptions({
-  name: cmptName,
+  name: 'CmptExample',
   inheritAttrs: false,
 })
 

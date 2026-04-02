@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
+import { useInstagramPost } from './states';
 import { cn } from '../../utils';
 import type { InstagramPostProps, InstagramPostData } from './schema';
 
-defineOptions({ name: 'cmpt-instagram-post', inheritAttrs: false })
+defineOptions({ name: 'CmptInstagramPost', inheritAttrs: false })
 
 const props = withDefaults(defineProps<InstagramPostProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
@@ -12,25 +14,11 @@ const emit = defineEmits<{
   action: [action: string, post: InstagramPostData];
 }>();
 
-function formatRelativeTime(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffSecs < 60) return `${diffSecs}s`;
-  if (diffMins < 60) return `${diffMins}m`;
-  if (diffHours < 24) return `${diffHours}h`;
-  if (diffDays < 30) return `${diffDays}d`;
-  return date.toLocaleDateString();
-}
-
-function handleAction(action: string) {
-  emit('action', action, props.post);
-}
+// All business logic delegated to states layer
+const state = reactive(useInstagramPost({
+  ...props,
+  emit,
+}));
 </script>
 
 <template>
@@ -66,7 +54,7 @@ function handleAction(action: string) {
           </svg>
           <template v-if="post.createdAt">
             <span class="text-muted-foreground">·</span>
-            <span class="text-sm text-muted-foreground">{{ formatRelativeTime(post.createdAt) }}</span>
+            <span class="text-sm text-muted-foreground">{{ state.formatRelativeTime(post.createdAt) }}</span>
           </template>
         </div>
         <!-- Instagram Logo -->
@@ -131,7 +119,7 @@ function handleAction(action: string) {
             v-if="post.media[0].type === 'image'"
             type="button"
             class="relative block size-full overflow-hidden bg-muted"
-            @click="handleAction('open-media')"
+            @click="state.handleAction('open-media')"
           >
             <img
               :src="post.media[0].url"
@@ -155,7 +143,7 @@ function handleAction(action: string) {
             :key="index"
             type="button"
             class="relative block size-full overflow-hidden bg-muted"
-            @click="handleAction('open-media')"
+            @click="state.handleAction('open-media')"
           >
             <img
               v-if="item.type === 'image'"
@@ -179,7 +167,7 @@ function handleAction(action: string) {
             <button
               type="button"
               class="relative block size-full overflow-hidden bg-muted"
-              @click="handleAction('open-media')"
+              @click="state.handleAction('open-media')"
             >
               <img
                 v-if="post.media[0].type === 'image'"
@@ -202,7 +190,7 @@ function handleAction(action: string) {
               :key="index + 1"
               type="button"
               class="relative block size-full overflow-hidden bg-muted"
-              @click="handleAction('open-media')"
+              @click="state.handleAction('open-media')"
             >
               <img
                 v-if="item.type === 'image'"
@@ -231,7 +219,7 @@ function handleAction(action: string) {
             <button
               type="button"
               class="relative block size-full overflow-hidden bg-muted"
-              @click="handleAction('open-media')"
+              @click="state.handleAction('open-media')"
             >
               <img
                 v-if="item.type === 'image'"
@@ -269,7 +257,7 @@ function handleAction(action: string) {
               post.stats?.isLiked ? 'fill-red-500 text-red-500' : ''
             )"
             aria-label="Like"
-            @click="handleAction('like')"
+            @click="state.handleAction('like')"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +278,7 @@ function handleAction(action: string) {
             type="button"
             class="h-auto rounded-md px-3 py-2 transition-colors hover:opacity-60"
             aria-label="Share"
-            @click="handleAction('share')"
+            @click="state.handleAction('share')"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

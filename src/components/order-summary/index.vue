@@ -1,81 +1,24 @@
 <script setup lang="ts">
 import { Package, CheckCircle } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { reactive } from 'vue';
+import { useOrderSummary } from './states';
 import { cn } from '../../utils';
-import type { OrderSummaryProps, OrderItem } from './schema';
+import type { OrderSummaryProps } from './schema';
 
-defineOptions({ name: 'cmpt-order-summary', inheritAttrs: false })
+defineOptions({ name: 'CmptOrderSummary', inheritAttrs: false })
 
 const props = withDefaults(defineProps<OrderSummaryProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
-function formatCurrency(amount: number, currency?: string): string {
-  const curr = currency || 'USD';
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: 'currency',
-      currency: curr,
-    }).format(amount);
-  } catch {
-    return `${curr} ${amount.toFixed(2)}`;
-  }
-}
-
-function formatQuantity(quantity: number): string {
-  return quantity === 1 ? '' : `Qty: ${quantity}`;
-}
-
-function getItemTotal(item: OrderItem): number {
-  const qty = item.quantity ?? 1;
-  return qty * item.unitPrice;
-}
-
-function formatDate(isoString: string): string | undefined {
-  try {
-    const date = new Date(isoString);
-    if (isNaN(date.getTime())) return undefined;
-    return date.toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  } catch {
-    return undefined;
-  }
-}
-
-// Auto-resolve variant based on choice prop
-const resolvedVariant = computed(() => {
-  if (props.variant) return props.variant;
-  return props.choice === undefined ? 'summary' : 'receipt';
-});
-
-const isReceipt = computed(() => resolvedVariant.value === 'receipt');
-
-// Malformed payload detection
-const isMalformedPayload = computed(() => {
-  const hasNoItems = !Array.isArray(props.items) || props.items.length === 0;
-  const hasNoPricing = props.pricing == null;
-  const isReceiptWithoutChoice = isReceipt.value && props.choice === undefined;
-  return hasNoItems || hasNoPricing || isReceiptWithoutChoice;
-});
-
-// Receipt badge text
-const receiptBadgeText = computed(() => {
-  if (!props.choice) return '';
-  const parts = [
-    props.choice.orderId && `#${props.choice.orderId}`,
-    props.choice.confirmedAt && formatDate(props.choice.confirmedAt),
-  ].filter(Boolean);
-  return parts.join(' · ');
-});
+// All business logic delegated to states layer
+const state = reactive(useOrderSummary(props));
 </script>
 
 <template>
   <!-- Malformed Payload State -->
   <article
-    v-if="isMalformedPayload"
+    v-if="state.isMalformedPayload"
     v-bind="$attrs"
     :class="cn('flex max-w-md min-w-80 flex-col gap-3', css?.root)"
     data-slot="order-summary"
@@ -94,7 +37,7 @@ const receiptBadgeText = computed(() => {
 
   <!-- Receipt State -->
   <article
-    v-else-if="isReceipt"
+    v-else-if="state.isReceipt"
     v-bind="$attrs"
     :class="cn(
       'flex max-w-md min-w-80 flex-col gap-3',
@@ -121,8 +64,8 @@ const receiptBadgeText = computed(() => {
             />
             {{ title || "Order Summary" }}
           </h2>
-          <p v-if="receiptBadgeText" class="mt-1 text-sm text-muted-foreground">
-            {{ receiptBadgeText }}
+          <p v-if="state.receiptBadgeText" class="mt-1 text-sm text-muted-foreground">
+            {{ state.receiptBadgeText }}
           </p>
         </div>
 
@@ -151,10 +94,10 @@ const receiptBadgeText = computed(() => {
               <div class="flex min-w-0 flex-1 flex-col gap-0.5">
                 <div class="flex items-center justify-between">
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
-                  <span class="truncate text-sm tabular-nums">{{ formatCurrency(getItemTotal(item), pricing.currency) }}</span>
+                  <span class="truncate text-sm tabular-nums">{{ state.formatCurrency(state.getItemTotal(item), pricing.currency) }}</span>
                 </div>
-                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
-                  {{ [item.description, formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
+                <div v-if="item.description || state.formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
+                  {{ [item.description, state.formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
                 </div>
               </div>
             </div>
@@ -167,29 +110,29 @@ const receiptBadgeText = computed(() => {
         <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between gap-4">
             <dt class="text-muted-foreground">Subtotal</dt>
-            <dd class="tabular-nums">{{ formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
+            <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
             <dt>{{ pricing.discountLabel || "Discount" }}</dt>
-            <dd class="tabular-nums">-{{ formatCurrency(pricing.discount, pricing.currency) }}</dd>
+            <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
             <dt class="text-muted-foreground">Shipping</dt>
             <dd class="tabular-nums">
-              {{ pricing.shipping === 0 ? 'Free' : formatCurrency(pricing.shipping, pricing.currency) }}
+              {{ pricing.shipping === 0 ? 'Free' : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
             <dt class="text-muted-foreground">{{ pricing.taxLabel || "Tax" }}</dt>
-            <dd class="tabular-nums">{{ formatCurrency(pricing.tax, pricing.currency) }}</dd>
+            <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
             <dt class="font-medium">Total</dt>
-            <dd class="font-semibold tabular-nums">{{ formatCurrency(pricing.total, pricing.currency) }}</dd>
+            <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>
       </div>
@@ -240,10 +183,10 @@ const receiptBadgeText = computed(() => {
               <div class="flex min-w-0 flex-1 flex-col gap-0.5">
                 <div class="flex items-center justify-between">
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
-                  <span class="truncate text-sm tabular-nums">{{ formatCurrency(getItemTotal(item), pricing.currency) }}</span>
+                  <span class="truncate text-sm tabular-nums">{{ state.formatCurrency(state.getItemTotal(item), pricing.currency) }}</span>
                 </div>
-                <div v-if="item.description || formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
-                  {{ [item.description, formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
+                <div v-if="item.description || state.formatQuantity(item.quantity ?? 1)" class="truncate text-sm text-muted-foreground">
+                  {{ [item.description, state.formatQuantity(item.quantity ?? 1)].filter(Boolean).join(' · ') }}
                 </div>
               </div>
             </div>
@@ -256,29 +199,29 @@ const receiptBadgeText = computed(() => {
         <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between gap-4">
             <dt class="text-muted-foreground">Subtotal</dt>
-            <dd class="tabular-nums">{{ formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
+            <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
             <dt>{{ pricing.discountLabel || "Discount" }}</dt>
-            <dd class="tabular-nums">-{{ formatCurrency(pricing.discount, pricing.currency) }}</dd>
+            <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
             <dt class="text-muted-foreground">Shipping</dt>
             <dd class="tabular-nums">
-              {{ pricing.shipping === 0 ? 'Free' : formatCurrency(pricing.shipping, pricing.currency) }}
+              {{ pricing.shipping === 0 ? 'Free' : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
             <dt class="text-muted-foreground">{{ pricing.taxLabel || "Tax" }}</dt>
-            <dd class="tabular-nums">{{ formatCurrency(pricing.tax, pricing.currency) }}</dd>
+            <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
             <dt class="font-medium">Total</dt>
-            <dd class="font-semibold tabular-nums">{{ formatCurrency(pricing.total, pricing.currency) }}</dd>
+            <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>
       </div>

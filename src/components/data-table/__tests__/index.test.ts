@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeAll, afterAll } from 'vitest';
-import DataTable from '../index.vue';
 import { ALLOWED_PATTERNS } from '../../../test/console-guard';
+import DataTable from '../index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {

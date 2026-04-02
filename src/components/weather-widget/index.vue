@@ -1,90 +1,19 @@
 <script setup lang="ts">
-import { usePreferredReducedMotion } from '@vueuse/core';
-import { computed } from 'vue';
+import { reactive } from 'vue';
+import { useWeatherWidget } from './states';
 import { cn } from '../../utils';
 import EffectCompositor from './cmpts/effect-compositor.vue';
-import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
-import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from './effects/parameter-mapper';
-import { getNearestCheckpoint } from './effects/tuning';
-import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from './time';
 import WeatherDataOverlay from './cmpts/weather-data-overlay.vue';
 import type { WeatherWidgetProps } from './schema';
 
-defineOptions({ name: 'cmpt-weather-widget', inheritAttrs: false })
+defineOptions({ name: 'CmptWeatherWidget', inheritAttrs: false })
 
 const props = withDefaults(defineProps<WeatherWidgetProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
-// Use VueUse for reduced motion preference
-const preferredReducedMotion = usePreferredReducedMotion();
-
-// Resolve reduced motion from props or system preference
-const reducedMotion = computed(() => {
-  // If explicitly set in props.effects, use that
-  if (typeof props.effects?.reducedMotion === 'boolean') {
-    return props.effects.reducedMotion;
-  }
-  // Otherwise use system preference
-  return preferredReducedMotion.value === 'reduce';
-});
-
-// Determine if effects are enabled
-const effectsEnabled = computed(() => {
-  if (reducedMotion.value) return false;
-  return props.effects?.enabled !== false;
-});
-
-// Resolve time
-const resolvedTime = computed(() => {
-  return resolveWeatherTime({
-    time: props.time,
-    updatedAt: props.updatedAt,
-  });
-});
-
-const timeOfDay = computed(() => {
-  return snapTimeOfDayToNearestCheckpoint(resolvedTime.value.timeOfDay);
-});
-
-// Get tuned overrides for glass effects
-const tunedOverrides = computed(() => {
-  return TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES[props.current.conditionCode];
-});
-
-const checkpointOverrides = computed(() => {
-  const checkpoint = getNearestCheckpoint(timeOfDay.value);
-  return tunedOverrides.value?.[checkpoint];
-});
-
-const glassParams = computed(() => {
-  return checkpointOverrides.value?.glass;
-});
-
-// Calculate theme based on brightness
-const brightness = computed(() => {
-  return getSceneBrightnessFromTimeOfDay(
-    timeOfDay.value,
-    props.current.conditionCode
-  );
-});
-
-const weatherTheme = computed(() => {
-  return getWeatherTheme(brightness.value);
-});
-
-const isWeatherDark = computed(() => weatherTheme.value === 'dark');
-
-// Units with default fallback
-const units = computed(() => {
-  return props.units ?? { temperature: 'celsius' as const };
-});
-
-const backgroundClass = computed(() => {
-  return isWeatherDark.value
-    ? 'bg-gradient-to-b from-zinc-950 via-zinc-900/70 to-zinc-950'
-    : 'bg-gradient-to-b from-sky-50 via-sky-100/70 to-white';
-});
+// All business logic delegated to states layer
+const state = reactive(useWeatherWidget(props));
 </script>
 
 <template>
@@ -98,20 +27,20 @@ const backgroundClass = computed(() => {
       :class="
         cn(
           '@container/weather [container-type:size] relative aspect-[4/3] overflow-clip rounded-2xl border-0 p-0 shadow-none',
-          backgroundClass
+          state.backgroundClass
         )
       "
     >
       <!-- Effects Layer -->
       <effect-compositor
-        v-if="effectsEnabled"
+        v-if="state.effectsEnabled"
         class="absolute inset-0"
         :condition-code="current.conditionCode"
         :wind-speed="current.windSpeed"
         :precipitation-level="current.precipitationLevel"
         :visibility="current.visibility"
         :timestamp="updatedAt"
-        :time-of-day="timeOfDay"
+        :time-of-day="state.timeOfDay"
         :settings="{ enabled: true, reducedMotion: false }"
       />
 
@@ -123,12 +52,12 @@ const backgroundClass = computed(() => {
         :temp-high="current.tempMax"
         :temp-low="current.tempMin"
         :forecast="forecast"
-        :unit="units.temperature"
-        :theme="weatherTheme"
-        :time-of-day="timeOfDay"
+        :unit="state.units.temperature"
+        :theme="state.weatherTheme"
+        :time-of-day="state.timeOfDay"
         :timestamp="updatedAt"
-        :reduced-motion="reducedMotion"
-        :glass-params="glassParams"
+        :reduced-motion="state.reducedMotion"
+        :glass-params="state.glassParams"
       />
     </div>
   </article>

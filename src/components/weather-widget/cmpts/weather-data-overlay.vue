@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOptions({ name: 'cmpt-weather-data-overlay', inheritAttrs: false })
+defineOptions({ name: 'CmptWeatherDataOverlay', inheritAttrs: false })
 
 import {
   Sun,

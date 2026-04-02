@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { cn } from '../../../utils';
 import type { SparklineProps } from '../schema';
 
-defineOptions({ name: 'cmpt-sparkline', inheritAttrs: false })
+defineOptions({ name: 'CmptSparkline', inheritAttrs: false })
 
 const props = withDefaults(defineProps<SparklineProps & { css?: { root?: string } }>(), {
   color: 'currentColor',

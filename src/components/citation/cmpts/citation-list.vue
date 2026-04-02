@@ -4,7 +4,7 @@ import { cn } from '../../../utils';
 import Citation from '../index.vue';
 import type { CitationType, SerializableCitation, CitationListProps } from '../schema';
 
-defineOptions({ name: 'cmpt-citation-list', inheritAttrs: false })
+defineOptions({ name: 'CmptCitationList', inheritAttrs: false })
 
 const props = withDefaults(defineProps<CitationListProps & { css?: { root?: string } }>(), {
   variant: 'default',

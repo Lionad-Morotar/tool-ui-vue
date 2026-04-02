@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { reactive } from 'vue';
+import { useLinkPreview } from './states';
 import { cn } from '../../utils';
-import type { LinkPreviewProps, AspectRatio, MediaFit } from './schema';
+import type { LinkPreviewProps } from './schema';
 
-defineOptions({ name: 'cmpt-link-preview', inheritAttrs: false })
+defineOptions({ name: 'CmptLinkPreview', inheritAttrs: false })
 
 const props = withDefaults(defineProps<LinkPreviewProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
@@ -13,31 +14,11 @@ const emit = defineEmits<{
   navigate: [href: string];
 }>()
 
-const ratioClassMap: Record<AspectRatio, string> = {
-  auto: '',
-  '1:1': 'aspect-square',
-  '4:3': 'aspect-[4/3]',
-  '16:9': 'aspect-video',
-  '9:16': 'aspect-[9/16]',
-};
-
-const fitClassMap: Record<MediaFit, string> = {
-  cover: 'object-cover',
-  contain: 'object-contain',
-};
-
-const resolvedRatio = computed(() => props.ratio ?? 'auto');
-const resolvedFit = computed(() => props.fit ?? 'cover');
-
-const displayDomain = computed(() => {
-  if (props.domain) return props.domain;
-  try {
-    const url = new URL(props.href);
-    return url.hostname.replace(/^www\./, '');
-  } catch {
-    return '';
-  }
-});
+// All business logic delegated to states layer
+const state = reactive(useLinkPreview({
+  ...props,
+  emit,
+}));
 </script>
 
 <template>
@@ -56,13 +37,8 @@ const displayDomain = computed(() => {
       )"
       :role="href ? 'link' : undefined"
       :tabindex="href ? 0 : undefined"
-      @click="href && emit('navigate', href)"
-      @keydown="(e: KeyboardEvent) => {
-        if (href && (e.key === 'Enter' || e.key === ' ')) {
-          e.preventDefault();
-          emit('navigate', href);
-        }
-      }"
+      @click="state.handleNavigate"
+      @keydown="state.handleKeyDown"
     >
       <div class="flex flex-col">
         <!-- Image -->
@@ -70,7 +46,7 @@ const displayDomain = computed(() => {
           v-if="image"
           :class="cn(
             'relative w-full overflow-hidden bg-muted',
-            resolvedRatio !== 'auto' ? ratioClassMap[resolvedRatio] : 'aspect-[5/3]',
+            state.resolvedRatio !== 'auto' ? state.ratioClassMap[state.resolvedRatio] : 'aspect-[5/3]',
           )"
         >
           <img
@@ -80,7 +56,7 @@ const displayDomain = computed(() => {
             decoding="async"
             :class="cn(
               'absolute inset-0 h-full w-full',
-              fitClassMap[resolvedFit],
+              state.fitClassMap[state.resolvedFit],
               'object-center transition-transform duration-200 group-hover:scale-[1.01]',
             )"
           />
@@ -89,7 +65,7 @@ const displayDomain = computed(() => {
         <!-- Content -->
         <div class="flex flex-col gap-2 px-5 py-4">
           <!-- Domain -->
-          <div v-if="displayDomain" class="flex items-center gap-2 text-xs text-muted-foreground">
+          <div v-if="state.displayDomain" class="flex items-center gap-2 text-xs text-muted-foreground">
             <img
               v-if="favicon"
               :src="favicon"
@@ -128,7 +104,7 @@ const displayDomain = computed(() => {
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
               </svg>
             </div>
-            <span>{{ displayDomain }}</span>
+            <span>{{ state.displayDomain }}</span>
           </div>
 
           <!-- Title -->

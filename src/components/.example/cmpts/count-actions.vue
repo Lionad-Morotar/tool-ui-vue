@@ -7,9 +7,8 @@
 <script lang="ts" setup>
 import { useExampleStates } from '../states'
 
-const cmptName = 'cmpt-count-actions'
 defineOptions({
-  name: cmptName,
+  name: 'CmptCountActions',
   inheritAttrs: false,
 })
 

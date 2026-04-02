@@ -1,183 +1,21 @@
 <script setup lang="ts">
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { reactive, toRefs } from 'vue';
+import { useCodeDiff } from './states';
 import { cn } from '../../utils';
-import {
-  computeUnifiedDiff,
-  computeSplitDiff,
-  parsePatchToUnifiedDiff,
-  parsePatchToSplitDiff,
-} from './diff';
-import { useResolvedTheme } from './use-theme';
 import type { CodeDiffProps } from './schema';
 
-defineOptions({ name: 'cmpt-code-diff', inheritAttrs: false })
+defineOptions({ name: 'CmptCodeDiff', inheritAttrs: false })
 
 const props = withDefaults(defineProps<CodeDiffProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
-// Theme detection
-const resolvedTheme = useResolvedTheme();
+// All business logic delegated to states layer
+const codeDiffState = reactive(useCodeDiff(props));
 
-// State
-const isCopied = ref(false);
-const isExpanded = ref(false);
-
-// Language display names
-const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
-  typescript: 'TypeScript',
-  javascript: 'JavaScript',
-  python: 'Python',
-  tsx: 'TSX',
-  jsx: 'JSX',
-  json: 'JSON',
-  bash: 'Bash',
-  shell: 'Shell',
-  css: 'CSS',
-  html: 'HTML',
-  markdown: 'Markdown',
-  sql: 'SQL',
-  yaml: 'YAML',
-  go: 'Go',
-  rust: 'Rust',
-  text: 'Plain Text',
-};
-
-const languageDisplayName = computed(() => {
-  return (
-    LANGUAGE_DISPLAY_NAMES[props.language?.toLowerCase() ?? 'text'] ||
-    (props.language?.toUpperCase() ?? 'Text')
-  );
-});
-
-// Mode detection
-const isPatchMode = computed(() => !!props.patch);
-
-// Compute diff using the diff library
-const fileDiff = computed(() => {
-  if (isPatchMode.value) {
-    return parsePatchToUnifiedDiff(props.patch ?? '');
-  }
-  return computeUnifiedDiff(
-    props.oldCode ?? '',
-    props.newCode ?? '',
-    props.filename ?? 'file',
-  );
-});
-
-const splitDiff = computed(() => {
-  if (isPatchMode.value) {
-    return parsePatchToSplitDiff(props.patch ?? '');
-  }
-  return computeSplitDiff(
-    props.oldCode ?? '',
-    props.newCode ?? '',
-    props.filename ?? 'file',
-  );
-});
-
-// Flattened unified diff lines for display
-const unifiedLines = computed(() => {
-  return fileDiff.value.hunks.flatMap((h) => h.lines);
-});
-
-// Calculate additions and deletions count
-const stats = computed(() => {
-  return {
-    additions: fileDiff.value.additions,
-    deletions: fileDiff.value.deletions,
-  };
-});
-
-const hasChanges = computed(
-  () => stats.value.additions > 0 || stats.value.deletions > 0,
-);
-
-// Line count and collapse logic
-const lineCount = computed(() => {
-  return fileDiff.value.unifiedLineCount;
-});
-
-const shouldCollapse = computed(() => {
-  return (
-    props.maxCollapsedLines !== undefined &&
-    lineCount.value > props.maxCollapsedLines
-  );
-});
-
-const isCollapsed = computed(
-  () => shouldCollapse.value && !isExpanded.value,
-);
-
-// Copy functionality
-const copyableCode = computed(() => {
-  return isPatchMode.value
-    ? (props.patch ?? '')
-    : (props.newCode ?? props.oldCode ?? '');
-});
-
-async function copyCode() {
-  try {
-    await navigator.clipboard.writeText(copyableCode.value);
-    isCopied.value = true;
-    setTimeout(() => {
-      isCopied.value = false;
-    }, 2000);
-  } catch {
-    // Ignore copy errors
-  }
-}
-
-function toggleExpanded() {
-  isExpanded.value = !isExpanded.value;
-}
-
-// Display lines (respecting collapse)
-const displayUnifiedLines = computed(() => {
-  if (!shouldCollapse.value || isExpanded.value) {
-    return unifiedLines.value;
-  }
-  return unifiedLines.value.slice(0, props.maxCollapsedLines ?? 12);
-});
-
-const displaySplitLines = computed(() => {
-  if (!shouldCollapse.value || isExpanded.value) {
-    return splitDiff.value.lines;
-  }
-  return splitDiff.value.lines.slice(0, props.maxCollapsedLines ?? 12);
-});
-
-// Check if diff style is split
-const isSplitMode = computed(() => props.diffStyle === 'split');
-
-// Theme-based colors
-const additionBgColor = computed(() =>
-  resolvedTheme.value === 'dark' ? 'bg-emerald-950/30' : 'bg-emerald-50/50',
-);
-
-const deletionBgColor = computed(() =>
-  resolvedTheme.value === 'dark' ? 'bg-red-950/30' : 'bg-red-50/50',
-);
-
-const additionTextColor = computed(() =>
-  resolvedTheme.value === 'dark'
-    ? 'text-emerald-300'
-    : 'text-emerald-700',
-);
-
-const deletionTextColor = computed(() =>
-  resolvedTheme.value === 'dark' ? 'text-red-300' : 'text-red-700',
-);
-
-// Word-level diff highlight colors
-const wordAdditionBg = computed(() =>
-  resolvedTheme.value === 'dark' ? 'bg-emerald-500/40' : 'bg-emerald-400/40',
-);
-
-const wordDeletionBg = computed(() =>
-  resolvedTheme.value === 'dark' ? 'bg-red-500/40' : 'bg-red-400/40',
-);
+// Destructure state refs for v-model binding in template
+const { isCopied } = toRefs(codeDiffState);
 </script>
 
 <template>
@@ -192,7 +30,7 @@ const wordDeletionBg = computed(() =>
       <div class="flex items-center justify-between gap-2 border-b bg-card px-4 py-2">
         <div class="flex items-center gap-1">
           <span class="text-sm text-muted-foreground">
-            {{ languageDisplayName }}
+            {{ codeDiffState.languageDisplayName }}
           </span>
           <template v-if="filename">
             <span class="text-muted-foreground/50">&bull;</span>
@@ -200,10 +38,10 @@ const wordDeletionBg = computed(() =>
           </template>
         </div>
         <div class="flex items-center gap-3">
-          <span v-if="hasChanges" class="font-mono text-xs tabular-nums">
-            <span v-if="stats.additions > 0" class="text-[#00cab1] dark:text-[#2ee8c8]">+{{ stats.additions }}</span>
-            <span v-if="stats.additions > 0 && stats.deletions > 0"> </span>
-            <span v-if="stats.deletions > 0" class="text-[#ff2e3f] dark:text-[#ff5c6a]">-{{ stats.deletions }}</span>
+          <span v-if="codeDiffState.hasChanges" class="font-mono text-xs tabular-nums">
+            <span v-if="codeDiffState.stats.additions > 0" class="text-[#00cab1] dark:text-[#2ee8c8]">+{{ codeDiffState.stats.additions }}</span>
+            <span v-if="codeDiffState.stats.additions > 0 && codeDiffState.stats.deletions > 0"> </span>
+            <span v-if="codeDiffState.stats.deletions > 0" class="text-[#ff2e3f] dark:text-[#ff5c6a]">-{{ codeDiffState.stats.deletions }}</span>
           </span>
           <button
             type="button"
@@ -213,27 +51,27 @@ const wordDeletionBg = computed(() =>
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
             )"
             :aria-label="isCopied ? 'Copied' : 'Copy code'"
-            @click="copyCode"
+            @click="codeDiffState.copyCode"
           >
-            <Check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
-            <Copy v-else class="h-4 w-4 text-muted-foreground" />
+            <check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
+            <copy v-else class="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       </div>
 
       <!-- Content -->
       <div
-        :class="cn('overflow-x-auto overflow-y-clip text-sm', isCollapsed && 'max-h-[200px]')"
+        :class="cn('overflow-x-auto overflow-y-clip text-sm', codeDiffState.isCollapsed && 'max-h-[200px]')"
       >
         <!-- Unified Diff Mode -->
-        <template v-if="!isSplitMode">
+        <template v-if="!codeDiffState.isSplitMode">
           <div
-            v-for="(line, index) in displayUnifiedLines"
+            v-for="(line, index) in codeDiffState.displayUnifiedLines"
             :key="index"
             class="flex font-mono"
             :class="[
-              line.type === 'addition' && additionBgColor,
-              line.type === 'deletion' && deletionBgColor,
+              line.type === 'addition' && codeDiffState.additionBgColor,
+              line.type === 'deletion' && codeDiffState.deletionBgColor,
             ]"
           >
             <template v-if="lineNumbers !== 'hidden'">
@@ -251,8 +89,8 @@ const wordDeletionBg = computed(() =>
             <span
               class="flex-1 px-3 py-0.5 whitespace-pre"
               :class="[
-                line.type === 'addition' && additionTextColor,
-                line.type === 'deletion' && deletionTextColor,
+                line.type === 'addition' && codeDiffState.additionTextColor,
+                line.type === 'deletion' && codeDiffState.deletionTextColor,
               ]"
             >
               <span
@@ -267,8 +105,8 @@ const wordDeletionBg = computed(() =>
                   v-for="(part, partIndex) in line.wordDiffs"
                   :key="partIndex"
                   :class="[
-                    part.added && wordAdditionBg,
-                    part.removed && wordDeletionBg,
+                    part.added && codeDiffState.wordAdditionBg,
+                    part.removed && codeDiffState.wordDeletionBg,
                     part.added && 'rounded px-0.5',
                     part.removed && 'rounded px-0.5',
                   ]"
@@ -287,11 +125,11 @@ const wordDeletionBg = computed(() =>
             <!-- Old side -->
             <div class="min-w-0 flex-1 border-r border-border/50">
               <div
-                v-for="(line, index) in displaySplitLines"
+                v-for="(line, index) in codeDiffState.displaySplitLines"
                 :key="`old-${index}`"
                 class="flex font-mono"
                 :class="[
-                  line.oldLine?.type === 'deletion' && deletionBgColor,
+                  line.oldLine?.type === 'deletion' && codeDiffState.deletionBgColor,
                 ]"
               >
                 <template v-if="lineNumbers !== 'hidden'">
@@ -304,7 +142,7 @@ const wordDeletionBg = computed(() =>
                 <span
                   class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
                   :class="[
-                    line.oldLine?.type === 'deletion' && deletionTextColor,
+                    line.oldLine?.type === 'deletion' && codeDiffState.deletionTextColor,
                   ]"
                 >
                   <span
@@ -320,7 +158,7 @@ const wordDeletionBg = computed(() =>
                       v-for="(part, partIndex) in line.oldLine.wordDiffs"
                       :key="partIndex"
                       :class="[
-                        part.removed && wordDeletionBg,
+                        part.removed && codeDiffState.wordDeletionBg,
                         part.removed && 'rounded px-0.5',
                       ]"
                     >{{ part.value }}</span>
@@ -335,11 +173,11 @@ const wordDeletionBg = computed(() =>
             <!-- New side -->
             <div class="min-w-0 flex-1">
               <div
-                v-for="(line, index) in displaySplitLines"
+                v-for="(line, index) in codeDiffState.displaySplitLines"
                 :key="`new-${index}`"
                 class="flex font-mono"
                 :class="[
-                  line.newLine?.type === 'addition' && additionBgColor,
+                  line.newLine?.type === 'addition' && codeDiffState.additionBgColor,
                 ]"
               >
                 <template v-if="lineNumbers !== 'hidden'">
@@ -352,7 +190,7 @@ const wordDeletionBg = computed(() =>
                 <span
                   class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
                   :class="[
-                    line.newLine?.type === 'addition' && additionTextColor,
+                    line.newLine?.type === 'addition' && codeDiffState.additionTextColor,
                   ]"
                 >
                   <span
@@ -368,7 +206,7 @@ const wordDeletionBg = computed(() =>
                       v-for="(part, partIndex) in line.newLine.wordDiffs"
                       :key="partIndex"
                       :class="[
-                        part.added && wordAdditionBg,
+                        part.added && codeDiffState.wordAdditionBg,
                         part.added && 'rounded px-0.5',
                       ]"
                     >{{ part.value }}</span>
@@ -385,7 +223,7 @@ const wordDeletionBg = computed(() =>
 
       <!-- Collapse Toggle -->
       <button
-        v-if="shouldCollapse"
+        v-if="codeDiffState.shouldCollapse"
         type="button"
         :class="cn(
           'w-full rounded-none border-t font-normal text-muted-foreground',
@@ -393,14 +231,14 @@ const wordDeletionBg = computed(() =>
           'hover:bg-accent hover:text-accent-foreground',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         )"
-        @click="toggleExpanded"
+        @click="codeDiffState.toggleExpanded"
       >
-        <template v-if="isCollapsed">
-          <ChevronDown class="mr-1 size-4" />
+        <template v-if="codeDiffState.isCollapsed">
+          <chevron-down class="mr-1 size-4" />
           Show full diff
         </template>
         <template v-else>
-          <ChevronUp class="mr-1 size-4" />
+          <chevron-up class="mr-1 size-4" />
           Collapse
         </template>
       </button>

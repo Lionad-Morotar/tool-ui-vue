@@ -1,79 +1,22 @@
 <script setup lang="ts">
-import AnsiToHtml from 'ansi-to-html';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
-import { ref, computed } from 'vue';
+import { reactive, toRef } from 'vue';
+import { useTerminal } from './states';
 import { cn } from '../../utils';
 import type { TerminalProps } from './schema';
 
-defineOptions({ name: 'cmpt-terminal', inheritAttrs: false })
+defineOptions({ name: 'CmptTerminal', inheritAttrs: false })
 
 const props = withDefaults(defineProps<TerminalProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
-// State
-const isCopied = ref(false);
-const isExpanded = ref(false);
+// All business logic delegated to states layer
+const state = reactive(useTerminal(props));
 
-// ANSI converter
-const ansiConverter = new AnsiToHtml({
-  newline: true,
-  escapeXML: true,
-  stream: false,
-});
-
-// Convert ANSI to HTML
-function ansiToHtml(text: string): string {
-  try {
-    return ansiConverter.toHtml(text);
-  } catch {
-    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-}
-
-// Format duration
-function formatDuration(durationMs?: number): string | null {
-  if (durationMs == null) return null;
-  if (durationMs < 1000) return `${Math.round(durationMs)}ms`;
-  return `${(durationMs / 1000).toFixed(1)}s`;
-}
-
-const formattedDuration = computed(() => formatDuration(props.durationMs));
-
-// Count output lines
-function countOutputLines(output: string): number {
-  const trimmedTrailingNewlines = output.replace(/\n+$/, '');
-  if (!trimmedTrailingNewlines) return 0;
-  return trimmedTrailingNewlines.split('\n').length;
-}
-
-const fullOutput = computed(() => [props.stdout, props.stderr].filter(Boolean).join('\n'));
-const hasOutput = computed(() => Boolean(props.stdout || props.stderr));
-const lineCount = computed(() => countOutputLines(fullOutput.value));
-
-// Collapse logic
-const shouldCollapse = computed(() => {
-  return props.maxCollapsedLines !== undefined && lineCount.value > props.maxCollapsedLines;
-});
-const isCollapsed = computed(() => shouldCollapse.value && !isExpanded.value);
-
-// Copy functionality
-async function copyOutput() {
-  if (!hasOutput.value) return;
-  try {
-    await navigator.clipboard.writeText(fullOutput.value);
-    isCopied.value = true;
-    setTimeout(() => {
-      isCopied.value = false;
-    }, 2000);
-  } catch {
-    // Ignore copy errors
-  }
-}
-
-function toggleExpanded() {
-  isExpanded.value = !isExpanded.value;
-}
+// Keep refs reactive
+const isCopied = toRef(state, 'isCopied');
+const isExpanded = toRef(state, 'isExpanded');
 </script>
 
 <template>
@@ -98,10 +41,10 @@ function toggleExpanded() {
         </div>
         <div class="flex items-center gap-3">
           <span
-            v-if="formattedDuration"
+            v-if="state.formattedDuration"
             class="font-mono text-sm text-muted-foreground tabular-nums"
           >
-            {{ formattedDuration }}
+            {{ state.formattedDuration }}
           </span>
           <span
             :class="cn(
@@ -115,22 +58,22 @@ function toggleExpanded() {
           </span>
           <button
             type="button"
-            :disabled="!hasOutput"
+            :disabled="!state.hasOutput"
             :class="cn(
               'inline-flex h-7 w-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
               'hover:bg-accent hover:text-accent-foreground',
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
-              !hasOutput && 'cursor-not-allowed opacity-50',
+              !state.hasOutput && 'cursor-not-allowed opacity-50',
             )"
-            :aria-label="!hasOutput
+            :aria-label="!state.hasOutput
               ? 'No output to copy'
               : isCopied
                 ? 'Copied'
                 : 'Copy output'"
-            @click="copyOutput"
+            @click="state.copyOutput"
           >
             <check
-              v-if="hasOutput && isCopied"
+              v-if="state.hasOutput && isCopied"
               class="h-4 w-4 text-green-700 dark:text-green-400"
             />
             <copy
@@ -142,23 +85,23 @@ function toggleExpanded() {
       </div>
 
       <!-- Output -->
-      <template v-if="hasOutput">
+      <template v-if="state.hasOutput">
         <div
           :class="cn(
             'relative font-mono text-sm',
-            isCollapsed && 'max-h-[200px] overflow-hidden',
+            state.isCollapsed && 'max-h-[200px] overflow-hidden',
           )"
         >
           <div class="overflow-x-auto p-4">
             <div
               v-if="stdout"
               class="whitespace-pre text-foreground"
-              v-html="ansiToHtml(stdout)"
+              v-html="state.ansiToHtml(stdout)"
             />
             <div
               v-if="stderr"
               class="mt-2 whitespace-pre text-red-500 dark:text-red-400"
-              v-html="ansiToHtml(stderr)"
+              v-html="state.ansiToHtml(stderr)"
             />
             <div
               v-if="truncated"
@@ -170,14 +113,14 @@ function toggleExpanded() {
 
           <!-- Gradient overlay when collapsed -->
           <div
-            v-if="isCollapsed"
+            v-if="state.isCollapsed"
             class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent"
           />
         </div>
 
         <!-- Collapse Toggle -->
         <button
-          v-if="shouldCollapse"
+          v-if="state.shouldCollapse"
           type="button"
           :class="cn(
             'w-full rounded-none border-t font-normal text-muted-foreground',
@@ -185,11 +128,11 @@ function toggleExpanded() {
             'hover:bg-accent hover:text-accent-foreground',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
           )"
-          @click="toggleExpanded"
+          @click="state.toggleExpanded"
         >
-          <template v-if="isCollapsed">
+          <template v-if="state.isCollapsed">
             <chevron-down class="mr-1 size-4" />
-            Show all {{ lineCount }} lines
+            Show all {{ state.lineCount }} lines
           </template>
           <template v-else>
             <chevron-up class="mr-1 size-4" />

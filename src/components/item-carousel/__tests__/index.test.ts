@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
 import { nextTick } from 'vue';
-import ItemCarousel from '../index.vue';
 import ItemCard from '../cmpts/item-card.vue';
+import ItemCarousel from '../index.vue';
 
 const ITEMS = [
   { id: '1', name: 'Product A', subtitle: 'Great product', image: 'https://example.com/a.jpg' },

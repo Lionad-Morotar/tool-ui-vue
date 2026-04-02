@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOptions({ name: 'cmpt-weather-effects-canvas', inheritAttrs: false })
+defineOptions({ name: 'CmptWeatherEffectsCanvas', inheritAttrs: false })
 
 import { ref } from 'vue';
 import { useWeatherEffects } from '../composables/useWeatherEffects';

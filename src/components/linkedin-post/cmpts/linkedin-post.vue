@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { cn } from '../../../utils';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';
 
-defineOptions({ name: 'cmpt-linkedin-post', inheritAttrs: false })
+defineOptions({ name: 'CmptLinkedinPost', inheritAttrs: false })
 
 const props = withDefaults(defineProps<LinkedInPostProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })

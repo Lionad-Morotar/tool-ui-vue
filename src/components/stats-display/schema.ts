@@ -9,9 +9,9 @@
  * @module tool-ui-vue/components/stats-display/schema
  */
 import { z } from 'zod';
-import type { CSSProperties } from 'vue';
 import { defineToolUiContract } from '../../shared/contract';
 import { ToolUIIdSchema, ToolUIRoleSchema } from '../../shared/schema';
+import type { CSSProperties } from 'vue';
 
 const TextFormatSchema = z.object({
   kind: z.literal('text'),

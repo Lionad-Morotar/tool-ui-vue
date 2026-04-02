@@ -7,7 +7,7 @@ import type {
   SerializableSlackDraft,
 } from '../schema';
 
-defineOptions({ name: 'cmpt-message-draft', inheritAttrs: false })
+defineOptions({ name: 'CmptMessageDraft', inheritAttrs: false })
 
 const props = withDefaults(defineProps<RuntimeMessageDraftProps & {
   undoGracePeriod?: number;

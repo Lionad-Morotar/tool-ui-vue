@@ -1,112 +1,28 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useProgressTracker } from './states';
 import { cn } from '../../utils';
-import type { ProgressTrackerProps, ProgressStep } from './schema';
+import type { ProgressTrackerProps } from './schema';
 
-defineOptions({ name: 'cmpt-progress-tracker', inheritAttrs: false })
+defineOptions({ name: 'CmptProgressTracker', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ProgressTrackerProps & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
-const progress = computed(() => {
-  const total = props.steps.length;
-  const completed = props.steps.filter((s) => s.status === 'completed').length;
-  const failed = props.steps.filter((s) => s.status === 'failed').length;
-  const inProgress = props.steps.filter((s) => s.status === 'in-progress').length;
+// All business logic delegated to states layer - re-create state when props change
+const trackerState = computed(() => useProgressTracker({
+  steps: props.steps,
+  choice: props.choice,
+  elapsedTime: props.elapsedTime,
+}));
 
-  return {
-    total,
-    completed,
-    failed,
-    inProgress,
-    percent: total > 0 ? Math.round((completed / total) * 100) : 0,
-    isComplete: completed === total && total > 0,
-    hasFailed: failed > 0,
-  };
-});
-
-function getCurrentStepId(steps: ProgressStep[]): string | null {
-  const inProgressStep = steps.find((s) => s.status === 'in-progress');
-  if (inProgressStep) return inProgressStep.id;
-
-  const failedStep = steps.find((s) => s.status === 'failed');
-  if (failedStep) return failedStep.id;
-
-  const firstPendingStep = steps.find((s) => s.status === 'pending');
-  if (firstPendingStep) return firstPendingStep.id;
-
-  return null;
-}
-
-const currentStepId = computed(() => getCurrentStepId(props.steps));
-
-// Format elapsed time (milliseconds to readable string)
-function formatElapsedTime(milliseconds: number): string {
-  const roundedSeconds = Math.round(Math.max(0, milliseconds) / 100) / 10;
-
-  if (roundedSeconds < 60) {
-    return `${roundedSeconds.toFixed(1)}s`;
-  }
-
-  const wholeSeconds = Math.floor(roundedSeconds);
-  const minutes = Math.floor(wholeSeconds / 60);
-  const remainingSeconds = wholeSeconds % 60;
-  return `${minutes}m ${remainingSeconds}s`;
-}
-
-function formatElapsedTimeDateTime(milliseconds: number): string {
-  const roundedSeconds = Math.round(Math.max(0, milliseconds) / 100) / 10;
-
-  if (roundedSeconds < 60) {
-    return `PT${Number(roundedSeconds.toFixed(1))}S`;
-  }
-
-  const wholeSeconds = Math.floor(roundedSeconds);
-  const hours = Math.floor(wholeSeconds / 3600);
-  const minutes = Math.floor((wholeSeconds % 3600) / 60);
-  const seconds = wholeSeconds % 60;
-
-  const hourPart = hours > 0 ? `${hours}H` : '';
-  const minutePart = minutes > 0 ? `${minutes}M` : '';
-  const secondPart = seconds > 0 ? `${seconds}S` : '';
-
-  if (!hourPart && !minutePart && !secondPart) {
-    return 'PT0S';
-  }
-
-  return `PT${hourPart}${minutePart}${secondPart}`;
-}
-
-// Receipt state helpers
-const receiptState = computed(() => {
-  if (!props.choice) return null;
-
-  switch (props.choice.outcome) {
-    case 'success':
-      return {
-        toneClass: 'text-emerald-600 dark:text-emerald-500',
-        icon: 'check',
-      };
-    case 'partial':
-      return {
-        toneClass: 'text-amber-600 dark:text-amber-500',
-        icon: 'alert',
-      };
-    case 'failed':
-      return {
-        toneClass: 'text-destructive',
-        icon: 'alert',
-      };
-    case 'cancelled':
-      return {
-        toneClass: 'text-muted-foreground',
-        icon: 'x',
-      };
-    default:
-      return null;
-  }
-});
+// Destructure for cleaner template access
+const progress = computed(() => trackerState.value.progress.value);
+const currentStepId = computed(() => trackerState.value.currentStepId.value);
+const receiptState = computed(() => trackerState.value.receiptState.value);
+const formatElapsedTime = (ms: number) => trackerState.value.formatElapsedTime(ms);
+const formatElapsedTimeDateTime = (ms: number) => trackerState.value.formatElapsedTimeDateTime(ms);
 </script>
 
 <template>
@@ -162,9 +78,9 @@ const receiptState = computed(() => {
         </div>
 
         <!-- Outcome Badge -->
-        <span :class="cn('flex items-center gap-1.5 text-xs font-medium', receiptState.toneClass)">
+        <span :class="cn('flex items-center gap-1.5 text-xs font-medium', receiptState?.toneClass)">
           <svg
-            v-if="receiptState.icon === 'check'"
+            v-if="receiptState?.icon === 'check'"
             xmlns="http://www.w3.org/2000/svg"
             width="14"
             height="14"
@@ -179,7 +95,7 @@ const receiptState = computed(() => {
             <path d="M20 6 9 17l-5-5" />
           </svg>
           <svg
-            v-else-if="receiptState.icon === 'alert'"
+            v-else-if="receiptState?.icon === 'alert'"
             xmlns="http://www.w3.org/2000/svg"
             width="14"
             height="14"
