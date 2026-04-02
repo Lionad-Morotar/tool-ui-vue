@@ -12,3 +12,4 @@ P2: PascalCase Vue 子组件 → cmpts/ 目录 + kebab-case 命名迁移
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
+| 260402-qyz | P2: PascalCase Vue sub-components → cmpts/ + kebab-case | 2026-04-02 | 447a7da | .planning/quick/260402-qyz-p2-pascalcase-vue-sub-components-cmpts-d/ |
