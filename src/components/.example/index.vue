@@ -1,7 +1,7 @@
 <template>
-  <div class="cmpt-example">
+  <div v-bind="$attrs" class="cmpt-example" :class="[css?.root]">
     count: {{ count }}
-    <count-actions />
+    <count-actions :css="css?.actions" />
   </div>
 </template>
 
@@ -12,6 +12,19 @@ import { useExampleStates } from './states'
 const cmptName = 'cmpt-example'
 defineOptions({
   name: cmptName,
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<{
+  css?: {
+    root?: string
+    actions?: Record<string, string>
+  }
+}>(), {
+  css: {
+    root: '',
+    actions: () => ({}),
+  },
 })
 
 const { count } = useExampleStates()
