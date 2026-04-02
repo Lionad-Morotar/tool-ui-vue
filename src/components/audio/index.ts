@@ -12,4 +12,4 @@ export {
   provideAudio,
   type AudioPlaybackState,
   type AudioContextValue,
-} from './context';
+} from './states';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import styles from './geo-map-theme.module.css';
 import GeoMapEngine from './cmpts/geo-map-engine.vue';
 import type { GeoMapMarker, GeoMapProps, GeoMapRoute, GeoMapStyle } from './schema';

@@ -2,7 +2,7 @@
 import AnsiToHtml from 'ansi-to-html';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { TerminalProps } from './schema';
 
 defineOptions({ name: 'cmpt-terminal', inheritAttrs: false })

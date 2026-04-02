@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { InstagramPostProps, InstagramPostData } from './schema';
 
 defineOptions({ name: 'cmpt-instagram-post', inheritAttrs: false })

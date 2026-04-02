@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
 import { ref, computed, watch, onMounted } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from './schema';
 import type { Highlighter, ShikiTransformer } from 'shiki';
 

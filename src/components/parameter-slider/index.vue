@@ -7,7 +7,7 @@ import {
   onUnmounted,
   nextTick,
 } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import {
   createSliderSignature,
   createSliderValueSnapshot,

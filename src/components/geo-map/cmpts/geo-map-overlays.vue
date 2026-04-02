@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LPopup, LTooltip } from '@vue-leaflet/vue-leaflet';
 import { ref, computed } from 'vue';
-import { cn } from '../_adapter';
+import { cn } from '../../../utils';
 
 const props = defineProps<{
   tooltipMode: 'none' | 'hover' | 'always';

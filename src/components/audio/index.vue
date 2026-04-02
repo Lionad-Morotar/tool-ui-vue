@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMediaControls } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
-import { cn } from './_adapter';
-import { useLocalAudio } from './context';
+import { cn } from '../../utils';
+import { useLocalAudio } from './states';
 import type { AudioProps, AudioVariant } from './schema';
 // formatDuration is available from shared/media if needed for future enhancements
 

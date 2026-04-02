@@ -14,7 +14,7 @@ import {
   Wind,
 } from 'lucide-vue-next';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { cn } from '../_adapter';
+import { cn } from '../../../utils';
 import { useGlassStyles } from '../composables/useGlassStyles';
 import {
   getSceneBrightnessFromTimeOfDay,

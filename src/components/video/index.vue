@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMediaControls } from '@vueuse/core';
 import { computed, ref, watch } from 'vue';
-import { cn } from './_adapter';
-import { useLocalVideo } from './context';
+import { cn } from '../../utils';
+import { useLocalVideo } from './states';
 import {
   getMuteMediaEvent,
   resolveVideoNavigation,

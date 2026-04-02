@@ -6,11 +6,11 @@ export {
   provideImageGallery,
   createImageGalleryContext,
   ImageGalleryKey,
-} from './context';
+} from './states';
 export type {
   ImageGalleryContextValue,
   ImageGalleryProviderOptions,
-} from './context';
+} from './states';
 export type {
   ImageGalleryProps,
   SerializableImageGallery,

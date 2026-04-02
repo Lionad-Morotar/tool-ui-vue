@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { LinkPreviewProps, AspectRatio, MediaFit } from './schema';
 
 defineOptions({ name: 'cmpt-link-preview', inheritAttrs: false })

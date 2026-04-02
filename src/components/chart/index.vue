@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { ChartProps, ChartDataPoint } from './schema';
 
 defineOptions({ name: 'cmpt-chart', inheritAttrs: false })

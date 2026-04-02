@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { XPostProps, XPostData } from './schema';
 
 defineOptions({ name: 'cmpt-x-post', inheritAttrs: false })

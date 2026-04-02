@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import {
   computeUnifiedDiff,
   computeSplitDiff,

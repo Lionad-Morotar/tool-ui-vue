@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { ImageProps, AspectRatio, MediaFit } from './schema';
 
 defineOptions({ name: 'cmpt-image', inheritAttrs: false })

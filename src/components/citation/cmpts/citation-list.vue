@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue';
-import { cn } from '../_adapter';
+import { cn } from '../../../utils';
 import Citation from '../index.vue';
 import type { CitationType, SerializableCitation, CitationListProps } from '../schema';
 

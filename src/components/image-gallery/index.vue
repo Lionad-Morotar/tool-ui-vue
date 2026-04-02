@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
-import { provideImageGallery } from './context';
+import { cn } from '../../utils';
+import { provideImageGallery } from './states';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';
 import type { ImageGalleryProps, ImageGalleryItem } from './schema';

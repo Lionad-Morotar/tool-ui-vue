@@ -2,7 +2,7 @@
 import { useVModel } from '@vueuse/core';
 import { Check, AlertCircle } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,

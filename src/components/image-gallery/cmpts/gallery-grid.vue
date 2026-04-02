@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../_adapter';
-import { useImageGallery } from '../context';
+import { cn } from '../../../utils';
+import { useImageGallery } from '../states';
 import GalleryImageCard from './gallery-image-card.vue';
 import type { ImageGalleryItem } from '../schema';
 

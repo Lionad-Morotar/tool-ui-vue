@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { CitationProps, CitationType } from './schema';
 
 defineOptions({ name: 'cmpt-citation', inheritAttrs: false })

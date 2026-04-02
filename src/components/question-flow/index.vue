@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type {
   QuestionFlowProps,
   QuestionFlowOption,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Package, CheckCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { OrderSummaryProps, OrderItem } from './schema';
 
 defineOptions({ name: 'cmpt-order-summary', inheritAttrs: false })

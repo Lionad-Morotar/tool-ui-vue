@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Check, X, icons } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { ApprovalCardBaseProps } from './schema';
 
 defineOptions({ name: 'cmpt-approval-card', inheritAttrs: false })

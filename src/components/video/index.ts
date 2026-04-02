@@ -20,7 +20,7 @@ export {
   provideVideo,
   type VideoPlaybackState,
   type VideoContextValue,
-} from './context';
+} from './states';
 export {
   getMuteMediaEvent,
   resolveVideoNavigation,

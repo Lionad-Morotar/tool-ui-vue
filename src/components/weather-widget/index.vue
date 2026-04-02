@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePreferredReducedMotion } from '@vueuse/core';
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import EffectCompositor from './cmpts/effect-compositor.vue';
 import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from './effects/generated/tuned-presets.generated';
 import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from './effects/parameter-mapper';

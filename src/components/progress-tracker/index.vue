@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { cn } from './_adapter';
+import { cn } from '../../utils';
 import type { ProgressTrackerProps, ProgressStep } from './schema';
 
 defineOptions({ name: 'cmpt-progress-tracker', inheritAttrs: false })
