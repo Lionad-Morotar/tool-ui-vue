@@ -148,6 +148,7 @@ const galleryCards: ComponentCard[] = [
       h(WeatherWidget, {
         id: 'demo-weather-widget',
         location: 'San Francisco, CA',
+        units: { temperature: 'celsius' },
         current: {
           temperature: 64,
           tempMin: 58,
@@ -330,6 +331,7 @@ const galleryCards: ComponentCard[] = [
     render: () =>
       h(Audio, {
         id: 'demo-audio',
+        assetId: 'soundhelix-song-1',
         src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
         title: 'SoundHelix Song',
         artist: 'T. Schürger',
@@ -342,6 +344,7 @@ const galleryCards: ComponentCard[] = [
     render: () =>
       h(Terminal, {
         id: 'demo-terminal',
+        command: 'npm run build',
         content: [
           { type: 'input', text: 'npm run build' },
           { type: 'output', text: '> tool-ui@0.2.0 build' },
@@ -354,6 +357,7 @@ const galleryCards: ComponentCard[] = [
           { type: 'output', text: '✓ Generating static pages (12/12)' },
           { type: 'success', text: '✓ Build completed in 8.42s' },
         ],
+        exitCode: 0,
       }),
   },
   {
@@ -388,7 +392,7 @@ const galleryCards: ComponentCard[] = [
     render: () =>
       h(LinkPreview, {
         id: 'demo-link-preview',
-        url: 'https://example.com/article',
+        href: 'https://example.com/article',
         title: 'Building Accessible UI Components',
         description: 'Learn best practices for creating inclusive web interfaces that work for everyone.',
         imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop',
@@ -418,6 +422,7 @@ const galleryCards: ComponentCard[] = [
     render: () =>
       h(ApprovalCard, {
         id: 'demo-approval-card',
+        title: 'Authentication Refactor Review',
         request: 'Can you review the authentication refactor before we merge?',
         domain: 'github.com',
         metadata: [

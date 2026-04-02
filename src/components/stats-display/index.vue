@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from './_adapter';
+import Sparkline from './cmpts/sparkline.vue';
 import type { StatsDisplayProps, StatDiff } from './schema';
 
 defineOptions({ name: 'cmpt-stats-display', inheritAttrs: false })

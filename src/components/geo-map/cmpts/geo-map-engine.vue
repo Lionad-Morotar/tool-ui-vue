@@ -474,12 +474,27 @@ watch(
     if (lastAppliedViewportRef.value === viewportKey) return;
 
     lastAppliedViewportRef.value = viewportKey;
-    const bounds = leafletModule.value.latLngBounds(fitPoints);
-    if (!bounds.isValid()) return;
-    mapInstance.value.fitBounds(bounds, {
-      maxZoom,
-      padding: [padding, padding],
-    });
+
+    // Validate all points before creating bounds
+    const validPoints = fitPoints.filter(
+      ([lat, lng]) =>
+        typeof lat === 'number' &&
+        typeof lng === 'number' &&
+        Number.isFinite(lat) &&
+        Number.isFinite(lng)
+    );
+    if (validPoints.length < 2) return;
+
+    try {
+      const bounds = leafletModule.value.latLngBounds(validPoints);
+      if (!bounds.isValid()) return;
+      mapInstance.value.fitBounds(bounds, {
+        maxZoom,
+        padding: [padding, padding],
+      });
+    } catch {
+      // Silently ignore fitBounds errors (e.g., invalid bounds)
+    }
   },
   { immediate: true, deep: true }
 );
