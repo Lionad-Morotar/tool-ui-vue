@@ -1,242 +1,37 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core';
 import { Check, AlertCircle } from 'lucide-vue-next';
-import { computed, ref, watch } from 'vue';
+import { reactive } from 'vue';
+import { usePreferencesPanel } from './states';
 import { cn } from '../../utils';
 import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,
-  PreferencesValue,
-  PreferenceItem,
-  PreferenceSection,
 } from './schema';
 
-defineOptions({ name: 'cmpt-preferences-panel', inheritAttrs: false })
+defineOptions({ name: 'CmptPreferencesPanel', inheritAttrs: false })
 
 const props = withDefaults(defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } }>(), {
   css: () => ({ root: '' })
 })
 
 const emit = defineEmits<{
-  change: [value: PreferencesValue];
-  action: [actionId: string, value: PreferencesValue];
-  beforeAction: [actionId: string, value: PreferencesValue];
-  'update:value': [value: PreferencesValue];
-}>();
+  change: [value: Record<string, string | boolean>];
+  action: [actionId: string, value: Record<string, string | boolean>];
+  beforeAction: [actionId: string, value: Record<string, string | boolean>];
+  'update:value': [value: Record<string, string | boolean>];
+}>()
 
-// Determine if we're in receipt mode
-const isReceipt = computed(() => 'choice' in props && props.choice !== undefined);
-
-// Get initial value for an item
-function getInitialValue(item: PreferenceItem): string | boolean {
-  switch (item.type) {
-    case 'switch':
-      return item.defaultChecked ?? false;
-    case 'toggle':
-      return item.defaultValue ?? item.options?.[0]?.value ?? '';
-    case 'select':
-      return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? '';
-  }
-}
-
-// Compute initial values from all sections
-function computeInitialValues(sections: PreferenceSection[]): PreferencesValue {
-  return sections.reduce<PreferencesValue>((acc, section) => {
-    section.items.forEach((item) => {
-      acc[item.id] = getInitialValue(item);
-    });
-    return acc;
-  }, {});
-}
-
-// Get all sections (common for both modes)
-const sections = computed<PreferenceSection[]>(() => props.sections || []);
-
-// Initial values computed from sections
-const initialValues = computed(() => computeInitialValues(sections.value));
-
-// Controlled mode: use v-model if value prop is provided
-// Uncontrolled mode: use local ref
-const localValues = ref<PreferencesValue>({});
-const controlledValue = computed(() =>
-  !isReceipt.value && 'value' in props ? props.value : undefined
-);
-
-// Use VueUse's useVModel for controlled state
-const modelValue = useVModel(props, 'value', emit, {
-  passive: true,
-  defaultValue: initialValues.value,
-});
-
-// Get current value for an item (handles both controlled and uncontrolled modes)
-function getItemValue(item: PreferenceItem): string | boolean {
-  if (isReceipt.value) {
-    return ((props as unknown) as PreferencesPanelReceiptProps).choice[item.id] ?? getInitialValue(item);
-  }
-
-  // Controlled mode: use modelValue
-  if (controlledValue.value !== undefined) {
-    return modelValue.value?.[item.id] ?? getInitialValue(item);
-  }
-
-  // Uncontrolled mode: use localValues
-  if (item.id in localValues.value) {
-    return localValues.value[item.id];
-  }
-
-  return getInitialValue(item);
-}
-
-// Current values for all items (used for action emission)
-const currentValues = computed<PreferencesValue>(() => {
-  const result: PreferencesValue = {};
-  sections.value.forEach((section) => {
-    section.items.forEach((item) => {
-      result[item.id] = getItemValue(item);
-    });
-  });
-  return result;
-});
-
-// Update value (only in interactive mode)
-function updateValue(itemId: string, value: string | boolean) {
-  if (isReceipt.value) return;
-
-  if (controlledValue.value !== undefined) {
-    // Controlled mode
-    modelValue.value = { ...modelValue.value, [itemId]: value };
-  } else {
-    // Uncontrolled mode
-    localValues.value = { ...localValues.value, [itemId]: value };
-    emit('change', currentValues.value);
-  }
-}
-
-// Check if dirty (has changes from initial)
-const isDirty = computed(() => {
-  if (isReceipt.value) return false;
-  return Object.keys(currentValues.value).some(
-    (key) => currentValues.value[key] !== initialValues.value[key]
-  );
-});
-
-// Format display value
-function formatDisplayValue(item: PreferenceItem, value: string | boolean): string {
-  if (item.type === 'switch') {
-    return typeof value === 'boolean' && value ? 'On' : 'Off';
-  }
-
-  const stringValue = typeof value === 'string' ? value : '';
-  const options = item.type === 'toggle' ? item.options : item.selectOptions;
-  const option = options?.find((opt) => opt.value === stringValue);
-
-  return option?.label ?? stringValue;
-}
-
-// Normalize actions config
-const normalizedActions = computed(() => {
-  if (isReceipt.value) return null;
-
-  const actionsProp = ((props as unknown) as PreferencesPanelProps).actions;
-  if (!actionsProp) {
-    return {
-      items: [
-        { id: 'cancel', label: 'Cancel', variant: 'ghost' as const },
-        { id: 'save', label: 'Save Changes', variant: 'default' as const },
-      ],
-      align: 'right' as const,
-    };
-  }
-
-  // Handle array of actions
-  if (Array.isArray(actionsProp)) {
-    return {
-      items: actionsProp.map((action) => ({
-        ...action,
-        variant: action.variant || (action.id === 'save' ? 'default' : 'ghost'),
-      })),
-      align: 'right' as const,
-    };
-  }
-
-  // Handle actions config object
-  return {
-    items: actionsProp.items,
-    align: actionsProp.align ?? 'right',
-  };
-});
-
-// Actions with disabled state
-const actionsWithState = computed(() => {
-  if (!normalizedActions.value) return [];
-
-  return normalizedActions.value.items.map((action) => {
-    const isSaveAction = action.id === 'save';
-    const baseDisabled = action.disabled ?? false;
-    const shouldDisable = baseDisabled || (isSaveAction && !isDirty.value);
-
-    return {
-      ...action,
-      disabled: shouldDisable,
-    };
-  });
-});
-
-function handleCancel() {
-  if (controlledValue.value !== undefined) {
-    modelValue.value = initialValues.value;
-  } else {
-    localValues.value = {};
-  }
-  emit('change', initialValues.value);
-  emit('action', 'cancel', initialValues.value);
-}
-
-async function handleAction(actionId: string) {
-  // Emit beforeAction for interception
-  emit('beforeAction', actionId, currentValues.value);
-
-  if (actionId === 'cancel') {
-    handleCancel();
-  } else {
-    emit('action', actionId, currentValues.value);
-  }
-}
-
-// Check if switch is on
-function isSwitchValue(value: string | boolean): boolean {
-  return typeof value === 'boolean' ? value : value === 'true';
-}
-
-// Check if there are errors (receipt mode only)
-const hasErrors = computed(() => {
-  if (!isReceipt.value) return false;
-  const error = ((props as unknown) as PreferencesPanelReceiptProps).error;
-  return error !== undefined && Object.keys(error).length > 0;
-});
-
-// Check if item has error (receipt mode only)
-function getItemError(item: PreferenceItem): string | undefined {
-  if (!isReceipt.value) return undefined;
-  const error = ((props as unknown) as PreferencesPanelReceiptProps).error;
-  return error?.[item.id];
-}
-
-// Reset state when sections change (signature reset)
-watch(
-  () => sections.value.map((s: PreferenceSection) => s.items.map((i: PreferenceItem) => i.id).join(',')).join('|'),
-  () => {
-    if (!isReceipt.value && controlledValue.value === undefined) {
-      localValues.value = {};
-    }
-  }
-);
+// All business logic delegated to states layer
+const state = reactive(usePreferencesPanel({
+  props,
+  emit: (name: string, ...args: any[]) => (emit as any)(name, ...args),
+}));
 </script>
 
 <template>
   <!-- Receipt State -->
   <article
-    v-if="isReceipt"
+    v-if="state.isReceipt"
     v-bind="$attrs"
     :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col', props.css?.root)"
     data-slot="preferences-panel"
@@ -245,7 +40,7 @@ watch(
     role="status"
     lang="en"
     :aria-busy="false"
-    :aria-label="hasErrors ? 'Preferences with errors' : 'Confirmed preferences'"
+    :aria-label="state.hasErrors ? 'Preferences with errors' : 'Confirmed preferences'"
   >
     <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 opacity-95 shadow-xs">
       <!-- Header -->
@@ -253,7 +48,7 @@ watch(
         <div class="flex items-center justify-between gap-3 px-5 py-4">
           <h2 class="text-base leading-none font-semibold">{{ props.title }}</h2>
           <span
-            v-if="hasErrors"
+            v-if="state.hasErrors"
             class="flex items-center gap-1.5 text-xs font-medium text-destructive"
           >
             <alert-circle class="size-3.5" />
@@ -272,7 +67,7 @@ watch(
 
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
-        <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
+        <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
           <fieldset v-if="section.heading" class="flex flex-col">
             <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
@@ -284,10 +79,10 @@ watch(
                   <div class="flex flex-col gap-1">
                     <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                     <span
-                      v-if="getItemError(item)"
+                      v-if="state.getItemError(item)"
                       class="text-sm font-normal text-pretty text-destructive"
                     >
-                      {{ getItemError(item) }}
+                      {{ state.getItemError(item) }}
                     </span>
                     <span
                       v-else-if="item.description"
@@ -298,14 +93,14 @@ watch(
                   </div>
                   <div class="flex shrink-0 items-center gap-2">
                     <span class="text-sm font-medium text-muted-foreground">
-                      {{ formatDisplayValue(item, getItemValue(item)) }}
+                      {{ state.formatDisplayValue(item, state.getItemValue(item)) }}
                     </span>
                     <alert-circle
-                      v-if="getItemError(item)"
+                      v-if="state.getItemError(item)"
                       class="size-3.5 text-destructive"
                     />
                     <check
-                      v-else-if="hasErrors"
+                      v-else-if="!state.hasErrors"
                       class="size-3.5 text-emerald-600 dark:text-emerald-500"
                     />
                   </div>
@@ -328,10 +123,10 @@ watch(
                 <div class="flex flex-col gap-1">
                   <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                   <span
-                    v-if="getItemError(item)"
+                    v-if="state.getItemError(item)"
                     class="text-sm font-normal text-pretty text-destructive"
                   >
-                    {{ getItemError(item) }}
+                    {{ state.getItemError(item) }}
                   </span>
                   <span
                     v-else-if="item.description"
@@ -342,14 +137,14 @@ watch(
                 </div>
                 <div class="flex shrink-0 items-center gap-2">
                   <span class="text-sm font-medium text-muted-foreground">
-                    {{ formatDisplayValue(item, getItemValue(item)) }}
+                    {{ state.formatDisplayValue(item, state.getItemValue(item)) }}
                   </span>
                   <alert-circle
-                    v-if="getItemError(item)"
+                    v-if="state.getItemError(item)"
                     class="size-3.5 text-destructive"
                   />
                   <check
-                    v-else-if="hasErrors"
+                    v-else-if="!state.hasErrors"
                     class="size-3.5 text-emerald-600 dark:text-emerald-500"
                   />
                 </div>
@@ -383,7 +178,7 @@ watch(
 
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
-        <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
+        <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
           <fieldset v-if="section.heading" class="flex flex-col">
             <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
@@ -419,17 +214,17 @@ watch(
                       :id="`preference-${item.id}`"
                       type="button"
                       role="switch"
-                      :aria-checked="isSwitchValue(getItemValue(item))"
+                      :aria-checked="state.isSwitchValue(state.getItemValue(item))"
                       :class="cn(
                         'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
-                        isSwitchValue(getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
+                        state.isSwitchValue(state.getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
                       )"
-                      @click="updateValue(item.id, !isSwitchValue(getItemValue(item)))"
+                      @click="state.updateValue(item.id, !state.isSwitchValue(state.getItemValue(item)))"
                     >
                       <span
                         :class="cn(
                           'pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform',
-                          isSwitchValue(getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
+                          state.isSwitchValue(state.getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
                         )"
                         :style="{ marginTop: '2px' }"
                       />
@@ -446,11 +241,11 @@ watch(
                         type="button"
                         :class="cn(
                           'rounded-full px-3 py-1.5 text-sm transition-colors',
-                          getItemValue(item) === option.value
+                          state.getItemValue(item) === option.value
                             ? 'bg-primary text-primary-foreground'
                             : 'hover:bg-accent'
                         )"
-                        @click="updateValue(item.id, option.value)"
+                        @click="state.updateValue(item.id, option.value)"
                       >
                         {{ option.label }}
                       </button>
@@ -460,12 +255,12 @@ watch(
                     <select
                       v-else-if="item.type === 'select' && item.selectOptions"
                       :id="`preference-${item.id}`"
-                      :value="String(getItemValue(item))"
+                      :value="String(state.getItemValue(item))"
                       :class="cn(
                         'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
                         'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
                       )"
-                      @change="updateValue(item.id, ($event.target as HTMLSelectElement).value)"
+                      @change="state.updateValue(item.id, ($event.target as HTMLSelectElement).value)"
                     >
                       <option
                         v-for="option in item.selectOptions"
@@ -514,17 +309,17 @@ watch(
                     :id="`preference-${item.id}`"
                     type="button"
                     role="switch"
-                    :aria-checked="isSwitchValue(getItemValue(item))"
+                    :aria-checked="state.isSwitchValue(state.getItemValue(item))"
                     :class="cn(
                       'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
-                      isSwitchValue(getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
+                      state.isSwitchValue(state.getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
                     )"
-                    @click="updateValue(item.id, !isSwitchValue(getItemValue(item)))"
+                    @click="state.updateValue(item.id, !state.isSwitchValue(state.getItemValue(item)))"
                   >
                     <span
                       :class="cn(
                         'pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform',
-                        isSwitchValue(getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
+                        state.isSwitchValue(state.getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
                       )"
                       :style="{ marginTop: '2px' }"
                     />
@@ -541,11 +336,11 @@ watch(
                       type="button"
                       :class="cn(
                         'rounded-full px-3 py-1.5 text-sm transition-colors',
-                        getItemValue(item) === option.value
+                        state.getItemValue(item) === option.value
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:bg-accent'
                       )"
-                      @click="updateValue(item.id, option.value)"
+                      @click="state.updateValue(item.id, option.value)"
                     >
                       {{ option.label }}
                     </button>
@@ -555,12 +350,12 @@ watch(
                   <select
                     v-else-if="item.type === 'select' && item.selectOptions"
                     :id="`preference-${item.id}`"
-                    :value="String(getItemValue(item))"
+                    :value="String(state.getItemValue(item))"
                     :class="cn(
                       'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
                       'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
                     )"
-                    @change="updateValue(item.id, ($event.target as HTMLSelectElement).value)"
+                    @change="state.updateValue(item.id, ($event.target as HTMLSelectElement).value)"
                   >
                     <option
                       v-for="option in item.selectOptions"
@@ -579,17 +374,17 @@ watch(
     </div>
 
     <!-- Actions -->
-    <div v-if="normalizedActions" class="@container/actions">
+    <div v-if="state.normalizedActions" class="@container/actions">
       <div
         :class="cn(
           'flex w-full gap-2',
-          normalizedActions.align === 'left' ? 'flex-row justify-start' :
-          normalizedActions.align === 'center' ? 'flex-row justify-center' :
+          state.normalizedActions.align === 'left' ? 'flex-row justify-start' :
+          state.normalizedActions.align === 'center' ? 'flex-row justify-center' :
           'flex-col @[240px]:flex-row @[240px]:justify-end',
         )"
       >
         <button
-          v-for="action in actionsWithState"
+          v-for="action in state.actionsWithState"
           :key="action.id"
           type="button"
           :class="cn(
@@ -597,7 +392,7 @@ watch(
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             'h-9',
-            normalizedActions.align === 'right' ? 'w-full @[240px]:w-auto' : '',
+            state.normalizedActions.align === 'right' ? 'w-full @[240px]:w-auto' : '',
             action.variant === 'destructive'
               ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
               : action.variant === 'secondary'
@@ -609,7 +404,7 @@ watch(
                     : 'bg-primary text-primary-foreground hover:bg-primary/90',
           )"
           :disabled="action.disabled"
-          @click="handleAction(action.id)"
+          @click="state.handleAction(action.id)"
         >
           {{ action.label }}
         </button>
