@@ -3,7 +3,11 @@ import { ref, computed } from 'vue';
 import { cn } from './_adapter';
 import type { LinkedInPostProps, LinkedInPostData } from './schema';
 
-const props = defineProps<LinkedInPostProps>();
+defineOptions({ name: 'cmpt-linkedin-post', inheritAttrs: false })
+
+const props = withDefaults(defineProps<LinkedInPostProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   action: [action: string, post: LinkedInPostData];
@@ -121,7 +125,8 @@ const displayText = computed(() => {
 
 <template>
   <div
-    :class="cn('flex max-w-xl flex-col gap-3', className)"
+    v-bind="$attrs"
+    :class="cn('flex max-w-xl flex-col gap-3', css?.root)"
     :data-tool-ui-id="post.id"
     data-slot="linkedin-post"
   >

@@ -3,9 +3,12 @@ import { computed, ref, watch } from 'vue';
 import { cn } from './_adapter';
 import type { PlanProps, PlanTodo } from './schema';
 
-const props = withDefaults(defineProps<PlanProps>(), {
+defineOptions({ name: 'cmpt-plan', inheritAttrs: false })
+
+const props = withDefaults(defineProps<PlanProps & { css?: { root?: string } }>(), {
   maxVisibleTodos: 4,
-});
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   todoClick: [todoId: string, index: number];
@@ -75,9 +78,10 @@ function handleTodoClick(todo: PlanTodo, index: number) {
 
 <template>
   <div
+    v-bind="$attrs"
     :class="cn(
       'isolate w-full max-w-xl min-w-80 gap-4 rounded-2xl border border-border bg-card py-4 shadow-sm',
-      className
+      css?.root
     )"
     data-slot="plan"
     :data-tool-ui-id="id"

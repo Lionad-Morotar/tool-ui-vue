@@ -7,12 +7,17 @@ import type {
   SerializableSlackDraft,
 } from './schema';
 
-const props = defineProps<RuntimeMessageDraftProps & {
+defineOptions({ name: 'cmpt-message-draft', inheritAttrs: false })
+
+const props = withDefaults(defineProps<RuntimeMessageDraftProps & {
   undoGracePeriod?: number;
   onSend?: () => void | Promise<void>;
   onUndo?: () => void;
   onCancel?: () => void;
-}>();
+  css?: { root?: string };
+}>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   send: [];
@@ -174,7 +179,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
           'flex w-full max-w-lg min-w-64 flex-col',
           'text-foreground',
           'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
-          props.className
+          props.css?.root
         )
       "
       data-slot="message-draft"
@@ -208,12 +213,13 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
     <!-- Interactive states (review/sending) -->
     <article
       v-else
+      v-bind="$attrs"
       :class="
         cn(
           'flex w-full max-w-lg min-w-64 flex-col gap-3',
           'text-foreground',
           'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
-          props.className
+          props.css?.root
         )
       "
       data-slot="message-draft"

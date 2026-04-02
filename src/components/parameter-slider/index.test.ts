@@ -353,9 +353,9 @@ describe('attributes', () => {
     expect(wrapper.find("[data-slot='parameter-slider']").attributes('data-tool-ui-id')).toBe('ps-1');
   });
 
-  test('applies custom className', () => {
+  test('applies custom css.root', () => {
     const wrapper = mount(ParameterSlider, {
-      props: { id: 'ps-1', sliders: SLIDERS, className: 'my-slider' },
+      props: { id: 'ps-1', sliders: SLIDERS, css: { root: 'my-slider' } },
     });
     expect(wrapper.find('article').classes()).toContain('my-slider');
   });

@@ -37,6 +37,13 @@ export const SourceSchema = z.object({
 
 export type Source = z.infer<typeof SourceSchema>;
 
+export const VideoCssSchema = z.object({
+  root: z.string().optional(),
+  player: z.string().optional(),
+  controls: z.string().optional(),
+  source: z.string().optional(),
+});
+
 /** SerializableVideoSchema 的可序列化 Zod Schema */
 export const SerializableVideoSchema = z.object({
   id: ToolUIIdSchema,
@@ -95,6 +102,6 @@ export interface VideoProps {
   createdAt?: string;
   locale?: string;
   source?: Source;
-  className?: string;
+  css?: { root?: string; player?: string; controls?: string; source?: string };
   autoPlay?: boolean;
 }

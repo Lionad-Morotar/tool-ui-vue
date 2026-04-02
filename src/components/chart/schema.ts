@@ -33,6 +33,16 @@ export const ChartSeriesSchema = z.object({
 export type ChartSeries = z.infer<typeof ChartSeriesSchema>;
 
 /**
+ * ChartCssSchema Zod Schema
+ */
+export const ChartCssSchema = z.object({
+  root: z.string().optional(),
+  title: z.string().optional(),
+  legend: z.string().optional(),
+  canvas: z.string().optional(),
+});
+
+/**
  * Chart 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
@@ -50,6 +60,7 @@ export const ChartPropsSchema = z
     colors: z.array(z.string().min(1)).min(1).optional(),
     showLegend: z.boolean().optional(),
     showGrid: z.boolean().optional(),
+    css: ChartCssSchema.optional().default({}),
   })
   .superRefine((value, ctx) => {
     const seenSeriesKeys = new Set<string>();
@@ -125,7 +136,7 @@ export type ChartDataPoint = {
  * 图表客户端 Props 类型
  */
 export type ChartClientProps = {
-  className?: string;
+  css?: { root?: string; title?: string; legend?: string; canvas?: string };
   onDataPointClick?: (point: ChartDataPoint) => void;
 };
 
@@ -146,14 +157,16 @@ export interface ChartProps {
   colors?: string[];
   showLegend?: boolean;
   showGrid?: boolean;
-  className?: string;
+  css?: { root?: string; title?: string; legend?: string; canvas?: string };
   onDataPointClick?: (point: ChartDataPoint) => void;
 }
 
 /**
- * Chart 的可序列化数据 Schema（别名）
+ * Chart 的可序列化数据 Schema（排除 css）
  */
-export const SerializableChartSchema = ChartPropsSchema;
+export const SerializableChartSchema = ChartPropsSchema.innerType().omit({
+  css: true,
+});
 
 /**
  * Chart 的可序列化数据类型
@@ -166,9 +179,8 @@ const SerializableChartSchemaContract = defineToolUiContract(
   SerializableChartSchema,
 );
 
-export const parseSerializableChart: (input: unknown) => SerializableChart =
+export const parseSerializableChart =
   SerializableChartSchemaContract.parse;
 
-export const safeParseSerializableChart: (
-  input: unknown,
-) => SerializableChart | null = SerializableChartSchemaContract.safeParse;
+export const safeParseSerializableChart =
+  SerializableChartSchemaContract.safeParse;

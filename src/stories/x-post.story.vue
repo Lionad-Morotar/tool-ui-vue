@@ -38,7 +38,7 @@ import { XPost } from '../components';
  * | post.stats.isReposted | boolean | undefined | Whether the current user reposted |
  * | post.stats.isBookmarked | boolean | undefined | Whether the current user bookmarked |
  * | post.createdAt | string | undefined | ISO timestamp of post creation |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Emits
  *

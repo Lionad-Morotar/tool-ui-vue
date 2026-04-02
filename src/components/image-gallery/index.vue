@@ -6,7 +6,11 @@ import GalleryGrid from './GalleryGrid.vue';
 import GalleryLightbox from './GalleryLightbox.vue';
 import type { ImageGalleryProps, ImageGalleryItem } from './schema';
 
-const props = defineProps<ImageGalleryProps>();
+defineOptions({ name: 'cmpt-image-gallery', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ImageGalleryProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   imageClick: [imageId: string, image: ImageGalleryItem];
@@ -29,7 +33,8 @@ function handleImageClick(imageId: string) {
 
 <template>
   <article
-    :class="cn('relative w-full max-w-lg min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full max-w-lg min-w-80', css?.root)"
     data-slot="image-gallery"
     :data-tool-ui-id="id"
     lang="en"

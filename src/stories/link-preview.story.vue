@@ -25,7 +25,7 @@ const interactiveState = reactive({
  * | favicon | string | undefined | URL of the favicon to display |
  * | ratio | 'auto' \| '1:1' \| '4:3' \| '16:9' \| '9:16' | 'auto' | Aspect ratio of the preview image |
  * | fit | 'cover' \| 'contain' | 'cover' | Object-fit style for the image |
- * | className | string | undefined | Additional CSS classes to apply |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Emits
  *

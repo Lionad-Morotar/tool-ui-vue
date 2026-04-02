@@ -81,6 +81,13 @@ export const safeParseSerializableApprovalCard: (
 ) => SerializableApprovalCard | null =
   SerializableApprovalCardSchemaContract.safeParse;
 
+export const ApprovalCardCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+  actions: z.string().optional(),
+});
+
 /**
  * ApprovalCard 组件的基础 Props 接口（不含回调函数）
  * 包含所有可配置的属性
@@ -96,7 +103,7 @@ export interface ApprovalCardBaseProps {
   confirmLabel?: string;
   cancelLabel?: string;
   choice?: ApprovalDecision;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string; actions?: string };
 }
 
 /**

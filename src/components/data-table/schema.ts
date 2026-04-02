@@ -185,6 +185,17 @@ export function safeParseSerializableDataTable(
 }
 
 /**
+ * DataTableCssSchema Zod Schema
+ */
+export const DataTableCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  body: z.string().optional(),
+  row: z.string().optional(),
+  footer: z.string().optional(),
+});
+
+/**
  * DataTable 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -200,7 +211,7 @@ export interface DataTableProps {
   emptyMessage?: string;
   maxHeight?: string;
   locale?: string;
-  className?: string;
+  css?: { root?: string; header?: string; body?: string; row?: string; footer?: string };
   layout?: 'auto' | 'table' | 'cards';
   onSortChange?: (sort: { by?: string; direction?: 'asc' | 'desc' }) => void;
 }

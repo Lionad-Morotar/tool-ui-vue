@@ -6,7 +6,7 @@ import type { WeatherConditionCode } from '../schema';
 
 const WeatherEffectsCanvasStub = {
   template: '<div data-testid="weather-effects-canvas-stub" />',
-  props: ['className', 'dpr', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],
+  props: ['css', 'dpr', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],
 };
 
 function createProps(overrides: Record<string, unknown> = {}) {
@@ -18,7 +18,7 @@ function createProps(overrides: Record<string, unknown> = {}) {
     timestamp: '2024-01-01T12:00:00Z',
     timeOfDay: 0.5,
     settings: { enabled: true, reducedMotion: false },
-    className: undefined,
+    css: undefined,
     ...overrides,
   };
 }
@@ -71,9 +71,9 @@ describe('EffectCompositor', () => {
       expect(wrapper.find('[data-testid="weather-effects-canvas-stub"]').exists()).toBe(false);
     });
 
-    test('applies className prop', async () => {
+    test('applies css.root prop', async () => {
       const wrapper = mount(EffectCompositor, {
-        props: createProps({ className: 'custom-effect-class' }),
+        props: createProps({ css: { root: 'custom-effect-class' } }),
         global: {
           stubs: {
             WeatherEffectsCanvas: WeatherEffectsCanvasStub,

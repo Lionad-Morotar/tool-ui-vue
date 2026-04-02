@@ -107,9 +107,19 @@ export const parseSerializableXPost: (input: unknown) => XPostData =
 export const safeParseSerializableXPost: (input: unknown) => XPostData | null =
   SerializableXPostSchemaContract.safeParse;
 
+/**
+ * XPostCssSchema Zod Schema
+ */
+export const XPostCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+  actions: z.string().optional(),
+});
+
 /** XPostProps 组件属性接口 */
 export interface XPostProps {
   post: XPostData;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string; actions?: string };
   onAction?: (action: string, post: XPostData) => void;
 }

@@ -76,7 +76,7 @@ const props = [
   { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: 'Whether to show line numbers' },
   { name: 'highlightLines', type: 'number[]', description: 'Array of line numbers to highlight' },
   { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines to show before collapsing' },
-  { name: 'className', type: 'string', description: 'Additional CSS classes' },
+  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
 ];
 
 const languages = [

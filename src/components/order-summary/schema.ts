@@ -151,6 +151,17 @@ export const safeParseSerializableOrderSummary: (
   SerializableOrderSummarySchemaContract.safeParse;
 
 /**
+ * OrderSummaryCssSchema Zod Schema
+ */
+export const OrderSummaryCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  items: z.string().optional(),
+  pricing: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
  * OrderSummary 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -162,5 +173,5 @@ export interface OrderSummaryProps {
   items: OrderItem[];
   pricing: Pricing;
   choice?: OrderDecision;
-  className?: string;
+  css?: { root?: string; header?: string; items?: string; pricing?: string; actions?: string };
 }

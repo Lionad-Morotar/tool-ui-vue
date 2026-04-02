@@ -12,7 +12,7 @@ import { OrderSummary } from '../components';
  * | `items` | `OrderItem[]` | required | Array of order line items |
  * | `pricing` | `Pricing` | required | Pricing breakdown object |
  * | `choice` | `OrderDecision` | - | Receipt state data (action, orderId, confirmedAt) |
- * | `className` | `string` | - | Additional CSS classes |
+ * | `css` | `{ root?: string }` | - | CSS classes for component elements |
  *
  * ## Emits
  *

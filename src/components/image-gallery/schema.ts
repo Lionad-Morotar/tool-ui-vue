@@ -72,6 +72,13 @@ export type SerializableImageGallery = z.infer<
   typeof SerializableImageGallerySchema
 >;
 
+export const ImageGalleryCssSchema = z.object({
+  root: z.string().optional(),
+  grid: z.string().optional(),
+  card: z.string().optional(),
+  lightbox: z.string().optional(),
+});
+
 /**
  * ImageGallery 组件的 Props 接口
  * 包含所有可配置的属性
@@ -83,7 +90,7 @@ export interface ImageGalleryProps {
   images: ImageGalleryItem[];
   title?: string;
   description?: string;
-  className?: string;
+  css?: { root?: string; grid?: string; card?: string; lightbox?: string };
   onImageClick?: (imageId: string, image: ImageGalleryItem) => void;
 }
 

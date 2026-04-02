@@ -34,7 +34,7 @@ function handleDataPointClick(point: ChartDataPoint) {
           <tr><td>colors</td><td>string[]</td><td>undefined</td><td>Custom colors for series (defaults to CSS vars)</td></tr>
           <tr><td>showLegend</td><td>boolean</td><td>false</td><td>Whether to show the legend</td></tr>
           <tr><td>showGrid</td><td>boolean</td><td>true</td><td>Whether to show grid lines</td></tr>
-          <tr><td>className</td><td>string</td><td>undefined</td><td>Additional CSS classes</td></tr>
+          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>CSS classes for component elements</td></tr>
         </tbody>
       </table>
 

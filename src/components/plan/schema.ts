@@ -79,6 +79,15 @@ export const PlanPropsSchema = z
   });
 
 /**
+ * PlanCssSchema Zod Schema
+ */
+export const PlanCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  todo: z.string().optional(),
+});
+
+/**
  * Plan 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -90,7 +99,7 @@ export interface PlanProps {
   description?: string;
   todos: PlanTodo[];
   maxVisibleTodos?: number;
-  className?: string;
+  css?: { root?: string; header?: string; todo?: string };
 }
 
 /**

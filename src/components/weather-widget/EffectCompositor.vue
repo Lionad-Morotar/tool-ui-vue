@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+
+defineOptions({ name: 'cmpt-effect-compositor', inheritAttrs: false })
 import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/canvas-resolver-runtime';
 import {
   resolveEffectCanvasDpr,
@@ -23,7 +25,7 @@ interface EffectCompositorProps {
   timestamp?: string;
   timeOfDay?: number;
   settings?: EffectSettings;
-  className?: string;
+  css?: { root?: string };
 }
 
 const props = defineProps<EffectCompositorProps>();
@@ -70,7 +72,8 @@ const shouldRender = computed(() => {
 <template>
   <div
     v-if="shouldRender"
-    :class="className"
+    v-bind="$attrs"
+    :class="css?.root"
     style="
       position: absolute;
       inset: 0;

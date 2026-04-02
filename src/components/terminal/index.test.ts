@@ -50,12 +50,12 @@ describe('Terminal', () => {
       expect(wrapper.text()).toContain('/home/user$');
     });
 
-    it('applies custom className', () => {
+    it('applies custom css.root', () => {
       const wrapper = mount(Terminal, {
         props: {
           id: 'term-1',
           command: 'ls',
-          className: 'my-terminal',
+          css: { root: 'my-terminal' },
           exitCode: 0,
         },
       });

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 /**
  * Tool UI conventions:
- * - Serializable schemas are JSON-safe (no callbacks/`className`).
+ * - Serializable schemas are JSON-safe (no callbacks/`css` styling objects).
  * - Schema: `SerializableXSchema`
  * - Parser: `parseSerializableX(input: unknown)` (throws on invalid)
  * - Safe parser: `safeParseSerializableX(input: unknown)` (returns `null` on invalid)
@@ -132,16 +132,21 @@ export function createDecisionResult<
   };
 }
 
+export const ActionButtonsCssSchema = z.object({
+  root: z.string().optional(),
+  button: z.string().optional(),
+});
+
 export const ActionButtonsPropsSchema = z.object({
   actions: z.array(ActionSchema).min(1),
   align: z.enum(['left', 'center', 'right']).optional(),
   confirmTimeout: z.number().positive().optional(),
-  className: z.string().optional(),
+  css: ActionButtonsCssSchema.optional().default({}),
 });
 
 export const SerializableActionSchema = ActionSchema;
 export const SerializableActionsSchema = ActionButtonsPropsSchema.omit({
-  className: true,
+  css: true,
 });
 
 export interface ActionsConfig {

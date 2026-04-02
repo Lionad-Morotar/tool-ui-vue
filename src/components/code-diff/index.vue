@@ -11,7 +11,11 @@ import {
 import { useResolvedTheme } from './use-theme';
 import type { CodeDiffProps } from './schema';
 
-const props = defineProps<CodeDiffProps>();
+defineOptions({ name: 'cmpt-code-diff', inheritAttrs: false })
+
+const props = withDefaults(defineProps<CodeDiffProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 // Theme detection
 const resolvedTheme = useResolvedTheme();
@@ -178,7 +182,8 @@ const wordDeletionBg = computed(() =>
 
 <template>
   <div
-    :class="cn('@container flex w-full min-w-80 flex-col gap-3', className)"
+    v-bind="$attrs"
+    :class="cn('@container flex w-full min-w-80 flex-col gap-3', css?.root)"
     :data-tool-ui-id="id"
     data-slot="code-diff"
   >

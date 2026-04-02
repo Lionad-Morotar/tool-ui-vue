@@ -74,7 +74,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
  * | sliders | SliderConfig[] | required | Array of slider configurations |
  * | values | SliderValue[] | undefined | Controlled values for sliders |
  * | actions | Action[] \| SerializableActionsConfig | undefined | Action buttons config |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  * | trackClassName | string | undefined | CSS class for track elements |
  * | fillClassName | string | undefined | CSS class for fill elements |
  * | handleClassName | string | undefined | CSS class for handle elements |

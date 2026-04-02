@@ -471,9 +471,9 @@ describe('XPost', () => {
       expect(wrapper.attributes('data-tool-ui-id')).toBe('post-1');
     });
 
-    it('applies custom className when provided', () => {
+    it('applies custom css.root when provided', () => {
       const wrapper = mount(XPost, {
-        props: { post: basePost, className: 'custom-class' },
+        props: { post: basePost, css: { root: 'custom-class' } },
       });
       expect(wrapper.classes()).toContain('custom-class');
     });

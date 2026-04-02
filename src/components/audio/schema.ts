@@ -74,6 +74,14 @@ export const safeParseSerializableAudio: (
  */
 export type AudioVariant = 'full' | 'compact';
 
+export const AudioCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  artwork: z.string().optional(),
+  controls: z.string().optional(),
+  source: z.string().optional(),
+});
+
 /**
  * Audio 组件的 Props 接口
  * 包含所有可配置的属性
@@ -97,6 +105,6 @@ export interface AudioProps {
   createdAt?: string;
   locale?: string;
   source?: Source;
-  className?: string;
+  css?: { root?: string; header?: string; artwork?: string; controls?: string; source?: string };
   variant?: AudioVariant;
 }

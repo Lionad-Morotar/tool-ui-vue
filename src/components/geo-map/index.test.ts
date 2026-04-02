@@ -139,9 +139,9 @@ describe('GeoMap', () => {
   });
 
   describe('configuration', () => {
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(GeoMap, {
-        props: createProps({ className: 'my-map' }),
+        props: createProps({ css: { root: 'my-map' } }),
         global: { stubs: { GeoMapEngine: GeoMapEngineStub } },
       });
       expect(wrapper.find('[data-slot="geo-map"]').classes()).toContain('my-map');

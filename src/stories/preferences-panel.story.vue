@@ -18,7 +18,7 @@ const prefs = ref({
  * | `sections` | `PreferenceSection[]` | required | Array of preference sections |
  * | `value` | `PreferencesValue` | - | Controlled values (for v-model) |
  * | `actions` | `Action[] \| ActionsConfig` | default | Action buttons configuration |
- * | `className` | `string` | - | Additional CSS classes |
+ * | `css` | `{ root?: string }` | - | CSS classes for component elements |
  *
  * ## Emits
  *

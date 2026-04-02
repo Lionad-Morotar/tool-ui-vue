@@ -29,7 +29,7 @@ function createProps(overrides: Record<string, unknown> = {}) {
     theme: undefined,
     timeOfDay: undefined,
     timestamp: undefined,
-    className: undefined,
+    css: undefined,
     reducedMotion: false,
     glassParams: undefined,
     ...overrides,

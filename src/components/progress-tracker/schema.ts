@@ -94,6 +94,15 @@ export const safeParseSerializableProgressTracker: (
   SerializableProgressTrackerSchemaContract.safeParse;
 
 /**
+ * ProgressTrackerCssSchema Zod Schema
+ */
+export const ProgressTrackerCssSchema = z.object({
+  root: z.string().optional(),
+  step: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
  * ProgressTracker 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -103,5 +112,5 @@ export interface ProgressTrackerProps {
   steps: ProgressStep[];
   elapsedTime?: number;
   choice?: ProgressTrackerChoice;
-  className?: string;
+  css?: { root?: string; step?: string; actions?: string };
 }

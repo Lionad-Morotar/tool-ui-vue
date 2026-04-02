@@ -139,6 +139,15 @@ export interface SliderValue {
 }
 
 /**
+ * ParameterSliderCssSchema Zod Schema
+ */
+export const ParameterSliderCssSchema = z.object({
+  root: z.string().optional(),
+  slider: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
  * ParameterSlider 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -146,7 +155,7 @@ export interface ParameterSliderProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   sliders: SliderConfig[];
-  className?: string;
+  css?: { root?: string; slider?: string; actions?: string };
   values?: SliderValue[];
   actions?:
     | Action[]

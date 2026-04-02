@@ -3,7 +3,11 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { ProgressTrackerProps, ProgressStep } from './schema';
 
-const props = defineProps<ProgressTrackerProps>();
+defineOptions({ name: 'cmpt-progress-tracker', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ProgressTrackerProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const progress = computed(() => {
   const total = props.steps.length;
@@ -109,11 +113,12 @@ const receiptState = computed(() => {
   <!-- Receipt State -->
   <div
     v-if="choice && receiptState"
+    v-bind="$attrs"
     :class="cn(
       'isolate flex w-full max-w-md min-w-80 flex-col',
       'text-foreground select-none',
       'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
-      className
+      css?.root
     )"
     data-slot="progress-tracker"
     :data-tool-ui-id="id"
@@ -318,10 +323,11 @@ const receiptState = computed(() => {
   <!-- Live State -->
   <article
     v-else
+    v-bind="$attrs"
     :class="cn(
       'isolate flex w-full max-w-md min-w-80 flex-col gap-3',
       'text-foreground select-none',
-      className
+      css?.root
     )"
     data-slot="progress-tracker"
     :data-tool-ui-id="id"

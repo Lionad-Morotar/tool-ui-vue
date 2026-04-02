@@ -236,9 +236,9 @@ describe('StatsDisplay', () => {
       expect(wrapper.find('[data-slot="stats-display"]').exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(StatsDisplay, {
-        props: createProps({ className: 'my-stats' }),
+        props: createProps({ css: { root: 'my-stats' } }),
       });
       expect(wrapper.find("[data-slot='stats-display']").classes()).toContain('my-stats');
     });

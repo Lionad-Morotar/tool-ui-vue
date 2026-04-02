@@ -92,9 +92,9 @@ describe('OrderSummary', () => {
       expect(wrapper.find('article').attributes('aria-labelledby')).toBe('test-order-title');
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(OrderSummary, {
-        props: createProps({ className: 'my-class' }),
+        props: createProps({ css: { root: 'my-class' } }),
       });
       expect(wrapper.find('article').classes()).toContain('my-class');
     });

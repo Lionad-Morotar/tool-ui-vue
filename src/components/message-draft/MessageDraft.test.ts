@@ -123,9 +123,9 @@ describe('MessageDraft', () => {
       expect(wrapper.find('[data-slot="message-draft"]').exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(MessageDraft, {
-        props: createEmailProps({ className: 'my-draft' }),
+        props: createEmailProps({ css: { root: 'my-draft' } }),
       });
       expect(wrapper.find('[data-slot="message-draft"]').classes()).toContain('my-draft');
     });

@@ -235,10 +235,21 @@ export type GeoMapStyle = {
 };
 
 /**
+ * GeoMapCssSchema Zod Schema
+ */
+export const GeoMapCssSchema = z.object({
+  root: z.string().optional(),
+  title: z.string().optional(),
+  canvas: z.string().optional(),
+  overlay: z.string().optional(),
+  controls: z.string().optional(),
+});
+
+/**
  * 地图客户端 Props 类型
  */
 export type GeoMapClientProps = {
-  className?: string;
+  css?: { root?: string; title?: string; canvas?: string; overlay?: string; controls?: string };
   style?: GeoMapStyle;
   tooltipClassName?: string;
   popupClassName?: string;
@@ -262,7 +273,7 @@ export interface GeoMapProps {
   viewport?: GeoMapViewport;
   showZoomControl?: boolean;
   theme?: 'light' | 'dark';
-  className?: string;
+  css?: { root?: string; title?: string; canvas?: string; overlay?: string; controls?: string };
   style?: GeoMapStyle;
   tooltipClassName?: string;
   popupClassName?: string;

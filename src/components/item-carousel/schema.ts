@@ -30,6 +30,16 @@ export const ItemSchema = z.object({
 });
 
 /**
+ * ItemCarouselCssSchema Zod Schema
+ */
+export const ItemCarouselCssSchema = z.object({
+  root: z.string().optional(),
+  title: z.string().optional(),
+  card: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
  * 轮播组件 Props 的 Schema 定义
  */
 export const ItemCarouselPropsSchema = z.object({
@@ -37,7 +47,7 @@ export const ItemCarouselPropsSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   items: z.array(ItemSchema),
-  className: z.string().optional(),
+  css: ItemCarouselCssSchema.optional().default({}),
 });
 
 /**
@@ -61,7 +71,7 @@ export interface ItemCarouselProps {
   title?: string;
   description?: string;
   items: Item[];
-  className?: string;
+  css?: { root?: string; title?: string; card?: string; actions?: string };
   onItemClick?: (itemId: string) => void;
   onItemAction?: (itemId: string, actionId: string) => void;
 }
@@ -78,7 +88,7 @@ export const SerializableItemSchema = ItemSchema.extend({
  * 用于验证从外部传入的数据结构
  */
 export const SerializableItemCarouselSchema = ItemCarouselPropsSchema.omit({
-  className: true,
+  css: true,
 })
   .extend({
     items: z.array(SerializableItemSchema),

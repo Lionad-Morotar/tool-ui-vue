@@ -4,7 +4,11 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { ApprovalCardBaseProps } from './schema';
 
-const props = defineProps<ApprovalCardBaseProps>();
+defineOptions({ name: 'cmpt-approval-card', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ApprovalCardBaseProps & { css?: { root?: string; header?: string; content?: string; actions?: string } }>(), {
+  css: () => ({ root: '', header: '', content: '', actions: '' })
+})
 
 const emit = defineEmits<{
   confirm: [];
@@ -59,12 +63,13 @@ function handleKeyDown(event: KeyboardEvent) {
   <!-- Receipt view when choice is made -->
   <div
     v-if="choice"
+    v-bind="$attrs"
     :class="
       cn(
         'flex w-full max-w-md min-w-64 flex-col',
         'text-foreground',
         'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
-        className,
+        css?.root,
       )
     "
     data-slot="approval-card"
@@ -103,11 +108,12 @@ function handleKeyDown(event: KeyboardEvent) {
   <!-- Interactive view -->
   <article
     v-else
+    v-bind="$attrs"
     :class="
       cn(
         'flex w-full max-w-md min-w-64 flex-col gap-3',
         'text-foreground',
-        className,
+        css?.root,
       )
     "
     data-slot="approval-card"

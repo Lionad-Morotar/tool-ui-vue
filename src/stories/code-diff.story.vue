@@ -81,7 +81,7 @@ const props = [
   { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: 'Whether to show line numbers' },
   { name: 'diffStyle', type: "'unified' | 'split'", default: 'unified', description: 'Diff display style' },
   { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
-  { name: 'className', type: 'string', description: 'Additional CSS classes' },
+  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
 ];
 </script>
 

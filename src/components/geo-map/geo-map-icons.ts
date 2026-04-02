@@ -40,7 +40,7 @@ function createEmojiIcon(
   const border = icon.borderColor ?? 'var(--border)';
 
   return leafletRuntime.divIcon({
-    className: '',
+    className: '', // Leaflet API - intentionally empty to avoid default styling
     html: `<span style="
 display:flex;
 align-items:center;
@@ -71,7 +71,7 @@ function createImageIcon(
   const border = icon.borderColor ?? 'var(--border)';
 
   return leafletRuntime.divIcon({
-    className: '',
+    className: '', // Leaflet API - intentionally empty to avoid default styling
     html: `<span style="
 display:block;
 width:${width}px;
@@ -98,7 +98,7 @@ export function createClusterIcon(
   const border = 'var(--background)';
 
   return leafletRuntime.divIcon({
-    className: '',
+    className: '', // Leaflet API - intentionally empty to avoid default styling
     html: `<span style="
 display:flex;
 align-items:center;

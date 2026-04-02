@@ -16,7 +16,7 @@ import { ProgressTracker } from '../components';
  * | steps | ProgressStep[] | required | Array of steps to display |
  * | elapsedTime | number | undefined | Elapsed time in milliseconds |
  * | choice | ProgressTrackerChoice | undefined | Receipt state with outcome |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Step Status
  *

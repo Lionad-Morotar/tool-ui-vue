@@ -9,14 +9,16 @@ export interface CitationListProps {
   citations: SerializableCitation[];
   variant?: 'default' | 'inline' | 'stacked';
   maxVisible?: number;
-  className?: string;
+  css?: { root?: string };
   onNavigate?: (href: string, citation: SerializableCitation) => void;
 }
 
-const props = withDefaults(defineProps<CitationListProps>(), {
+defineOptions({ name: 'cmpt-citation-list', inheritAttrs: false })
+
+const props = withDefaults(defineProps<CitationListProps & { css?: { root?: string } }>(), {
   variant: 'default',
   maxVisible: undefined,
-  className: '',
+  css: () => ({ root: '' }),
   onNavigate: undefined,
 });
 
@@ -138,6 +140,7 @@ onUnmounted(() => {
   <!-- Stacked variant: overlapping favicons with popover -->
   <div
     v-if="variant === 'stacked'"
+    v-bind="$attrs"
     class="relative inline-flex"
     data-testid="citation-list-container"
     @mouseenter="handleMouseEnter"
@@ -153,7 +156,7 @@ onUnmounted(() => {
         'transition-colors duration-150',
         'hover:bg-muted/70',
         'focus-visible:ring-2 focus-visible:ring-ring',
-        className
+        css?.root
       )"
       @keydown="handleKeyDown"
     >
@@ -283,7 +286,8 @@ onUnmounted(() => {
   <!-- Default variant -->
   <div
     v-else-if="variant === 'default'"
-    :class="cn('isolate flex flex-col gap-4', className)"
+    v-bind="$attrs"
+    :class="cn('isolate flex flex-col gap-4', css?.root)"
     :data-tool-ui-id="id"
     data-slot="citation-list"
   >
@@ -395,7 +399,8 @@ onUnmounted(() => {
   <!-- Inline variant -->
   <div
     v-else
-    :class="cn('isolate flex flex-wrap items-center gap-1.5', className)"
+    v-bind="$attrs"
+    :class="cn('isolate flex flex-wrap items-center gap-1.5', css?.root)"
     :data-tool-ui-id="id"
     data-slot="citation-list"
   >

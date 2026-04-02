@@ -3,7 +3,11 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { StatsDisplayProps, StatDiff } from './schema';
 
-const props = defineProps<StatsDisplayProps>();
+defineOptions({ name: 'cmpt-stats-display', inheritAttrs: false })
+
+const props = withDefaults(defineProps<StatsDisplayProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const locale = computed(() => {
   return props.locale ?? (typeof navigator !== 'undefined' ? navigator.language : 'en');
@@ -96,10 +100,11 @@ function formatPercent(value: number, decimals: number, basis: 'fraction' | 'uni
 
 <template>
   <article
+    v-bind="$attrs"
     :class="cn(
       'w-full max-w-xl min-w-80',
       isSingle && 'max-w-sm',
-      className
+      css?.root
     )"
     data-slot="stats-display"
     :data-tool-ui-id="id"

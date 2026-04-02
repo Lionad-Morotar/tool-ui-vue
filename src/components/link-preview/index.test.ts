@@ -266,9 +266,9 @@ describe('LinkPreview', () => {
       expect(wrapper.find('article').attributes('lang')).toBe('en');
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(LinkPreview, {
-        props: createProps({ className: 'my-custom-class' }),
+        props: createProps({ css: { root: 'my-custom-class' } }),
       });
       expect(wrapper.find('article').classes()).toContain('my-custom-class');
     });

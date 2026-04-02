@@ -60,9 +60,9 @@ describe('Audio', () => {
       );
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(Audio, {
-        props: createProps({ className: 'my-audio' }),
+        props: createProps({ css: { root: 'my-audio' } }),
       });
       expect(wrapper.find("[data-slot='audio']").classes()).toContain(
         'my-audio'

@@ -10,7 +10,11 @@ import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from './time';
 import WeatherDataOverlay from './WeatherDataOverlay.vue';
 import type { WeatherWidgetProps } from './schema';
 
-const props = defineProps<WeatherWidgetProps>();
+defineOptions({ name: 'cmpt-weather-widget', inheritAttrs: false })
+
+const props = withDefaults(defineProps<WeatherWidgetProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 // Use VueUse for reduced motion preference
 const preferredReducedMotion = usePreferredReducedMotion();
@@ -85,9 +89,10 @@ const backgroundClass = computed(() => {
 
 <template>
   <article
+    v-bind="$attrs"
     data-slot="weather-widget"
     :data-tool-ui-id="id"
-    :class="cn('isolate w-full max-w-md', props.className)"
+    :class="cn('isolate w-full max-w-md', css?.root)"
   >
     <div
       :class="

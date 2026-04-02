@@ -113,6 +113,15 @@ function validateOptionListInvariants(
   }
 }
 
+/**
+ * OptionListCssSchema Zod Schema
+ */
+export const OptionListCssSchema = z.object({
+  root: z.string().optional(),
+  item: z.string().optional(),
+  actions: z.string().optional(),
+});
+
 const OptionListPropsSchemaBase = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
@@ -127,6 +136,7 @@ const OptionListPropsSchemaBase = z.object({
     .optional(),
   minSelections: z.number().min(0).optional(),
   maxSelections: z.number().min(1).optional(),
+  css: OptionListCssSchema.optional().default({}),
 });
 
 /**
@@ -174,7 +184,7 @@ export interface OptionListProps {
   onChange?: (value: OptionListSelection) => void;
   onAction?: (actionId: string, value: OptionListSelection) => void | Promise<void>;
   onBeforeAction?: (actionId: string, value: OptionListSelection) => void | Promise<void>;
-  className?: string;
+  css?: { root?: string; item?: string; actions?: string };
 }
 
 /**
@@ -182,6 +192,7 @@ export interface OptionListProps {
  */
 export const SerializableOptionListSchema = OptionListPropsSchemaBase.omit({
   value: true,
+  css: true,
 })
   .extend({
     options: z.array(OptionListOptionSchema.omit({ icon: true })),

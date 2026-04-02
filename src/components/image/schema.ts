@@ -96,6 +96,13 @@ export const safeParseSerializableImage: (
   input: unknown,
 ) => SerializableImage | null = SerializableImageSchemaContract.safeParse;
 
+export const ImageCssSchema = z.object({
+  root: z.string().optional(),
+  image: z.string().optional(),
+  caption: z.string().optional(),
+  source: z.string().optional(),
+});
+
 /**
  * Image 组件的 Props 接口
  * 包含所有可配置的属性
@@ -122,5 +129,5 @@ export interface ImageProps {
   createdAt?: string;
   locale?: string;
   source?: Source;
-  className?: string;
+  css?: { root?: string; image?: string; caption?: string; source?: string };
 }

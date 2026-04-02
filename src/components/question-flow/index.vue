@@ -8,7 +8,11 @@ import type {
   QuestionFlowChoice,
 } from './schema';
 
-const props = defineProps<QuestionFlowProps>();
+defineOptions({ name: 'cmpt-question-flow', inheritAttrs: false })
+
+const props = withDefaults(defineProps<QuestionFlowProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   select: [optionIds: string[]];
@@ -417,12 +421,13 @@ const CheckIcon = {
   <!-- Receipt State -->
   <div
     v-if="isReceipt && receiptProps"
+    v-bind="$attrs"
     :class="
       cn(
         '@container/question-flow flex w-full max-w-md min-w-80 flex-col',
         'text-foreground',
         'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-out',
-        receiptProps.className
+        receiptProps.css?.root
       )
     "
     data-slot="question-flow"
@@ -459,11 +464,12 @@ const CheckIcon = {
   <!-- Interactive State -->
   <div
     v-else
+    v-bind="$attrs"
     :class="
       cn(
         '@container/question-flow flex w-full max-w-md min-w-80 flex-col gap-3',
         'text-foreground',
-        (progressiveProps?.className || upfrontProps?.className)
+        (progressiveProps?.css?.root || upfrontProps?.css?.root)
       )
     "
     data-slot="question-flow"

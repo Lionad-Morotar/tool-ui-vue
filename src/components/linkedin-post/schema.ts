@@ -108,12 +108,19 @@ export const safeParseSerializableLinkedInPost: (
   input: unknown,
 ) => LinkedInPostData | null = SerializableLinkedInPostSchemaContract.safeParse;
 
+export const LinkedInPostCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+  actions: z.string().optional(),
+});
+
 /**
  * LinkedInPost 组件的 Props 接口
  * 包含所有可配置的属性
  */
 export interface LinkedInPostProps {
   post: LinkedInPostData;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string; actions?: string };
   onAction?: (action: string, post: LinkedInPostData) => void;
 }

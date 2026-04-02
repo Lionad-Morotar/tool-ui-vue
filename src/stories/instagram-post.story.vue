@@ -28,7 +28,7 @@ import { InstagramPost } from '../components';
  * | post.stats.likes | number | undefined | Number of likes |
  * | post.stats.isLiked | boolean | undefined | Whether the current user liked the post |
  * | post.createdAt | string | undefined | ISO timestamp of post creation |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Emits
  *

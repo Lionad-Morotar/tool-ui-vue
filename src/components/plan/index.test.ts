@@ -58,9 +58,9 @@ describe('Plan', () => {
       expect(wrapper.find('[data-slot="plan"]').exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(Plan, {
-        props: createProps({ className: 'my-plan' }),
+        props: createProps({ css: { root: 'my-plan' } }),
       });
       expect(wrapper.find('[data-slot="plan"]').classes()).toContain('my-plan');
     });

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+defineOptions({ name: 'cmpt-weather-effects-canvas', inheritAttrs: false })
+
 import { ref } from 'vue';
 import { useWeatherEffects } from './composables/useWeatherEffects';
 import { resolveWeatherEffectsCanvasRuntimeProps } from './effects/weather-effects-props';
 import type { WeatherEffectsCanvasProps } from './effects/weather-effects-types';
 
-const props = defineProps<WeatherEffectsCanvasProps>();
+const props = defineProps<WeatherEffectsCanvasProps & { css?: { root?: string } }>();
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
@@ -26,7 +28,8 @@ useWeatherEffects(canvasRef, () =>
 <template>
   <canvas
     ref="canvasRef"
-    :class="className"
+    v-bind="$attrs"
+    :class="css?.root"
     style="width: 100%; height: 100%"
   />
 </template>

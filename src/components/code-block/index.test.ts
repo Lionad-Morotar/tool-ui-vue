@@ -52,12 +52,12 @@ describe('CodeBlock', () => {
       expect(wrapper.text()).toContain('TypeScript');
     });
 
-    it('applies custom className', () => {
+    it('applies custom css.root', () => {
       const wrapper = mount(CodeBlock, {
         props: {
           id: 'code-1',
           code: 'const x = 1;',
-          className: 'my-code',
+          css: { root: 'my-code' },
         },
       });
       expect(wrapper.attributes('class')).toContain('my-code');

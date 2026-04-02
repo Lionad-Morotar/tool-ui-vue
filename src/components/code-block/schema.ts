@@ -21,6 +21,13 @@ import type { ToolUIReceipt } from '../../shared/schema';
  * CodeBlock 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
+export const CodeBlockCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+  copyButton: z.string().optional(),
+});
+
 export const CodeBlockPropsSchema = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
@@ -31,7 +38,7 @@ export const CodeBlockPropsSchema = z.object({
   filename: z.string().optional(),
   highlightLines: z.array(z.number().int().positive()).optional(),
   maxCollapsedLines: z.number().min(1).optional(),
-  className: z.string().optional(),
+  css: CodeBlockCssSchema.optional().default({}),
 });
 
 /**
@@ -48,7 +55,7 @@ export interface CodeBlockProps {
   filename?: string;
   highlightLines?: number[];
   maxCollapsedLines?: number;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string; copyButton?: string };
 }
 
 /**
@@ -57,10 +64,10 @@ export interface CodeBlockProps {
 export type CodeBlockLineNumbersMode = 'visible' | 'hidden';
 
 /**
- * CodeBlock 的可序列化数据 Schema（排除 className）
+ * CodeBlock 的可序列化数据 Schema（排除 css）
  */
 export const SerializableCodeBlockSchema = CodeBlockPropsSchema.omit({
-  className: true,
+  css: true,
 });
 
 /**

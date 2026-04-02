@@ -6,8 +6,11 @@ import { useLocalAudio } from './context';
 import type { AudioProps, AudioVariant } from './schema';
 // formatDuration is available from shared/media if needed for future enhancements
 
-const props = withDefaults(defineProps<AudioProps>(), {
+defineOptions({ name: 'cmpt-audio', inheritAttrs: false })
+
+const props = withDefaults(defineProps<AudioProps & { css?: { root?: string } }>(), {
   variant: 'full' as AudioVariant,
+  css: () => ({ root: '' })
 });
 
 const emit = defineEmits<{
@@ -144,11 +147,12 @@ watch(
 
 <template>
   <article
+    v-bind="$attrs"
     :class="
       cn(
         '@container/actions relative w-full',
         isCompact ? 'max-w-md min-w-72' : 'max-w-sm min-w-52',
-        className
+        css?.root
       )
     "
     :lang="locale"

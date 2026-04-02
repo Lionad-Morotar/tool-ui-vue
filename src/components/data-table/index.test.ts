@@ -64,9 +64,9 @@ describe('DataTable', () => {
       expect(wrapper.find('[data-slot="data-table"]').exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(DataTable, {
-        props: createProps({ className: 'my-table' }),
+        props: createProps({ css: { root: 'my-table' } }),
       });
       expect(wrapper.find('[data-slot="data-table"]').classes()).toContain('my-table');
     });

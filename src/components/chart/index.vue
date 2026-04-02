@@ -3,7 +3,11 @@ import { computed, ref } from 'vue';
 import { cn } from './_adapter';
 import type { ChartProps, ChartDataPoint } from './schema';
 
-const props = defineProps<ChartProps>();
+defineOptions({ name: 'cmpt-chart', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ChartProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   dataPointClick: [point: ChartDataPoint];
@@ -181,7 +185,8 @@ function hideTooltip() {
 
 <template>
   <article
-    :class="cn('relative w-full min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full min-w-80', css?.root)"
     data-slot="chart"
     :data-tool-ui-id="id"
   >

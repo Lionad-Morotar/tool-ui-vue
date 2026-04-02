@@ -21,7 +21,7 @@ import { OptionList } from '../components';
  * | minSelections | number | 1 | Minimum selections required |
  * | maxSelections | number | undefined | Maximum selections allowed |
  * | actions | Action[] \| ActionsConfig | undefined | Custom action buttons |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Emits
  *

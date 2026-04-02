@@ -18,6 +18,15 @@ import {
 } from '../../shared/schema';
 import type { ToolUIReceipt } from '../../shared/schema';
 
+/**
+ * TerminalCssSchema Zod Schema
+ */
+export const TerminalCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+});
+
 /** TerminalPropsSchema Zod Schema */
 export const TerminalPropsSchema = z.object({
   id: ToolUIIdSchema,
@@ -31,7 +40,7 @@ export const TerminalPropsSchema = z.object({
   cwd: z.string().optional(),
   truncated: z.boolean().optional(),
   maxCollapsedLines: z.number().min(1).optional(),
-  className: z.string().optional(),
+  css: TerminalCssSchema.optional().default({}),
 });
 
 /** TerminalProps 组件属性接口 */
@@ -47,11 +56,11 @@ export interface TerminalProps {
   cwd?: string;
   truncated?: boolean;
   maxCollapsedLines?: number;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string };
 }
 
 export const SerializableTerminalSchema = TerminalPropsSchema.omit({
-  className: true,
+  css: true,
 });
 
 /** SerializableTerminal 类型，由 Zod Schema 推导 */

@@ -21,7 +21,7 @@ import { ApprovalCard } from '../components';
  * | confirmLabel | string | 'Approve' | Label for confirm button |
  * | cancelLabel | string | 'Deny' | Label for cancel button |
  * | choice | 'approved' \| 'denied' | undefined | Receipt state - shows result view |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Emits
  *

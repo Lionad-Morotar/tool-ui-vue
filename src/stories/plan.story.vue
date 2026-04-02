@@ -19,7 +19,7 @@ import type { PlanTodoStatus } from '../components/plan/schema';
  * | description | string | undefined | Optional plan description |
  * | todos | PlanTodo[] | required | Array of todo items |
  * | maxVisibleTodos | number | 4 | Maximum todos to show before "show more" |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  *
  * ## Todo Status
  *

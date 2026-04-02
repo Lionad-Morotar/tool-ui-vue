@@ -124,6 +124,13 @@ export const safeParseSerializableMessageDraft: (
 ) => SerializableMessageDraft | null =
   SerializableMessageDraftSchemaContract.safeParse;
 
+export const MessageDraftCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  body: z.string().optional(),
+  actions: z.string().optional(),
+});
+
 /**
  * MessageDraft 组件的基础 Props 接口
  * 包含所有可配置的属性
@@ -134,7 +141,7 @@ export interface MessageDraftProps {
   body: string;
   outcome?: 'sent' | 'cancelled';
   channel: 'email' | 'slack';
-  className?: string;
+  css?: { root?: string; header?: string; body?: string; actions?: string };
   undoGracePeriod?: number;
   onSend?: () => void | Promise<void>;
   onUndo?: () => void;

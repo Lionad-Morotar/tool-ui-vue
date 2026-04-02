@@ -8,17 +8,19 @@ export interface SparklineProps {
   color?: string;
   width?: number;
   height?: number;
-  className?: string;
+  css?: { root?: string };
   style?: CSSProperties;
   showFill?: boolean;
   fillOpacity?: number;
 }
 
-const props = withDefaults(defineProps<SparklineProps>(), {
+defineOptions({ name: 'cmpt-sparkline', inheritAttrs: false })
+
+const props = withDefaults(defineProps<SparklineProps & { css?: { root?: string } }>(), {
   color: 'currentColor',
   width: 64,
   height: 24,
-  className: '',
+  css: () => ({ root: '' }),
   style: undefined,
   showFill: false,
   fillOpacity: 0.09,
@@ -83,9 +85,10 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
 
 <template>
   <svg
+    v-bind="$attrs"
     :viewBox="`0 0 ${width} ${height}`"
     aria-hidden="true"
-    :class="cn('h-full w-full shrink-0', className)"
+    :class="cn('h-full w-full shrink-0', css?.root)"
     :style="style"
     preserveAspectRatio="none"
   >

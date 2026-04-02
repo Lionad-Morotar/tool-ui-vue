@@ -91,9 +91,9 @@ describe('PreferencesPanel', () => {
       expect(wrapper.find("[role='form']").exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(PreferencesPanel, {
-        props: createProps({ className: 'my-panel' }),
+        props: createProps({ css: { root: 'my-panel' } }),
       });
       expect(wrapper.find('[data-slot="preferences-panel"]').classes()).toContain('my-panel');
     });

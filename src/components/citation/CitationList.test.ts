@@ -46,12 +46,12 @@ describe('CitationList', () => {
       expect(wrapper.findAllComponents({ name: 'Citation' }).length).toBe(5);
     });
 
-    test('renders custom className', () => {
+    test('renders custom css.root', () => {
       const wrapper = mount(CitationList, {
         props: {
           id: 'test-list',
           citations: createCitations(2),
-          className: 'my-custom-class',
+          css: { root: 'my-custom-class' },
         },
       });
       expect(wrapper.find('.my-custom-class').exists()).toBe(true);

@@ -2,7 +2,11 @@
 import { cn } from './_adapter';
 import type { XPostProps, XPostData } from './schema';
 
-const props = defineProps<XPostProps>();
+defineOptions({ name: 'cmpt-x-post', inheritAttrs: false })
+
+const props = withDefaults(defineProps<XPostProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   action: [action: string, post: XPostData];
@@ -108,7 +112,8 @@ function handleLinkClick(url: string) {
 
 <template>
   <div
-    :class="cn('flex max-w-xl flex-col gap-3', className)"
+    v-bind="$attrs"
+    :class="cn('flex max-w-xl flex-col gap-3', css?.root)"
     :data-tool-ui-id="post.id"
     data-slot="x-post"
   >

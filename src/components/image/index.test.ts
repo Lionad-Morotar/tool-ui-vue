@@ -40,9 +40,9 @@ describe('Image', () => {
       expect(img.classes()).toContain('object-cover');
     });
 
-    test('renders with custom className', () => {
+    test('renders with custom css.root', () => {
       const wrapper = mount(Image, {
-        props: createProps({ className: 'my-image' }),
+        props: createProps({ css: { root: 'my-image' } }),
       });
       expect(wrapper.find("[data-slot='image']").classes()).toContain('my-image');
     });

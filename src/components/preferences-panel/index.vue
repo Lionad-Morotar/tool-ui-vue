@@ -11,7 +11,11 @@ import type {
   PreferenceSection,
 } from './schema';
 
-const props = defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { className?: string }>();
+defineOptions({ name: 'cmpt-preferences-panel', inheritAttrs: false })
+
+const props = withDefaults(defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   change: [value: PreferencesValue];
@@ -233,7 +237,8 @@ watch(
   <!-- Receipt State -->
   <article
     v-if="isReceipt"
-    :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col', props.className)"
+    v-bind="$attrs"
+    :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col', props.css?.root)"
     data-slot="preferences-panel"
     :data-tool-ui-id="props.id"
     data-receipt="true"
@@ -359,7 +364,8 @@ watch(
   <!-- Interactive State -->
   <article
     v-else
-    :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col gap-3 text-foreground', props.className)"
+    v-bind="$attrs"
+    :class="cn('@container/preferences-panel flex w-full max-w-md min-w-80 flex-col gap-3 text-foreground', props.css?.root)"
     data-slot="preferences-panel"
     :data-tool-ui-id="props.id"
     role="form"

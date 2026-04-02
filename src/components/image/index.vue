@@ -3,7 +3,11 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { ImageProps, AspectRatio, MediaFit } from './schema';
 
-const props = defineProps<ImageProps>();
+defineOptions({ name: 'cmpt-image', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ImageProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   navigate: [href: string];
@@ -50,7 +54,8 @@ function handleSourceClick() {
 
 <template>
   <article
-    :class="cn('relative w-full max-w-md min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full max-w-md min-w-80', css?.root)"
     :lang="locale"
     data-slot="image"
     :data-tool-ui-id="id"

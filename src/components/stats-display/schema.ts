@@ -133,6 +133,16 @@ export const safeParseSerializableStatsDisplay: (
   SerializableStatsDisplaySchemaContract.safeParse;
 
 /**
+ * StatsDisplayCssSchema Zod Schema
+ */
+export const StatsDisplayCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  stat: z.string().optional(),
+  sparkline: z.string().optional(),
+});
+
+/**
  * StatsDisplay 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -142,6 +152,6 @@ export interface StatsDisplayProps {
   title?: string;
   description?: string;
   stats: StatItem[];
-  className?: string;
+  css?: { root?: string; header?: string; stat?: string; sparkline?: string };
   locale?: string;
 }

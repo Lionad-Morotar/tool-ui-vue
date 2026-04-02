@@ -44,9 +44,9 @@ describe('Video', () => {
       expect(wrapper.html()).toContain('aspect-square');
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(Video, {
-        props: createProps({ className: 'my-video' }),
+        props: createProps({ css: { root: 'my-video' } }),
       });
       expect(wrapper.find("[data-slot='video']").classes()).toContain('my-video');
     });

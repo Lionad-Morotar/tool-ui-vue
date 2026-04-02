@@ -5,7 +5,11 @@ import { ref, computed } from 'vue';
 import { cn } from './_adapter';
 import type { TerminalProps } from './schema';
 
-const props = defineProps<TerminalProps>();
+defineOptions({ name: 'cmpt-terminal', inheritAttrs: false })
+
+const props = withDefaults(defineProps<TerminalProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 // State
 const isCopied = ref(false);
@@ -74,9 +78,10 @@ function toggleExpanded() {
 
 <template>
   <div
+    v-bind="$attrs"
     :class="cn(
       '@container flex w-full min-w-80 flex-col gap-3',
-      className,
+      css?.root,
     )"
     :data-tool-ui-id="id"
     data-slot="terminal"

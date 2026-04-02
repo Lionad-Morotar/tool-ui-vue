@@ -7,7 +7,7 @@ import WeatherWidget from './index.vue';
 vi.mock('./WeatherEffectsCanvas.vue', () => ({
   default: {
     name: 'WeatherEffectsCanvas',
-    props: ['className', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],
+    props: ['css', 'layers', 'celestial', 'cloud', 'rain', 'lightning', 'snow', 'interactions', 'post'],
     template: "<div data-testid='effects-canvas' />",
   },
 }));

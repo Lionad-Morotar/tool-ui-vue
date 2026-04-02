@@ -3,8 +3,11 @@ import { computed, ref, watch } from 'vue';
 import { cn } from './_adapter';
 import type { DataTableProps, Column, RowData } from './schema';
 
-const props = withDefaults(defineProps<DataTableProps>(), {
+defineOptions({ name: 'cmpt-data-table', inheritAttrs: false })
+
+const props = withDefaults(defineProps<DataTableProps & { css?: { root?: string } }>(), {
   layout: 'auto',
+  css: () => ({ root: '' })
 });
 
 const emit = defineEmits<{
@@ -464,7 +467,8 @@ if (typeof window !== 'undefined' && !props.rowIdKey && props.data.length > 0) {
 
 <template>
   <div
-    :class="cn('@container w-full min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('@container w-full min-w-80', css?.root)"
     :data-tool-ui-id="id"
     data-slot="data-table"
     :data-layout="layout"

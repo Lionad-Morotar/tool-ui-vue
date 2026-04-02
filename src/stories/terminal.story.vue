@@ -22,7 +22,7 @@ const props = [
   { name: 'cwd', type: 'string', description: 'Current working directory' },
   { name: 'truncated', type: 'boolean', description: 'Whether output was truncated' },
   { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
-  { name: 'className', type: 'string', description: 'Additional CSS classes' },
+  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
 ];
 
 const ansiExamples = {

@@ -4,7 +4,11 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { OrderSummaryProps, OrderItem } from './schema';
 
-const props = defineProps<OrderSummaryProps>();
+defineOptions({ name: 'cmpt-order-summary', inheritAttrs: false })
+
+const props = withDefaults(defineProps<OrderSummaryProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 function formatCurrency(amount: number, currency?: string): string {
   const curr = currency || 'USD';
@@ -72,7 +76,8 @@ const receiptBadgeText = computed(() => {
   <!-- Malformed Payload State -->
   <article
     v-if="isMalformedPayload"
-    :class="cn('flex max-w-md min-w-80 flex-col gap-3', className)"
+    v-bind="$attrs"
+    :class="cn('flex max-w-md min-w-80 flex-col gap-3', css?.root)"
     data-slot="order-summary"
     :data-tool-ui-id="id"
     :aria-labelledby="`${id}-title`"
@@ -90,10 +95,11 @@ const receiptBadgeText = computed(() => {
   <!-- Receipt State -->
   <article
     v-else-if="isReceipt"
+    v-bind="$attrs"
     :class="cn(
       'flex max-w-md min-w-80 flex-col gap-3',
       'text-foreground',
-      className
+      css?.root
     )"
     data-slot="order-summary"
     :data-tool-ui-id="id"
@@ -193,10 +199,11 @@ const receiptBadgeText = computed(() => {
   <!-- Interactive State (Summary) -->
   <article
     v-else
+    v-bind="$attrs"
     :class="cn(
       'flex max-w-md min-w-80 flex-col gap-3',
       'text-foreground',
-      className
+      css?.root
     )"
     data-slot="order-summary"
     :data-tool-ui-id="id"

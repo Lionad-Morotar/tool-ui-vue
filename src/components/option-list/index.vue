@@ -3,7 +3,11 @@ import { computed, ref, watch } from 'vue';
 import { cn } from './_adapter';
 import type { OptionListProps, OptionListSelection, OptionListOption } from './schema';
 
-const props = defineProps<OptionListProps & { modelValue?: OptionListSelection }>();
+defineOptions({ name: 'cmpt-option-list', inheritAttrs: false })
+
+const props = withDefaults(defineProps<OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   change: [value: OptionListSelection];
@@ -326,12 +330,13 @@ function getIconComponent(iconName: string | undefined) {
   <!-- Receipt view -->
   <div
     v-if="isReceipt"
+    v-bind="$attrs"
     :class="
       cn(
         '@container/option-list flex w-full max-w-md min-w-80 flex-col',
         'text-foreground',
         'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]',
-        props.className,
+        props.css?.root,
       )
     "
     data-slot="option-list"
@@ -384,11 +389,12 @@ function getIconComponent(iconName: string | undefined) {
   <!-- Interactive view -->
   <div
     v-else
+    v-bind="$attrs"
     :class="
       cn(
         '@container/option-list flex w-full max-w-md min-w-80 flex-col gap-3',
         'text-foreground',
-        props.className,
+        props.css?.root,
       )
     "
     data-slot="option-list"

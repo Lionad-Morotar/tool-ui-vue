@@ -10,9 +10,12 @@ async function loadShiki() {
   return import('shiki');
 }
 
-const props = withDefaults(defineProps<CodeBlockProps>(), {
+defineOptions({ name: 'cmpt-code-block', inheritAttrs: false })
+
+const props = withDefaults(defineProps<CodeBlockProps & { css?: { root?: string } }>(), {
   language: 'text',
   lineNumbers: 'visible',
+  css: () => ({ root: '' })
 });
 
 const MAX_HTML_CACHE_ENTRIES = 64;
@@ -257,9 +260,10 @@ onMounted(() => {
 
 <template>
   <article
+    v-bind="$attrs"
     :class="cn(
       '@container flex w-full min-w-80 flex-col gap-3',
-      className,
+      css?.root,
     )"
     :data-tool-ui-id="id"
     data-slot="code-block"

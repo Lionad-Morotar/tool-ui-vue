@@ -15,7 +15,11 @@ import {
 } from './math';
 import type { ParameterSliderProps, SliderConfig, SliderValue } from './schema';
 
-const props = defineProps<ParameterSliderProps>();
+defineOptions({ name: 'cmpt-parameter-slider', inheritAttrs: false })
+
+const props = withDefaults(defineProps<ParameterSliderProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   change: [values: SliderValue[]];
@@ -792,11 +796,12 @@ function getThumbSegmentRadius(sliderId: string, position: 'top' | 'bottom'): st
 
 <template>
   <article
+    v-bind="$attrs"
     :class="
       cn(
         '@container/parameter-slider isolate flex w-full max-w-md min-w-80 flex-col gap-3',
         'text-foreground',
-        props.className,
+        props.css?.root,
       )
     "
     data-slot="parameter-slider"

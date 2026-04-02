@@ -149,11 +149,11 @@ describe('SparkLine', () => {
       expect(polyline.attributes('stroke')).toBe('currentColor');
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(SparkLine, {
         props: {
           data: [10, 20, 30],
-          className: 'my-sparkline',
+          css: { root: 'my-sparkline' },
         },
       });
       expect(wrapper.find('svg').classes()).toContain('my-sparkline');

@@ -164,6 +164,16 @@ export const safeParseSerializableQuestionFlow: (
   SerializableQuestionFlowSchemaContract.safeParse;
 
 /**
+ * QuestionFlowCssSchema Zod Schema
+ */
+export const QuestionFlowCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  options: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
  * QuestionFlow 渐进模式 Props 接口
  */
 export interface QuestionFlowProgressiveProps {
@@ -172,7 +182,7 @@ export interface QuestionFlowProgressiveProps {
   step: number;
   title: string;
   description?: string;
-  className?: string;
+  css?: { root?: string; header?: string; options?: string; actions?: string };
   options: QuestionFlowOption[];
   selectionMode?: 'single' | 'multi';
   defaultValue?: string[];
@@ -187,7 +197,7 @@ export interface QuestionFlowUpfrontProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   steps: QuestionFlowStepDefinition[];
-  className?: string;
+  css?: { root?: string; header?: string; options?: string; actions?: string };
   onStepChange?: (stepId: string) => void;
   onComplete?: (answers: Record<string, string[]>) => void | Promise<void>;
 }
@@ -199,7 +209,7 @@ export interface QuestionFlowReceiptProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   choice: QuestionFlowChoice;
-  className?: string;
+  css?: { root?: string; header?: string; options?: string; actions?: string };
 }
 
 /**

@@ -44,7 +44,7 @@ function resetSlack() {
  * | body | string | required | Message body content |
  * | outcome | 'sent' \| 'cancelled' | undefined | Final outcome state |
  * | channel | 'email' \| 'slack' | required | Message channel type |
- * | className | string | undefined | Additional CSS classes |
+ * | css | { root?: string } | undefined | CSS classes for component elements |
  * | undoGracePeriod | number | 5000 | Milliseconds before send is final |
  * | onSend | () => void \| Promise<void> | undefined | Callback when message is sent |
  * | onUndo | () => void | undefined | Callback when send is undone |

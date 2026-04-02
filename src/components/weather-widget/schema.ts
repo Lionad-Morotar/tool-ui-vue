@@ -99,6 +99,18 @@ export const EffectSettingsSchema = z.object({
 
 export type EffectSettings = z.infer<typeof EffectSettingsSchema>;
 
+/**
+ * WeatherWidgetCssSchema Zod Schema
+ */
+export const WeatherWidgetCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  current: z.string().optional(),
+  forecast: z.string().optional(),
+  canvas: z.string().optional(),
+  overlay: z.string().optional(),
+});
+
 /** SerializableWeatherWidgetSchema 的可序列化 Zod Schema */
 export const SerializableWeatherWidgetSchema = z.object({
   id: ToolUIIdSchema,
@@ -126,7 +138,7 @@ export interface WeatherWidgetProps {
   forecast: ForecastDay[];
   time?: WeatherWidgetTime;
   updatedAt?: string;
-  className?: string;
+  css?: { root?: string; header?: string; current?: string; forecast?: string; canvas?: string; overlay?: string };
   effects?: EffectSettings;
 }
 

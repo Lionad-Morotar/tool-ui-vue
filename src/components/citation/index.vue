@@ -3,7 +3,11 @@ import { ref, computed } from 'vue';
 import { cn } from './_adapter';
 import type { CitationProps, CitationType } from './schema';
 
-const props = defineProps<CitationProps>();
+defineOptions({ name: 'cmpt-citation', inheritAttrs: false })
+
+const props = withDefaults(defineProps<CitationProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   navigate: [href: string, citation: CitationProps];
@@ -131,7 +135,7 @@ const resolvedVariant = computed(() => props.variant ?? 'default');
         'transition-colors duration-150',
         'hover:bg-muted',
         'focus-visible:ring-2 focus-visible:ring-ring',
-        className
+        css?.root
       )"
       @click="handleClick"
     >
@@ -210,7 +214,8 @@ const resolvedVariant = computed(() => props.variant ?? 'default');
   <!-- Default variant: full card -->
   <article
     v-else
-    :class="cn('relative w-full max-w-md min-w-72', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full max-w-md min-w-72', css?.root)"
     :lang="locale"
     :data-tool-ui-id="id"
     data-slot="citation"

@@ -82,6 +82,18 @@ export const safeParseSerializableCitation: (
   input: unknown,
 ) => SerializableCitation | null = SerializableCitationSchemaContract.safeParse;
 
+export const CitationCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  body: z.string().optional(),
+  footer: z.string().optional(),
+});
+
+export const CitationListCssSchema = z.object({
+  root: z.string().optional(),
+  item: z.string().optional(),
+});
+
 /**
  * Citation 组件的 Props 接口
  * 包含所有可配置的属性
@@ -105,7 +117,7 @@ export interface CitationProps {
   type?: CitationType;
   locale?: string;
   variant?: CitationVariant;
-  className?: string;
+  css?: { root?: string; header?: string; body?: string; footer?: string };
   onNavigate?: (href: string, citation: CitationProps) => void;
 }
 
@@ -118,6 +130,6 @@ export interface CitationListProps {
   citations: SerializableCitation[];
   variant?: CitationVariant;
   maxVisible?: number;
-  className?: string;
+  css?: { root?: string; item?: string };
   onNavigate?: (href: string, citation: SerializableCitation) => void;
 }

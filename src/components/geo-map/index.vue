@@ -10,7 +10,11 @@ const LIGHT_TILE_URL =
 const DARK_TILE_URL =
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
-const props = defineProps<GeoMapProps>();
+defineOptions({ name: 'cmpt-geo-map', inheritAttrs: false })
+
+const props = withDefaults(defineProps<GeoMapProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   'marker-click': [marker: GeoMapMarker];
@@ -107,7 +111,8 @@ function handleReadyChange(isReady: boolean) {
 
 <template>
   <div
-    :class="cn('w-full min-w-80', styles.root, props.className)"
+    v-bind="$attrs"
+    :class="cn('w-full min-w-80', styles.root, css?.root)"
     :style="resolvedRootStyle"
     data-slot="geo-map"
     :data-tool-ui-id="id"

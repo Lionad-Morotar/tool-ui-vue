@@ -16,7 +16,11 @@ import {
 } from '../../shared/media';
 import type { VideoProps } from './schema';
 
-const props = defineProps<VideoProps>();
+defineOptions({ name: 'cmpt-video', inheritAttrs: false })
+
+const props = withDefaults(defineProps<VideoProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
 
 const emit = defineEmits<{
   navigate: [href: string];
@@ -153,7 +157,8 @@ watch(
 
 <template>
   <article
-    :class="cn('relative w-full max-w-md min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full max-w-md min-w-80', css?.root)"
     :lang="locale"
     data-slot="video"
     :data-tool-ui-id="id"

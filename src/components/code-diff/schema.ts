@@ -18,6 +18,15 @@ import {
 import type { ToolUIReceipt } from '../../shared/schema';
 
 /**
+ * CodeDiffCssSchema Zod Schema
+ */
+export const CodeDiffCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+});
+
+/**
  * CodeDiff 基础 Props Schema
  */
 const CodeDiffPropsSchemaBase = z.object({
@@ -32,7 +41,7 @@ const CodeDiffPropsSchemaBase = z.object({
   lineNumbers: z.enum(['visible', 'hidden']).default('visible'),
   diffStyle: z.enum(['unified', 'split']).default('unified'),
   maxCollapsedLines: z.number().min(1).optional(),
-  className: z.string().optional(),
+  css: CodeDiffCssSchema.optional().default({}),
 });
 
 /**
@@ -87,14 +96,14 @@ export interface CodeDiffProps {
   lineNumbers?: 'visible' | 'hidden';
   diffStyle?: 'unified' | 'split';
   maxCollapsedLines?: number;
-  className?: string;
+  css?: { root?: string; header?: string; content?: string };
 }
 
 /**
- * CodeDiff 的可序列化数据 Schema（排除 className）
+ * CodeDiff 的可序列化数据 Schema（排除 css）
  */
 export const SerializableCodeDiffSchema = CodeDiffPropsSchemaBase.omit({
-  className: true,
+  css: true,
 }).superRefine(validateCodeDiffInputMode);
 
 /**

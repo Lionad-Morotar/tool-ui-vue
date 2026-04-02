@@ -787,9 +787,9 @@ describe('WeatherWidget', () => {
       expect(wrapper.find('[data-tool-ui-id="test-weather"]').exists()).toBe(true);
     });
 
-    test('applies custom className', () => {
+    test('applies custom css.root', () => {
       const wrapper = mount(WeatherWidget, {
-        props: createProps({ className: 'custom-class' }),
+        props: createProps({ css: { root: 'custom-class' } }),
         global: {
           stubs: {
             EffectCompositor: EffectCompositorStub,

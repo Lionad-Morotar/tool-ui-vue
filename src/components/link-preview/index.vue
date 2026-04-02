@@ -3,11 +3,15 @@ import { computed } from 'vue';
 import { cn } from './_adapter';
 import type { LinkPreviewProps, AspectRatio, MediaFit } from './schema';
 
-const props = defineProps<LinkPreviewProps>();
+defineOptions({ name: 'cmpt-link-preview', inheritAttrs: false })
 
-defineEmits<{
+const props = withDefaults(defineProps<LinkPreviewProps & { css?: { root?: string } }>(), {
+  css: () => ({ root: '' })
+})
+
+const emit = defineEmits<{
   navigate: [href: string];
-}>();
+}>()
 
 const ratioClassMap: Record<AspectRatio, string> = {
   auto: '',
@@ -38,7 +42,8 @@ const displayDomain = computed(() => {
 
 <template>
   <article
-    :class="cn('relative w-full max-w-md min-w-80', className)"
+    v-bind="$attrs"
+    :class="cn('relative w-full max-w-md min-w-80', css?.root)"
     lang="en"
     :data-tool-ui-id="id"
     data-slot="link-preview"

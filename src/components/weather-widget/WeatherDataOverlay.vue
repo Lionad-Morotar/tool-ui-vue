@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineOptions({ name: 'cmpt-weather-data-overlay', inheritAttrs: false })
+
 import {
   Sun,
   Cloud,
@@ -47,7 +49,7 @@ interface WeatherDataOverlayProps {
   theme?: WeatherTheme;
   timeOfDay?: number;
   timestamp?: string;
-  className?: string;
+  css?: { root?: string };
   reducedMotion?: boolean;
   glassParams?: GlassEffectParams;
 }
@@ -58,7 +60,7 @@ const props = withDefaults(defineProps<WeatherDataOverlayProps>(), {
   theme: undefined,
   timeOfDay: undefined,
   timestamp: undefined,
-  className: '',
+  css: () => ({ root: '' }),
   reducedMotion: false,
   glassParams: undefined,
 });
@@ -447,10 +449,11 @@ const innerGlowStyle = computed(() => ({
 <template>
   <div
     ref="containerRef"
+    v-bind="$attrs"
     :class="
       cn(
         'pointer-events-auto absolute inset-0 z-10 flex flex-col select-none',
-        props.className
+        props.css?.root
       )
     "
   >
