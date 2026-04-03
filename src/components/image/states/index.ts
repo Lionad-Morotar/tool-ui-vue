@@ -1,7 +1,7 @@
 // Image component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { computed } from 'vue';
+import { computed, type ComputedRef } from 'vue';
 import type { ImageProps, AspectRatio, MediaFit } from '../schema';
 
 export interface UseImageOptions extends ImageProps {
@@ -11,13 +11,13 @@ export interface UseImageOptions extends ImageProps {
 }
 
 export interface ImageState {
-  resolvedRatio: AspectRatio;
-  resolvedFit: MediaFit;
-  locale: string;
-  sourceLabel: string | undefined;
-  fallbackInitial: string;
-  hasSource: boolean;
-  hasMetadata: boolean;
+  resolvedRatio: ComputedRef<AspectRatio>;
+  resolvedFit: ComputedRef<MediaFit>;
+  locale: ComputedRef<string>;
+  sourceLabel: ComputedRef<string | undefined>;
+  fallbackInitial: ComputedRef<string>;
+  hasSource: ComputedRef<boolean>;
+  hasMetadata: ComputedRef<string | boolean>;
   ratioClassMap: Record<AspectRatio, string>;
   fitClassMap: Record<MediaFit, string>;
   handleImageClick: () => void;
@@ -66,13 +66,13 @@ export function useImage(options: UseImageOptions): ImageState {
   }
 
   return {
-    resolvedRatio: resolvedRatio.value,
-    resolvedFit: resolvedFit.value,
-    locale: locale.value,
-    sourceLabel: sourceLabel.value,
-    fallbackInitial: fallbackInitial.value,
-    hasSource: hasSource.value,
-    hasMetadata: hasMetadata.value,
+    resolvedRatio,
+    resolvedFit,
+    locale,
+    sourceLabel,
+    fallbackInitial,
+    hasSource,
+    hasMetadata,
     ratioClassMap,
     fitClassMap,
     handleImageClick,

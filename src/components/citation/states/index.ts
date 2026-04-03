@@ -1,7 +1,7 @@
 // Citation component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import type { CitationProps, CitationType, CitationVariant } from '../schema';
 
 export interface UseCitationOptions extends CitationProps {
@@ -12,12 +12,12 @@ export interface UseCitationOptions extends CitationProps {
 
 export interface CitationState {
   FALLBACK_LOCALE: string;
-  isPopoverOpen: boolean;
-  locale: string;
-  displayDomain: string | undefined;
-  sanitizedHref: string | undefined;
-  typeIcon: { viewBox: string; path: string };
-  resolvedVariant: CitationVariant;
+  isPopoverOpen: Ref<boolean>;
+  locale: ComputedRef<string>;
+  displayDomain: ComputedRef<string | undefined>;
+  sanitizedHref: ComputedRef<string | undefined>;
+  typeIcon: ComputedRef<{ viewBox: string; path: string }>;
+  resolvedVariant: ComputedRef<CitationVariant>;
   formatDate: (isoString: string, loc: string) => string;
   handleClick: () => void;
   handleKeyDown: (e: KeyboardEvent) => void;
@@ -131,12 +131,12 @@ export function useCitation(options: UseCitationOptions): CitationState {
 
   return {
     FALLBACK_LOCALE,
-    isPopoverOpen: isPopoverOpen.value,
-    locale: locale.value,
-    displayDomain: displayDomain.value,
-    sanitizedHref: sanitizedHref.value,
-    typeIcon: typeIcon.value,
-    resolvedVariant: resolvedVariant.value,
+    isPopoverOpen,
+    locale,
+    displayDomain,
+    sanitizedHref,
+    typeIcon,
+    resolvedVariant,
     formatDate,
     handleClick,
     handleKeyDown,

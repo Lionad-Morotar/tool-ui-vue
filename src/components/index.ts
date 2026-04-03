@@ -61,7 +61,7 @@ export type { StatsDisplayProps, SerializableStatsDisplay, StatItem, StatFormat,
 export { SerializableStatsDisplaySchema, StatItemSchema, StatFormatSchema, StatDiffSchema, StatSparklineSchema, parseSerializableStatsDisplay, safeParseSerializableStatsDisplay } from './stats-display';
 
 // OrderSummary
-export { OrderSummary } from './order-summary';
+export { OrderSummaryRoot } from './order-summary';
 export type { OrderSummaryProps, SerializableOrderSummary, OrderItem, Pricing, OrderDecision, OrderSummaryVariant } from './order-summary';
 export { SerializableOrderSummarySchema, OrderItemSchema, PricingSchema, OrderDecisionSchema, OrderSummaryVariantSchema, parseSerializableOrderSummary, safeParseSerializableOrderSummary } from './order-summary';
 

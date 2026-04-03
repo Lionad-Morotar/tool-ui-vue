@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderSummary } from '../components';
+import { OrderSummaryRoot } from '../components';
 
 /**
  * ## Props

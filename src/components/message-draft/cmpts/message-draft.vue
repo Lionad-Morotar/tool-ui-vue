@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted, nextTick } from 'vue';
+import { reactive, toRef } from 'vue';
 import { cn } from '../../../utils';
-import type {
-  RuntimeMessageDraftProps,
-  SerializableEmailDraft,
-  SerializableSlackDraft,
-} from '../schema';
+import type { RuntimeMessageDraftProps } from '../schema';
+import { useMessageDraft } from '../states';
 
 defineOptions({ name: 'CmptMessageDraft', inheritAttrs: false })
 
@@ -25,155 +22,19 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-type DraftState = 'review' | 'sending' | 'sent' | 'cancelled';
-
-const COLLAPSED_BODY_HEIGHT = 280;
-const DEFAULT_UNDO_GRACE_PERIOD = 5000;
-
-const state = ref<DraftState>(resolveStateFromOutcome(props.outcome));
-const countdown = ref(Math.ceil((props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD) / 1000));
-const sentAt = ref<Date | null>(props.outcome === 'sent' ? new Date() : null);
-const isExpanded = ref(false);
-const needsExpansion = ref(false);
-const undoButtonRef = ref<HTMLButtonElement | null>(null);
-
-let timer: ReturnType<typeof setTimeout> | null = null;
-let countdownInterval: ReturnType<typeof setInterval> | null = null;
-
-function resolveStateFromOutcome(outcome: typeof props.outcome): DraftState {
-  if (outcome === 'sent') return 'sent';
-  if (outcome === 'cancelled') return 'cancelled';
-  return 'review';
-}
-
-function resolveOutcomeTransition(
-  previousOutcome: typeof props.outcome,
-  nextOutcome: typeof props.outcome
-): DraftState | null {
-  if (previousOutcome === nextOutcome) return null;
-  return resolveStateFromOutcome(nextOutcome);
-}
-
-function clearTimers() {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-}
-
-function formatSentTime(date: Date): string {
-  return date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-}
-
-function handleSend() {
-  state.value = 'sending';
-}
-
-function handleUndo() {
-  clearTimers();
-  state.value = 'review';
-  props.onUndo?.();
-  emit('undo');
-}
-
-function handleCancel() {
-  clearTimers();
-  state.value = 'cancelled';
-  props.onCancel?.();
-  emit('cancel');
-}
-
-function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && state.value === 'review') {
-    event.preventDefault();
-    handleCancel();
-  }
-}
-
-function handleToggleExpand() {
-  isExpanded.value = !isExpanded.value;
-}
-
-// Watch for outcome prop changes
-let previousOutcome = props.outcome;
-watch(
-  () => props.outcome,
-  (newOutcome) => {
-    const nextState = resolveOutcomeTransition(previousOutcome, newOutcome);
-    previousOutcome = newOutcome;
-
-    if (nextState === null) return;
-
-    clearTimers();
-    state.value = nextState;
-    countdown.value = Math.ceil((props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD) / 1000);
-    sentAt.value = nextState === 'sent' ? new Date() : null;
-  }
-);
-
-// Watch for state changes to handle sending timer
-watch(
-  () => state.value,
-  async (newState) => {
-    if (newState === 'sending') {
-      // Focus undo button after DOM update
-      await nextTick();
-      undoButtonRef.value?.focus();
-
-      countdown.value = Math.ceil((props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD) / 1000);
-
-      countdownInterval = setInterval(() => {
-        if (countdown.value <= 1) {
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
-          countdown.value = 0;
-        } else {
-          countdown.value = countdown.value - 1;
-        }
-      }, 1000);
-
-      timer = setTimeout(async () => {
-        clearTimers();
-        await props.onSend?.();
-        emit('send');
-        sentAt.value = new Date();
-        state.value = 'sent';
-      }, props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD);
-    }
-  }
-);
-
-onUnmounted(() => {
-  clearTimers();
-});
-
-// Computed for expand button visibility
-const showExpandButton = computed(() => needsExpansion.value);
-
-// Type guards for discriminated union
-const isEmailDraft = computed(() => props.channel === 'email');
-const isSlackDraft = computed(() => props.channel === 'slack');
-
-// Cast props for type narrowing in template
-const emailProps = computed(() => props as unknown as SerializableEmailDraft);
-const slackProps = computed(() => props as unknown as SerializableSlackDraft);
+const state = reactive(useMessageDraft({ ...props, emit }));
+const draftState = toRef(state, 'state');
+const isExpanded = toRef(state, 'isExpanded');
+const needsExpansion = toRef(state, 'needsExpansion');
+const undoButtonRef = toRef(state, 'undoButtonRef');
 </script>
 
 <template>
   <!-- Cancelled state - render nothing -->
-  <template v-if="state !== 'cancelled'">
+  <template v-if="draftState !== 'cancelled'">
     <!-- Sent receipt state -->
     <div
-      v-if="state === 'sent'"
+      v-if="draftState === 'sent'"
       :class="
         cn(
           'flex w-full max-w-lg min-w-64 flex-col',
@@ -190,7 +51,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
     >
       <div class="flex items-center justify-end gap-2 text-sm">
         <span class="text-muted-foreground">
-          Sent at {{ formatSentTime(sentAt ?? new Date()) }}
+          Sent at {{ state.formatSentTime(state.sentAt ?? new Date()) }}
         </span>
         <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <svg
@@ -224,32 +85,32 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
       "
       data-slot="message-draft"
       :data-tool-ui-id="id"
-      :data-state="state"
+      :data-state="draftState"
       :aria-labelledby="`${id}-title`"
       tabindex="-1"
-      @keydown="handleKeyDown"
+      @keydown="state.handleKeyDown"
     >
       <div
         class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card px-5 pt-3 pb-5 shadow-xs transition-none"
       >
         <!-- Email Draft Content -->
-        <template v-if="isEmailDraft">
+        <template v-if="state.isEmailDraft">
           <h2
             :id="`${id}-title`"
             class="pt-2 text-base leading-tight font-semibold"
           >
-            {{ emailProps.subject }}
+            {{ state.emailProps.subject }}
           </h2>
 
           <table class="w-full">
             <tbody>
-              <tr v-if="emailProps.from" class="text-sm">
+              <tr v-if="state.emailProps.from" class="text-sm">
                 <td
                   class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
                   From
                 </td>
-                <td class="pb-1 align-top">{{ emailProps.from }}</td>
+                <td class="pb-1 align-top">{{ state.emailProps.from }}</td>
               </tr>
               <tr class="text-sm">
                 <td
@@ -258,17 +119,17 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                   To
                 </td>
                 <td class="pb-1 align-top">
-                  {{ (emailProps.to || []).slice(0, 3).join(", ") }}
+                  {{ (state.emailProps.to || []).slice(0, 3).join(", ") }}
                   <span
-                    v-if="(emailProps.to || []).length > 3"
+                    v-if="(state.emailProps.to || []).length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ (emailProps.to || []).length - 3 }} more
+                    +{{ (state.emailProps.to || []).length - 3 }} more
                   </span>
                 </td>
               </tr>
               <tr
-                v-if="emailProps.cc && emailProps.cc.length > 0"
+                v-if="state.emailProps.cc && state.emailProps.cc.length > 0"
                 class="text-sm"
               >
                 <td
@@ -277,17 +138,17 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                   Cc
                 </td>
                 <td class="pb-1 align-top">
-                  {{ emailProps.cc.slice(0, 3).join(", ") }}
+                  {{ state.emailProps.cc.slice(0, 3).join(", ") }}
                   <span
-                    v-if="emailProps.cc.length > 3"
+                    v-if="state.emailProps.cc.length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ emailProps.cc.length - 3 }} more
+                    +{{ state.emailProps.cc.length - 3 }} more
                   </span>
                 </td>
               </tr>
               <tr
-                v-if="emailProps.bcc && emailProps.bcc.length > 0"
+                v-if="state.emailProps.bcc && state.emailProps.bcc.length > 0"
                 class="text-sm"
               >
                 <td
@@ -298,12 +159,12 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 <td
                   class="pb-1 align-top text-muted-foreground"
                 >
-                  {{ emailProps.bcc.slice(0, 3).join(", ") }}
+                  {{ state.emailProps.bcc.slice(0, 3).join(", ") }}
                   <span
-                    v-if="emailProps.bcc.length > 3"
+                    v-if="state.emailProps.bcc.length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ emailProps.bcc.length - 3 }} more
+                    +{{ state.emailProps.bcc.length - 3 }} more
                   </span>
                 </td>
               </tr>
@@ -325,13 +186,13 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               :style="{
                 maxHeight:
                   needsExpansion === null
-                    ? `${COLLAPSED_BODY_HEIGHT}px`
+                    ? `${state.collapsedBodyHeight}px`
                     : isExpanded || !needsExpansion
                       ? '1000px'
-                      : `${COLLAPSED_BODY_HEIGHT}px`,
+                      : `${state.collapsedBodyHeight}px`,
               }"
             >
-              <p class="pt-1 whitespace-pre-wrap">{{ emailProps.body }}</p>
+              <p class="pt-1 whitespace-pre-wrap">{{ state.emailProps.body }}</p>
             </div>
             <div
               v-if="needsExpansion"
@@ -346,7 +207,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
         </template>
 
         <!-- Slack Draft Content -->
-        <template v-if="isSlackDraft">
+        <template v-if="state.isSlackDraft">
           <div
             :id="`${id}-title`"
             class="flex items-center gap-1.5 text-sm font-medium"
@@ -371,13 +232,13 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               />
             </svg>
             <span>
-              {{ slackProps.target.type === "channel" ? "#" : "" }}{{ slackProps.target.name }}
+              {{ state.slackProps.target.type === "channel" ? "#" : "" }}{{ state.slackProps.target.name }}
             </span>
             <span
-              v-if="slackProps.target.type === 'channel' && slackProps.target.memberCount !== undefined"
+              v-if="state.slackProps.target.type === 'channel' && state.slackProps.target.memberCount !== undefined"
               class="ml-auto text-sm font-normal text-muted-foreground"
             >
-              {{ slackProps.target.memberCount.toLocaleString() }} members
+              {{ state.slackProps.target.memberCount.toLocaleString() }} members
             </span>
           </div>
 
@@ -396,13 +257,13 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               :style="{
                 maxHeight:
                   needsExpansion === null
-                    ? `${COLLAPSED_BODY_HEIGHT}px`
+                    ? `${state.collapsedBodyHeight}px`
                     : isExpanded || !needsExpansion
                       ? '1000px'
-                      : `${COLLAPSED_BODY_HEIGHT}px`,
+                      : `${state.collapsedBodyHeight}px`,
               }"
             >
-              <p class="pt-1 whitespace-pre-wrap">{{ slackProps.body }}</p>
+              <p class="pt-1 whitespace-pre-wrap">{{ state.slackProps.body }}</p>
             </div>
             <div
               v-if="needsExpansion"
@@ -418,7 +279,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
 
         <!-- Expand Button -->
         <button
-          v-if="showExpandButton"
+          v-if="state.showExpandButton"
           type="button"
           :class="
             cn(
@@ -428,7 +289,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
               'h-7 gap-1'
             )
           "
-          @click="handleToggleExpand"
+          @click="state.handleToggleExpand"
         >
           {{ isExpanded ? "Show less" : "Read more" }}
           <svg
@@ -452,15 +313,15 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
       <div class="@container/actions">
         <!-- Sending State -->
         <div
-          v-if="state === 'sending'"
+          v-if="draftState === 'sending'"
           class="flex items-center justify-end gap-3"
           aria-live="polite"
         >
           <span class="text-sm text-muted-foreground">
-            Sending in {{ countdown }}s
+            Sending in {{ state.countdown }}s
           </span>
           <button
-            ref="undoButtonRef"
+            :ref="(el) => { undoButtonRef = el as HTMLButtonElement | null }"
             type="button"
             :class="
               cn(
@@ -471,7 +332,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 'h-9'
               )
             "
-            @click="handleUndo"
+            @click="state.handleUndo"
           >
             Undo
           </button>
@@ -498,7 +359,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 'h-9 w-full @[240px]:w-auto'
               )
             "
-            @click="handleCancel"
+            @click="state.handleCancel"
           >
             Cancel
           </button>
@@ -513,7 +374,7 @@ const slackProps = computed(() => props as unknown as SerializableSlackDraft);
                 'h-9 w-full @[240px]:w-auto'
               )
             "
-            @click="handleSend"
+            @click="state.handleSend"
           >
             Send
           </button>

@@ -1,7 +1,7 @@
 // ApprovalCard component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { computed } from 'vue';
+import { computed, type ComputedRef, type Component } from 'vue';
 import { icons } from 'lucide-vue-next';
 import type { ApprovalCardBaseProps } from '../schema';
 
@@ -13,13 +13,12 @@ export interface UseApprovalCardOptions extends ApprovalCardBaseProps {
 }
 
 export interface ApprovalCardState {
-  resolvedVariant: 'default' | 'destructive';
-  resolvedConfirmLabel: string;
-  resolvedCancelLabel: string;
-  isDestructive: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IconComponent: any;
-  receiptLabel: string;
+  resolvedVariant: ComputedRef<'default' | 'destructive'>;
+  resolvedConfirmLabel: ComputedRef<string>;
+  resolvedCancelLabel: ComputedRef<string>;
+  isDestructive: ComputedRef<boolean>;
+  IconComponent: ComputedRef<Component | null>;
+  receiptLabel: ComputedRef<string>;
   handleConfirm: () => void;
   handleCancel: () => void;
   handleKeyDown: (event: KeyboardEvent) => void;
@@ -71,12 +70,12 @@ export function useApprovalCard(options: UseApprovalCardOptions): ApprovalCardSt
   }
 
   return {
-    resolvedVariant: resolvedVariant.value,
-    resolvedConfirmLabel: resolvedConfirmLabel.value,
-    resolvedCancelLabel: resolvedCancelLabel.value,
-    isDestructive: isDestructive.value,
+    resolvedVariant,
+    resolvedConfirmLabel,
+    resolvedCancelLabel,
+    isDestructive,
     IconComponent,
-    receiptLabel: receiptLabel.value,
+    receiptLabel,
     handleConfirm,
     handleCancel,
     handleKeyDown,

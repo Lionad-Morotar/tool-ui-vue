@@ -8,8 +8,4 @@ export {
 } from './schema';
 export {
   useAudio,
-  useLocalAudio,
-  provideAudio,
-  type AudioPlaybackState,
-  type AudioContextValue,
 } from './states';

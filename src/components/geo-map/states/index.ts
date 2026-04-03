@@ -1,7 +1,7 @@
 // GeoMap component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue';
+import { ref, computed, onMounted, onUnmounted, type Ref, type ComputedRef } from 'vue';
 import type { GeoMapProps, GeoMapMarker, GeoMapRoute, GeoMapStyle } from '../schema';
 
 export interface UseGeoMapOptions extends GeoMapProps {
@@ -14,12 +14,12 @@ export interface UseGeoMapOptions extends GeoMapProps {
 export interface GeoMapState {
   LIGHT_TILE_URL: string;
   DARK_TILE_URL: string;
-  inheritedTheme: 'light' | 'dark';
-  resolvedTheme: 'light' | 'dark';
+  inheritedTheme: Ref<'light' | 'dark'>;
+  resolvedTheme: ComputedRef<'light' | 'dark'>;
   isMapReady: Ref<boolean>;
-  tileUrl: string;
-  mapAriaLabel: string;
-  resolvedRootStyle: GeoMapStyle;
+  tileUrl: ComputedRef<string>;
+  mapAriaLabel: ComputedRef<string>;
+  resolvedRootStyle: ComputedRef<GeoMapStyle>;
   handleMarkerClick: (marker: GeoMapMarker) => void;
   handleRouteClick: (route: GeoMapRoute) => void;
   handleReadyChange: (isReady: boolean) => void;
@@ -118,12 +118,12 @@ export function useGeoMap(options: UseGeoMapOptions): GeoMapState {
   return {
     LIGHT_TILE_URL,
     DARK_TILE_URL,
-    inheritedTheme: inheritedTheme.value,
-    resolvedTheme: resolvedTheme.value,
+    inheritedTheme,
+    resolvedTheme,
     isMapReady,
-    tileUrl: tileUrl.value,
-    mapAriaLabel: mapAriaLabel.value,
-    resolvedRootStyle: resolvedRootStyle.value,
+    tileUrl,
+    mapAriaLabel,
+    resolvedRootStyle,
     handleMarkerClick,
     handleRouteClick,
     handleReadyChange,

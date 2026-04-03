@@ -20,3 +20,9 @@ export {
   type LayoutReturns,
   type CategorizedColumns,
 } from './useLayout';
+
+export {
+  useDataTable,
+  type UseDataTableOptions,
+  type DataTableState,
+} from './useDataTable';

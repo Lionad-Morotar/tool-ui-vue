@@ -60,7 +60,7 @@ const state = reactive(useOrderSummary(props));
             <check-circle
               class="h-5 w-5 text-green-600 dark:text-green-500"
               aria-hidden="true"
-              :focusable="false"
+              :focusable="undefined"
             />
             {{ title || "Order Summary" }}
           </h2>
@@ -87,7 +87,7 @@ const state = reactive(useOrderSummary(props));
               <package
                 class="h-5 w-5 text-muted-foreground"
                 aria-hidden="true"
-                :focusable="false"
+                :focusable="undefined"
               />
             </div>
             <div class="flex min-w-0 flex-1 items-center justify-between">
@@ -176,7 +176,7 @@ const state = reactive(useOrderSummary(props));
               <package
                 class="h-5 w-5 text-muted-foreground"
                 aria-hidden="true"
-                :focusable="false"
+                :focusable="undefined"
               />
             </div>
             <div class="flex min-w-0 flex-1 items-center justify-between">

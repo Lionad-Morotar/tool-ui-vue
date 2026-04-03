@@ -16,7 +16,6 @@ const state = reactive(useTerminal(props));
 
 // Keep refs reactive
 const isCopied = toRef(state, 'isCopied');
-const isExpanded = toRef(state, 'isExpanded');
 </script>
 
 <template>

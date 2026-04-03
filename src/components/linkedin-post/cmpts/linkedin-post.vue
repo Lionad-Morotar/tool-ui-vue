@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { reactive, toRef } from 'vue';
 import { cn } from '../../../utils';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';
+import { useLinkedinPost } from '../states';
 
 defineOptions({ name: 'CmptLinkedinPost', inheritAttrs: false })
 
@@ -13,111 +14,8 @@ const emit = defineEmits<{
   action: [action: string, post: LinkedInPostData];
 }>();
 
-const isExpanded = ref(false);
-
-const TEXT_PREVIEW_LENGTH = 280;
-
-function formatCount(count: number): string {
-  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
-  return count.toString();
-}
-
-function formatRelativeTime(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffSecs < 60) return `${diffSecs}s`;
-  if (diffMins < 60) return `${diffMins}m`;
-  if (diffHours < 24) return `${diffHours}h`;
-  if (diffDays < 7) return `${diffDays}d`;
-  return `${Math.round(diffDays / 7)}w`;
-}
-
-function getDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return '';
-  }
-}
-
-/**
- * Sanitize a URL to ensure it's safe for use in href attributes.
- * Allows absolute http(s) URLs and relative URLs.
- * @returns The sanitized URL string, or undefined if invalid/unsafe
- */
-function sanitizeHref(href?: string): string | undefined {
-  if (!href) return undefined;
-  const candidate = href.trim();
-  if (!candidate) return undefined;
-
-  if (
-    candidate.startsWith('/') ||
-    candidate.startsWith('./') ||
-    candidate.startsWith('../') ||
-    candidate.startsWith('?') ||
-    candidate.startsWith('#')
-  ) {
-    if (candidate.startsWith('//')) return undefined;
-     
-    if (/[\u0000-\u001F\u007F]/.test(candidate)) return undefined;
-    return candidate;
-  }
-
-  try {
-    const url = new URL(candidate);
-    if (url.protocol === 'http:' || url.protocol === 'https:') {
-      return url.toString();
-    }
-  } catch {
-    return undefined;
-  }
-  return undefined;
-}
-
-/**
- * Resolve the first safe navigation href from candidates.
- */
-function resolveSafeNavigationHref(
-  ...candidates: Array<string | null | undefined>
-): string | undefined {
-  for (const candidate of candidates) {
-    const safeHref = sanitizeHref(candidate ?? undefined);
-    if (safeHref) {
-      return safeHref;
-    }
-  }
-  return undefined;
-}
-
-function handleAction(action: string) {
-  emit('action', action, props.post);
-}
-
-function handleLinkClick(url: string) {
-  const safeUrl = resolveSafeNavigationHref(url);
-  if (safeUrl && typeof window !== 'undefined') {
-    window.open(safeUrl, '_blank', 'noopener,noreferrer');
-  }
-}
-
-const shouldTruncate = computed(() => {
-  return props.post.text && props.post.text.length > TEXT_PREVIEW_LENGTH;
-});
-
-const displayText = computed(() => {
-  if (!props.post.text) return '';
-  if (shouldTruncate.value && !isExpanded.value) {
-    return props.post.text.slice(0, TEXT_PREVIEW_LENGTH);
-  }
-  return props.post.text;
-});
+const state = reactive(useLinkedinPost({ ...props, emit }));
+const isExpanded = toRef(state, 'isExpanded');
 </script>
 
 <script lang="ts">
@@ -146,7 +44,7 @@ const displayText = computed(() => {
             {{ post.author.headline }}
           </span>
           <div v-if="post.createdAt" class="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-            <span>{{ formatRelativeTime(post.createdAt) }}</span>
+            <span>{{ state.formatRelativeTime(post.createdAt) }}</span>
             <span>·</span>
             <span>Edited</span>
           </div>
@@ -173,8 +71,8 @@ const displayText = computed(() => {
 
       <!-- Body -->
       <div v-if="post.text" class="text-sm leading-relaxed text-pretty whitespace-pre-wrap">
-        {{ displayText }}
-        <template v-if="shouldTruncate && !isExpanded">
+        {{ state.displayText }}
+        <template v-if="state.shouldTruncate && !isExpanded">
           ...
           <button
             class="ml-1 font-medium text-muted-foreground hover:text-foreground hover:underline"
@@ -210,9 +108,9 @@ const displayText = computed(() => {
         v-if="post.linkPreview && !post.media"
         :class="cn(
           'block overflow-hidden rounded-lg border',
-          resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
+          state.resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
         )"
-        @click="post.linkPreview.url && handleLinkClick(post.linkPreview.url)"
+        @click="post.linkPreview.url && state.handleLinkClick(post.linkPreview.url)"
       >
         <img
           v-if="post.linkPreview.imageUrl"
@@ -225,8 +123,8 @@ const displayText = computed(() => {
           <div v-if="post.linkPreview.title" class="line-clamp-2 font-medium text-pretty">
             {{ post.linkPreview.title }}
           </div>
-          <div v-if="post.linkPreview.domain || getDomain(post.linkPreview.url)" class="mt-1 text-xs text-muted-foreground">
-            {{ post.linkPreview.domain || getDomain(post.linkPreview.url) }}
+          <div v-if="post.linkPreview.domain || state.getDomain(post.linkPreview.url)" class="mt-1 text-xs text-muted-foreground">
+            {{ post.linkPreview.domain || state.getDomain(post.linkPreview.url) }}
           </div>
         </div>
       </div>
@@ -240,7 +138,7 @@ const displayText = computed(() => {
             post.stats?.isLiked ? 'fill-blue-600 text-blue-600' : ''
           )"
           aria-label="Like"
-          @click="handleAction('like')"
+          @click="state.handleAction('like')"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -258,14 +156,14 @@ const displayText = computed(() => {
           </svg>
           <span>Like</span>
           <span v-if="post.stats?.likes" class="text-muted-foreground">
-            ({{ formatCount(post.stats.likes) }})
+            ({{ state.formatCount(post.stats.likes) }})
           </span>
         </button>
         <button
           type="button"
           class="h-auto gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
           aria-label="Share"
-          @click="handleAction('share')"
+          @click="state.handleAction('share')"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

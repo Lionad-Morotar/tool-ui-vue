@@ -3,7 +3,11 @@ import type { OptionListProps, OptionListSelection, OptionListOption } from '../
 
 export interface UseOptionListOptions {
   props: OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } };
-  emit: (name: string, ...args: any[]) => void;
+  emit: {
+    (e: 'change', value: OptionListSelection): void;
+    (e: 'update:modelValue', value: OptionListSelection): void;
+    (e: 'action', actionId: string, value: OptionListSelection): void;
+  };
 }
 
 export function useOptionList(options: UseOptionListOptions) {

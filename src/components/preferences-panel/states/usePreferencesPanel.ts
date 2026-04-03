@@ -10,7 +10,11 @@ import type {
 
 export interface UsePreferencesPanelOptions {
   props: PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } };
-  emit: (name: string, ...args: any[]) => void;
+  emit: {
+    (e: 'change', value: PreferencesValue): void;
+    (e: 'action', actionId: string, value: PreferencesValue): void;
+    (e: 'beforeAction', actionId: string, value: PreferencesValue): void;
+  };
 }
 
 export function usePreferencesPanel(options: UsePreferencesPanelOptions) {
