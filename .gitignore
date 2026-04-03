@@ -30,8 +30,7 @@ code-counter.db
 server/db/chats/backup
 
 *.backup
-# GSD planning directory
-.planning/
+# GSD state (committed separately)
 .claude
 
 zRefs
