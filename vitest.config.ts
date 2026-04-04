@@ -8,7 +8,11 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     root: '.',
-    include: ['src/**/*.{test,spec}.{js,ts,tsx}', 'playground/**/*.{test,spec}.{js,ts,tsx}'],
+    include: [
+      'src/**/*.{test,spec}.{js,ts,tsx}',
+      'playground/**/*.{test,spec}.{js,ts,tsx}',
+      'packages/*/src/**/*.{test,spec}.{js,ts,tsx}',
+    ],
     exclude: ['node_modules', 'dist'],
     setupFiles: ['src/test/setup.ts'],
     coverage: {

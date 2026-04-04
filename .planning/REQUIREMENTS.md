@@ -1,7 +1,7 @@
 # Requirements: tool-ui-vue Monorepo Refactor
 
 **Defined:** 2026-04-03
-**Core Value:** 组件可以通过 `pnpm add @tool-ui-vue/components` 安装，26 个现有工具组件正常运行且 Zod 契约不变
+**Core Value:** 组件可以通过 `pnpm add @lionad/components` 安装，26 个现有工具组件正常运行且 Zod 契约不变
 
 ## v1 Requirements
 
@@ -9,7 +9,7 @@
 
 - [ ] **INFRA-01**: pnpm workspace 配置完成，packages/* 可被正确解析
 - [ ] **INFRA-02**: packages/core 包结构创建，包含 Vite 库模式构建配置
-- [ ] **INFRA-03**: packages/components 包结构创建，依赖 @tool-ui-vue/core
+- [ ] **INFRA-03**: packages/components 包结构创建，依赖 @lionad/core
 - [ ] **INFRA-04**: packages/theme 包结构创建，包含设计 tokens 和 CSS 变量
 - [ ] **INFRA-05**: 纯 pnpm scripts 构建流程（build/typecheck/test），不使用 Turborepo
 - [ ] **INFRA-06**: Root package.json scripts 支持批量构建（pnpm -r build）

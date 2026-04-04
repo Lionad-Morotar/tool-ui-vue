@@ -8,7 +8,7 @@ Vue 3 组件库，为 AI/LLM 工具调用提供可序列化的 UI widgets。当�
 
 ## Core Value
 
-组件可以通过 `pnpm add @tool-ui-vue/components` 安装使用，所有 26 个现有工具组件正常运行且 Zod 契约不变。
+组件可以通过 `pnpm add @lionad/components` 安装使用，所有 26 个现有工具组件正常运行且 Zod 契约不变。
 
 ## Requirements
 
@@ -69,7 +69,7 @@ Vue 3 组件库，为 AI/LLM 工具调用提供可序列化的 UI widgets。当�
 | Tailwind v4 @theme 指令 | 项目已使用，不需要迁移到 JS config | — Pending |
 | 纯 pnpm scripts | 3-4 个包不需要 Turborepo | — Pending |
 | 基础组件按频率优先级 | Button(17)+Card(25) 为 P0，Badge(7)+CopyButton(3) 为 P1 | — Pending |
-| 主题包保持独立 | 不合并到 core，单独 @tool-ui-vue/theme | — Pending |
+| 主题包保持独立 | 不合并到 core，单独 @lionad/theme | — Pending |
 | Nuxt module 延后 | 优先稳定 core + components，Nuxt 集成后补 | — Pending |
 
 ## Evolution

@@ -29,28 +29,27 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `pnpm -r build` successfully builds all three packages (core, components, theme) in dependency order
   3. `pnpm -r typecheck` passes for all packages
   4. Each package has a valid package.json with correct workspace dependencies (e.g., components depends on core via `workspace:*`)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [x] 01-01 — Workspace config + theme package + core package scaffolding
+- [x] 01-02 — Components package with workspace:* dependency on core + end-to-end build verification
 
 ### Phase 2: P0 Base Components
-**Goal**: Button and Card base components are available in @tool-ui-vue/core and usable by downstream packages
+**Goal**: Button and Card base components are available in @lionad/core and usable by downstream packages
 **Depends on**: Phase 1
 **Requirements**: BASE-01, BASE-02, BASE-03, BASE-04
 **Success Criteria** (what must be TRUE):
   1. Button renders with cva variants (default/destructive/outline/ghost) and sizes (default/sm/lg)
   2. Button asChild mode works -- a child element inherits Button styles without rendering a `<button>` tag
   3. Card renders with Card/CardHeader/CardContent/CardFooter sub-components as a cohesive container
-  4. Button and Card are exported from @tool-ui-vue/core and consumable by other workspace packages
-**Plans**: TBD
-**UI hint**: yes
+  4. Button and Card are exported from @lionad/core and consumable by other workspace packages
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01 — Button component with cva variants + asChild slot pattern
+- [ ] 02-02 — Card component with Card/CardHeader/CardTitle/CardDescription/CardContent/CardFooter sub-components
+- [ ] 02-03 — Export Button and Card from @lionad/core barrel file + end-to-end verification
 
 ### Phase 3: P1 Components + Theme System
 **Goal**: Badge and CopyButton base components complete the core layer, and the theme system provides CSS-variable-driven design tokens with light/dark switching
@@ -59,40 +58,39 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Badge renders with cva variants (default/secondary/destructive/outline)
   2. CopyButton copies text to clipboard and shows icon state transition (copy -> check)
-  3. @tool-ui-vue/theme exposes CSS variables for colors/spacing/radius/shadows via Tailwind v4 @theme directive
+  3. @lionad/theme exposes CSS variables for colors/spacing/radius/shadows via Tailwind v4 @theme directive
   4. Setting `data-theme="dark"` on the document root switches all theme variables to dark values
   5. A consumer can override CSS variables without modifying any package source code
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01 — Badge + CopyButton components in @lionad/core
+- [ ] 03-02 — Theme system with CSS variables, data-theme switching, and consumer overridability
 
 ### Phase 4: Component Migration
 **Goal**: All 26 tool components live in packages/components, consume core base components, and their Zod schemas remain unchanged
 **Depends on**: Phase 3
 **Requirements**: MIGR-01, MIGR-02, MIGR-03, MIGR-04
 **Success Criteria** (what must be TRUE):
-  1. All 26 tool components are importable from @tool-ui-vue/components via named exports
+  1. All 26 tool components are importable from @lionad/components via named exports
   2. Tool components use core Button/Card/Badge instead of inline Tailwind button/container/badge patterns
   3. All existing Vitest tests pass without modification to test assertions (schemas unchanged)
   4. Each component supports tree-shaking -- importing one component does not bundle others
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 5 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
+- [x] 04-01 — Add shared infrastructure (contract/schema/parse) to @lionad/core
+- [x] 04-02 — Batch migrate 15 simple components (approval-card, audio, citation, code-diff, image, instagram-post, link-preview, linkedin-post, message-draft, order-summary, plan, preferences-panel, progress-tracker, terminal, x-post)
+- [ ] 04-03 — Batch migrate 7 medium components (chart, code-block, data-table, option-list, question-flow, stats-display, video) + media utilities
+- [ ] 04-04 — Migrate 5 complex components (parameter-slider, image-gallery, item-carousel, geo-map, weather-widget)
+- [ ] 04-05 — Final barrel exports, build verification, test suite, tree-shaking check
 
 ### Phase 5: Distribution Readiness
-**Goal**: @tool-ui-vue/components is installable via pnpm add and produces correct build output
+**Goal**: @lionad/components is installable via pnpm add and produces correct build output
 **Depends on**: Phase 4
 **Requirements**: DIST-01, DIST-02, DIST-03
 **Success Criteria** (what must be TRUE):
-  1. `pnpm add @tool-ui-vue/components` works in a fresh project (verified via local workspace)
+  1. `pnpm add @lionad/components` works in a fresh project (verified via local workspace)
   2. TypeScript consumers get full IntelliSense -- .d.ts files ship for all exported components and types
   3. Build output includes both ESM (.mjs) and CJS (.cjs) entry points
 **Plans**: TBD
@@ -108,8 +106,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 0/3 | Not started | - |
-| 2. P0 Base Components | 0/2 | Not started | - |
-| 3. P1 Components + Theme | 0/3 | Not started | - |
-| 4. Component Migration | 0/3 | Not started | - |
+| 1. Infrastructure | 2/2 | Complete | 2026-04-03 |
+| 2. P0 Base Components | 0/3 | Planned | - |
+| 3. P1 Components + Theme | 0/2 | Planned | - |
+| 4. Component Migration | 0/5 | Planned | - |
 | 5. Distribution Readiness | 0/2 | Not started | - |

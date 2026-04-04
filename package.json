@@ -4,27 +4,12 @@
   "description": "Vue 3 component library for tool call widgets (copy-paste style)",
   "license": "MIT",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./components/*": {
-      "types": "./dist/components/*/index.d.ts",
-      "import": "./dist/components/*/index.js",
-      "require": "./dist/components/*/index.cjs"
-    }
-  },
+  "private": true,
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
-    "typecheck": "vue-tsc --noEmit",
+    "build": "pnpm -r --filter='./packages/*' run build",
+    "typecheck": "pnpm -r --filter='./packages/*' run typecheck",
+    "build:all": "pnpm -r build",
+    "typecheck:all": "pnpm -r typecheck",
     "dev": "vite dev playground --config playground/vite.config.ts --port 5740 --host",
     "dev:lib": "vite",
     "story:dev": "histoire dev --host --port 5741",
@@ -33,7 +18,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint . --fix",
-    "check": "pnpm lint && pnpm typecheck"
+    "check": "pnpm lint && pnpm typecheck:all"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
