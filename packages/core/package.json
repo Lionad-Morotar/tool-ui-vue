@@ -1,5 +1,5 @@
 {
-  "name": "@tool-ui-vue/core",
+  "name": "@lionad/core",
   "version": "0.1.0",
   "description": "Core utilities and base components for tool-ui-vue",
   "license": "MIT",
@@ -27,7 +27,8 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.1"
+    "tailwind-merge": "^2.6.1",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.0",

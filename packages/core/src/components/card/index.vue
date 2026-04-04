@@ -14,7 +14,7 @@ defineOptions({
 })
 
 const cardClasses = computed(() =>
-  cn('bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm', props.class)
+  cn('flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm', props.class)
 )
 </script>
 

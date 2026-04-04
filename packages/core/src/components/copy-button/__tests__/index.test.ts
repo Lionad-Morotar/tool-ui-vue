@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import CopyButton from '../index.vue'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { buttonVariants } from '../../button/variants'
+import CopyButton from '../index.vue'
 
 // Mock navigator.clipboard
 const mockWriteText = vi.fn().mockResolvedValue(undefined)

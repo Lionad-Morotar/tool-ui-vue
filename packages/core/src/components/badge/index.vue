@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useSlots, h, mergeProps, type VNode } from 'vue'
-import { cn } from '../../utils'
 import { badgeVariants } from './variants'
+import { cn } from '../../utils'
 import type { BadgeProps } from './variants'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
@@ -35,7 +35,6 @@ const attrs = computed(() => ({
     <slot />
   </span>
   <component
-    v-else
     :is="() => {
       const children = slots.default?.({})
       if (!children || children.length !== 1) return children
@@ -48,5 +47,6 @@ const attrs = computed(() => ({
         ),
       )
     }"
+    v-else
   />
 </template>

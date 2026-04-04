@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, useSlots, h, mergeProps, type VNode } from 'vue'
-import { cn } from '../../utils'
 import { buttonVariants } from './variants'
+import { cn } from '../../utils'
 import type { ButtonProps } from './variants'
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -37,7 +37,6 @@ const attrs = computed(() => ({
     <slot />
   </button>
   <component
-    v-else
     :is="() => {
       const children = slots.default?.({})
       if (!children || children.length !== 1) return children
@@ -50,5 +49,6 @@ const attrs = computed(() => ({
         ),
       )
     }"
+    v-else
   />
 </template>

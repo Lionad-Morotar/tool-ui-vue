@@ -1,5 +1,11 @@
 // Re-export cn utility for downstream packages
-export { cn } from './utils'
+export { cn, prefersReducedMotion } from './utils'
+
+// Export shared infrastructure for tool components
+export * from './contract'
+export * from './schema'
+export * from './parse'
+export * from './media'
 
 // Export Button component and variants
 export { Button, buttonVariants } from './components/button'

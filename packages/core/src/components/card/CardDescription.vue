@@ -14,7 +14,7 @@ defineOptions({
 })
 
 const descriptionClasses = computed(() =>
-  cn('text-muted-foreground text-sm', props.class)
+  cn('text-sm text-muted-foreground', props.class)
 )
 </script>
 
