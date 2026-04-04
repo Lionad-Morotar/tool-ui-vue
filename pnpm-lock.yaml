@@ -144,10 +144,10 @@ importers:
 
   packages/components:
     dependencies:
-      '@tool-ui-vue/core':
+      '@lionad/core':
         specifier: workspace:*
         version: link:../core
-      '@tool-ui-vue/theme':
+      '@lionad/theme':
         specifier: workspace:*
         version: link:../theme
       '@vue-leaflet/vue-leaflet':
@@ -244,6 +244,9 @@ importers:
       tailwind-merge:
         specifier: ^2.6.1
         version: 2.6.1
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.2.0
