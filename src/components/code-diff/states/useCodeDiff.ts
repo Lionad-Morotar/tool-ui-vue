@@ -1,7 +1,4 @@
 import { computed, ref } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
-import type { CodeDiffProps } from '../schema';
-import type { FileDiff, SplitDiff, DiffLine, SplitLine } from '../diff';
 import {
   computeUnifiedDiff,
   computeSplitDiff,
@@ -9,6 +6,9 @@ import {
   parsePatchToSplitDiff,
 } from '../diff';
 import { useResolvedTheme } from '../use-theme';
+import type { FileDiff, SplitDiff, DiffLine, SplitLine } from '../diff';
+import type { CodeDiffProps } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseCodeDiffOptions extends CodeDiffProps {}
 

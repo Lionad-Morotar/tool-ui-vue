@@ -1,8 +1,8 @@
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
-import type { Ref } from 'vue';
+import { sliderRangeToPercent } from '../math';
 import type { SliderConfig } from '../schema';
 import type { SliderState } from './useSlider';
-import { sliderRangeToPercent } from '../math';
+import type { Ref } from 'vue';
 
 // Constants for layout calculations
 const TICK_COUNT = 16;

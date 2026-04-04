@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, toRef, computed } from 'vue';
-import { cn } from '../../utils';
 import { useDataTable } from './states';
+import { cn } from '../../utils';
 import type { DataTableProps } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
@@ -424,7 +424,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
                     <!-- Boolean -->
                     <template v-else-if="col.format?.kind === 'boolean'">
-                    <span
+                      <span
                         :class="cn(
                           'inline-flex items-center rounded-full border border-border px-2.5 py-0.5 text-xs font-medium',
                           (row[col.key] === true || row[col.key] === 'true' || row[col.key] === 1)

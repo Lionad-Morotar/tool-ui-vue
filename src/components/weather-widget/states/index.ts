@@ -1,8 +1,8 @@
 // WeatherWidget component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { computed } from 'vue';
 import { usePreferredReducedMotion } from '@vueuse/core';
+import { computed } from 'vue';
 import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from '../effects/generated/tuned-presets.generated';
 import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from '../effects/parameter-mapper';
 import { getNearestCheckpoint } from '../effects/tuning';

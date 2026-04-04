@@ -1,6 +1,6 @@
 import { computed, unref } from 'vue';
-import type { ComputedRef, MaybeRef } from 'vue';
 import type { ProgressTrackerProps, ProgressStep } from '../schema';
+import type { ComputedRef, MaybeRef } from 'vue';
 
 export interface UseProgressTrackerOptions {
   steps: MaybeRef<ProgressStep[]>;

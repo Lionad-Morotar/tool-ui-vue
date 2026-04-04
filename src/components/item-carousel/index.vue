@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import ItemCard from './cmpts/item-card.vue';
-import { cn } from '../../shared/utils';
 import { useItemCarousel } from './states';
+import { cn } from '../../shared/utils';
 import type { ItemCarouselProps } from './schema';
 
 const props = defineProps<ItemCarouselProps & { interactive?: boolean }>();

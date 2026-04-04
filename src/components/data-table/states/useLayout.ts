@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
-import type { ComputedRef, Ref, MaybeRefOrGetter } from 'vue';
 import type { Column, RowData } from '../schema';
+import type { ComputedRef, Ref, MaybeRefOrGetter } from 'vue';
 
 export interface CategorizedColumns {
   primary: Column[];

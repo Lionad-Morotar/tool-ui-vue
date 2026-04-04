@@ -1,11 +1,11 @@
 import { computed, ref, watch } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
-import type { ParameterSliderProps, SliderValue } from '../schema';
 import {
   createSliderSignature,
   createSliderValueSnapshot,
   sliderRangeToPercent,
 } from '../math';
+import type { ParameterSliderProps, SliderValue } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseSliderOptions extends Pick<ParameterSliderProps, 'sliders' | 'values'> {
   emit: {

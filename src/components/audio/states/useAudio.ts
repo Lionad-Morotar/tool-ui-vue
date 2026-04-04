@@ -1,10 +1,10 @@
 import { createSharedComposable } from '@vueuse/core';
 import { computed, ref } from 'vue';
-import type { ComputedRef } from 'vue';
+import { useEvents, createDomEventHandlers } from './useEvents';
+import { usePlayback } from './usePlayback';
 import type { AudioProps, AudioVariant } from '../schema';
 import type { EventEmits } from './useEvents';
-import { usePlayback } from './usePlayback';
-import { useEvents, createDomEventHandlers } from './useEvents';
+import type { ComputedRef } from 'vue';
 
 export interface UseAudioOptions extends AudioProps {
   emit: EventEmits;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive, toRef } from 'vue';
 import { Check, X } from 'lucide-vue-next';
+import { reactive, toRef } from 'vue';
 import { useApprovalCard } from './states';
 import { cn } from '../../utils';
 import type { ApprovalCardBaseProps } from './schema';

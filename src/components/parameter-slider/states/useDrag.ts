@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue';
-import type { Ref } from 'vue';
 import type { SliderConfig } from '../schema';
+import type { Ref } from 'vue';
 
 export interface UseDragOptions {
   sliders: SliderConfig[];

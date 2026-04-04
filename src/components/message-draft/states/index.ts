@@ -2,12 +2,12 @@
 // All business logic lives here, cmpts/message-draft.vue is UI-only
 
 import { ref, computed, watch, onUnmounted, nextTick } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
 import type {
   RuntimeMessageDraftProps,
   SerializableEmailDraft,
   SerializableSlackDraft,
 } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export type DraftState = 'review' | 'sending' | 'sent' | 'cancelled';
 

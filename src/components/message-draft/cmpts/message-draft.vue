@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, toRef } from 'vue';
 import { cn } from '../../../utils';
-import type { RuntimeMessageDraftProps } from '../schema';
 import { useMessageDraft } from '../states';
+import type { RuntimeMessageDraftProps } from '../schema';
 
 defineOptions({ name: 'CmptMessageDraft', inheritAttrs: false })
 
