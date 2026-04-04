@@ -15,7 +15,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default tseslint.config(
   // ========== 全局忽略 ==========
-  { ignores: ['dist', 'node_modules', '.histoire', '.vite', 'coverage', 'src/components/.example'] },
+  { ignores: ['dist', '**/dist/**', 'node_modules', '.histoire', '.vite', 'coverage', 'src/components/.example'] },
 
   // ========== Vue 推荐规则 ==========
   ...pluginVue.configs['flat/recommended'],

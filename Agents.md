@@ -19,3 +19,5 @@ Vue 3 component library for tool call widgets (copy-paste style)。
 
 更新文档时优先更新到 `.planning/codebase/`。
 
+* 项目从原项目 `@assistant-ui/tool-ui` 这个 React 组件库迁移过来，重构为 Vue 3 + TypeScript + Zod + Tailwind CSS v4 的组件库，采用 Monorepo 分层架构（core → components → nuxt-module → theme）。
+* 原项目代码可参考：`/Users/lionad/Github/Run/tool-ui/Claude.md`
