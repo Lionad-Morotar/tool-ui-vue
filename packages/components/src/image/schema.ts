@@ -44,8 +44,8 @@ export type MediaFit = z.infer<typeof MediaFitSchema>;
  */
 export const SourceSchema = z.object({
   label: z.string(),
-  iconUrl: z.string().url().optional(),
-  url: z.string().url().optional(),
+  iconUrl: z.url().optional(),
+  url: z.url().optional(),
 });
 
 /**
@@ -63,16 +63,16 @@ export const SerializableImageSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   assetId: z.string(),
-  src: z.string().url(),
+  src: z.url(),
   alt: z.string().min(1, 'Images require alt text for accessibility'),
   title: z.string().optional(),
   description: z.string().optional(),
-  href: z.string().url().optional(),
+  href: z.url().optional(),
   domain: z.string().optional(),
   ratio: AspectRatioSchema.optional(),
   fit: MediaFitSchema.optional(),
-  fileSizeBytes: z.number().int().positive().optional(),
-  createdAt: z.string().datetime().optional(),
+  fileSizeBytes: z.int().positive().optional(),
+  createdAt: z.iso.datetime().optional(),
   locale: z.string().optional(),
   source: SourceSchema.optional(),
 });

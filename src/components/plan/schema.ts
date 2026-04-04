@@ -61,7 +61,7 @@ export const PlanPropsSchema = z
     title: z.string().min(1),
     description: z.string().optional(),
     todos: z.array(PlanTodoSchema).min(1),
-    maxVisibleTodos: z.number().finite().int().min(1).optional(),
+    maxVisibleTodos: z.int().finite().min(1).optional(),
   })
   .superRefine((value, ctx) => {
     const seenTodoIds = new Set<string>();

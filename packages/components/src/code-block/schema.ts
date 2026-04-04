@@ -30,7 +30,7 @@ export const CodeBlockPropsSchema = z.object({
   language: z.string().trim().min(1).default('text'),
   lineNumbers: z.enum(['visible', 'hidden']).default('visible'),
   filename: z.string().optional(),
-  highlightLines: z.array(z.number().int().positive()).optional(),
+  highlightLines: z.array(z.int().positive()).optional(),
   maxCollapsedLines: z.number().min(1).optional(),
   css: CodeBlockCssSchema.optional().default({}),
 });

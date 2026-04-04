@@ -30,7 +30,7 @@ export const TerminalPropsSchema = z.object({
   command: z.string(),
   stdout: z.string().optional(),
   stderr: z.string().optional(),
-  exitCode: z.number().int().min(0),
+  exitCode: z.int().min(0),
   durationMs: z.number().optional(),
   cwd: z.string().optional(),
   truncated: z.boolean().optional(),

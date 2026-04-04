@@ -25,7 +25,7 @@ export const SliderConfigSchema = z
     step: z.number().finite().positive().optional(),
     value: z.number().finite(),
     unit: z.string().optional(),
-    precision: z.number().int().min(0).optional(),
+    precision: z.int().min(0).optional(),
     disabled: z.boolean().optional(),
     trackClassName: z.string().optional(),
     fillClassName: z.string().optional(),
@@ -34,7 +34,7 @@ export const SliderConfigSchema = z
   .superRefine((slider, ctx) => {
     if (slider.max <= slider.min) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ['max'],
         message: 'max must be greater than min',
       });
@@ -42,7 +42,7 @@ export const SliderConfigSchema = z
 
     if (slider.value < slider.min || slider.value > slider.max) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ['value'],
         message: 'value must be between min and max',
       });
@@ -72,8 +72,7 @@ export interface SliderConfig {
  * ParameterSlider 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
-export const SerializableParameterSliderSchema = z
-  .object({
+export const SerializableParameterSliderSchema = z.strictObject({
     id: ToolUIIdSchema,
     role: ToolUIRoleSchema.optional(),
     sliders: z.array(SliderConfigSchema).min(1),
@@ -84,7 +83,6 @@ export const SerializableParameterSliderSchema = z
       ])
       .optional(),
   })
-  .strict()
   .superRefine((payload, ctx) => {
     const seenIds = new Map<string, number>();
 
@@ -92,7 +90,7 @@ export const SerializableParameterSliderSchema = z
       const firstSeenAt = seenIds.get(slider.id);
       if (firstSeenAt !== undefined) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           path: ['sliders', index, 'id'],
           message: `duplicate slider id '${slider.id}' (first seen at index ${firstSeenAt})`,
         });

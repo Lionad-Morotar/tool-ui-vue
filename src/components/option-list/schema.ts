@@ -66,7 +66,7 @@ function validateOptionListInvariants(
     data.minSelections > data.maxSelections
   ) {
     ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: "custom",
       path: ['minSelections'],
       message: '`minSelections` cannot be greater than `maxSelections`.',
     });
@@ -79,7 +79,7 @@ function validateOptionListInvariants(
 
     if (optionIds.has(optionId)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ['options', index, 'id'],
         message: `Duplicate option id "${optionId}" is not allowed.`,
       });
@@ -103,7 +103,7 @@ function validateOptionListInvariants(
     ids.forEach((selectionId, index) => {
       if (!optionIds.has(selectionId)) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           path:
             typeof selection === 'string' ? [fieldName] : [fieldName, index],
           message: `Selection id "${selectionId}" must exist in options.`,
@@ -190,7 +190,7 @@ export interface OptionListProps {
 /**
  * OptionList 的可序列化数据 Schema（排除 value 字段）
  */
-export const SerializableOptionListSchema = OptionListPropsSchemaBase.omit({
+export const SerializableOptionListSchema = z.strictObject(OptionListPropsSchemaBase.omit({
   value: true,
   css: true,
 })
@@ -202,8 +202,7 @@ export const SerializableOptionListSchema = OptionListPropsSchemaBase.omit({
         SerializableActionsConfigSchema,
       ])
       .optional(),
-  })
-  .strict()
+  }).shape)
   .superRefine(validateOptionListInvariants);
 
 /**

@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@vue-leaflet/vue-leaflet": "^0.10.1",
-    "@vueuse/core": "^14.2.1",
     "@vueuse/components": "^14.2.1",
+    "@vueuse/core": "^14.2.1",
     "@vueuse/integrations": "^14.2.1",
     "@vueuse/motion": "^3.0.3",
     "@vueuse/nuxt": "^14.2.1",
@@ -41,7 +41,7 @@
     "supercluster": "^8.0.1",
     "tailwind-merge": "^2.6.1",
     "vue-chartjs": "^5.3.3",
-    "zod": "^3.23.0"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "1.0.0-beta.1",

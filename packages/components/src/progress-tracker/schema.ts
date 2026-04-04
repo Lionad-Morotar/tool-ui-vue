@@ -45,7 +45,7 @@ const ProgressStepsSchema = z
     for (const [index, step] of steps.entries()) {
       if (seenIds.has(step.id)) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           message: `Duplicate step id: "${step.id}"`,
           path: [index, 'id'],
         });

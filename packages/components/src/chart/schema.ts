@@ -160,7 +160,7 @@ export interface ChartProps {
 /**
  * Chart 的可序列化数据 Schema（排除 css）
  */
-export const SerializableChartSchema = ChartPropsSchema.innerType().omit({
+export const SerializableChartSchema = ChartPropsSchema.omit({
   css: true,
 });
 

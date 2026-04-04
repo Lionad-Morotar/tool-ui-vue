@@ -16,7 +16,7 @@ import { z } from 'zod';
  */
 export const ImageGallerySourceSchema = z.object({
   label: z.string(),
-  url: z.string().url().optional(),
+  url: z.url().optional(),
 });
 
 /**
@@ -30,7 +30,7 @@ export type ImageGallerySource = z.infer<typeof ImageGallerySourceSchema>;
  */
 export const ImageGalleryItemSchema = z.object({
   id: z.string().min(1),
-  src: z.string().url(),
+  src: z.url(),
   alt: z.string().min(1, 'Images require alt text for accessibility'),
   width: z.number().positive(),
   height: z.number().positive(),

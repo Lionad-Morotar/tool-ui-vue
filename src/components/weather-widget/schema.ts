@@ -121,7 +121,7 @@ export const SerializableWeatherWidgetSchema = z.object({
   current: WeatherWidgetCurrentSchema,
   forecast: z.array(ForecastDaySchema),
   time: WeatherWidgetTimeSchema.optional(),
-  updatedAt: z.string().datetime().optional(),
+  updatedAt: z.iso.datetime().optional(),
 });
 
 /** SerializableWeatherWidget 类型，由 Zod Schema 推导 */

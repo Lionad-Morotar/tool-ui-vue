@@ -51,13 +51,13 @@ export const SerializableCitationSchema = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
-  href: z.string().url(),
+  href: z.url(),
   title: z.string(),
   snippet: z.string().optional(),
   domain: z.string().optional(),
-  favicon: z.string().url().optional(),
+  favicon: z.url().optional(),
   author: z.string().optional(),
-  publishedAt: z.string().datetime().optional(),
+  publishedAt: z.iso.datetime().optional(),
   type: CitationTypeSchema.optional(),
   locale: z.string().optional(),
 });
@@ -66,20 +66,38 @@ export const SerializableCitationSchema = z.object({
  * Citation 的可序列化数据类型
  * 对应 SerializableCitationSchema 的 TypeScript 类型
  */
-export type SerializableCitation = z.infer<typeof SerializableCitationSchema>;
+export interface SerializableCitation {
+  id: string;
+  role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
+  receipt?: {
+    outcome: 'success' | 'partial' | 'failed' | 'cancelled';
+    summary: string;
+    identifiers?: Record<string, string>;
+    at: string;
+  };
+  href: string;
+  title: string;
+  snippet?: string;
+  domain?: string;
+  favicon?: string;
+  author?: string;
+  publishedAt?: string;
+  type?: CitationType;
+  locale?: string;
+}
 
 const SerializableCitationSchemaContract = defineToolUiContract(
   'Citation',
-  SerializableCitationSchema,
+  SerializableCitationSchema as z.ZodType<SerializableCitation>,
 );
 
-export const parseSerializableCitation: (
+export const parseSerializableCitation = SerializableCitationSchemaContract.parse as (
   input: unknown,
-) => SerializableCitation = SerializableCitationSchemaContract.parse;
+) => SerializableCitation;
 
-export const safeParseSerializableCitation: (
+export const safeParseSerializableCitation = SerializableCitationSchemaContract.safeParse as (
   input: unknown,
-) => SerializableCitation | null = SerializableCitationSchemaContract.safeParse;
+) => SerializableCitation | null;
 
 export const CitationCssSchema = z.object({
   root: z.string().optional(),

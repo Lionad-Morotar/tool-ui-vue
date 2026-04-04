@@ -19,8 +19,8 @@ export const OrderItemSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
-  imageUrl: z.string().url().optional(),
-  quantity: z.number().int().positive().optional(),
+  imageUrl: z.url().optional(),
+  quantity: z.int().positive().optional(),
   unitPrice: z.number(),
 });
 
@@ -39,7 +39,7 @@ const OrderItemsSchema = z
     for (const [index, item] of items.entries()) {
       if (seenIds.has(item.id)) {
         ctx.addIssue({
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           message: `Duplicate item id: "${item.id}"`,
           path: [index, 'id'],
         });
@@ -86,7 +86,7 @@ export type OrderSummaryVariant = z.infer<typeof OrderSummaryVariantSchema>;
 export const OrderDecisionSchema = z.object({
   action: z.literal('confirm'),
   orderId: z.string().optional(),
-  confirmedAt: z.string().datetime().optional(),
+  confirmedAt: z.iso.datetime().optional(),
 });
 
 /**
@@ -99,8 +99,7 @@ export type OrderDecision = z.infer<typeof OrderDecisionSchema>;
  * OrderSummary 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
-export const SerializableOrderSummarySchema = z
-  .object({
+export const SerializableOrderSummarySchema = z.strictObject({
     id: ToolUIIdSchema,
     role: ToolUIRoleSchema.optional(),
     title: z.string().optional(),
@@ -109,11 +108,10 @@ export const SerializableOrderSummarySchema = z
     pricing: PricingSchema,
     choice: OrderDecisionSchema.optional(),
   })
-  .strict()
   .superRefine((value, ctx) => {
     if (value.variant === 'receipt' && value.choice === undefined) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: 'Receipt variant requires "choice".',
         path: ['choice'],
       });
@@ -121,7 +119,7 @@ export const SerializableOrderSummarySchema = z
 
     if (value.variant === 'summary' && value.choice !== undefined) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: 'Summary variant cannot include "choice".',
         path: ['choice'],
       });

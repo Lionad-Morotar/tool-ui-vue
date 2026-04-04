@@ -80,23 +80,23 @@ const PreferencesPanelBaseSchema = z.object({
  * 用于验证从外部传入的数据结构
  */
 export const SerializablePreferencesPanelSchema =
-  PreferencesPanelBaseSchema.extend({
-    actions: z
-      .union([
-        z.array(SerializableActionSchema),
-        SerializableActionsConfigSchema,
-      ])
-      .optional(),
-  }).strict();
+  z.strictObject(PreferencesPanelBaseSchema.extend({
+        actions: z
+          .union([
+            z.array(SerializableActionSchema),
+            SerializableActionsConfigSchema,
+          ])
+          .optional(),
+      }).shape);
 
 /**
  * PreferencesPanel 回执的 Schema 定义
  */
 export const SerializablePreferencesPanelReceiptSchema =
-  PreferencesPanelBaseSchema.extend({
-    choice: z.record(z.string(), z.union([z.string(), z.boolean()])),
-    error: z.record(z.string(), z.string()).optional(),
-  }).strict();
+  z.strictObject(PreferencesPanelBaseSchema.extend({
+        choice: z.record(z.string(), z.union([z.string(), z.boolean()])),
+        error: z.record(z.string(), z.string()).optional(),
+      }).shape);
 
 /**
  * PreferencesPanel 的可序列化数据类型

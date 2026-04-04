@@ -19,19 +19,19 @@ const TextFormatSchema = z.object({
 
 const NumberFormatSchema = z.object({
   kind: z.literal('number'),
-  decimals: z.number().int().min(0).optional(),
+  decimals: z.int().min(0).optional(),
   compact: z.boolean().optional(),
 });
 
 const CurrencyFormatSchema = z.object({
   kind: z.literal('currency'),
   currency: z.string().min(1),
-  decimals: z.number().int().min(0).optional(),
+  decimals: z.int().min(0).optional(),
 });
 
 const PercentFormatSchema = z.object({
   kind: z.literal('percent'),
-  decimals: z.number().int().min(0).optional(),
+  decimals: z.int().min(0).optional(),
   basis: z.enum(['fraction', 'unit']).optional(),
 });
 
@@ -56,7 +56,7 @@ export type StatFormat = z.infer<typeof StatFormatSchema>;
  */
 export const StatDiffSchema = z.object({
   value: z.number(),
-  decimals: z.number().int().min(0).optional(),
+  decimals: z.int().min(0).optional(),
   upIsPositive: z.boolean().optional(),
   label: z.string().optional(),
 });

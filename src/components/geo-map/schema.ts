@@ -19,12 +19,10 @@ import type { ToolUIReceipt } from '../../shared/schema';
 
 const LatitudeSchema = z.number().finite().min(-90).max(90);
 const LongitudeSchema = z.number().finite().min(-180).max(180);
-const HttpUrlSchema = z
-  .string()
-  .url()
+const HttpUrlSchema = z.url()
   .refine((value) => /^https?:\/\//i.test(value), {
-    message: 'Expected an http or https URL.',
-  });
+      error: 'Expected an http or https URL.'
+});
 
 const GeoMapMarkerIconDotSchema = z.object({
   type: z.literal('dot'),

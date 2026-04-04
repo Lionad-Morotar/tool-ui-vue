@@ -31,8 +31,8 @@ export type MediaFit = z.infer<typeof MediaFitSchema>;
 /** SourceSchema Zod Schema */
 export const SourceSchema = z.object({
   label: z.string(),
-  iconUrl: z.string().url().optional(),
-  url: z.string().url().optional(),
+  iconUrl: z.url().optional(),
+  url: z.url().optional(),
 });
 
 export type Source = z.infer<typeof SourceSchema>;
@@ -50,16 +50,16 @@ export const SerializableVideoSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   assetId: z.string(),
-  src: z.string().url(),
-  poster: z.string().url().optional(),
+  src: z.url(),
+  poster: z.url().optional(),
   title: z.string().optional(),
   description: z.string().optional(),
-  href: z.string().url().optional(),
+  href: z.url().optional(),
   domain: z.string().optional(),
-  durationMs: z.number().int().positive().optional(),
+  durationMs: z.int().positive().optional(),
   ratio: AspectRatioSchema.optional(),
   fit: MediaFitSchema.optional(),
-  createdAt: z.string().datetime().optional(),
+  createdAt: z.iso.datetime().optional(),
   locale: z.string().optional(),
   source: SourceSchema.optional(),
 });

@@ -21,8 +21,8 @@ import {
  */
 export const SourceSchema = z.object({
   label: z.string(),
-  iconUrl: z.string().url().optional(),
-  url: z.string().url().optional(),
+  iconUrl: z.url().optional(),
+  url: z.url().optional(),
 });
 
 /**
@@ -40,13 +40,13 @@ export const SerializableAudioSchema = z.object({
   role: ToolUIRoleSchema.optional(),
   receipt: ToolUIReceiptSchema.optional(),
   assetId: z.string(),
-  src: z.string().url(),
+  src: z.url(),
   title: z.string().optional(),
   description: z.string().optional(),
-  artwork: z.string().url().optional(),
-  durationMs: z.number().int().positive().optional(),
-  fileSizeBytes: z.number().int().positive().optional(),
-  createdAt: z.string().datetime().optional(),
+  artwork: z.url().optional(),
+  durationMs: z.int().positive().optional(),
+  fileSizeBytes: z.int().positive().optional(),
+  createdAt: z.iso.datetime().optional(),
   locale: z.string().optional(),
   source: SourceSchema.optional(),
 });
