@@ -10,6 +10,12 @@ export default defineConfig({
       insertTypesEntry: true,
       rollupTypes: false,
       include: ['src/**/*'],
+      exclude: ['**/pierre-*.js'],
+      compilerOptions: {
+        skipLibCheck: true,
+        noUnusedLocals: false,
+      },
+      strictOutput: false,
     }),
   ],
   build: {
@@ -22,8 +28,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
-        '@tool-ui-vue/core',
-        '@tool-ui-vue/theme',
+        '@lionad/core',
+        '@lionad/theme',
         'zod',
         'clsx',
         'tailwind-merge',
@@ -31,8 +37,8 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue',
-          '@tool-ui-vue/core': 'ToolUiVueCore',
-          '@tool-ui-vue/theme': 'ToolUiVueTheme',
+          '@lionad/core': 'ToolUiVueCore',
+          '@lionad/theme': 'ToolUiVueTheme',
           zod: 'zod',
           clsx: 'clsx',
           'tailwind-merge': 'tailwindMerge',
@@ -44,5 +50,6 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     },
+    extensions: ['.js', '.ts', '.vue'],
   },
 });
