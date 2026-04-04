@@ -1,5 +1,5 @@
 import ItemCard from './cmpts/item-card.vue'
-import ItemCarousel from './cmpts/item-carousel.vue'
+import ItemCarousel from './index.vue'
 
 export { ItemCarousel, ItemCard }
 export default ItemCarousel

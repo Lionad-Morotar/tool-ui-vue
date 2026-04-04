@@ -1,7 +1,7 @@
-import vue from '@vitejs/plugin-vue';
-import { resolve } from 'path';
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
+import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   plugins: [
@@ -10,6 +10,8 @@ export default defineConfig({
       insertTypesEntry: true,
       rollupTypes: false,
       include: ['src/**/*'],
+      outDir: 'dist',
+      entryRoot: 'src',
     }),
   ],
   build: {
@@ -20,7 +22,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'zod', 'class-variance-authority', 'tailwind-merge', 'clsx'],
       output: {
         globals: {
           vue: 'Vue',
@@ -28,4 +30,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

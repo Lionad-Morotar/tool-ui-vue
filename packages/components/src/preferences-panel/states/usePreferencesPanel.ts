@@ -166,7 +166,7 @@ export function usePreferencesPanel(options: UsePreferencesPanelOptions) {
   const actionsWithState = computed(() => {
     if (!normalizedActions.value) return [];
 
-    return normalizedActions.value.items.map((action: { id: string; label: string; variant?: string; disabled?: boolean }) => {
+    return normalizedActions.value.items.map((action) => {
       const isSaveAction = action.id === 'save';
       const baseDisabled = action.disabled ?? false;
       const shouldDisable = baseDisabled || (isSaveAction && !isDirty.value);

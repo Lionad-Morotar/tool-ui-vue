@@ -42,7 +42,7 @@ export function useOptionList(options: UseOptionListOptions) {
 
   // Actions with disabled state
   const actionsWithDisabledState = computed(() => {
-    return normalizedActions.value.items.map((action: { id: string; label: string; variant?: string; disabled?: boolean }) => {
+    return normalizedActions.value.items.map((action) => {
       const isDisabledByValidation =
         (action.id === 'confirm' && isConfirmDisabled.value) ||
         (action.id === 'cancel' && hasNothingToClear.value);

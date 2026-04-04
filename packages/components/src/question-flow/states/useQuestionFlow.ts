@@ -380,6 +380,8 @@ export function useQuestionFlow(options: UseQuestionFlowOptions) {
     isProgressive,
     isUpfront,
     isReceipt,
+    progressiveProps,
+    upfrontProps,
     receiptProps,
     currentStepIndex,
     currentStep,

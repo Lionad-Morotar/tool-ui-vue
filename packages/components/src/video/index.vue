@@ -26,8 +26,8 @@ const videoState = reactive(useVideo({
   emit,
 }));
 
-// Keep videoRef as a direct ref for template binding
-const videoRef = toRef(videoState, 'videoRef');
+// videoRef is used in template via ref="videoRef"
+const _videoRef = toRef(videoState, 'videoRef');
 </script>
 
 <template>

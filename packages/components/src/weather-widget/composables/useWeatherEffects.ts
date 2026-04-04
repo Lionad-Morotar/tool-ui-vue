@@ -189,7 +189,7 @@ export function useWeatherEffects(
       console.error(errorMessage);
     }
 
-    if (warnMessage && typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
+    if (warnMessage && import.meta.env.DEV) {
       console.warn(warnMessage);
     }
 
@@ -213,7 +213,7 @@ export function useWeatherEffects(
       const ok = tryAcquireWeatherWebglCanvasBudgetSlot(canvas);
       if (!ok) {
         hasWebglBudgetSlotRef.value = false;
-        if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
+        if (import.meta.env.DEV) {
           console.warn(
             '[WeatherEffectsCanvas] Too many WebGL canvases on the page; rendering this widget without effects.',
           );
