@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from '@lionad/core';
+import { prefersReducedMotion } from '@lionad/vtu-core';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import type { ItemCarouselProps } from '../schema';
 import type { ComputedRef, Ref } from 'vue';

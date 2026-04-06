@@ -6,12 +6,12 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/parameter-slider/schema
+ * @module tool-ui-vue/vtu-components/parameter-slider/schema
  */
 
-import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '@lionad/core';
+import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '@lionad/vtu-core';
 import { z } from 'zod';
-import type { Action, SerializableActionsConfig } from '@lionad/core';
+import type { Action, SerializableActionsConfig } from '@lionad/vtu-core';
 
 /**
  * 滑块配置的 Schema 定义

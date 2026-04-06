@@ -6,12 +6,12 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/option-list/schema
+ * @module tool-ui-vue/vtu-components/option-list/schema
  */
 
-import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/core';
+import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/vtu-core';
 import { z } from 'zod';
-import type { Action, SerializableActionsConfig } from '@lionad/core';
+import type { Action, SerializableActionsConfig } from '@lionad/vtu-core';
 
 /**
  * 选项列表中单个选项的 Schema 定义

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { DataTable } from '@lionad/components';
+import { DataTable } from '@lionad/vtu-components';
 
 const sortableState = reactive({
   sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },

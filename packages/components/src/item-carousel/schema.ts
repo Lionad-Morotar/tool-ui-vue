@@ -6,9 +6,9 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/item-carousel/schema
+ * @module tool-ui-vue/vtu-components/item-carousel/schema
  */
-import { defineToolUiContract, ActionSchema, SerializableActionSchema, ToolUIIdSchema, type Action } from '@lionad/core';
+import { defineToolUiContract, ActionSchema, SerializableActionSchema, ToolUIIdSchema, type Action } from '@lionad/vtu-core';
 import { z } from 'zod';
 
 /**

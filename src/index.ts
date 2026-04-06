@@ -1,2 +1,2 @@
 export * from './shared';
-export * from '@lionad/components';
+export * from '@lionad/vtu-components';

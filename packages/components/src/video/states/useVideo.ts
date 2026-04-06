@@ -1,4 +1,4 @@
-import { openSafeNavigationHref } from '@lionad/core';
+import { openSafeNavigationHref } from '@lionad/vtu-core';
 import { computed, type ComputedRef } from 'vue';
 import { useEvents, createDomEventHandlers } from './useEvents';
 import { usePlayback } from './usePlayback';

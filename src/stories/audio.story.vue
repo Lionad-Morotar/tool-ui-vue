@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Audio is used in template as <audio> (kebab-case)
-import { Audio } from '@lionad/components';
+import { Audio } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
   title: 'Custom Audio Track',

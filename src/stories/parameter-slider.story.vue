@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { ParameterSlider } from '@lionad/components';
+import { ParameterSlider } from '@lionad/vtu-components';
 
 const imageAdjustments = reactive({
   exposure: 0.3,

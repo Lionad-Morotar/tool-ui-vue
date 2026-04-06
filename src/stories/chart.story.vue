@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Chart } from '@lionad/components';
-import type { ChartDataPoint } from '@lionad/components/chart/schema';
+import { Chart } from '@lionad/vtu-components';
+import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
 
 const chartData = reactive({
   selectedPoint: null as string | null,

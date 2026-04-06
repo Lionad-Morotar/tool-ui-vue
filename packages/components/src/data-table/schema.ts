@@ -6,9 +6,9 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/data-table/schema
+ * @module tool-ui-vue/vtu-components/data-table/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '@lionad/core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '@lionad/vtu-core';
 import { z } from 'zod';
 
 const AlignEnum = z.enum(['left', 'right', 'center']);

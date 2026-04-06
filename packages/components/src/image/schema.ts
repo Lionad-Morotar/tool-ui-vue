@@ -7,12 +7,12 @@ import {
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/image/schema
+ * @module tool-ui-vue/vtu-components/image/schema
  */
   defineToolUiContract,
   ToolUIIdSchema,
   ToolUIReceiptSchema,
-  ToolUIRoleSchema,} from '@lionad/core';
+  ToolUIRoleSchema,} from '@lionad/vtu-core';
 import { z } from 'zod';
 
 /**

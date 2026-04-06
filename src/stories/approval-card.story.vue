@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { ApprovalCard } from '@lionad/components';
+import { ApprovalCard } from '@lionad/vtu-components';
 
 /**
  * # ApprovalCard

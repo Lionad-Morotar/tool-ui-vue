@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@lionad/components':
+      '@lionad/vtu-components':
         specifier: workspace:*
         version: link:packages/components
       '@vue-leaflet/vue-leaflet':
@@ -156,10 +156,10 @@ importers:
 
   packages/components:
     dependencies:
-      '@lionad/core':
+      '@lionad/vtu-core':
         specifier: workspace:*
         version: link:../core
-      '@lionad/theme':
+      '@lionad/vtu-theme':
         specifier: workspace:*
         version: link:../theme
       '@vue-leaflet/vue-leaflet':

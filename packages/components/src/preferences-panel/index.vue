@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { Check, AlertCircle } from 'lucide-vue-next';
 import { reactive } from 'vue';
 import { usePreferencesPanel } from './states';

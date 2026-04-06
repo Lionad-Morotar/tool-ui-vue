@@ -6,12 +6,12 @@
  * - TypeScript 类型推导
  * - Vue Props 接口
  *
- * @module tool-ui-vue/components/terminal/schema
+ * @module tool-ui-vue/vtu-components/terminal/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema } from '@lionad/core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema } from '@lionad/vtu-core';
 import { z } from 'zod';
-import type { ToolUIReceipt } from '@lionad/core';
+import type { ToolUIReceipt } from '@lionad/vtu-core';
 
 /**
  * TerminalCssSchema Zod Schema

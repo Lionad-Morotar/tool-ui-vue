@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { PreferencesPanel } from '@lionad/components';
+import { PreferencesPanel } from '@lionad/vtu-components';
 
 const prefs = ref({
   email: true,

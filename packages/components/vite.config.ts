@@ -28,8 +28,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
-        '@lionad/core',
-        '@lionad/theme',
+        '@lionad/vtu-core',
+        '@lionad/vtu-theme',
         'zod',
         'clsx',
         'tailwind-merge',
@@ -37,8 +37,8 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue',
-          '@lionad/core': 'ToolUiVueCore',
-          '@lionad/theme': 'ToolUiVueTheme',
+          '@lionad/vtu-core': 'ToolUiVueCore',
+          '@lionad/vtu-theme': 'ToolUiVueTheme',
           zod: 'zod',
           clsx: 'clsx',
           'tailwind-merge': 'tailwindMerge',

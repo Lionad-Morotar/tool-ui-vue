@@ -24,7 +24,7 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@lionad/components": "workspace:*",
+    "@lionad/vtu-components": "workspace:*",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/components": "^14.2.1",
     "@vueuse/core": "^14.2.1",

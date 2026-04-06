@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { ItemCarousel, ItemCard } from '@lionad/components';
+import { ItemCarousel, ItemCard } from '@lionad/vtu-components';
 
 const carouselState = reactive({
   items: [

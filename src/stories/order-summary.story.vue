@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderSummaryRoot } from '@lionad/components';
+import { OrderSummaryRoot } from '@lionad/vtu-components';
 
 /**
  * ## Props

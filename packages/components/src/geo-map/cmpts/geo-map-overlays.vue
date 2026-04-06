@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { LPopup, LTooltip } from '@vue-leaflet/vue-leaflet';
 import { ref, computed } from 'vue';
 

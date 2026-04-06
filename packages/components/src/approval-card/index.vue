@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { Check, X } from 'lucide-vue-next';
 import { reactive, toRef } from 'vue';
 import { useApprovalCard } from './states';

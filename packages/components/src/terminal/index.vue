@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
 import { reactive, toRef } from 'vue';
 import { useTerminal } from './states';

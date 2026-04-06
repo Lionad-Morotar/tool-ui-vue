@@ -6,13 +6,13 @@
  * - TypeScript 类型推导
  * - Vue Props 接口
  *
- * @module tool-ui-vue/components/video/schema
+ * @module tool-ui-vue/vtu-components/video/schema
  */
 
 import { defineToolUiContract,
   ToolUIIdSchema,
   ToolUIReceiptSchema,
-  ToolUIRoleSchema } from '@lionad/core';
+  ToolUIRoleSchema } from '@lionad/vtu-core';
 import { z } from 'zod';
 
 export const AspectRatioSchema = z

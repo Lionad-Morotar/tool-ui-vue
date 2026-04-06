@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { LinkPreview } from '@lionad/components';
+import { LinkPreview } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
   href: 'https://example.com/interactive',

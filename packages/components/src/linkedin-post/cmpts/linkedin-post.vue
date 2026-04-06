@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { reactive, toRef } from 'vue';
 import { useLinkedinPost } from '../states';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';

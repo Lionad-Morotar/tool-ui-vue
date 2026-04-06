@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Terminal } from '@lionad/components';
+import { Terminal } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
   command: 'npm install',
@@ -99,7 +99,7 @@ const ansiExamples = {
         <terminal
           id="terminal-ansi-colors"
           command="pnpm test"
-          :stdout="`\x1b[32m✓\x1b[0m src/utils.test.ts \x1b[90m(5 tests)\x1b[0m \x1b[33m23ms\x1b[0m\n\x1b[32m✓\x1b[0m src/api.test.ts \x1b[90m(12 tests)\x1b[0m \x1b[33m156ms\x1b[0m\n\x1b[32m✓\x1b[0m src/components.test.ts \x1b[90m(8 tests)\x1b[0m \x1b[33m89ms\x1b[0m\n\n\x1b[1mTest Files\x1b[0m  \x1b[32m3 passed\x1b[0m (3)\n\x1b[1m     Tests\x1b[0m  \x1b[32m25 passed\x1b[0m (25)\n\x1b[1m  Start at\x1b[0m  10:23:45\n\x1b[1m  Duration\x1b[0m  312ms`"
+          :stdout="`\x1b[32m✓\x1b[0m src/utils.test.ts \x1b[90m(5 tests)\x1b[0m \x1b[33m23ms\x1b[0m\n\x1b[32m✓\x1b[0m src/api.test.ts \x1b[90m(12 tests)\x1b[0m \x1b[33m156ms\x1b[0m\n\x1b[32m✓\x1b[0m src/vtu-components.test.ts \x1b[90m(8 tests)\x1b[0m \x1b[33m89ms\x1b[0m\n\n\x1b[1mTest Files\x1b[0m  \x1b[32m3 passed\x1b[0m (3)\n\x1b[1m     Tests\x1b[0m  \x1b[32m25 passed\x1b[0m (25)\n\x1b[1m  Start at\x1b[0m  10:23:45\n\x1b[1m  Duration\x1b[0m  312ms`"
           :exit-code="0"
           :duration-ms="312"
           cwd="~/project"
@@ -139,9 +139,9 @@ const ansiExamples = {
           stdout="> tool-ui@1.0.0 test
 > vitest
 
- FAIL  src/components/__tests__/Button.test.ts > Button > renders correctly
+ FAIL  src/vtu-components/__tests__/Button.test.ts > Button > renders correctly
 AssertionError: expected true to be false
- ❯ src/components/__tests__/Button.test.ts:15:23"
+ ❯ src/vtu-components/__tests__/Button.test.ts:15:23"
           stderr="Test failed: 1 test failed"
           :exit-code="1"
           :duration-ms="2450"
@@ -160,7 +160,7 @@ Your branch is up to date with 'origin/main'.
 Changes not staged for commit:
   (use 'git add [file]...' to update what will be committed)
   (use 'git restore [file]...' to discard changes in working directory)
-	modified:   src/components/Button.tsx
+	modified:   src/vtu-components/Button.tsx
 
 no changes added to commit"
           :exit-code="0"

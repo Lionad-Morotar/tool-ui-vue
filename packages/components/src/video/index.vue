@@ -4,7 +4,7 @@ import {
   getFitClass,
   OVERLAY_GRADIENT,
   formatDuration, cn 
-} from '@lionad/core';
+} from '@lionad/vtu-core';
 import { reactive, toRef } from 'vue';
 import { useVideo } from './states';
 import type { VideoProps } from './schema';

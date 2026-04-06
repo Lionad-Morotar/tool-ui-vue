@@ -23,7 +23,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': '/src',
-        '@lionad/components': resolve(__dirname, 'packages/components/src'),
+        '@lionad/vtu-components': resolve(__dirname, 'packages/components/src'),
       },
     },
     server: {

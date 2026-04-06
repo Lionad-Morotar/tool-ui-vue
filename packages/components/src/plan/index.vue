@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { reactive } from 'vue';
 import { usePlan } from './states';
 import type { PlanProps } from './schema';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
-import { WeatherWidget } from '@lionad/components';
-import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/components/weather-widget/schema';
+import { WeatherWidget } from '@lionad/vtu-components';
+import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,

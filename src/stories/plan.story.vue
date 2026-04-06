@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Plan } from '@lionad/components';
-import type { PlanTodoStatus } from '@lionad/components/plan/schema';
+import { Plan } from '@lionad/vtu-components';
+import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
 
 /**
  * # Plan

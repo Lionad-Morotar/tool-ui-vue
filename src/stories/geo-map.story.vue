@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { GeoMap } from '@lionad/components';
-import type { GeoMapMarker, GeoMapRoute } from '@lionad/components/geo-map/schema';
+import { GeoMap } from '@lionad/vtu-components';
+import type { GeoMapMarker, GeoMapRoute } from '@lionad/vtu-components/geo-map/schema';
 
 const mapState = reactive({
   selectedMarker: null as string | null,

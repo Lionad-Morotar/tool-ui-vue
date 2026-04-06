@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { useImageGallery } from '../states';
 import GalleryImageCard from './gallery-image-card.vue';
 import type { ImageGalleryItem } from '../schema';

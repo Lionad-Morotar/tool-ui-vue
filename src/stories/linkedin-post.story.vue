@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { LinkedInPost } from '@lionad/components';
+import { LinkedInPost } from '@lionad/vtu-components';
 
 /**
  * # LinkedInPost

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { ImageGallery } from '@lionad/components';
+import { ImageGallery } from '@lionad/vtu-components';
 
 const galleryState = reactive({
   clickCount: 0,

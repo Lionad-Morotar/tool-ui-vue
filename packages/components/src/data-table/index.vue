@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { reactive, computed } from 'vue';
 import { useDataTable } from './states';
 import type { DataTableProps } from './schema';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/core';
+import { cn } from '@lionad/vtu-core';
 import { ref, computed, onUnmounted } from 'vue';
 import Citation from '../index.vue';
 import type { CitationType, SerializableCitation, CitationListProps } from '../schema';

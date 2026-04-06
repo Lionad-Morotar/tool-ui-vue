@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StatsDisplay } from '@lionad/components';
+import { StatsDisplay } from '@lionad/vtu-components';
 </script>
 
 <template>

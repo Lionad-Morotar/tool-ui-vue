@@ -1,5 +1,5 @@
 {
-  "name": "@lionad/theme",
+  "name": "@lionad/vtu-theme",
   "version": "0.1.0",
   "description": "Design tokens and CSS variables for tool-ui-vue",
   "license": "MIT",

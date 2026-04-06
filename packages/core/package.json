@@ -1,5 +1,5 @@
 {
-  "name": "@lionad/core",
+  "name": "@lionad/vtu-core",
   "version": "0.1.0",
   "description": "Core utilities and base components for tool-ui-vue",
   "license": "MIT",

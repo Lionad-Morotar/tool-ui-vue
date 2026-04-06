@@ -6,10 +6,10 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/stats-display/schema
+ * @module tool-ui-vue/vtu-components/stats-display/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '@lionad/core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '@lionad/vtu-core';
 import { z } from 'zod';
 import type { CSSProperties } from 'vue';
 

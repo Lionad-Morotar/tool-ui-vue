@@ -1,5 +1,5 @@
 {
-  "name": "@lionad/components",
+  "name": "@lionad/vtu-components",
   "version": "0.1.0",
   "description": "Tool call UI components for tool-ui-vue",
   "license": "MIT",
@@ -24,8 +24,8 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@lionad/core": "workspace:*",
-    "@lionad/theme": "workspace:*",
+    "@lionad/vtu-core": "workspace:*",
+    "@lionad/vtu-theme": "workspace:*",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/core": "^14.2.1",
     "@vueuse/components": "^14.2.1",

@@ -6,16 +6,16 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/chart/schema
+ * @module tool-ui-vue/vtu-components/chart/schema
  */
 import { z } from 'zod';
-import { defineToolUiContract } from '@lionad/core';
-import type { ToolUIReceipt } from '@lionad/core';
+import { defineToolUiContract } from '@lionad/vtu-core';
+import type { ToolUIReceipt } from '@lionad/vtu-core';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
-} from '@lionad/core';
+} from '@lionad/vtu-core';
 
 /**
  * 图表系列的 Schema 定义

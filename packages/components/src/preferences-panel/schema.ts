@@ -6,12 +6,12 @@
  * - TypeScript 类型：用于类型安全
  * - Props 接口：用于组件属性定义
  *
- * @module tool-ui-vue/components/preferences-panel/schema
+ * @module tool-ui-vue/vtu-components/preferences-panel/schema
  */
 
-import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/core';
+import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/vtu-core';
 import { z } from 'zod';
-import type { Action, SerializableActionsConfig, ToolUIReceipt } from '@lionad/core';
+import type { Action, SerializableActionsConfig, ToolUIReceipt } from '@lionad/vtu-core';
 
 const PreferenceItemBaseSchema = z.object({
   id: z.string().min(1),

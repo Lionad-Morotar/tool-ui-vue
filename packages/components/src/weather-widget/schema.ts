@@ -6,10 +6,10 @@
  * - TypeScript 类型推导
  * - Vue Props 接口
  *
- * @module tool-ui-vue/components/weather-widget/schema
+ * @module tool-ui-vue/vtu-components/weather-widget/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema  } from '@lionad/core';
+import { defineToolUiContract, ToolUIIdSchema  } from '@lionad/vtu-core';
 import { z } from 'zod';
 
 /** WeatherConditionCodeSchema Zod Schema */
