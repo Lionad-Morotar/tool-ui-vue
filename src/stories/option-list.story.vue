@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { OptionList } from '../components';
+import { OptionList } from '@lionad/components';
 
 /**
  * # OptionList

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StatsDisplay } from '../components';
+import { StatsDisplay } from '@lionad/components';
 </script>
 
 <template>

@@ -19,7 +19,9 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@lionad/components": ["./packages/components/src/index.ts"],
+      "@lionad/components/*": ["./packages/components/src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"],

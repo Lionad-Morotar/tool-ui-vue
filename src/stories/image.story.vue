@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <image> (kebab-case)
-import { Image } from '../components';
+import { Image } from '@lionad/components';
 
 const interactiveState = reactive({
   id: 'image-interactive',

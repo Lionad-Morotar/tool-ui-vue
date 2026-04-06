@@ -8,10 +8,14 @@
  *
  * @module tool-ui-vue/components/chart/schema
  */
-
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/core';
 import { z } from 'zod';
+import { defineToolUiContract } from '@lionad/core';
 import type { ToolUIReceipt } from '@lionad/core';
+import {
+  ToolUIIdSchema,
+  ToolUIReceiptSchema,
+  ToolUIRoleSchema,
+} from '@lionad/core';
 
 /**
  * 图表系列的 Schema 定义
@@ -160,9 +164,78 @@ export interface ChartProps {
 /**
  * Chart 的可序列化数据 Schema（排除 css）
  */
-export const SerializableChartSchema = ChartPropsSchema.omit({
-  css: true,
-});
+export const SerializableChartSchema = z
+  .object({
+    id: ToolUIIdSchema,
+    role: ToolUIRoleSchema.optional(),
+    receipt: ToolUIReceiptSchema.optional(),
+    type: z.enum(['bar', 'line']),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    data: z.array(z.record(z.string(), z.unknown())).min(1),
+    xKey: z.string().min(1),
+    series: z.array(ChartSeriesSchema).min(1),
+    colors: z.array(z.string().min(1)).min(1).optional(),
+    showLegend: z.boolean().optional(),
+    showGrid: z.boolean().optional(),
+  })
+  .superRefine((value, ctx) => {
+    const seenSeriesKeys = new Set<string>();
+    value.series.forEach((series, index) => {
+      if (seenSeriesKeys.has(series.key)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['series', index, 'key'],
+          message: `Duplicate series key "${series.key}".`,
+        });
+        return;
+      }
+      seenSeriesKeys.add(series.key);
+    });
+
+    value.data.forEach((row, rowIndex) => {
+      if (!(value.xKey in row)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['data', rowIndex, value.xKey],
+          message: `Missing xKey "${value.xKey}" in data row.`,
+        });
+      } else {
+        const xVal = row[value.xKey];
+        const isValidX = typeof xVal === 'string' || typeof xVal === 'number';
+        if (!isValidX) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['data', rowIndex, value.xKey],
+            message: `Expected "${value.xKey}" to be a string or number.`,
+          });
+        }
+      }
+
+      value.series.forEach((series) => {
+        if (!(series.key in row)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['data', rowIndex, series.key],
+            message: `Missing series key "${series.key}" in data row.`,
+          });
+          return;
+        }
+
+        const yVal = row[series.key];
+        if (yVal === null) {
+          return;
+        }
+        if (typeof yVal !== 'number' || !Number.isFinite(yVal)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['data', rowIndex, series.key],
+            message: `Expected "${series.key}" to be a finite number (or null).`,
+          });
+        }
+      });
+    });
+  });
 
 /**
  * Chart 的可序列化数据类型

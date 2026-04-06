@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Video is used in template as <video> (kebab-case)
-import { Video } from '../components';
+import { Video } from '@lionad/components';
 
 const interactiveState = reactive({
   src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',

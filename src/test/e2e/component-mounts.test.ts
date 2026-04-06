@@ -31,7 +31,7 @@ vi.mock('leaflet', () => ({
   }),
 }));
 
-vi.mock('@/components/geo-map', () => ({
+vi.mock('@lionad/components/geo-map', () => ({
   GeoMap: {
     name: 'cmpt-geo-map',
     props: ['id', 'markers'],
@@ -41,7 +41,7 @@ vi.mock('@/components/geo-map', () => ({
 
 describe('E2E: Component Mounts', () => {
   test('ApprovalCard mounts with minimal props', async () => {
-    const { ApprovalCard } = await import('@/components/approval-card');
+    const { ApprovalCard } = await import('@lionad/components/approval-card');
     const wrapper = mount(ApprovalCard as Component, {
       props: {
         id: 'test-approval',
@@ -53,7 +53,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Audio mounts with minimal props', async () => {
-    const { Audio } = await import('@/components/audio');
+    const { Audio } = await import('@lionad/components/audio');
     const wrapper = mount(Audio as Component, {
       props: {
         id: 'test-audio',
@@ -65,7 +65,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Image mounts with minimal props', async () => {
-    const { Image } = await import('@/components/image');
+    const { Image } = await import('@lionad/components/image');
     const wrapper = mount(Image as Component, {
       props: {
         id: 'test-image',
@@ -78,7 +78,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Video mounts with minimal props', async () => {
-    const { Video } = await import('@/components/video');
+    const { Video } = await import('@lionad/components/video');
     const wrapper = mount(Video as Component, {
       props: {
         id: 'test-video',
@@ -90,7 +90,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('CodeBlock mounts with minimal props', async () => {
-    const { CodeBlock } = await import('@/components/code-block');
+    const { CodeBlock } = await import('@lionad/components/code-block');
     const wrapper = mount(CodeBlock as Component, {
       props: {
         id: 'test-code',
@@ -101,7 +101,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Terminal mounts with minimal props', async () => {
-    const { Terminal } = await import('@/components/terminal');
+    const { Terminal } = await import('@lionad/components/terminal');
     const wrapper = mount(Terminal as Component, {
       props: {
         id: 'test-terminal',
@@ -114,7 +114,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Citation mounts with minimal props', async () => {
-    const { Citation } = await import('@/components/citation');
+    const { Citation } = await import('@lionad/components/citation');
     const wrapper = mount(Citation as Component, {
       props: {
         id: 'test-citation',
@@ -127,7 +127,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('LinkPreview mounts with minimal props', async () => {
-    const { LinkPreview } = await import('@/components/link-preview');
+    const { LinkPreview } = await import('@lionad/components/link-preview');
     const wrapper = mount(LinkPreview as Component, {
       props: {
         id: 'test-link',
@@ -138,7 +138,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('OptionList mounts with minimal props', async () => {
-    const { OptionList } = await import('@/components/option-list');
+    const { OptionList } = await import('@lionad/components/option-list');
     const wrapper = mount(OptionList as Component, {
       props: {
         id: 'test-options',
@@ -152,7 +152,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('XPost mounts with minimal props', async () => {
-    const { XPost } = await import('@/components/x-post');
+    const { XPost } = await import('@lionad/components/x-post');
     const wrapper = mount(XPost as Component, {
       props: {
         post: {
@@ -170,7 +170,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('InstagramPost mounts with minimal props', async () => {
-    const { InstagramPost } = await import('@/components/instagram-post');
+    const { InstagramPost } = await import('@lionad/components/instagram-post');
     const wrapper = mount(InstagramPost as Component, {
       props: {
         post: {
@@ -188,7 +188,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('LinkedInPost mounts with minimal props', async () => {
-    const { LinkedInPost } = await import('@/components/linkedin-post');
+    const { LinkedInPost } = await import('@lionad/components/linkedin-post');
     const wrapper = mount(LinkedInPost as Component, {
       props: {
         post: {
@@ -206,7 +206,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('OrderSummary mounts with minimal props', async () => {
-    const { OrderSummary } = await import('@/components/order-summary');
+    const { OrderSummary } = await import('@lionad/components/order-summary');
     const wrapper = mount(OrderSummary as Component, {
       props: {
         id: 'test-order',
@@ -224,7 +224,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('MessageDraft mounts with minimal props', async () => {
-    const { MessageDraft } = await import('@/components/message-draft');
+    const { MessageDraft } = await import('@lionad/components/message-draft');
     const wrapper = mount(MessageDraft as Component, {
       props: {
         id: 'test-draft',
@@ -238,7 +238,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('DataTable mounts with minimal props', async () => {
-    const { DataTable } = await import('@/components/data-table');
+    const { DataTable } = await import('@lionad/components/data-table');
     const wrapper = mount(DataTable as Component, {
       props: {
         id: 'test-table',
@@ -251,7 +251,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('PreferencesPanel mounts with minimal props', async () => {
-    const { PreferencesPanel } = await import('@/components/preferences-panel');
+    const { PreferencesPanel } = await import('@lionad/components/preferences-panel');
     const wrapper = mount(PreferencesPanel as Component, {
       props: {
         id: 'test-prefs',
@@ -264,7 +264,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Plan mounts with minimal props', async () => {
-    const { Plan } = await import('@/components/plan');
+    const { Plan } = await import('@lionad/components/plan');
     const wrapper = mount(Plan as Component, {
       props: {
         id: 'test-plan',
@@ -278,7 +278,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('ProgressTracker mounts with minimal props', async () => {
-    const { ProgressTracker } = await import('@/components/progress-tracker');
+    const { ProgressTracker } = await import('@lionad/components/progress-tracker');
     const wrapper = mount(ProgressTracker as Component, {
       props: {
         id: 'test-progress',
@@ -289,7 +289,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('QuestionFlow mounts with minimal props', async () => {
-    const { QuestionFlow } = await import('@/components/question-flow');
+    const { QuestionFlow } = await import('@lionad/components/question-flow');
     const wrapper = mount(QuestionFlow as Component, {
       props: {
         id: 'test-questions',
@@ -306,7 +306,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('ItemCarousel mounts with minimal props', async () => {
-    const { ItemCarousel } = await import('@/components/item-carousel');
+    const { ItemCarousel } = await import('@lionad/components/item-carousel');
     const wrapper = mount(ItemCarousel as Component, {
       props: {
         id: 'test-carousel',
@@ -317,7 +317,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('ImageGallery mounts with minimal props', async () => {
-    const { ImageGallery } = await import('@/components/image-gallery');
+    const { ImageGallery } = await import('@lionad/components/image-gallery');
     const wrapper = mount(ImageGallery as Component, {
       props: {
         id: 'test-gallery',
@@ -328,7 +328,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('Chart mounts with minimal props (stub)', async () => {
-    const { Chart } = await import('@/components/chart');
+    const { Chart } = await import('@lionad/components/chart');
     const wrapper = mount(Chart as Component, {
       props: {
         id: 'test-chart',
@@ -342,7 +342,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('CodeDiff mounts with minimal props', async () => {
-    const { CodeDiff } = await import('@/components/code-diff');
+    const { CodeDiff } = await import('@lionad/components/code-diff');
     const wrapper = mount(CodeDiff as Component, {
       props: {
         id: 'test-diff',
@@ -354,7 +354,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('WeatherWidget mounts with minimal props', async () => {
-    const { WeatherWidget } = await import('@/components/weather-widget');
+    const { WeatherWidget } = await import('@lionad/components/weather-widget');
     const wrapper = mount(WeatherWidget as Component, {
       props: {
         id: 'test-weather',
@@ -375,7 +375,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('ParameterSlider mounts with minimal props', async () => {
-    const { ParameterSlider } = await import('@/components/parameter-slider');
+    const { ParameterSlider } = await import('@lionad/components/parameter-slider');
     const wrapper = mount(ParameterSlider as Component, {
       props: {
         id: 'test-params',
@@ -386,7 +386,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('StatsDisplay mounts with minimal props', async () => {
-    const { StatsDisplay } = await import('@/components/stats-display');
+    const { StatsDisplay } = await import('@lionad/components/stats-display');
     const wrapper = mount(StatsDisplay as Component, {
       props: {
         id: 'test-stats',
@@ -397,7 +397,7 @@ describe('E2E: Component Mounts', () => {
   });
 
   test('GeoMap mounts with minimal props', async () => {
-    const { GeoMap } = await import('@/components/geo-map');
+    const { GeoMap } = await import('@lionad/components/geo-map');
     const wrapper = mount(GeoMap as Component, {
       props: {
         id: 'test-map',

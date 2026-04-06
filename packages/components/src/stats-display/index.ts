@@ -1,6 +1,6 @@
-import statsdisplay from './index.vue'
-export { statsdisplay }
-export default statsdisplay
+import StatsDisplay from './index.vue'
+export { StatsDisplay }
+export default StatsDisplay
 
 export type { SparklineProps } from './schema';
 export type { StatsDisplayProps, SerializableStatsDisplay, StatItem, StatFormat, StatDiff, StatSparkline } from './schema';

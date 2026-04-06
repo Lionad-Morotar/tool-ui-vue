@@ -4,4 +4,5 @@ export type { OrderSummaryProps, SerializableOrderSummary, OrderItem, Pricing, O
 export { SerializableOrderSummarySchema, OrderItemSchema, PricingSchema, OrderDecisionSchema, OrderSummaryVariantSchema, parseSerializableOrderSummary, safeParseSerializableOrderSummary } from './schema'
 
 export { OrderSummaryRoot }
+export const OrderSummary = OrderSummaryRoot
 export default OrderSummaryRoot;

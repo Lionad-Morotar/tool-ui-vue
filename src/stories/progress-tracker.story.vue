@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { ProgressTracker } from '../components';
+import { ProgressTracker } from '@lionad/components';
 
 /**
  * # ProgressTracker

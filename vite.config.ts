@@ -21,13 +21,24 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue', 'zod', 'clsx', 'tailwind-merge'],
+      external: [
+        'vue',
+        'zod',
+        'clsx',
+        'tailwind-merge',
+        '@lionad/components',
+        '@lionad/core',
+        '@lionad/theme',
+      ],
       output: {
         globals: {
           vue: 'Vue',
           zod: 'zod',
           clsx: 'clsx',
           'tailwind-merge': 'tailwindMerge',
+          '@lionad/components': 'ToolUiVueComponents',
+          '@lionad/core': 'ToolUiVueCore',
+          '@lionad/theme': 'ToolUiVueTheme',
         },
       },
     },

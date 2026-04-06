@@ -1,6 +1,6 @@
-import codediff from './index.vue'
-export { codediff }
-export default codediff
+import CodeDiff from './index.vue'
+export { CodeDiff }
+export default CodeDiff
 
 export type {
   CodeDiffProps,

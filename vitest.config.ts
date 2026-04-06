@@ -24,6 +24,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+      '@lionad/components': resolve(__dirname, 'packages/components/src'),
     },
   },
 });

@@ -1,6 +1,6 @@
-import linkpreview from './index.vue'
-export { linkpreview }
-export default linkpreview
+import LinkPreview from './index.vue'
+export { LinkPreview }
+export default LinkPreview
 
 export type {
   LinkPreviewProps,

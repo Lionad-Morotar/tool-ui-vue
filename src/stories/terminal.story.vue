@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Terminal } from '../components';
+import { Terminal } from '@lionad/components';
 
 const interactiveState = reactive({
   command: 'npm install',

@@ -1,6 +1,6 @@
-import optionlist from './index.vue'
-export { optionlist }
-export default optionlist
+import OptionList from './index.vue'
+export { OptionList }
+export default OptionList
 
 export type {
   OptionListProps,

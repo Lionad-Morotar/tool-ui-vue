@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { MessageDraft } from '../components';
+import { MessageDraft } from '@lionad/components';
 
 const emailState = ref({
   outcome: undefined as 'sent' | 'cancelled' | undefined,

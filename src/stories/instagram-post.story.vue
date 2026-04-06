@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { InstagramPost } from '../components';
+import { InstagramPost } from '@lionad/components';
 
 /**
  * # InstagramPost

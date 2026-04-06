@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CodeBlock } from '../components';
+import { CodeBlock } from '@lionad/components';
 
 const exampleCode = `interface User {
   id: string;

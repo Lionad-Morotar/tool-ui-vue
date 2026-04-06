@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CodeDiff } from '../components';
+import { CodeDiff } from '@lionad/components';
 
 const oldFunction = `export async function fetchUser(id: string) {
   const res = await db.users.findUnique({ where: { id } });

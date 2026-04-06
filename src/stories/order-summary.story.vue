@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OrderSummaryRoot } from '../components';
+import { OrderSummaryRoot } from '@lionad/components';
 
 /**
  * ## Props

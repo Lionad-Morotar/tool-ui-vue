@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref, h } from 'vue';
-import {
+import { markRaw } from 'vue';
+import * as Components from '../src';
+import { cn } from '../src/utils';
+
+// 所有组件通过 import * 导入，然后用 markRaw 避免响应式开销
+const {
   ApprovalCard,
   Audio,
   CodeBlock,
@@ -25,8 +29,7 @@ import {
   GeoMap,
   CodeDiff,
   WeatherWidget,
-  cn,
-} from '../src';
+} = markRaw(Components);
 
 // Toast notifications
 const toasts = ref<{ id: number; message: string; type: 'success' | 'error' }[]>([]);

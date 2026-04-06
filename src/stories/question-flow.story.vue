@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { QuestionFlow } from '../components';
+import { QuestionFlow } from '@lionad/components';
 
 const progressiveState = reactive({
   step: 1,

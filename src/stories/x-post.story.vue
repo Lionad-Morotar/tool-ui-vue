@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { XPost } from '../components';
+import { XPost } from '@lionad/components';
 
 /**
  * # XPost

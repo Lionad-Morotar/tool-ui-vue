@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { Citation, CitationList } from '../components';
-import type { SerializableCitation } from '../components/citation/schema';
+import { Citation, CitationList } from '@lionad/components';
+import type { SerializableCitation } from '@lionad/components/citation/schema';
 
 const interactiveState = reactive({
   href: 'https://example.com/article',
