@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Video is used in template as <video> (kebab-case)
+// Video is used in template as <Video> (PascalCase) to resolve to the Vue component
 import { Video } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
@@ -45,7 +45,7 @@ function clearNavigateLog() {
   <Story title="Video/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-lg">
-        <video
+        <Video
           id="video-basic"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           asset-id="demo-video-1"
@@ -55,7 +55,7 @@ function clearNavigateLog() {
 
     <Variant title="With Poster">
       <div class="w-full max-w-lg">
-        <video
+        <Video
           id="video-poster"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           asset-id="demo-video-2"
@@ -67,7 +67,7 @@ function clearNavigateLog() {
 
     <Variant title="With Description">
       <div class="w-full max-w-lg">
-        <video
+        <Video
           id="video-description"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
           asset-id="demo-video-3"
@@ -81,7 +81,7 @@ function clearNavigateLog() {
 
     <Variant title="With Navigation">
       <div class="w-full max-w-lg">
-        <video
+        <Video
           id="video-nav"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-nav"
@@ -97,7 +97,7 @@ function clearNavigateLog() {
 
     <Variant title="Square Format">
       <div class="w-full max-w-sm">
-        <video
+        <Video
           id="video-square"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-4"
@@ -109,7 +109,7 @@ function clearNavigateLog() {
 
     <Variant title="Vertical Format">
       <div class="w-full max-w-xs">
-        <video
+        <Video
           id="video-vertical"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
           asset-id="demo-video-5"
@@ -122,7 +122,7 @@ function clearNavigateLog() {
     <Variant title="With Event Logging" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <video
+          <Video
             id="video-events"
             src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             asset-id="demo-video-events"
@@ -160,7 +160,7 @@ function clearNavigateLog() {
     <Variant title="Interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <video
+          <Video
             id="video-interactive"
             v-bind="interactiveState"
             @media-event="handleMediaEvent"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Audio is used in template as <audio> (kebab-case)
+// Audio is used in template as <Audio> (PascalCase) to resolve to the Vue component
 import { Audio } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
@@ -32,7 +32,7 @@ function clearEvents() {
   <Story title="Audio/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-basic"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-1"
@@ -42,7 +42,7 @@ function clearEvents() {
 
     <Variant title="With Metadata">
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-metadata"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
           asset-id="demo-audio-2"
@@ -56,7 +56,7 @@ function clearEvents() {
 
     <Variant title="Compact Variant">
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-compact"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
           asset-id="demo-audio-3"
@@ -70,7 +70,7 @@ function clearEvents() {
 
     <Variant title="Compact Without Artwork">
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-compact-no-art"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-4"
@@ -84,7 +84,7 @@ function clearEvents() {
     <Variant title="With Event Logging" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <audio
+          <Audio
             id="audio-events"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-events"
@@ -121,7 +121,7 @@ function clearEvents() {
     <Variant title="Interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <audio
+          <Audio
             id="audio-interactive"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-interactive"
