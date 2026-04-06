@@ -17,8 +17,6 @@ const emit = defineEmits<{
 // All business logic delegated to states layer
 const chartState = reactive(useChart(props, emit));
 
-// Destructure constants for template
-const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartState;
 </script>
 
 <template>
@@ -59,7 +57,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
       <div class="relative p-4">
         <svg
           class="h-auto w-full"
-          :viewBox="`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`"
+          :viewBox="`0 0 ${chartState.CHART_WIDTH} ${chartState.CHART_HEIGHT}`"
           role="img"
           aria-label="chart"
         >
@@ -69,10 +67,10 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
               v-for="(tick, i) in chartState.yTicks"
               :key="`grid-${i}`"
               class="grid-line text-muted-foreground/20"
-              :x1="MARGIN.left"
-              :y1="MARGIN.top + chartState.yScale(tick)"
-              :x2="MARGIN.left + INNER_WIDTH"
-              :y2="MARGIN.top + chartState.yScale(tick)"
+              :x1="chartState.MARGIN.left"
+              :y1="chartState.MARGIN.top + chartState.yScale(tick)"
+              :x2="chartState.MARGIN.left + chartState.INNER_WIDTH"
+              :y2="chartState.MARGIN.top + chartState.yScale(tick)"
               stroke="currentColor"
               stroke-width="1"
               stroke-dasharray="3,3"
@@ -84,8 +82,8 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
             v-for="(tick, i) in chartState.yTicks"
             :key="`y-label-${i}`"
             class="y-axis-label fill-muted-foreground text-xs"
-            :x="MARGIN.left - 8"
-            :y="MARGIN.top + chartState.yScale(tick) + 4"
+            :x="chartState.MARGIN.left - 8"
+            :y="chartState.MARGIN.top + chartState.yScale(tick) + 4"
             text-anchor="end"
           >
             {{ chartState.formatNumber(tick) }}
@@ -104,9 +102,9 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
                 :x="
                   chartState.xScaleBar(rowIndex).x + sIndex * chartState.xScaleBar(rowIndex).barWidth
                 "
-                :y="MARGIN.top + chartState.yScale(Number(row[s.key]) || 0)"
+                :y="chartState.MARGIN.top + chartState.yScale(Number(row[s.key]) || 0)"
                 :width="Math.max(1, chartState.xScaleBar(rowIndex).barWidth - 4)"
-                :height="INNER_HEIGHT - chartState.yScale(Number(row[s.key]) || 0)"
+                :height="chartState.INNER_HEIGHT - chartState.yScale(Number(row[s.key]) || 0)"
                 :fill="chartState.seriesColors[sIndex]"
                 rx="4"
                 ry="4"
@@ -138,7 +136,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
               :key="`dot-${item.rowIndex}-${item.sIndex}`"
               class="chart-dot hover:r-6 transition-all"
               :cx="chartState.xScaleLine(item.rowIndex)"
-              :cy="MARGIN.top + chartState.yScale(Number(item.row[item.s.key]) || 0)"
+              :cy="chartState.MARGIN.top + chartState.yScale(Number(item.row[item.s.key]) || 0)"
               r="4"
               :fill="chartState.seriesColors[item.sIndex]"
               :cursor="onDataPointClick ? 'pointer' : undefined"
@@ -166,7 +164,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
                 ? chartState.xScaleBar(i).x + chartState.xScaleBar(i).innerBand / 2
                 : chartState.xScaleLine(i)
             "
-            :y="CHART_HEIGHT - 10"
+            :y="chartState.CHART_HEIGHT - 10"
             text-anchor="middle"
           >
             {{ String(row[xKey]).slice(0, 8) }}
