@@ -22,10 +22,7 @@ const emit = defineEmits<{
 }>()
 
 // All business logic delegated to states layer
-const state = reactive(usePreferencesPanel({
-  props,
-  emit: (name: string, ...args: unknown[]) => (emit as (n: string, ...a: unknown[]) => void)(name, ...args),
-}));
+const state = reactive(usePreferencesPanel(props, emit));
 </script>
 
 <template>

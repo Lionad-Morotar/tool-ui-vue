@@ -5,11 +5,9 @@ import { ref, computed, onUnmounted } from 'vue';
 import type { CitationProps, CitationType, CitationVariant } from '../schema';
 import type { Ref, ComputedRef } from 'vue';
 
-export interface UseCitationOptions extends CitationProps {
-  emit: {
-    (e: 'navigate', href: string, citation: CitationProps): void;
-  };
-}
+export type CitationEmit = {
+  (e: 'navigate', href: string, citation: CitationProps): void;
+};
 
 export interface CitationState {
   FALLBACK_LOCALE: string;
@@ -56,18 +54,19 @@ const typeIcons: Record<CitationType, { viewBox: string; path: string }> = {
   },
 };
 
-export function useCitation(options: UseCitationOptions): CitationState {
-  const { locale: localeProp, domain, href, type, variant, onNavigate, emit } = options;
-
+export function useCitation(
+  props: CitationProps,
+  emit: CitationEmit,
+): CitationState {
   const isPopoverOpen = ref(false);
   const popoverTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
-  const locale = computed(() => localeProp ?? FALLBACK_LOCALE);
+  const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
 
   const displayDomain = computed(() => {
-    if (domain) return domain;
+    if (props.domain) return props.domain;
     try {
-      const urlObj = new URL(href);
+      const urlObj = new URL(props.href);
       return urlObj.hostname.replace(/^www\./, '');
     } catch {
       return undefined;
@@ -75,18 +74,18 @@ export function useCitation(options: UseCitationOptions): CitationState {
   });
 
   const sanitizedHref = computed(() => {
-    if (!href) return undefined;
-    if (href.startsWith('javascript:')) return undefined;
-    if (href.startsWith('data:')) return undefined;
-    if (href.startsWith('vbscript:')) return undefined;
-    return href;
+    if (!props.href) return undefined;
+    if (props.href.startsWith('javascript:')) return undefined;
+    if (props.href.startsWith('data:')) return undefined;
+    if (props.href.startsWith('vbscript:')) return undefined;
+    return props.href;
   });
 
   const typeIcon = computed(() => {
-    return typeIcons[type ?? 'webpage'] ?? typeIcons.webpage;
+    return typeIcons[props.type ?? 'webpage'] ?? typeIcons.webpage;
   });
 
-  const resolvedVariant = computed(() => variant ?? 'default');
+  const resolvedVariant = computed(() => props.variant ?? 'default');
 
   function formatDate(isoString: string, loc: string): string {
     try {
@@ -102,8 +101,8 @@ export function useCitation(options: UseCitationOptions): CitationState {
 
   function handleClick() {
     if (!sanitizedHref.value) return;
-    if (onNavigate) {
-      emit('navigate', sanitizedHref.value, options);
+    if (props.onNavigate) {
+      emit('navigate', sanitizedHref.value, props);
     } else {
       window.open(sanitizedHref.value, '_blank', 'noopener,noreferrer');
     }

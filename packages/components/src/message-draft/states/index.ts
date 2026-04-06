@@ -11,17 +11,11 @@ import type { ComputedRef, Ref } from 'vue';
 
 export type DraftState = 'review' | 'sending' | 'sent' | 'cancelled';
 
-export interface UseMessageDraftOptions extends RuntimeMessageDraftProps {
-  undoGracePeriod?: number;
-  onSend?: () => void | Promise<void>;
-  onUndo?: () => void;
-  onCancel?: () => void;
-  emit: {
-    (e: 'send'): void;
-    (e: 'undo'): void;
-    (e: 'cancel'): void;
-  };
-}
+export type MessageDraftEmit = {
+  (e: 'send'): void;
+  (e: 'undo'): void;
+  (e: 'cancel'): void;
+};
 
 export interface MessageDraftState {
   state: Ref<DraftState>;
@@ -53,13 +47,20 @@ function resolveStateFromOutcome(outcome: string | undefined): DraftState {
   return 'review';
 }
 
-export function useMessageDraft(options: UseMessageDraftOptions): MessageDraftState {
-  const { emit, onSend, onUndo, onCancel } = options;
-  const undoGracePeriod = options.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD;
+export function useMessageDraft(
+  props: RuntimeMessageDraftProps & {
+    undoGracePeriod?: number;
+    onSend?: () => void | Promise<void>;
+    onUndo?: () => void;
+    onCancel?: () => void;
+  },
+  emit: MessageDraftEmit,
+): MessageDraftState {
+  const undoGracePeriod = props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD;
 
-  const state = ref<DraftState>(resolveStateFromOutcome(options.outcome));
+  const state = ref<DraftState>(resolveStateFromOutcome(props.outcome));
   const countdown = ref(Math.ceil(undoGracePeriod / 1000));
-  const sentAt = ref<Date | null>(options.outcome === 'sent' ? new Date() : null);
+  const sentAt = ref<Date | null>(props.outcome === 'sent' ? new Date() : null);
   const isExpanded = ref(false);
   const needsExpansion = ref(false);
   const undoButtonRef = ref<HTMLButtonElement | null>(null);
@@ -92,14 +93,14 @@ export function useMessageDraft(options: UseMessageDraftOptions): MessageDraftSt
   function handleUndo() {
     clearTimers();
     state.value = 'review';
-    onUndo?.();
+    props.onUndo?.();
     emit('undo');
   }
 
   function handleCancel() {
     clearTimers();
     state.value = 'cancelled';
-    onCancel?.();
+    props.onCancel?.();
     emit('cancel');
   }
 
@@ -115,9 +116,9 @@ export function useMessageDraft(options: UseMessageDraftOptions): MessageDraftSt
   }
 
   // Watch for outcome prop changes
-  let previousOutcome = options.outcome;
+  let previousOutcome = props.outcome;
   watch(
-    () => options.outcome,
+    () => props.outcome,
     (newOutcome) => {
       if (previousOutcome === newOutcome) return;
       const nextState = resolveStateFromOutcome(newOutcome);
@@ -154,7 +155,7 @@ export function useMessageDraft(options: UseMessageDraftOptions): MessageDraftSt
 
         timer = setTimeout(async () => {
           clearTimers();
-          await onSend?.();
+          await props.onSend?.();
           emit('send');
           sentAt.value = new Date();
           state.value = 'sent';
@@ -168,10 +169,10 @@ export function useMessageDraft(options: UseMessageDraftOptions): MessageDraftSt
   });
 
   const showExpandButton = computed(() => needsExpansion.value);
-  const isEmailDraft = computed(() => options.channel === 'email');
-  const isSlackDraft = computed(() => options.channel === 'slack');
-  const emailProps = computed(() => options as unknown as SerializableEmailDraft);
-  const slackProps = computed(() => options as unknown as SerializableSlackDraft);
+  const isEmailDraft = computed(() => props.channel === 'email');
+  const isSlackDraft = computed(() => props.channel === 'slack');
+  const emailProps = computed(() => props as unknown as SerializableEmailDraft);
+  const slackProps = computed(() => props as unknown as SerializableSlackDraft);
 
   return {
     state,

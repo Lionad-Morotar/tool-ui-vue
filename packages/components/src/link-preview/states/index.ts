@@ -4,11 +4,9 @@
 import { computed, type Ref } from 'vue';
 import type { LinkPreviewProps, AspectRatio, MediaFit } from '../schema';
 
-export interface UseLinkPreviewOptions extends LinkPreviewProps {
-  emit: {
-    (e: 'navigate', href: string): void;
-  };
-}
+export type LinkPreviewEmit = {
+  (e: 'navigate', href: string): void;
+};
 
 export interface LinkPreviewState {
   resolvedRatio: Ref<AspectRatio>;
@@ -33,16 +31,17 @@ const fitClassMap: Record<MediaFit, string> = {
   contain: 'object-contain',
 };
 
-export function useLinkPreview(options: UseLinkPreviewOptions): LinkPreviewState {
-  const { ratio, fit, domain, href, emit } = options;
-
-  const resolvedRatio = computed(() => ratio ?? 'auto');
-  const resolvedFit = computed(() => fit ?? 'cover');
+export function useLinkPreview(
+  props: LinkPreviewProps,
+  emit: LinkPreviewEmit,
+): LinkPreviewState {
+  const resolvedRatio = computed(() => props.ratio ?? 'auto');
+  const resolvedFit = computed(() => props.fit ?? 'cover');
 
   const displayDomain = computed(() => {
-    if (domain) return domain;
+    if (props.domain) return props.domain;
     try {
-      const url = new URL(href);
+      const url = new URL(props.href);
       return url.hostname.replace(/^www\./, '');
     } catch {
       return '';
@@ -50,15 +49,15 @@ export function useLinkPreview(options: UseLinkPreviewOptions): LinkPreviewState
   });
 
   function handleNavigate() {
-    if (href) {
-      emit('navigate', href);
+    if (props.href) {
+      emit('navigate', props.href);
     }
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (href && (e.key === 'Enter' || e.key === ' ')) {
+    if (props.href && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
-      emit('navigate', href);
+      emit('navigate', props.href);
     }
   }
 

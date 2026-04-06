@@ -17,10 +17,7 @@ const emit = defineEmits<{
 }>()
 
 // All business logic delegated to states layer
-const state = reactive(useOptionList({
-  props,
-  emit: (name: string, ...args: unknown[]) => (emit as (n: string, ...a: unknown[]) => void)(name, ...args),
-}));
+const state = reactive(useOptionList(props, emit));
 </script>
 
 <template>

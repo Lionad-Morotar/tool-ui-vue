@@ -34,7 +34,7 @@ export const SliderConfigSchema = z
   .superRefine((slider, ctx) => {
     if (slider.max <= slider.min) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         path: ['max'],
         message: 'max must be greater than min',
       });
@@ -42,7 +42,7 @@ export const SliderConfigSchema = z
 
     if (slider.value < slider.min || slider.value > slider.max) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         path: ['value'],
         message: 'value must be between min and max',
       });
@@ -90,7 +90,7 @@ export const SerializableParameterSliderSchema = z.strictObject({
       const firstSeenAt = seenIds.get(slider.id);
       if (firstSeenAt !== undefined) {
         ctx.addIssue({
-          code: "custom",
+          code: 'custom',
           path: ['sliders', index, 'id'],
           message: `duplicate slider id '${slider.id}' (first seen at index ${firstSeenAt})`,
         });

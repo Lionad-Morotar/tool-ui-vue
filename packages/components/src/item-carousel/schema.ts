@@ -94,7 +94,7 @@ export const SerializableItemCarouselSchema = ItemCarouselPropsSchema.omit({
       const firstSeenAt = seenItemIds.get(item.id);
       if (firstSeenAt !== undefined) {
         ctx.addIssue({
-          code: "custom",
+          code: 'custom',
           path: ['items', index, 'id'],
           message: `duplicate item id '${item.id}' (first seen at index ${firstSeenAt})`,
         });

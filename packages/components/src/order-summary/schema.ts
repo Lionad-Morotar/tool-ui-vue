@@ -38,7 +38,7 @@ const OrderItemsSchema = z
     for (const [index, item] of items.entries()) {
       if (seenIds.has(item.id)) {
         ctx.addIssue({
-          code: "custom",
+          code: 'custom',
           message: `Duplicate item id: "${item.id}"`,
           path: [index, 'id'],
         });
@@ -110,7 +110,7 @@ export const SerializableOrderSummarySchema = z.strictObject({
   .superRefine((value, ctx) => {
     if (value.variant === 'receipt' && value.choice === undefined) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         message: 'Receipt variant requires "choice".',
         path: ['choice'],
       });
@@ -118,7 +118,7 @@ export const SerializableOrderSummarySchema = z.strictObject({
 
     if (value.variant === 'summary' && value.choice !== undefined) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         message: 'Summary variant cannot include "choice".',
         path: ['choice'],
       });

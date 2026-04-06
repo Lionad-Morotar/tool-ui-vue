@@ -8,14 +8,14 @@
  *
  * @module tool-ui-vue/vtu-components/chart/schema
  */
-import { z } from 'zod';
 import { defineToolUiContract } from '@lionad/vtu-core';
-import type { ToolUIReceipt } from '@lionad/vtu-core';
 import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
 } from '@lionad/vtu-core';
+import { z } from 'zod';
+import type { ToolUIReceipt } from '@lionad/vtu-core';
 
 /**
  * 图表系列的 Schema 定义

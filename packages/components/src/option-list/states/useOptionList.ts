@@ -1,17 +1,16 @@
 import { computed, ref, watch } from 'vue';
 import type { OptionListProps, OptionListSelection, OptionListOption } from '../schema';
 
-export interface UseOptionListOptions {
-  props: OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } };
-  emit: {
-    (e: 'change', value: OptionListSelection): void;
-    (e: 'update:modelValue', value: OptionListSelection): void;
-    (e: 'action', actionId: string, value: OptionListSelection): void;
-  };
-}
+export type OptionListEmit = {
+  (e: 'change', value: OptionListSelection): void;
+  (e: 'update:modelValue', value: OptionListSelection): void;
+  (e: 'action', actionId: string, value: OptionListSelection): void;
+};
 
-export function useOptionList(options: UseOptionListOptions) {
-  const { props, emit } = options;
+export function useOptionList(
+  props: OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } },
+  emit: OptionListEmit,
+) {
 
   // Normalize actions config
   const normalizedActions = computed(() => {

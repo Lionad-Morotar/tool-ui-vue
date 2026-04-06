@@ -5,11 +5,9 @@ import { computed } from 'vue';
 import type { ImageProps, AspectRatio, MediaFit } from '../schema';
 import type { ComputedRef } from 'vue';
 
-export interface UseImageOptions extends ImageProps {
-  emit: {
-    (e: 'navigate', href: string): void;
-  };
-}
+export type ImageEmit = {
+  (e: 'navigate', href: string): void;
+};
 
 export interface ImageState {
   resolvedRatio: ComputedRef<AspectRatio>;
@@ -66,25 +64,26 @@ const fitClassMap: Record<MediaFit, string> = {
   contain: 'object-contain',
 };
 
-export function useImage(options: UseImageOptions): ImageState {
-  const { ratio, fit, locale: localeProp, source, domain, title, href, src, emit } = options;
+export function useImage(
+  props: ImageProps,
+  emit: ImageEmit,
+): ImageState {
+  const resolvedRatio = computed(() => props.ratio ?? 'auto');
+  const resolvedFit = computed(() => props.fit ?? 'cover');
+  const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
 
-  const resolvedRatio = computed(() => ratio ?? 'auto');
-  const resolvedFit = computed(() => fit ?? 'cover');
-  const locale = computed(() => localeProp ?? FALLBACK_LOCALE);
-
-  const sourceLabel = computed(() => source?.label ?? domain);
+  const sourceLabel = computed(() => props.source?.label ?? props.domain);
   const fallbackInitial = computed(() =>
     (sourceLabel.value ?? '').trim().charAt(0).toUpperCase()
   );
-  const hasSource = computed(() => Boolean(sourceLabel.value || source?.iconUrl));
-  const hasMetadata = computed(() => title || hasSource.value);
+  const hasSource = computed(() => Boolean(sourceLabel.value || props.source?.iconUrl));
+  const hasMetadata = computed(() => props.title || hasSource.value);
 
   // 净化 URL，防止 XSS 攻击
-  const sanitizedSrc = computed(() => sanitizeHref(src));
-  const sanitizedHref = computed(() => sanitizeHref(href));
-  const sanitizedSourceUrl = computed(() => sanitizeHref(source?.url));
-  const sanitizedSourceIconUrl = computed(() => sanitizeHref(source?.iconUrl));
+  const sanitizedSrc = computed(() => sanitizeHref(props.src));
+  const sanitizedHref = computed(() => sanitizeHref(props.href));
+  const sanitizedSourceUrl = computed(() => sanitizeHref(props.source?.url));
+  const sanitizedSourceIconUrl = computed(() => sanitizeHref(props.source?.iconUrl));
 
   function handleImageClick() {
     if (sanitizedHref.value) {

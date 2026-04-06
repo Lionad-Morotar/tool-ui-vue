@@ -59,7 +59,7 @@ function validateOptionListInvariants(
     data.minSelections > data.maxSelections
   ) {
     ctx.addIssue({
-      code: "custom",
+      code: 'custom',
       path: ['minSelections'],
       message: '`minSelections` cannot be greater than `maxSelections`.',
     });
@@ -72,7 +72,7 @@ function validateOptionListInvariants(
 
     if (optionIds.has(optionId)) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         path: ['options', index, 'id'],
         message: `Duplicate option id "${optionId}" is not allowed.`,
       });
@@ -96,7 +96,7 @@ function validateOptionListInvariants(
     ids.forEach((selectionId, index) => {
       if (!optionIds.has(selectionId)) {
         ctx.addIssue({
-          code: "custom",
+          code: 'custom',
           path:
             typeof selection === 'string' ? [fieldName] : [fieldName, index],
           message: `Selection id "${selectionId}" must exist in options.`,

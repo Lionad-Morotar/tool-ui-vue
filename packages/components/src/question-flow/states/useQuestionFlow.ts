@@ -6,24 +6,21 @@ import type {
   QuestionFlowChoice,
 } from '../schema';
 
-export interface UseQuestionFlowEmits {
-  select: (optionIds: string[]) => void;
-  back: () => void;
-  stepChange: (stepId: string) => void;
-  complete: (answers: Record<string, string[]>) => void;
-}
-
-export interface UseQuestionFlowOptions {
-  props: QuestionFlowProps & { css?: { root?: string } };
-  emit: UseQuestionFlowEmits;
-}
+export type QuestionFlowEmit = {
+  (e: 'select', optionIds: string[]): void;
+  (e: 'back'): void;
+  (e: 'stepChange', stepId: string): void;
+  (e: 'complete', answers: Record<string, string[]>): void;
+};
 
 const EXIT_DURATION = 250;
 const ENTER_DELAY = 200;
 const ENTER_DURATION = 250;
 
-export function useQuestionFlow(options: UseQuestionFlowOptions) {
-  const { props, emit } = options;
+export function useQuestionFlow(
+  props: QuestionFlowProps & { css?: { root?: string } },
+  emit: QuestionFlowEmit,
+) {
   const rawProps = props as unknown as Record<string, unknown>;
 
   // Track timeouts for cleanup
@@ -222,16 +219,16 @@ export function useQuestionFlow(options: UseQuestionFlowOptions) {
 
     if (isLastStep.value) {
       if (upfrontProps.value) {
-        emit.complete(answers.value);
+        emit('complete', answers.value);
       } else if (progressiveProps.value) {
-        emit.select(Array.from(selectedIds.value));
+        emit('select', Array.from(selectedIds.value));
       }
     } else {
       saveExitingStepData();
       currentStepIndex.value++;
 
       if (currentStep.value) {
-        emit.stepChange(currentStep.value.id);
+        emit('stepChange', currentStep.value.id);
       }
 
       scheduleTimeout(() => {
@@ -242,13 +239,13 @@ export function useQuestionFlow(options: UseQuestionFlowOptions) {
 
   function handleBack() {
     if (progressiveProps.value) {
-      emit.back();
+      emit('back');
     } else if (currentStepIndex.value > 0) {
       saveExitingStepData();
       currentStepIndex.value--;
 
       if (currentStep.value) {
-        emit.stepChange(currentStep.value.id);
+        emit('stepChange', currentStep.value.id);
       }
 
       scheduleTimeout(() => {

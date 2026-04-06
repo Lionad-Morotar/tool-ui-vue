@@ -71,12 +71,12 @@ export function useChart(
 
   // Computed palette
   const palette = computed(() =>
-    colors?.length ? colors : DEFAULT_COLORS
+    props.colors?.length ? props.colors : DEFAULT_COLORS
   );
 
   // Computed series colors
   const seriesColors = computed(() =>
-    series.map(
+    props.series.map(
       (seriesItem, index) =>
         seriesItem.color ?? palette.value[index % palette.value.length]
     )
@@ -85,8 +85,8 @@ export function useChart(
   // Computed Y values
   const allYValues = computed(() => {
     const values: number[] = [];
-    for (const row of data) {
-      for (const s of series) {
+    for (const row of props.data) {
+      for (const s of props.series) {
         const v = row[s.key];
         if (typeof v === 'number' && Number.isFinite(v)) {
           values.push(v);
@@ -122,22 +122,22 @@ export function useChart(
 
   // X scale for bar charts
   function xScaleBar(index: number) {
-    const bandWidth = INNER_WIDTH / data.length;
+    const bandWidth = INNER_WIDTH / props.data.length;
     const groupPadding = bandWidth * 0.2;
     const innerBand = bandWidth - groupPadding;
-    const barWidth = innerBand / series.length;
+    const barWidth = innerBand / props.series.length;
     const x = MARGIN.left + index * bandWidth + groupPadding / 2;
     return { bandWidth, barWidth, x };
   }
 
   // X scale for line charts
   function xScaleLine(index: number) {
-    return MARGIN.left + (index / (data.length - 1 || 1)) * INNER_WIDTH;
+    return MARGIN.left + (index / (props.data.length - 1 || 1)) * INNER_WIDTH;
   }
 
   // Line smoothing (monotone-like cubic bezier)
   function linePathD(seriesKey: string) {
-    const points = data.map((row, i) => ({
+    const points = props.data.map((row, i) => ({
       x: xScaleLine(i),
       y: yScale(Number(row[seriesKey]) || 0),
     }));
@@ -184,8 +184,8 @@ export function useChart(
       visible: true,
       x: event.clientX - rect.left + 12,
       y: event.clientY - rect.top - 12,
-      title: String(row[xKey]),
-      items: series.map((s, i) => ({
+      title: String(row[props.xKey]),
+      items: props.series.map((s, i) => ({
         label: s.label,
         value: String(row[s.key] ?? ''),
         color: seriesColors.value[i],
@@ -210,11 +210,20 @@ export function useChart(
     payload: Record<string, unknown>,
     index: number
   ) {
-    if (onDataPointClick) {
-      onDataPointClick({
+    if (props.onDataPointClick) {
+      props.onDataPointClick({
         seriesKey,
         seriesLabel,
-        xValue: payload[xKey],
+        xValue: payload[props.xKey],
+        yValue: payload[seriesKey],
+        index,
+        payload,
+      });
+    } else {
+      emit('dataPointClick', {
+        seriesKey,
+        seriesLabel,
+        xValue: payload[props.xKey],
         yValue: payload[seriesKey],
         index,
         payload,

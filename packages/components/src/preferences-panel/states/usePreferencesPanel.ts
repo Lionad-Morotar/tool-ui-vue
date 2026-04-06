@@ -8,17 +8,16 @@ import type {
   PreferenceSection,
 } from '../schema';
 
-export interface UsePreferencesPanelOptions {
-  props: PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } };
-  emit: {
-    (e: 'change', value: PreferencesValue): void;
-    (e: 'action', actionId: string, value: PreferencesValue): void;
-    (e: 'beforeAction', actionId: string, value: PreferencesValue): void;
-  };
-}
+export type PreferencesPanelEmit = {
+  (e: 'change', value: PreferencesValue): void;
+  (e: 'action', actionId: string, value: PreferencesValue): void;
+  (e: 'beforeAction', actionId: string, value: PreferencesValue): void;
+};
 
-export function usePreferencesPanel(options: UsePreferencesPanelOptions) {
-  const { props, emit } = options;
+export function usePreferencesPanel(
+  props: PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } },
+  emit: PreferencesPanelEmit,
+) {
 
   // Determine if we're in receipt mode
   const isReceipt = computed(() => 'choice' in props && props.choice !== undefined);

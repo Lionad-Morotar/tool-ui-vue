@@ -5,12 +5,10 @@ import { icons } from 'lucide-vue-next';
 import { computed, type ComputedRef, type Component } from 'vue';
 import type { ApprovalCardBaseProps } from '../schema';
 
-export interface UseApprovalCardOptions extends ApprovalCardBaseProps {
-  emit: {
-    (e: 'confirm'): void;
-    (e: 'cancel'): void;
-  };
-}
+export type ApprovalCardEmit = {
+  (e: 'confirm'): void;
+  (e: 'cancel'): void;
+};
 
 export interface ApprovalCardState {
   resolvedVariant: ComputedRef<'default' | 'destructive'>;
@@ -24,22 +22,23 @@ export interface ApprovalCardState {
   handleKeyDown: (event: KeyboardEvent) => void;
 }
 
-export function useApprovalCard(options: UseApprovalCardOptions): ApprovalCardState {
-  const { variant, confirmLabel, cancelLabel, choice, icon, emit } = options;
-
-  const resolvedVariant = computed(() => variant ?? 'default');
-  const resolvedConfirmLabel = computed(() => confirmLabel ?? 'Approve');
-  const resolvedCancelLabel = computed(() => cancelLabel ?? 'Deny');
+export function useApprovalCard(
+  props: ApprovalCardBaseProps,
+  emit: ApprovalCardEmit,
+): ApprovalCardState {
+  const resolvedVariant = computed(() => props.variant ?? 'default');
+  const resolvedConfirmLabel = computed(() => props.confirmLabel ?? 'Approve');
+  const resolvedCancelLabel = computed(() => props.cancelLabel ?? 'Deny');
   const isDestructive = computed(() => resolvedVariant.value === 'destructive');
 
   // Dynamic icon lookup using lucide-vue-next
   const IconComponent = computed(() => {
-    if (!icon) return null;
+    if (!props.icon) return null;
 
     // Convert kebab-case to PascalCase for icon lookup
-    const pascalName = icon
+    const pascalName = props.icon
       .split('-')
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
       .join('');
 
     const Icon = icons[pascalName as keyof typeof icons];
@@ -48,7 +47,7 @@ export function useApprovalCard(options: UseApprovalCardOptions): ApprovalCardSt
 
   // Receipt display label
   const receiptLabel = computed(() => {
-    if (choice === 'approved') {
+    if (props.choice === 'approved') {
       return resolvedConfirmLabel.value;
     }
     return resolvedCancelLabel.value;

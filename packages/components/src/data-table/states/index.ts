@@ -23,6 +23,6 @@ export {
 
 export {
   useDataTable,
-  type UseDataTableOptions,
+  type DataTableEmit,
   type DataTableState,
 } from './useDataTable';

@@ -18,15 +18,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useQuestionFlow({
-  props,
-  emit: {
-    select: (ids: string[]) => (emit as (n: string, ...a: unknown[]) => void)('select', ids),
-    back: () => (emit as (n: string, ...a: unknown[]) => void)('back'),
-    stepChange: (id: string) => (emit as (n: string, ...a: unknown[]) => void)('stepChange', id),
-    complete: (answers: Record<string, string[]>) => (emit as (n: string, ...a: unknown[]) => void)('complete', answers),
-  },
-}));
+const state = reactive(useQuestionFlow(props, emit));
 
 // Chevron left icon
 const ChevronLeftIcon = {
