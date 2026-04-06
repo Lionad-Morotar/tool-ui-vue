@@ -5,12 +5,6 @@ import { ref, computed } from 'vue';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';
 import type { ComputedRef, Ref } from 'vue';
 
-export interface UseLinkedinPostOptions extends LinkedInPostProps {
-  emit: {
-    (e: 'action', action: string, post: LinkedInPostData): void;
-  };
-}
-
 const TEXT_PREVIEW_LENGTH = 280;
 
 export interface LinkedinPostState {
@@ -26,8 +20,11 @@ export interface LinkedinPostState {
   handleLinkClick: (url: string) => void;
 }
 
-export function useLinkedinPost(options: UseLinkedinPostOptions): LinkedinPostState {
-  const { post, emit } = options;
+type EmitFn = {
+  (e: 'action', action: string, post: LinkedInPostData): void;
+};
+
+export function useLinkedinPost(props: LinkedInPostProps, emit: EmitFn): LinkedinPostState {
 
   const isExpanded = ref(false);
 
@@ -102,7 +99,7 @@ export function useLinkedinPost(options: UseLinkedinPostOptions): LinkedinPostSt
   }
 
   function handleAction(action: string) {
-    emit('action', action, post);
+    emit('action', action, props.post);
   }
 
   function handleLinkClick(url: string) {
@@ -113,15 +110,15 @@ export function useLinkedinPost(options: UseLinkedinPostOptions): LinkedinPostSt
   }
 
   const shouldTruncate = computed(() => {
-    return Boolean(post.text && post.text.length > TEXT_PREVIEW_LENGTH);
+    return Boolean(props.post.text && props.post.text.length > TEXT_PREVIEW_LENGTH);
   });
 
   const displayText = computed(() => {
-    if (!post.text) return '';
+    if (!props.post.text) return '';
     if (shouldTruncate.value && !isExpanded.value) {
-      return post.text.slice(0, TEXT_PREVIEW_LENGTH);
+      return props.post.text.slice(0, TEXT_PREVIEW_LENGTH);
     }
-    return post.text;
+    return props.post.text;
   });
 
   return {

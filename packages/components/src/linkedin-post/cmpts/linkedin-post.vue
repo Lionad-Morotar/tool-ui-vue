@@ -14,7 +14,7 @@ const emit = defineEmits<{
   action: [action: string, post: LinkedInPostData];
 }>();
 
-const state = reactive(useLinkedinPost({ ...props, emit }));
+const state = reactive(useLinkedinPost(props, emit));
 const isExpanded = toRef(state, 'isExpanded');
 </script>
 

@@ -3,19 +3,16 @@
 
 import type { InstagramPostProps, InstagramPostData } from '../schema';
 
-export interface UseInstagramPostOptions extends InstagramPostProps {
-  emit: {
-    (e: 'action', action: string, post: InstagramPostData): void;
-  };
-}
-
 export interface InstagramPostState {
   formatRelativeTime: (dateStr: string) => string;
   handleAction: (action: string) => void;
 }
 
-export function useInstagramPost(options: UseInstagramPostOptions): InstagramPostState {
-  const { post, emit } = options;
+type EmitFn = {
+  (e: 'action', action: string, post: InstagramPostData): void;
+};
+
+export function useInstagramPost(props: InstagramPostProps, emit: EmitFn): InstagramPostState {
 
   function formatRelativeTime(dateStr: string): string {
     const date = new Date(dateStr);
@@ -34,7 +31,7 @@ export function useInstagramPost(options: UseInstagramPostOptions): InstagramPos
   }
 
   function handleAction(action: string) {
-    emit('action', action, post);
+    emit('action', action, props.post);
   }
 
   return {

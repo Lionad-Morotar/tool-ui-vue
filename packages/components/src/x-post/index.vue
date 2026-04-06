@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>()
 
 // All business logic delegated to states layer
-const state = reactive(useXPost({
-  ...props,
-  emit,
-}));
+const state = reactive(useXPost(props, emit));
 </script>
 
 <template>

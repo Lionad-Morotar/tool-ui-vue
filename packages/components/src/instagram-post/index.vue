@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useInstagramPost({
-  ...props,
-  emit,
-}));
+const state = reactive(useInstagramPost(props, emit));
 </script>
 
 <template>

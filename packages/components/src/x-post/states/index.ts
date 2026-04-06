@@ -3,12 +3,6 @@
 
 import type { XPostProps, XPostData } from '../schema';
 
-export interface UseXPostOptions extends XPostProps {
-  emit: {
-    (e: 'action', action: string, post: XPostData): void;
-  };
-}
-
 export interface XPostState {
   formatCount: (count: number) => string;
   formatRelativeTime: (dateStr: string) => string;
@@ -20,8 +14,11 @@ export interface XPostState {
   handleLinkClick: (url: string) => void;
 }
 
-export function useXPost(options: UseXPostOptions): XPostState {
-  const { post, emit } = options;
+type EmitFn = {
+  (e: 'action', action: string, post: XPostData): void;
+};
+
+export function useXPost(props: XPostProps, emit: EmitFn): XPostState {
 
   function formatCount(count: number): string {
     if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
@@ -102,7 +99,7 @@ export function useXPost(options: UseXPostOptions): XPostState {
   }
 
   function handleAction(action: string) {
-    emit('action', action, post);
+    emit('action', action, props.post);
   }
 
   function handleLinkClick(url: string) {
