@@ -16,10 +16,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(usePlan({
-  ...props,
-  emit,
-}));
+const state = reactive(usePlan(props, emit));
 </script>
 
 <template>

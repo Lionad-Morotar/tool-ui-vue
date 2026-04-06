@@ -1,15 +1,12 @@
 // Plan component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { ref, computed, watch, type ComputedRef } from 'vue';
+import { ref, computed, watch, type ComputedRef, type Ref } from 'vue';
 import type { PlanProps, PlanTodo } from '../schema';
-import type { Ref } from 'vue';
 
-export interface UsePlanOptions extends PlanProps {
-  emit: {
-    (e: 'todoClick', todoId: string, index: number): void;
-  };
-}
+export type PlanEmitFn = {
+  (e: 'todoClick', todoId: string, index: number): void;
+};
 
 export interface PlanState {
   expandedTodos: Ref<Set<string>>;
@@ -29,8 +26,9 @@ export interface PlanState {
   handleTodoClick: (todo: PlanTodo, index: number) => void;
 }
 
-export function usePlan(options: UsePlanOptions): PlanState {
-  const { todos, maxVisibleTodos, emit } = options;
+export function usePlan(props: PlanProps, emit: PlanEmitFn): PlanState {
+  const todos = computed(() => props.todos);
+  const maxVisibleTodos = computed(() => props.maxVisibleTodos ?? 4);
 
   const expandedTodos = ref<Set<string>>(new Set());
   const isCelebrating = ref(false);
@@ -38,18 +36,18 @@ export function usePlan(options: UsePlanOptions): PlanState {
   const showMoreExpanded = ref(false);
 
   const visibleTodos = computed(() => {
-    return todos.slice(0, maxVisibleTodos);
+    return todos.value.slice(0, maxVisibleTodos.value);
   });
 
   const hiddenTodos = computed(() => {
-    return todos.slice(maxVisibleTodos);
+    return todos.value.slice(maxVisibleTodos.value);
   });
 
   const hiddenCount = computed(() => hiddenTodos.value.length);
 
   const progress = computed(() => {
-    const total = todos.length;
-    const completed = todos.filter((t) => t.status === 'completed').length;
+    const total = todos.value.length;
+    const completed = todos.value.filter((t) => t.status === 'completed').length;
     return {
       total,
       completed,
