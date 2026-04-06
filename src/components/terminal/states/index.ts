@@ -1,8 +1,8 @@
 // Terminal component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
-import { ref, computed } from 'vue';
 import AnsiToHtml from 'ansi-to-html';
+import { ref, computed } from 'vue';
 import type { TerminalProps } from '../schema';
 
 export interface UseTerminalOptions extends TerminalProps {}

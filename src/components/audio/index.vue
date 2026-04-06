@@ -119,8 +119,18 @@ const audioRef = toRef(audioState, 'audioRef');
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
+                  <rect
+                    x="6"
+                    y="4"
+                    width="4"
+                    height="16"
+                  />
+                  <rect
+                    x="14"
+                    y="4"
+                    width="4"
+                    height="16"
+                  />
                 </svg>
                 <svg
                   v-else
@@ -203,8 +213,18 @@ const audioRef = toRef(audioState, 'audioRef');
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <rect x="6" y="4" width="4" height="16" />
-              <rect x="14" y="4" width="4" height="16" />
+              <rect
+                x="6"
+                y="4"
+                width="4"
+                height="16"
+              />
+              <rect
+                x="14"
+                y="4"
+                width="4"
+                height="16"
+              />
             </svg>
             <svg
               v-else

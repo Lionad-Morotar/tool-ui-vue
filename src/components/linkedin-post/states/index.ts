@@ -2,8 +2,8 @@
 // All business logic lives here, cmpts/linkedin-post.vue is UI-only
 
 import { ref, computed } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseLinkedinPostOptions extends LinkedInPostProps {
   emit: {

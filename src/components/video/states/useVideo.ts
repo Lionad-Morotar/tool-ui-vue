@@ -1,10 +1,10 @@
 import { computed, type ComputedRef } from 'vue';
+import { useEvents, createDomEventHandlers } from './useEvents';
+import { usePlayback } from './usePlayback';
+import { openSafeNavigationHref } from '../../../shared/media';
+import { resolveVideoNavigation } from '../video-helpers';
 import type { VideoProps, AspectRatio, MediaFit } from '../schema';
 import type { EventEmits } from './useEvents';
-import { usePlayback } from './usePlayback';
-import { useEvents, createDomEventHandlers } from './useEvents';
-import { resolveVideoNavigation } from '../video-helpers';
-import { openSafeNavigationHref } from '../../../shared/media';
 
 export interface UseVideoOptions extends VideoProps {
   emit: EventEmits & {

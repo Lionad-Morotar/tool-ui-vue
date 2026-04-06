@@ -18,10 +18,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useGeoMap({
-  ...props,
-  emit,
-}));
+const state = reactive(useGeoMap(props, emit));
 </script>
 
 <template>

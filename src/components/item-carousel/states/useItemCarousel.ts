@@ -1,7 +1,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
-import type { ItemCarouselProps } from '../schema';
 import { prefersReducedMotion } from '../../../shared/utils';
+import type { ItemCarouselProps } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseItemCarouselOptions extends ItemCarouselProps {
   interactive?: boolean;

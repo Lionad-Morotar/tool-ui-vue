@@ -1,7 +1,7 @@
-import type { SliderConfig } from '../schema';
-import type { SliderState } from './useSlider';
 import { sliderRangeToPercent } from '../math';
 import { THUMB_WIDTH, TEXT_VERTICAL_OFFSET, TRACK_EDGE_INSET } from './useLayout';
+import type { SliderConfig } from '../schema';
+import type { SliderState } from './useSlider';
 
 // Constants
 const TERMINAL_EPSILON = 1e-6;

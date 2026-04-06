@@ -1,6 +1,6 @@
 import { useMediaControls } from '@vueuse/core';
-import { computed, ref, watch, type Ref } from 'vue';
-import type { ComputedRef } from 'vue';
+import type { ComputedRef                                                                                                                                } from 'vue';
+import { computed, ref, watch, type Ref                                                                                                                                } from 'vue';
 
 export interface PlaybackOptions {
   src: string;

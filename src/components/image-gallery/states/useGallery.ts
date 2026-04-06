@@ -1,6 +1,6 @@
 import { computed, type ComputedRef } from 'vue';
-import type { ImageGalleryProps, ImageGalleryItem } from '../schema';
 import { provideImageGallery } from './useGalleryContext';
+import type { ImageGalleryProps, ImageGalleryItem } from '../schema';
 
 export interface UseGalleryOptions extends ImageGalleryProps {
   emit: (e: 'imageClick', imageId: string, image: ImageGalleryItem) => void;

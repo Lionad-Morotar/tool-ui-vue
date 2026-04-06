@@ -1,8 +1,8 @@
 // DataTable 聚合 composable - 组装 useSort, useFormat, useLayout
-import type { DataTableProps } from '../schema';
-import { useSort, type UseSortOptions } from './useSort';
 import { useFormat, type FormatOptions } from './useFormat';
 import { useLayout, type UseLayoutOptions } from './useLayout';
+import { useSort, type UseSortOptions } from './useSort';
+import type { DataTableProps } from '../schema';
 
 export interface UseDataTableOptions extends DataTableProps {
   emit: {

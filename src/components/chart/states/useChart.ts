@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
 import type { ChartProps, ChartDataPoint } from '../schema';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseChartOptions extends ChartProps {
   onDataPointClick?: (point: ChartDataPoint) => void;

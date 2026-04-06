@@ -4,12 +4,10 @@
 import { ref, computed, onMounted, onUnmounted, type Ref, type ComputedRef } from 'vue';
 import type { GeoMapProps, GeoMapMarker, GeoMapRoute, GeoMapStyle } from '../schema';
 
-export interface UseGeoMapOptions extends GeoMapProps {
-  emit: {
-    (e: 'marker-click', marker: GeoMapMarker): void;
-    (e: 'route-click', route: GeoMapRoute): void;
-  };
-}
+export type GeoMapEmitFn = {
+  (e: 'marker-click', marker: GeoMapMarker): void;
+  (e: 'route-click', route: GeoMapRoute): void;
+};
 
 export interface GeoMapState {
   LIGHT_TILE_URL: string;
@@ -48,9 +46,7 @@ function getDocumentTheme(): 'light' | 'dark' | null {
   return null;
 }
 
-export function useGeoMap(options: UseGeoMapOptions): GeoMapState {
-  const { theme, title, description, style, onMarkerClick, onRouteClick } = options;
-
+export function useGeoMap(props: GeoMapProps, emit: GeoMapEmitFn): GeoMapState {
   const inheritedTheme = ref<'light' | 'dark'>(
     getDocumentTheme() ?? getSystemTheme()
   );
@@ -82,33 +78,33 @@ export function useGeoMap(options: UseGeoMapOptions): GeoMapState {
     observer?.disconnect();
   });
 
-  const resolvedTheme = computed(() => theme ?? inheritedTheme.value);
+  const resolvedTheme = computed(() => props.theme ?? inheritedTheme.value);
   const isMapReady = ref(false);
   const tileUrl = computed(() =>
     resolvedTheme.value === 'dark' ? DARK_TILE_URL : LIGHT_TILE_URL
   );
 
   const mapAriaLabel = computed(() => {
-    if (title && description) {
-      return `${title}. ${description}`;
+    if (props.title && props.description) {
+      return `${props.title}. ${props.description}`;
     }
-    return title ?? description ?? 'Geographic map';
+    return props.title ?? props.description ?? 'Geographic map';
   });
 
   const resolvedRootStyle = computed<GeoMapStyle>(() => ({
     '--geo-map-canvas-bg':
       resolvedTheme.value === 'dark' ? 'var(--background)' : 'var(--muted)',
-    ...style,
+    ...props.style,
   }));
 
   function handleMarkerClick(marker: GeoMapMarker) {
-    options.emit('marker-click', marker);
-    onMarkerClick?.(marker);
+    emit('marker-click', marker);
+    props.onMarkerClick?.(marker);
   }
 
   function handleRouteClick(route: GeoMapRoute) {
-    options.emit('route-click', route);
-    onRouteClick?.(route);
+    emit('route-click', route);
+    props.onRouteClick?.(route);
   }
 
   function handleReadyChange(isReady: boolean) {

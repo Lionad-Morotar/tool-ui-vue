@@ -1,7 +1,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
-import type { Highlighter, ShikiTransformer } from 'shiki';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from '../schema';
+import type { Highlighter, ShikiTransformer } from 'shiki';
+import type { ComputedRef, Ref } from 'vue';
 
 export interface UseCodeBlockOptions extends CodeBlockProps {}
 
