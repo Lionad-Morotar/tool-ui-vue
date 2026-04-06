@@ -1,10 +1,6 @@
 import { computed, ref } from 'vue';
-import type { ComputedRef, Ref } from 'vue';
 import type { ChartProps, ChartDataPoint } from '../schema';
-
-export interface UseChartOptions extends ChartProps {
-  onDataPointClick?: (point: ChartDataPoint) => void;
-}
+import type { ComputedRef, Ref } from 'vue';
 
 export interface ChartTooltipState {
   visible: boolean;
@@ -49,6 +45,8 @@ export interface ChartReturns {
   formatNumber: (n: number) => string;
 }
 
+type ChartEmitFn = (event: 'dataPointClick', point: ChartDataPoint) => void;
+
 const DEFAULT_COLORS = [
   'var(--chart-1)',
   'var(--chart-2)',
@@ -64,23 +62,15 @@ const MARGIN = { top: 8, right: 8, bottom: 40, left: 48 };
 const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
-export function useChart(options: UseChartOptions): ChartReturns {
-  const {
-    data,
-    series,
-    xKey,
-    colors,
-    onDataPointClick,
-  } = options;
-
+export function useChart(props: ChartProps, emit: ChartEmitFn): ChartReturns {
   // Computed palette
   const palette = computed(() =>
-    colors?.length ? colors : DEFAULT_COLORS
+    props.colors?.length ? props.colors : DEFAULT_COLORS
   );
 
   // Computed series colors
   const seriesColors = computed(() =>
-    series.map(
+    props.series.map(
       (seriesItem, index) =>
         seriesItem.color ?? palette.value[index % palette.value.length]
     )
@@ -89,8 +79,8 @@ export function useChart(options: UseChartOptions): ChartReturns {
   // Computed Y values
   const allYValues = computed(() => {
     const values: number[] = [];
-    for (const row of data) {
-      for (const s of series) {
+    for (const row of props.data) {
+      for (const s of props.series) {
         const v = row[s.key];
         if (typeof v === 'number' && Number.isFinite(v)) {
           values.push(v);
@@ -126,22 +116,22 @@ export function useChart(options: UseChartOptions): ChartReturns {
 
   // X scale for bar charts
   function xScaleBar(index: number) {
-    const bandWidth = INNER_WIDTH / data.length;
+    const bandWidth = INNER_WIDTH / props.data.length;
     const groupPadding = bandWidth * 0.2;
     const innerBand = bandWidth - groupPadding;
-    const barWidth = innerBand / series.length;
+    const barWidth = innerBand / props.series.length;
     const x = MARGIN.left + index * bandWidth + groupPadding / 2;
     return { bandWidth, barWidth, x };
   }
 
   // X scale for line charts
   function xScaleLine(index: number) {
-    return MARGIN.left + (index / (data.length - 1 || 1)) * INNER_WIDTH;
+    return MARGIN.left + (index / (props.data.length - 1 || 1)) * INNER_WIDTH;
   }
 
   // Line smoothing (monotone-like cubic bezier)
   function linePathD(seriesKey: string) {
-    const points = data.map((row, i) => ({
+    const points = props.data.map((row, i) => ({
       x: xScaleLine(i),
       y: yScale(Number(row[seriesKey]) || 0),
     }));
@@ -188,8 +178,8 @@ export function useChart(options: UseChartOptions): ChartReturns {
       visible: true,
       x: event.clientX - rect.left + 12,
       y: event.clientY - rect.top - 12,
-      title: String(row[xKey]),
-      items: series.map((s, i) => ({
+      title: String(row[props.xKey]),
+      items: props.series.map((s, i) => ({
         label: s.label,
         value: String(row[s.key] ?? ''),
         color: seriesColors.value[i],
@@ -214,11 +204,20 @@ export function useChart(options: UseChartOptions): ChartReturns {
     payload: Record<string, unknown>,
     index: number
   ) {
-    if (onDataPointClick) {
-      onDataPointClick({
+    if (props.onDataPointClick) {
+      props.onDataPointClick({
         seriesKey,
         seriesLabel,
-        xValue: payload[xKey],
+        xValue: payload[props.xKey],
+        yValue: payload[seriesKey],
+        index,
+        payload,
+      });
+    } else {
+      emit('dataPointClick', {
+        seriesKey,
+        seriesLabel,
+        xValue: payload[props.xKey],
         yValue: payload[seriesKey],
         index,
         payload,

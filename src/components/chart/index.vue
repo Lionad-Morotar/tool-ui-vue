@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const chartState = reactive(useChart({
-  ...props,
-  onDataPointClick: (point) => emit('dataPointClick', point),
-}));
+const chartState = reactive(useChart(props, emit));
 
 // Destructure constants for template
 const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartState;
@@ -113,7 +110,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
                 :fill="chartState.seriesColors[sIndex]"
                 rx="4"
                 ry="4"
-                :cursor="onDataPointClick ? 'pointer' : undefined"
+                :cursor="props.onDataPointClick ? 'pointer' : undefined"
                 @mouseenter="chartState.showTooltip($event, row, sIndex)"
                 @mousemove="chartState.moveTooltip"
                 @mouseleave="chartState.hideTooltip"
@@ -144,7 +141,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
               :cy="MARGIN.top + chartState.yScale(Number(item.row[item.s.key]) || 0)"
               r="4"
               :fill="chartState.seriesColors[item.sIndex]"
-              :cursor="onDataPointClick ? 'pointer' : undefined"
+              :cursor="props.onDataPointClick ? 'pointer' : undefined"
               @mouseenter="chartState.showTooltip($event, item.row, item.sIndex)"
               @mousemove="chartState.moveTooltip"
               @mouseleave="chartState.hideTooltip"
