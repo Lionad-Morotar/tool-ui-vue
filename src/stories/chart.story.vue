@@ -153,13 +153,13 @@ function handleDataPointClick(point: ChartDataPoint) {
           title="Performance Metrics"
           x-key="metric"
           :series="[
-            { key: 'value', label: 'Score' },
+            { key: 'speed', label: 'Speed' },
+            { key: 'quality', label: 'Quality' },
+            { key: 'reliability', label: 'Reliability' },
+            { key: 'usability', label: 'Usability' },
           ]"
           :data="[
-            { metric: 'Speed', value: 95 },
-            { metric: 'Quality', value: 88 },
-            { metric: 'Reliability', value: 92 },
-            { metric: 'Usability', value: 85 },
+            { metric: 'Overview', speed: 95, quality: 88, reliability: 92, usability: 85 },
           ]"
           :colors="['#3b82f6', '#10b981', '#f59e0b', '#ef4444']"
           show-legend
@@ -170,7 +170,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant title="Interactive - Click Data Points">
       <div class="w-full max-w-2xl">
-        <div v-if="chartData.selectedPoint" class="mb-4 rounded-lg bg-primary/10 p-3 text-sm">
+        <div v-if="chartData.selectedPoint" class="bg-primary/10 mb-4 p-3 rounded-lg text-sm">
           <strong>Clicked:</strong> {{ chartData.selectedPoint }}
         </div>
         <chart
@@ -265,31 +265,43 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Large Dataset">
+    <Variant title="Dense Dataset">
       <div class="w-full max-w-2xl">
         <chart
-          id="chart-large"
+          id="chart-dense"
           type="line"
-          title="Yearly Trends"
-          description="Multiple data points"
+          title="24-Month Financial Trends"
+          description="High-density dataset with 24 points"
           x-key="month"
           :series="[
             { key: 'revenue', label: 'Revenue' },
             { key: 'cost', label: 'Cost' },
           ]"
           :data="[
-            { month: 'Jan', revenue: 4000, cost: 2400 },
-            { month: 'Feb', revenue: 3000, cost: 1398 },
-            { month: 'Mar', revenue: 5000, cost: 3200 },
-            { month: 'Apr', revenue: 2780, cost: 3908 },
-            { month: 'May', revenue: 1890, cost: 4800 },
-            { month: 'Jun', revenue: 2390, cost: 3800 },
-            { month: 'Jul', revenue: 3490, cost: 3300 },
-            { month: 'Aug', revenue: 4200, cost: 3100 },
-            { month: 'Sep', revenue: 5100, cost: 3400 },
-            { month: 'Oct', revenue: 4800, cost: 3600 },
-            { month: 'Nov', revenue: 5600, cost: 3200 },
-            { month: 'Dec', revenue: 6200, cost: 3500 },
+            { month: '2023-01', revenue: 4200, cost: 2500 },
+            { month: '2023-02', revenue: 3100, cost: 1900 },
+            { month: '2023-03', revenue: 5300, cost: 3100 },
+            { month: '2023-04', revenue: 3900, cost: 2800 },
+            { month: '2023-05', revenue: 4700, cost: 3300 },
+            { month: '2023-06', revenue: 5100, cost: 3600 },
+            { month: '2023-07', revenue: 6200, cost: 3900 },
+            { month: '2023-08', revenue: 5800, cost: 3500 },
+            { month: '2023-09', revenue: 4900, cost: 3200 },
+            { month: '2023-10', revenue: 5500, cost: 3400 },
+            { month: '2023-11', revenue: 6700, cost: 4100 },
+            { month: '2023-12', revenue: 7200, cost: 4300 },
+            { month: '2024-01', revenue: 4500, cost: 2600 },
+            { month: '2024-02', revenue: 3800, cost: 2200 },
+            { month: '2024-03', revenue: 5600, cost: 3400 },
+            { month: '2024-04', revenue: 6100, cost: 3700 },
+            { month: '2024-05', revenue: 5900, cost: 3600 },
+            { month: '2024-06', revenue: 6400, cost: 3900 },
+            { month: '2024-07', revenue: 7100, cost: 4200 },
+            { month: '2024-08', revenue: 6800, cost: 4000 },
+            { month: '2024-09', revenue: 5200, cost: 3300 },
+            { month: '2024-10', revenue: 5700, cost: 3500 },
+            { month: '2024-11', revenue: 7500, cost: 4500 },
+            { month: '2024-12', revenue: 8100, cost: 4700 },
           ]"
           show-legend
           show-grid

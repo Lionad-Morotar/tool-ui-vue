@@ -34,7 +34,7 @@ export interface ChartReturns {
 
   // Actions
   yScale: (value: number) => number;
-  xScaleBar: (index: number) => { bandWidth: number; barWidth: number; x: number };
+  xScaleBar: (index: number) => { bandWidth: number; barWidth: number; x: number; innerBand: number };
   xScaleLine: (index: number) => number;
   linePathD: (seriesKey: string) => string;
   showTooltip: (event: MouseEvent, row: Record<string, unknown>, seriesIndex?: number) => void;
@@ -127,7 +127,7 @@ export function useChart(
     const innerBand = bandWidth - groupPadding;
     const barWidth = innerBand / props.series.length;
     const x = MARGIN.left + index * bandWidth + groupPadding / 2;
-    return { bandWidth, barWidth, x };
+    return { bandWidth, barWidth, x, innerBand };
   }
 
   // X scale for line charts
@@ -139,7 +139,7 @@ export function useChart(
   function linePathD(seriesKey: string) {
     const points = props.data.map((row, i) => ({
       x: xScaleLine(i),
-      y: yScale(Number(row[seriesKey]) || 0),
+      y: MARGIN.top + yScale(Number(row[seriesKey]) || 0),
     }));
 
     if (points.length === 0) return '';
@@ -178,12 +178,10 @@ export function useChart(
     row: Record<string, unknown>,
     _seriesIndex?: number
   ) {
-    const target = event.currentTarget as SVGElement;
-    const rect = target.getBoundingClientRect();
     tooltip.value = {
       visible: true,
-      x: event.clientX - rect.left + 12,
-      y: event.clientY - rect.top - 12,
+      x: event.clientX + 12,
+      y: event.clientY - 12,
       title: String(row[props.xKey]),
       items: props.series.map((s, i) => ({
         label: s.label,
@@ -194,10 +192,8 @@ export function useChart(
   }
 
   function moveTooltip(event: MouseEvent) {
-    const target = event.currentTarget as SVGElement;
-    const rect = target.getBoundingClientRect();
-    tooltip.value.x = event.clientX - rect.left + 12;
-    tooltip.value.y = event.clientY - rect.top - 12;
+    tooltip.value.x = event.clientX + 12;
+    tooltip.value.y = event.clientY - 12;
   }
 
   function hideTooltip() {

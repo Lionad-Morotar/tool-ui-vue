@@ -39,7 +39,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
       <!-- Header -->
       <div
         v-if="title || description"
-        class="border-b px-4 pt-4 pb-3"
+        class="border-b border-border/40 px-4 pt-4 pb-3"
       >
         <h3
           v-if="title"
@@ -163,7 +163,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
             class="x-axis-label fill-muted-foreground text-xs"
             :x="
               type === 'bar'
-                ? chartState.xScaleBar(i).x + chartState.xScaleBar(i).bandWidth * (series.length / 2)
+                ? chartState.xScaleBar(i).x + chartState.xScaleBar(i).innerBand / 2
                 : chartState.xScaleLine(i)
             "
             :y="CHART_HEIGHT - 10"
@@ -177,7 +177,7 @@ const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartSt
         <div
           v-if="chartState.tooltip.visible"
           data-testid="chart-tooltip"
-          class="pointer-events-none absolute z-10 min-w-[120px] rounded border bg-background px-2 py-1.5 text-xs shadow"
+          class="pointer-events-none fixed z-10 min-w-[120px] rounded border bg-background px-2 py-1.5 text-xs shadow"
           :style="{ left: `${chartState.tooltip.x}px`, top: `${chartState.tooltip.y}px` }"
         >
           <div class="mb-1 font-medium">{{ chartState.tooltip.title }}</div>
