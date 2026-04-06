@@ -3,24 +3,20 @@ import { provideImageGallery } from './useGalleryContext';
 import type { ImageGalleryProps, ImageGalleryItem } from '../schema';
 import type { ComputedRef } from 'vue';
 
-export interface UseGalleryOptions extends ImageGalleryProps {
-  emit: (e: 'imageClick', imageId: string, image: ImageGalleryItem) => void;
-}
+export type EmitFn = (e: 'imageClick', imageId: string, image: ImageGalleryItem) => void;
 
 export interface GalleryReturns {
   hasHeader: ComputedRef<boolean>;
   handleImageClick: (imageId: string) => void;
 }
 
-export function useGallery(options: UseGalleryOptions): GalleryReturns {
-  const { images, title, description, emit } = options;
+export function useGallery(props: ImageGalleryProps, emit: EmitFn): GalleryReturns {
+  provideImageGallery({ images: computed(() => props.images) });
 
-  provideImageGallery({ images });
-
-  const hasHeader = computed(() => Boolean(title || description));
+  const hasHeader = computed(() => Boolean(props.title || props.description));
 
   function handleImageClick(imageId: string) {
-    const image = images.find((img) => img.id === imageId);
+    const image = props.images.find((img) => img.id === imageId);
     if (image) {
       emit('imageClick', imageId, image);
     }

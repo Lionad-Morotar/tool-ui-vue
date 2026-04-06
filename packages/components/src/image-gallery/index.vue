@@ -17,10 +17,7 @@ const emit = defineEmits<{
 }>()
 
 // All business logic delegated to states layer
-const galleryState = reactive(useGallery({
-  ...props,
-  emit,
-}));
+const galleryState = reactive(useGallery(props, emit));
 </script>
 
 <template>
