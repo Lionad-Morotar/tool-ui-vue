@@ -1,12 +1,13 @@
 import { useMediaControls } from '@vueuse/core';
-import { ref, watch } from 'vue';
+import { ref, toRef, watch } from 'vue';
 import type { Ref } from 'vue';
 
 export interface VideoPlaybackOptions {
   src: string;
-  defaultPlaying?: boolean;
-  defaultMuted?: boolean;
-  defaultVolume?: number;
+  durationMs?: number;
+  autoPlay?: boolean;
+  muted?: boolean;
+  volume?: number;
 }
 
 export interface VideoPlaybackState {
@@ -23,26 +24,20 @@ export interface VideoPlaybackActions {
 
 export interface VideoPlaybackReturns {
   state: VideoPlaybackState;
+  stateRef: Ref<VideoPlaybackState>;
   actions: VideoPlaybackActions;
   mediaElementRef: Ref<HTMLVideoElement | null>;
 }
 
-export function usePlayback(options: VideoPlaybackOptions): VideoPlaybackReturns {
-  const {
-    src,
-    defaultPlaying = false,
-    defaultMuted = false,
-    defaultVolume = 1,
-  } = options;
-
+export function usePlayback(props: VideoPlaybackOptions): VideoPlaybackReturns {
   const mediaElementRef = ref<HTMLVideoElement | null>(null);
 
-  const mediaControls = useMediaControls(mediaElementRef, { src });
+  const mediaControls = useMediaControls(mediaElementRef, { src: toRef(props, 'src') });
 
   const state = ref<VideoPlaybackState>({
-    playing: defaultPlaying,
-    muted: defaultMuted,
-    volume: defaultVolume,
+    playing: props.autoPlay ?? false,
+    muted: props.muted ?? (props.autoPlay === true),
+    volume: props.volume ?? 1,
   });
 
   watch(
@@ -74,6 +69,7 @@ export function usePlayback(options: VideoPlaybackOptions): VideoPlaybackReturns
 
   return {
     state: state.value,
+    stateRef: state,
     actions,
     mediaElementRef,
   };

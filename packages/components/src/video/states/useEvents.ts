@@ -8,27 +8,17 @@ export interface EventEmits {
 }
 
 export interface EventOptions {
-  playing: Ref<boolean>;
   muted: Ref<boolean>;
   emit: EventEmits;
 }
 
 export function useEvents(options: EventOptions): void {
-  const { playing, muted, emit } = options;
+  const { muted, emit } = options;
+
+  // Note: play/pause events are handled by DOM event handlers (createDomEventHandlers)
+  // to avoid duplicate emissions from both state watch and DOM events.
 
   let previousMuted = muted.value;
-
-  watch(
-    playing,
-    (newPlaying, oldPlaying) => {
-      if (newPlaying && !oldPlaying) {
-        emit('mediaEvent', 'play');
-      } else if (!newPlaying && oldPlaying) {
-        emit('mediaEvent', 'pause');
-      }
-    },
-    { immediate: false }
-  );
 
   watch(
     muted,

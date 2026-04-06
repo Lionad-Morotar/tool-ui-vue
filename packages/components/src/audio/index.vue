@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive, toRef } from 'vue';
+import { computed } from 'vue';
 import { useAudio } from './states';
 import type { AudioProps } from './schema';
 
@@ -15,21 +15,32 @@ const emit = defineEmits<{
   mediaEvent: [type: 'play' | 'pause' | 'mute' | 'unmute' | 'error'];
 }>();
 
-// All business logic delegated to states layer
-const audioState = reactive(useAudio({
-  ...props,
-  emit,
-}));
+// Layout variant is computed from reactive props directly
+const isCompact = computed(() => props.variant === 'compact');
 
-// Keep audioRef as a direct ref for template binding
-const audioRef = toRef(audioState, 'audioRef');
+// All business logic delegated to states layer
+const {
+  audioRef,
+  locale,
+  playing,
+  currentTime,
+  progress,
+  duration,
+  currentTimeDisplay,
+  durationDisplay,
+  togglePlay,
+  handleSeek,
+  handleSeekStart,
+  handleSeekEnd,
+  domHandlers,
+} = useAudio(props, emit);
 </script>
 
 <template>
   <article
     v-bind="$attrs"
-    :class="cn('@container/actions relative w-full', audioState.isCompact ? 'max-w-md min-w-72' : 'max-w-sm min-w-52', css?.root)"
-    :lang="audioState.locale"
+    :class="cn('@container/actions relative w-full', isCompact ? 'max-w-md min-w-72' : 'max-w-sm min-w-52', css?.root)"
+    :lang="locale"
     data-slot="audio"
     :data-tool-ui-id="id"
   >
@@ -41,7 +52,7 @@ const audioRef = toRef(audioState, 'audioRef');
       )"
     >
       <!-- Full Player -->
-      <template v-if="!audioState.isCompact">
+      <template v-if="!isCompact">
         <div class="flex w-full flex-col">
           <!-- Artwork -->
           <div v-if="artwork" class="relative aspect-[4/3] w-full overflow-hidden bg-muted">
@@ -68,47 +79,47 @@ const audioRef = toRef(audioState, 'audioRef');
             </div>
 
             <!-- Player Controls -->
-            <div class="flex items-start gap-3">
+            <div class="flex items-center gap-3">
               <div class="flex flex-1 flex-col gap-2">
                 <!-- Progress Slider -->
                 <div class="relative flex w-full touch-none items-center py-2 select-none">
                   <div class="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-foreground/20" />
                   <div
                     class="absolute top-1/2 left-0 h-1.5 -translate-y-1/2 rounded-full bg-foreground"
-                    :style="{ width: `${audioState.progress}%` }"
+                    :style="{ width: `${progress}%` }"
                   />
                   <input
                     type="range"
-                    :value="audioRef?.currentTime || 0"
-                    :max="audioRef?.duration || 100"
+                    :value="currentTime || 0"
+                    :max="duration || 100"
                     step="0.1"
                     class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                     aria-label="Audio progress"
-                    @input="audioState.handleSeek"
-                    @pointerdown="audioState.handleSeekStart"
-                    @pointerup="audioState.handleSeekEnd"
+                    @input="handleSeek"
+                    @pointerdown="handleSeekStart"
+                    @pointerup="handleSeekEnd"
                   />
                   <div
                     class="pointer-events-none absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-background bg-foreground transition-transform"
-                    :style="{ left: `calc(${audioState.progress}% - 6px)` }"
+                    :style="{ left: `calc(${progress}% - 6px)` }"
                   />
                 </div>
                 <!-- Time Display -->
                 <div class="flex items-center justify-between text-xs text-muted-foreground tabular-nums">
-                  <span>{{ audioState.currentTimeDisplay }}</span>
-                  <span>{{ audioState.durationDisplay }}</span>
+                  <span>{{ currentTimeDisplay }}</span>
+                  <span>{{ durationDisplay }}</span>
                 </div>
               </div>
 
               <!-- Play/Pause Button -->
               <button
                 type="button"
-                class="-mt-4 inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
-                :aria-label="audioState.playing ? 'Pause' : 'Play'"
-                @click="audioState.togglePlay"
+                class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
+                :aria-label="playing ? 'Pause' : 'Play'"
+                @click="togglePlay"
               >
                 <svg
-                  v-if="audioState.playing"
+                  v-if="playing"
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
@@ -184,25 +195,25 @@ const audioRef = toRef(audioState, 'audioRef');
             <div v-if="description" class="mt-0.5 truncate text-xs leading-tight text-muted-foreground">
               {{ description }}
             </div>
-            <div v-if="audioState.durationDisplay !== '0:00'" class="mt-1 flex items-center gap-2">
+            <div v-if="durationDisplay !== '0:00'" class="mt-1 flex items-center gap-2">
               <div class="relative h-1 flex-1 overflow-hidden rounded-full bg-foreground/20">
                 <div
                   class="absolute inset-y-0 left-0 rounded-full bg-foreground transition-all duration-150"
-                  :style="{ width: `${audioState.progress}%` }"
+                  :style="{ width: `${progress}%` }"
                 />
               </div>
-              <span class="text-xs text-muted-foreground tabular-nums">{{ audioState.currentTimeDisplay }}</span>
+              <span class="text-xs text-muted-foreground tabular-nums">{{ currentTimeDisplay }}</span>
             </div>
           </div>
 
           <button
             type="button"
             class="relative inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-            :aria-label="audioState.playing ? 'Pause' : 'Play'"
-            @click="audioState.togglePlay"
+            :aria-label="playing ? 'Pause' : 'Play'"
+            @click="togglePlay"
           >
             <svg
-              v-if="audioState.playing"
+              v-if="playing"
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
@@ -251,9 +262,9 @@ const audioRef = toRef(audioState, 'audioRef');
         :src="src"
         preload="metadata"
         class="hidden"
-        @play="audioState.domHandlers.onPlay"
-        @pause="audioState.domHandlers.onPause"
-        @error="audioState.domHandlers.onError"
+        @play="domHandlers.onPlay"
+        @pause="domHandlers.onPause"
+        @error="domHandlers.onError"
       />
     </div>
   </article>

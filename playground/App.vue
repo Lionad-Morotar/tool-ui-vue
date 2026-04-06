@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { markRaw } from 'vue';
+import { h, markRaw, ref } from 'vue';
 import * as Components from '../src';
 import { cn } from '../src/utils';
 

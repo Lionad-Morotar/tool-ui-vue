@@ -3,7 +3,7 @@ import {
   RATIO_CLASS_MAP,
   getFitClass,
   OVERLAY_GRADIENT,
-  formatDuration, cn 
+  formatDuration, cn
 } from '@lionad/vtu-core';
 import { reactive, toRef } from 'vue';
 import { useVideo } from './states';
@@ -21,10 +21,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const videoState = reactive(useVideo({
-  ...props,
-  emit,
-}));
+const videoState = reactive(useVideo(props, emit));
 
 // videoRef is used in template via ref="videoRef"
 const _videoRef = toRef(videoState, 'videoRef');

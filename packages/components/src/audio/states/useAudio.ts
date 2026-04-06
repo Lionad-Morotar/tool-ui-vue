@@ -2,32 +2,27 @@ import { createSharedComposable } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { useEvents, createDomEventHandlers } from './useEvents';
 import { usePlayback } from './usePlayback';
-import type { AudioProps, AudioVariant } from '../schema';
+import type { AudioProps } from '../schema';
 import type { EventEmits } from './useEvents';
 import type { ComputedRef } from 'vue';
-
-export interface UseAudioOptions extends AudioProps {
-  emit: EventEmits;
-}
 
 export interface AudioReturns {
   // Refs
   audioRef: ReturnType<typeof usePlayback>['mediaElementRef'];
-  isSeeking: boolean;
+  isSeeking: ComputedRef<boolean>;
 
   // State
-  playing: boolean;
-  muted: boolean;
-  volume: number;
-  currentTime: number;
-  progress: number;
-  duration: number;
+  playing: ComputedRef<boolean>;
+  muted: ComputedRef<boolean>;
+  volume: ComputedRef<number>;
+  currentTime: ComputedRef<number>;
+  progress: ComputedRef<number>;
+  duration: ComputedRef<number>;
 
   // Display
   currentTimeDisplay: ComputedRef<string>;
   durationDisplay: ComputedRef<string>;
   locale: ComputedRef<string>;
-  isCompact: ComputedRef<boolean>;
 
   // Actions
   togglePlay: () => void;
@@ -43,35 +38,20 @@ export interface AudioReturns {
   };
 }
 
-export function useAudio(options: UseAudioOptions): AudioReturns {
-  const {
-    src,
-    durationMs,
-    variant = 'full' as AudioVariant,
-    locale: localeProp,
-    emit,
-  } = options;
-
+export function useAudio(props: AudioProps, emit: EventEmits): AudioReturns {
   const FALLBACK_LOCALE = 'en-US';
 
   // Playback logic
   const {
-    state,
+    stateRef,
     actions,
     mediaElementRef: audioRef,
     formattedTime,
-  } = usePlayback({
-    src,
-    durationMs,
-    defaultPlaying: false,
-    defaultMuted: false,
-    defaultVolume: 1,
-  });
+  } = usePlayback(props);
 
-  // Event emission
+  // Event emission (muted only; play/pause come from DOM handlers)
   useEvents({
-    playing: computed(() => state.playing),
-    muted: computed(() => state.muted),
+    muted: computed(() => stateRef.value.muted),
     emit,
   });
 
@@ -83,8 +63,7 @@ export function useAudio(options: UseAudioOptions): AudioReturns {
   }
 
   // Computed display values
-  const locale = computed(() => localeProp ?? FALLBACK_LOCALE);
-  const isCompact = computed(() => variant === 'compact');
+  const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
 
   // DOM event handlers
   const domHandlers = createDomEventHandlers(emit);
@@ -92,21 +71,20 @@ export function useAudio(options: UseAudioOptions): AudioReturns {
   return {
     // Refs
     audioRef,
-    isSeeking: state.isSeeking,
+    isSeeking: computed(() => stateRef.value.isSeeking),
 
     // State (exposed for template binding)
-    playing: state.playing,
-    muted: state.muted,
-    volume: state.volume,
-    currentTime: state.currentTime,
-    progress: state.progress,
-    duration: state.duration,
+    playing: computed(() => stateRef.value.playing),
+    muted: computed(() => stateRef.value.muted),
+    volume: computed(() => stateRef.value.volume),
+    currentTime: computed(() => stateRef.value.currentTime),
+    progress: computed(() => stateRef.value.progress),
+    duration: computed(() => stateRef.value.duration),
 
     // Display
     currentTimeDisplay: formattedTime.current,
     durationDisplay: formattedTime.duration,
-    locale: computed(() => locale.value),
-    isCompact: computed(() => isCompact.value),
+    locale,
 
     // Actions
     togglePlay: actions.togglePlay,

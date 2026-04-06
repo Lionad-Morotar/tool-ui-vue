@@ -2,9 +2,9 @@ import { computed, ref } from 'vue';
 import type { ChartProps, ChartDataPoint } from '../schema';
 import type { ComputedRef, Ref } from 'vue';
 
-export interface UseChartOptions extends ChartProps {
-  onDataPointClick?: (point: ChartDataPoint) => void;
-}
+export type ChartEmit = {
+  (e: 'dataPointClick', point: ChartDataPoint): void;
+};
 
 export interface ChartTooltipState {
   visible: boolean;
@@ -64,14 +64,10 @@ const MARGIN = { top: 8, right: 8, bottom: 40, left: 48 };
 const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
-export function useChart(options: UseChartOptions): ChartReturns {
-  const {
-    data,
-    series,
-    xKey,
-    colors,
-    onDataPointClick,
-  } = options;
+export function useChart(
+  props: ChartProps,
+  emit: ChartEmit,
+): ChartReturns {
 
   // Computed palette
   const palette = computed(() =>

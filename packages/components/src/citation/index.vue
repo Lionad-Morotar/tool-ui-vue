@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useCitation({
-  ...props,
-  emit,
-}));
+const state = reactive(useCitation(props, emit));
 
 // Keep refs reactive
 const isPopoverOpen = toRef(state, 'isPopoverOpen');

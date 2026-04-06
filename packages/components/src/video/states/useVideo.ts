@@ -6,20 +6,14 @@ import { resolveVideoNavigation } from '../video-helpers';
 import type { VideoProps, AspectRatio, MediaFit } from '../schema';
 import type { EventEmits } from './useEvents';
 
-export interface UseVideoOptions extends VideoProps {
-  emit: EventEmits & {
-    (e: 'navigate', href: string): void;
-  };
-}
-
 export interface VideoReturns {
   // Refs
   videoRef: ReturnType<typeof usePlayback>['mediaElementRef'];
 
   // State
-  playing: boolean;
-  muted: boolean;
-  volume: number;
+  playing: ComputedRef<boolean>;
+  muted: ComputedRef<boolean>;
+  volume: ComputedRef<number>;
 
   // Display
   locale: ComputedRef<string>;
@@ -47,61 +41,44 @@ export interface VideoReturns {
   formatCreatedAt: (createdAt: string) => string;
 }
 
-export function useVideo(options: UseVideoOptions): VideoReturns {
-  const {
-    src,
-    autoPlay: autoPlayProp,
-    durationMs,
-    ratio,
-    fit,
-    createdAt,
-    locale: localeProp,
-    title,
-    description,
-    href,
-    domain,
-    source,
-    emit,
-  } = options;
-
+export function useVideo(
+  props: VideoProps,
+  emit: EventEmits & {
+    (e: 'navigate', href: string): void;
+  },
+): VideoReturns {
   const FALLBACK_LOCALE = 'en-US';
 
   const {
-    state,
+    stateRef,
     actions,
     mediaElementRef: videoRef,
-  } = usePlayback({
-    src,
-    defaultPlaying: false,
-    defaultMuted: autoPlayProp !== false,
-    defaultVolume: 1,
-  });
+  } = usePlayback(props);
 
   useEvents({
-    playing: computed(() => state.playing),
-    muted: computed(() => state.muted),
+    muted: computed(() => stateRef.value.muted),
     emit,
   });
 
-  const locale = computed(() => localeProp ?? FALLBACK_LOCALE);
-  const resolvedRatio = computed(() => ratio ?? 'auto');
-  const resolvedFit = computed(() => fit ?? 'cover');
-  const autoPlay = computed(() => autoPlayProp ?? true);
-  const sourceLabel = computed(() => source?.label);
+  const locale = computed(() => props.locale ?? FALLBACK_LOCALE);
+  const resolvedRatio = computed(() => props.ratio ?? 'auto');
+  const resolvedFit = computed(() => props.fit ?? 'cover');
+  const autoPlay = computed(() => props.autoPlay ?? true);
+  const sourceLabel = computed(() => props.source?.label);
   const metadataDomain = computed(() =>
-    domain && domain !== sourceLabel.value ? domain : undefined
+    props.domain && props.domain !== sourceLabel.value ? props.domain : undefined
   );
   const hasMetadata = computed(() =>
     Boolean(
-      description || sourceLabel.value || metadataDomain.value || durationMs || createdAt
+      props.description || sourceLabel.value || metadataDomain.value || props.durationMs || props.createdAt
     )
   );
 
   const primaryHref = computed(() =>
-    resolveVideoNavigation(href, source?.url).primaryHref
+    resolveVideoNavigation(props.href, props.source?.url).primaryHref
   );
 
-  const hasOverlay = computed(() => Boolean(title || primaryHref.value));
+  const hasOverlay = computed(() => Boolean(props.title || primaryHref.value));
 
   function handleOpen() {
     const href = primaryHref.value;
@@ -124,9 +101,9 @@ export function useVideo(options: UseVideoOptions): VideoReturns {
 
   return {
     videoRef,
-    playing: state.playing,
-    muted: state.muted,
-    volume: state.volume,
+    playing: computed(() => stateRef.value.playing),
+    muted: computed(() => stateRef.value.muted),
+    volume: computed(() => stateRef.value.volume),
     locale,
     resolvedRatio,
     resolvedFit,

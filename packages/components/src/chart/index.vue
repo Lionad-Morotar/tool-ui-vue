@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const chartState = reactive(useChart({
-  ...props,
-  onDataPointClick: (point) => emit('dataPointClick', point),
-}));
+const chartState = reactive(useChart(props, emit));
 
 // Destructure constants for template
 const { CHART_WIDTH, CHART_HEIGHT, MARGIN, INNER_WIDTH, INNER_HEIGHT } = chartState;

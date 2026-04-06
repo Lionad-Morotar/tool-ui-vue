@@ -17,10 +17,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useApprovalCard({
-  ...props,
-  emit,
-}));
+const state = reactive(useApprovalCard(props, emit));
 
 // Keep computed refs reactive
 const IconComponent = toRef(state, 'IconComponent');

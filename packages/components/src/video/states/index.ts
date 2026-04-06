@@ -16,6 +16,5 @@ export {
 } from './useEvents';
 export {
   useVideo,
-  type UseVideoOptions,
   type VideoReturns,
 } from './useVideo';

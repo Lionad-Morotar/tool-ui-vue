@@ -22,7 +22,7 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const state = reactive(useMessageDraft({ ...props, emit }));
+const state = reactive(useMessageDraft(props, emit));
 const draftState = toRef(state, 'state');
 const isExpanded = toRef(state, 'isExpanded');
 const needsExpansion = toRef(state, 'needsExpansion');

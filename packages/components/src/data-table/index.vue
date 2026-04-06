@@ -16,10 +16,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useDataTable({
-  ...props,
-  emit,
-}));
+const state = reactive(useDataTable(props, emit));
 
 // Column categorization for mobile view
 const categorizedColumns = computed(() => state.categorizeColumns(props.columns));

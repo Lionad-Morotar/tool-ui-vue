@@ -1,13 +1,13 @@
 import { useMediaControls } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 
-export interface PlaybackOptions {
+export interface PlaybackProps {
   src: string;
   durationMs?: number;
-  defaultPlaying?: boolean;
-  defaultMuted?: boolean;
-  defaultVolume?: number;
+  autoPlay?: boolean;
+  muted?: boolean;
+  volume?: number;
 }
 
 export interface PlaybackState {
@@ -31,6 +31,7 @@ export interface PlaybackActions {
 
 export interface PlaybackReturns {
   state: PlaybackState;
+  stateRef: Ref<PlaybackState>;
   actions: PlaybackActions;
   mediaElementRef: Ref<HTMLAudioElement | null>;
   formattedTime: {
@@ -39,26 +40,18 @@ export interface PlaybackReturns {
   };
 }
 
-export function usePlayback(options: PlaybackOptions): PlaybackReturns {
-  const {
-    src,
-    durationMs,
-    defaultPlaying = false,
-    defaultMuted = false,
-    defaultVolume = 1,
-  } = options;
-
+export function usePlayback(props: PlaybackProps): PlaybackReturns {
   const mediaElementRef = ref<HTMLAudioElement | null>(null);
   const isSeeking = ref(false);
 
   // Use VueUse's useMediaControls for advanced media handling
-  const mediaControls = useMediaControls(mediaElementRef, { src });
+  const mediaControls = useMediaControls(mediaElementRef, { src: toRef(props, 'src') });
 
   // Local playback state
   const state = ref<PlaybackState>({
-    playing: defaultPlaying,
-    muted: defaultMuted,
-    volume: defaultVolume,
+    playing: props.autoPlay ?? false,
+    muted: props.muted ?? (props.autoPlay === true),
+    volume: props.volume ?? 1,
     currentTime: 0,
     duration: 0,
     progress: 0,
@@ -88,8 +81,9 @@ export function usePlayback(options: PlaybackOptions): PlaybackReturns {
 
   // Use duration from props if available, otherwise from media controls
   const displayDuration = computed(() => {
-    if (durationMs && durationMs > 0) {
-      return durationMs / 1000;
+    const ms = props.durationMs;
+    if (ms && ms > 0) {
+      return ms / 1000;
     }
     return mediaControls.duration.value;
   });
@@ -145,6 +139,7 @@ export function usePlayback(options: PlaybackOptions): PlaybackReturns {
 
   return {
     state: state.value,
+    stateRef: state,
     actions,
     mediaElementRef,
     formattedTime,

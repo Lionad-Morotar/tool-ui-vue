@@ -15,10 +15,7 @@ const emit = defineEmits<{
 }>();
 
 // All business logic delegated to states layer
-const state = reactive(useImage({
-  ...props,
-  emit,
-}));
+const state = reactive(useImage(props, emit));
 </script>
 
 <template>

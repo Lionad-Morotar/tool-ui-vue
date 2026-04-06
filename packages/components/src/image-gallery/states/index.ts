@@ -12,6 +12,6 @@ export {
 
 export {
   useGallery,
-  type UseGalleryOptions,
+  
   type GalleryReturns,
 } from './useGallery';

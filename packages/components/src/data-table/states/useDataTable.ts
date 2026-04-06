@@ -4,11 +4,9 @@ import { useLayout, type UseLayoutOptions } from './useLayout';
 import { useSort, type UseSortOptions } from './useSort';
 import type { DataTableProps } from '../schema';
 
-export interface UseDataTableOptions extends DataTableProps {
-  emit: {
-    (e: 'sortChange', sort: { by?: string; direction?: 'asc' | 'desc' }): void;
-  };
-}
+export type DataTableEmit = {
+  (e: 'sortChange', sort: { by?: string; direction?: 'asc' | 'desc' }): void;
+};
 
 export interface DataTableState {
   // From useSort
@@ -45,16 +43,17 @@ export interface DataTableState {
   cardsContainerClass: ReturnType<typeof useLayout>['cardsContainerClass'];
 }
 
-export function useDataTable(options: UseDataTableOptions): DataTableState {
-  const { sort, defaultSort, columns, data, locale, rowIdKey, layout, id, emit } = options;
-
+export function useDataTable(
+  props: DataTableProps,
+  emit: DataTableEmit,
+): DataTableState {
   // useSort options
   const sortOptions: UseSortOptions = {
-    sort,
-    defaultSort,
-    columns,
-    data,
-    locale,
+    sort: props.sort,
+    defaultSort: props.defaultSort,
+    columns: props.columns,
+    data: props.data,
+    locale: props.locale,
     onSortChange: (newSort) => emit('sortChange', newSort),
   };
 
@@ -69,7 +68,7 @@ export function useDataTable(options: UseDataTableOptions): DataTableState {
   } = useSort(sortOptions);
 
   // useFormat options
-  const formatOptions: FormatOptions = { locale: locale || 'en-US' };
+  const formatOptions: FormatOptions = { locale: props.locale || 'en-US' };
   const {
     formatCellValue,
     getRelativeTime,
@@ -86,11 +85,11 @@ export function useDataTable(options: UseDataTableOptions): DataTableState {
 
   // useLayout options - ensure layout has a default value
   const layoutOptions: UseLayoutOptions = {
-    columns,
-    data,
-    rowIdKey,
-    layout: (layout ?? 'auto') as 'auto' | 'table' | 'cards',
-    id,
+    columns: props.columns,
+    data: props.data,
+    rowIdKey: props.rowIdKey,
+    layout: (props.layout ?? 'auto') as 'auto' | 'table' | 'cards',
+    id: props.id,
   };
 
   const {
