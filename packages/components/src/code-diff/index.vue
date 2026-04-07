@@ -12,10 +12,10 @@ const props = withDefaults(defineProps<CodeDiffProps & { css?: { root?: string }
 })
 
 // All business logic delegated to states layer
-const codeDiffState = reactive(useCodeDiff(props));
+const states = reactive(useCodeDiff(props));
 
 // Destructure state refs for v-model binding in template
-const { isCopied } = toRefs(codeDiffState);
+const { isCopied } = toRefs(states);
 </script>
 
 <template>
@@ -25,23 +25,23 @@ const { isCopied } = toRefs(codeDiffState);
     :data-tool-ui-id="id"
     data-slot="code-diff"
   >
-    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+    <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="flex items-center justify-between gap-2 border-b bg-card px-4 py-2">
+      <div class="flex justify-between items-center gap-2 bg-card px-4 py-2 border-b">
         <div class="flex items-center gap-1">
-          <span class="text-sm text-muted-foreground">
-            {{ codeDiffState.languageDisplayName }}
+          <span class="text-muted-foreground text-sm">
+            {{ states.languageDisplayName }}
           </span>
           <template v-if="filename">
             <span class="text-muted-foreground/50">&bull;</span>
-            <span class="text-sm font-medium text-foreground">{{ filename }}</span>
+            <span class="font-medium text-foreground text-sm">{{ filename }}</span>
           </template>
         </div>
         <div class="flex items-center gap-3">
-          <span v-if="codeDiffState.hasChanges" class="font-mono text-xs tabular-nums">
-            <span v-if="codeDiffState.stats.additions > 0" class="text-[#00cab1] dark:text-[#2ee8c8]">+{{ codeDiffState.stats.additions }}</span>
-            <span v-if="codeDiffState.stats.additions > 0 && codeDiffState.stats.deletions > 0"> </span>
-            <span v-if="codeDiffState.stats.deletions > 0" class="text-[#ff2e3f] dark:text-[#ff5c6a]">-{{ codeDiffState.stats.deletions }}</span>
+          <span v-if="states.hasChanges" class="font-mono tabular-nums text-xs">
+            <span v-if="states.stats.additions > 0" class="text-[#00cab1] dark:text-[#2ee8c8]">+{{ states.stats.additions }}</span>
+            <span v-if="states.stats.additions > 0 && states.stats.deletions > 0"> </span>
+            <span v-if="states.stats.deletions > 0" class="text-[#ff2e3f] dark:text-[#ff5c6a]">-{{ states.stats.deletions }}</span>
           </span>
           <button
             type="button"
@@ -51,37 +51,37 @@ const { isCopied } = toRefs(codeDiffState);
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
             )"
             :aria-label="isCopied ? 'Copied' : 'Copy code'"
-            @click="codeDiffState.copyCode"
+            @click="states.copyCode"
           >
-            <check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
-            <copy v-else class="h-4 w-4 text-muted-foreground" />
+            <check v-if="isCopied" class="w-4 h-4 text-green-700 dark:text-green-400" />
+            <copy v-else class="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
       </div>
 
       <!-- Content -->
       <div
-        :class="cn('overflow-x-auto overflow-y-clip text-sm', codeDiffState.isCollapsed && 'max-h-[200px]')"
+        :class="cn('overflow-x-auto overflow-y-clip text-sm', states.isCollapsed && 'max-h-[200px]')"
       >
         <!-- Unified Diff Mode -->
-        <template v-if="!codeDiffState.isSplitMode">
+        <template v-if="!states.isSplitMode">
           <div
-            v-for="(line, index) in codeDiffState.displayUnifiedLines"
+            v-for="(line, index) in states.displayUnifiedLines"
             :key="index"
             class="flex font-mono"
             :class="[
-              line.type === 'addition' && codeDiffState.additionBgColor,
-              line.type === 'deletion' && codeDiffState.deletionBgColor,
+              line.type === 'addition' && states.additionBgColor,
+              line.type === 'deletion' && states.deletionBgColor,
             ]"
           >
             <template v-if="lineNumbers !== 'hidden'">
               <span
-                class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground/60 select-none"
+                class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground/60 text-xs text-right select-none shrink-0"
               >
                 {{ line.oldLineNum ?? '' }}
               </span>
               <span
-                class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground select-none"
+                class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground text-xs text-right select-none shrink-0"
               >
                 {{ line.newLineNum ?? '' }}
               </span>
@@ -89,8 +89,8 @@ const { isCopied } = toRefs(codeDiffState);
             <span
               class="flex-1 px-3 py-0.5 whitespace-pre"
               :class="[
-                line.type === 'addition' && codeDiffState.additionTextColor,
-                line.type === 'deletion' && codeDiffState.deletionTextColor,
+                line.type === 'addition' && states.additionTextColor,
+                line.type === 'deletion' && states.deletionTextColor,
               ]"
             >
               <span
@@ -105,8 +105,8 @@ const { isCopied } = toRefs(codeDiffState);
                   v-for="(part, partIndex) in line.wordDiffs"
                   :key="partIndex"
                   :class="[
-                    part.added && codeDiffState.wordAdditionBg,
-                    part.removed && codeDiffState.wordDeletionBg,
+                    part.added && states.wordAdditionBg,
+                    part.removed && states.wordDeletionBg,
                     part.added && 'rounded px-0.5',
                     part.removed && 'rounded px-0.5',
                   ]"
@@ -123,26 +123,26 @@ const { isCopied } = toRefs(codeDiffState);
         <template v-else>
           <div class="flex">
             <!-- Old side -->
-            <div class="min-w-0 flex-1 border-r border-border/50">
+            <div class="flex-1 border-border/50 border-r min-w-0">
               <div
-                v-for="(line, index) in codeDiffState.displaySplitLines"
+                v-for="(line, index) in states.displaySplitLines"
                 :key="`old-${index}`"
                 class="flex font-mono"
                 :class="[
-                  line.oldLine?.type === 'deletion' && codeDiffState.deletionBgColor,
+                  line.oldLine?.type === 'deletion' && states.deletionBgColor,
                 ]"
               >
                 <template v-if="lineNumbers !== 'hidden'">
                   <span
-                    class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground/60 select-none"
+                    class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground/60 text-xs text-right select-none shrink-0"
                   >
                     {{ line.oldLine?.lineNum ?? '' }}
                   </span>
                 </template>
                 <span
-                  class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
+                  class="flex-1 px-3 py-0.5 min-w-0 overflow-hidden whitespace-pre"
                   :class="[
-                    line.oldLine?.type === 'deletion' && codeDiffState.deletionTextColor,
+                    line.oldLine?.type === 'deletion' && states.deletionTextColor,
                   ]"
                 >
                   <span
@@ -158,7 +158,7 @@ const { isCopied } = toRefs(codeDiffState);
                       v-for="(part, partIndex) in line.oldLine.wordDiffs"
                       :key="partIndex"
                       :class="[
-                        part.removed && codeDiffState.wordDeletionBg,
+                        part.removed && states.wordDeletionBg,
                         part.removed && 'rounded px-0.5',
                       ]"
                     >{{ part.value }}</span>
@@ -171,26 +171,26 @@ const { isCopied } = toRefs(codeDiffState);
             </div>
 
             <!-- New side -->
-            <div class="min-w-0 flex-1">
+            <div class="flex-1 min-w-0">
               <div
-                v-for="(line, index) in codeDiffState.displaySplitLines"
+                v-for="(line, index) in states.displaySplitLines"
                 :key="`new-${index}`"
                 class="flex font-mono"
                 :class="[
-                  line.newLine?.type === 'addition' && codeDiffState.additionBgColor,
+                  line.newLine?.type === 'addition' && states.additionBgColor,
                 ]"
               >
                 <template v-if="lineNumbers !== 'hidden'">
                   <span
-                    class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground select-none"
+                    class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground text-xs text-right select-none shrink-0"
                   >
                     {{ line.newLine?.lineNum ?? '' }}
                   </span>
                 </template>
                 <span
-                  class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
+                  class="flex-1 px-3 py-0.5 min-w-0 overflow-hidden whitespace-pre"
                   :class="[
-                    line.newLine?.type === 'addition' && codeDiffState.additionTextColor,
+                    line.newLine?.type === 'addition' && states.additionTextColor,
                   ]"
                 >
                   <span
@@ -206,7 +206,7 @@ const { isCopied } = toRefs(codeDiffState);
                       v-for="(part, partIndex) in line.newLine.wordDiffs"
                       :key="partIndex"
                       :class="[
-                        part.added && codeDiffState.wordAdditionBg,
+                        part.added && states.wordAdditionBg,
                         part.added && 'rounded px-0.5',
                       ]"
                     >{{ part.value }}</span>
@@ -223,7 +223,7 @@ const { isCopied } = toRefs(codeDiffState);
 
       <!-- Collapse Toggle -->
       <button
-        v-if="codeDiffState.shouldCollapse"
+        v-if="states.shouldCollapse"
         type="button"
         :class="cn(
           'w-full rounded-none border-t font-normal text-muted-foreground',
@@ -231,9 +231,9 @@ const { isCopied } = toRefs(codeDiffState);
           'hover:bg-accent hover:text-accent-foreground',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         )"
-        @click="codeDiffState.toggleExpanded"
+        @click="states.toggleExpanded"
       >
-        <template v-if="codeDiffState.isCollapsed">
+        <template v-if="states.isCollapsed">
           <chevron-down class="mr-1 size-4" />
           Show full diff
         </template>

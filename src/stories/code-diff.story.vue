@@ -49,7 +49,7 @@ const TIMEOUT = 5000;`
 
 const patchExample = `--- a/src/utils.ts
 +++ b/src/utils.ts
-@@ -1,5 +1,5 @@
+@@ -1,7 +1,7 @@
  export function greet(name: string): string {
 -  return "Hello, " + name;
 +  return \`Hello, \${name}!\`;

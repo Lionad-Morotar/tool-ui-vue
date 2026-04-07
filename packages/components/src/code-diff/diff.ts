@@ -128,31 +128,35 @@ function parseHunkToLines(hunk: StructuredPatchHunk): DiffLine[] {
 }
 
 function parsePatchToFileDiff(patch: string): FileDiff {
-  const parsed = parsePatch(patch);
-  if (!parsed || parsed.length === 0) {
+  try {
+    const parsed = parsePatch(patch);
+    if (!parsed || parsed.length === 0) {
+      return { hunks: [], additions: 0, deletions: 0, unifiedLineCount: 0 };
+    }
+    const firstFile = parsed[0] as unknown as StructuredPatch;
+    const hunks: DiffHunk[] = [];
+    let additions = 0;
+    let deletions = 0;
+
+    for (const hunk of firstFile.hunks) {
+      const lines = parseHunkToLines(hunk);
+      for (const line of lines) {
+        if (line.type === 'addition') additions++;
+        if (line.type === 'deletion') deletions++;
+      }
+      hunks.push({
+        oldStart: hunk.oldStart,
+        oldLines: hunk.oldLines,
+        newStart: hunk.newStart,
+        newLines: hunk.newLines,
+        lines,
+      });
+    }
+    const unifiedLineCount = hunks.reduce((sum, h) => sum + h.lines.length, 0);
+    return { hunks, additions, deletions, unifiedLineCount };
+  } catch {
     return { hunks: [], additions: 0, deletions: 0, unifiedLineCount: 0 };
   }
-  const firstFile = parsed[0] as unknown as StructuredPatch;
-  const hunks: DiffHunk[] = [];
-  let additions = 0;
-  let deletions = 0;
-
-  for (const hunk of firstFile.hunks) {
-    const lines = parseHunkToLines(hunk);
-    for (const line of lines) {
-      if (line.type === 'addition') additions++;
-      if (line.type === 'deletion') deletions++;
-    }
-    hunks.push({
-      oldStart: hunk.oldStart,
-      oldLines: hunk.oldLines,
-      newStart: hunk.newStart,
-      newLines: hunk.newLines,
-      lines,
-    });
-  }
-  const unifiedLineCount = hunks.reduce((sum, h) => sum + h.lines.length, 0);
-  return { hunks, additions, deletions, unifiedLineCount };
 }
 
 function convertUnifiedToSplit(fileDiff: FileDiff): SplitDiff {
