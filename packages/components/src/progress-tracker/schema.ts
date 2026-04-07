@@ -64,7 +64,7 @@ export const SerializableProgressTrackerSchema = ToolUISurfaceSchema.omit({
 })
   .extend({
     steps: ProgressStepsSchema,
-    elapsedTime: z.number().finite().nonnegative().optional(),
+    elapsedTime: z.number().nonnegative().optional(),
     choice: ToolUIReceiptSchema.optional(),
   })
   .strict();

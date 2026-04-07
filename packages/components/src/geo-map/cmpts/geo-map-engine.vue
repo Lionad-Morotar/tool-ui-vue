@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { cn } from '@lionad/vtu-core';
 import {
   LMap,
   LTileLayer,
@@ -6,6 +7,8 @@ import {
   LCircleMarker,
   LPolyline,
   LControlZoom,
+  LTooltip,
+  LPopup,
 } from '@vue-leaflet/vue-leaflet';
 import Supercluster from 'supercluster';
 import {
@@ -18,7 +21,6 @@ import {
 } from 'vue';
 import 'leaflet/dist/leaflet.css';
 import { createClusterIcon, resolveMarkerIcon } from '../geo-map-icons';
-import GeoMapOverlays from './geo-map-overlays.vue';
 import type {
   GeoMapClustering,
   GeoMapMarker,
@@ -346,9 +348,10 @@ function getDotFillColor(icon: GeoMapMarker['icon']): string {
 // Computed values
 const resolvedRoutes = computed(() => (props.routes ?? []).filter((route) => route.points.length >= 2));
 
-const initialView = computed(() =>
-  resolveInitialView(props.markers, resolvedRoutes.value, props.viewport)
-);
+// Synced center/zoom refs to prevent vue-leaflet from snapping back to defaults
+const initialView = resolveInitialView(props.markers, resolvedRoutes.value, props.viewport);
+const mapCenter = ref<[number, number]>(initialView.center);
+const mapZoom = ref<number>(initialView.zoom);
 
 const markerById = computed(() => {
   const map = new Map<string, GeoMapMarker>();
@@ -412,9 +415,95 @@ const clusteredFeatures = computed(() => {
   );
 });
 
+// Viewport application logic
+const lastAppliedViewportRef = ref<string | null>(null);
+
+function applyViewportToMap(
+  map: /* eslint-disable @typescript-eslint/no-explicit-any */ any,
+  viewport: GeoMapViewport | undefined,
+  markers: GeoMapMarker[],
+  routes: GeoMapRoute[]
+): void {
+  if (!leafletModule.value) return;
+
+  if (viewport?.mode === 'center') {
+    const viewportKey = `center:${roundCoordinate(viewport.center.lat)}:${roundCoordinate(viewport.center.lng)}:${viewport.zoom}`;
+    if (lastAppliedViewportRef.value === viewportKey) return;
+
+    lastAppliedViewportRef.value = viewportKey;
+    map.setView([viewport.center.lat, viewport.center.lng], viewport.zoom);
+    mapCenter.value = [viewport.center.lat, viewport.center.lng];
+    mapZoom.value = viewport.zoom;
+    return;
+  }
+
+  const fitTarget = viewport?.target ?? 'all';
+  const fitPoints = resolveFitPointsWithFallback(markers, routes, fitTarget);
+  if (fitPoints.length === 0) return;
+
+  const maxZoom = viewport?.maxZoom;
+
+  if (fitPoints.length === 1) {
+    const [lat, lng] = fitPoints[0];
+    const zoom = maxZoom
+      ? Math.min(SINGLE_LOCATION_ZOOM, maxZoom)
+      : SINGLE_LOCATION_ZOOM;
+    const viewportKey = `fit-single:${roundCoordinate(lat)}:${roundCoordinate(lng)}:${zoom}`;
+    if (lastAppliedViewportRef.value === viewportKey) return;
+
+    lastAppliedViewportRef.value = viewportKey;
+    map.setView([lat, lng], zoom);
+    mapCenter.value = [lat, lng];
+    mapZoom.value = zoom;
+    return;
+  }
+
+  const padding = viewport?.padding ?? DEFAULT_VIEWPORT_PADDING;
+  const viewportKey = `fit:${fitTarget}:${padding}:${maxZoom ?? 'none'}:${serializeFitPoints(fitPoints)}`;
+  if (lastAppliedViewportRef.value === viewportKey) return;
+
+  lastAppliedViewportRef.value = viewportKey;
+
+  const validPoints = fitPoints.filter(
+    ([lat, lng]) =>
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      Number.isFinite(lat) &&
+      Number.isFinite(lng)
+  );
+  if (validPoints.length < 2) return;
+
+  try {
+    const bounds = leafletModule.value.latLngBounds(validPoints);
+    if (!bounds.isValid()) return;
+    map.fitBounds(bounds, {
+      maxZoom,
+      padding: [padding, padding],
+    });
+    const nextCenter = map.getCenter();
+    mapCenter.value = [nextCenter.lat, nextCenter.lng];
+    mapZoom.value = map.getZoom();
+  } catch {
+    // Silently ignore fitBounds errors (e.g., invalid bounds)
+  }
+}
+
 // Map event handlers
 function handleMapReady(map: LeafletMap) {
   mapInstance.value = map;
+
+  if (leafletModule.value) {
+    applyViewportToMap(
+      map,
+      props.viewport,
+      props.markers,
+      resolvedRoutes.value
+    );
+  }
+
+  // Set viewportState AFTER applying the initial viewport so clustering
+  // features render directly at the fitted bounds without an intermediate
+  // state change that causes layer churn and console errors.
   viewportState.value = readViewportState(map);
 }
 
@@ -428,73 +517,18 @@ function handleViewportChange() {
   }
 }
 
-// Viewport controller - apply viewport changes
-const lastAppliedViewportRef = ref<string | null>(null);
-
+// Viewport controller - apply viewport changes on prop updates
 watch(
   () => [props.viewport, props.markers, resolvedRoutes.value, mapInstance.value, leafletModule.value] as const,
   async ([viewport, markers, routes]) => {
     if (!mapInstance.value || !leafletModule.value) return;
-
     await nextTick();
-
-    if (viewport?.mode === 'center') {
-      const viewportKey = `center:${roundCoordinate(viewport.center.lat)}:${roundCoordinate(viewport.center.lng)}:${viewport.zoom}`;
-      if (lastAppliedViewportRef.value === viewportKey) return;
-
-      lastAppliedViewportRef.value = viewportKey;
-      mapInstance.value.setView(
-        [viewport.center.lat, viewport.center.lng],
-        viewport.zoom
-      );
-      return;
-    }
-
-    const fitTarget = viewport?.target ?? 'all';
-    const fitPoints = resolveFitPointsWithFallback(markers, routes, fitTarget);
-    if (fitPoints.length === 0) return;
-
-    const maxZoom = viewport?.maxZoom;
-
-    if (fitPoints.length === 1) {
-      const [lat, lng] = fitPoints[0];
-      const zoom = maxZoom
-        ? Math.min(SINGLE_LOCATION_ZOOM, maxZoom)
-        : SINGLE_LOCATION_ZOOM;
-      const viewportKey = `fit-single:${roundCoordinate(lat)}:${roundCoordinate(lng)}:${zoom}`;
-      if (lastAppliedViewportRef.value === viewportKey) return;
-
-      lastAppliedViewportRef.value = viewportKey;
-      mapInstance.value.setView([lat, lng], zoom);
-      return;
-    }
-
-    const padding = viewport?.padding ?? DEFAULT_VIEWPORT_PADDING;
-    const viewportKey = `fit:${fitTarget}:${padding}:${maxZoom ?? 'none'}:${serializeFitPoints(fitPoints)}`;
-    if (lastAppliedViewportRef.value === viewportKey) return;
-
-    lastAppliedViewportRef.value = viewportKey;
-
-    // Validate all points before creating bounds
-    const validPoints = fitPoints.filter(
-      ([lat, lng]) =>
-        typeof lat === 'number' &&
-        typeof lng === 'number' &&
-        Number.isFinite(lat) &&
-        Number.isFinite(lng)
+    applyViewportToMap(
+      mapInstance.value,
+      viewport,
+      markers,
+      routes
     );
-    if (validPoints.length < 2) return;
-
-    try {
-      const bounds = leafletModule.value.latLngBounds(validPoints);
-      if (!bounds.isValid()) return;
-      mapInstance.value.fitBounds(bounds, {
-        maxZoom,
-        padding: [padding, padding],
-      });
-    } catch {
-      // Silently ignore fitBounds errors (e.g., invalid bounds)
-    }
   },
   { immediate: true, deep: true }
 );
@@ -528,9 +562,9 @@ function handleRouteClick(route: GeoMapRoute) {
   <div v-if="!leafletReady" class="h-full w-full" />
   <l-map
     v-else
-    :center="initialView.center"
-    :zoom="initialView.zoom"
-    :zoom-control="false"
+    :center="mapCenter"
+    :zoom="mapZoom"
+    :options="{ zoomControl: false }"
     class="h-full w-full"
     :use-global-leaflet="false"
     @ready="handleMapReady"
@@ -553,14 +587,35 @@ function handleRouteClick(route: GeoMapRoute) {
       }"
       @click="handleRouteClick(route)"
     >
-      <geo-map-overlays
-        :tooltip-mode="route.tooltip ?? 'hover'"
-        :tooltip-content="route.label ?? route.description"
-        :label="route.label"
-        :description="route.description"
-        :tooltip-class-name="tooltipClassName"
-        :popup-class-name="popupClassName"
-      />
+      <l-tooltip
+        v-if="(route.tooltip ?? 'hover') !== 'none' && (route.label ?? route.description)"
+        :direction="'top'"
+        :permanent="(route.tooltip ?? 'hover') === 'always'"
+        :class-name="cn('geo-map-tooltip', tooltipClassName)"
+      >
+        <span class="block">{{ route.label ?? route.description }}</span>
+      </l-tooltip>
+
+      <l-popup
+        v-if="route.label || route.description"
+        :class-name="cn('geo-map-popup', popupClassName)"
+        :close-button="true"
+      >
+        <div class="flex flex-col gap-0.5">
+          <p
+            v-if="route.label"
+            class="block text-sm leading-tight font-semibold tracking-tight text-foreground"
+          >
+            {{ route.label }}
+          </p>
+          <p
+            v-if="route.description"
+            class="block text-xs leading-relaxed text-muted-foreground"
+          >
+            {{ route.description }}
+          </p>
+        </div>
+      </l-popup>
     </l-polyline>
 
     <!-- Clustered Markers -->
@@ -621,22 +676,35 @@ function handleRouteClick(route: GeoMapRoute) {
               )
             "
           >
-            <geo-map-overlays
-              :tooltip-mode="
-                markerById.get(feature.properties?.markerId ?? '')?.tooltip ??
-                  'hover'
-              "
-              :tooltip-content="
-                markerById.get(feature.properties?.markerId ?? '')?.label ??
-                  markerById.get(feature.properties?.markerId ?? '')?.description
-              "
-              :label="markerById.get(feature.properties?.markerId ?? '')?.label"
-              :description="
-                markerById.get(feature.properties?.markerId ?? '')?.description
-              "
-              :tooltip-class-name="tooltipClassName"
-              :popup-class-name="popupClassName"
-            />
+            <l-tooltip
+              v-if="(markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover') !== 'none' && (markerById.get(feature.properties?.markerId ?? '')?.label ?? markerById.get(feature.properties?.markerId ?? '')?.description)"
+              :direction="'top'"
+              :permanent="(markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover') === 'always'"
+              :class-name="cn('geo-map-tooltip', tooltipClassName)"
+            >
+              <span class="block">{{ markerById.get(feature.properties?.markerId ?? '')?.label ?? markerById.get(feature.properties?.markerId ?? '')?.description }}</span>
+            </l-tooltip>
+
+            <l-popup
+              v-if="markerById.get(feature.properties?.markerId ?? '')?.label || markerById.get(feature.properties?.markerId ?? '')?.description"
+              :class-name="cn('geo-map-popup', popupClassName)"
+              :close-button="true"
+            >
+              <div class="flex flex-col gap-0.5">
+                <p
+                  v-if="markerById.get(feature.properties?.markerId ?? '')?.label"
+                  class="block text-sm leading-tight font-semibold tracking-tight text-foreground"
+                >
+                  {{ markerById.get(feature.properties?.markerId ?? '')?.label }}
+                </p>
+                <p
+                  v-if="markerById.get(feature.properties?.markerId ?? '')?.description"
+                  class="block text-xs leading-relaxed text-muted-foreground"
+                >
+                  {{ markerById.get(feature.properties?.markerId ?? '')?.description }}
+                </p>
+              </div>
+            </l-popup>
           </l-marker>
 
           <!-- Circle Marker (default) -->
@@ -656,22 +724,35 @@ function handleRouteClick(route: GeoMapRoute) {
               )
             "
           >
-            <geo-map-overlays
-              :tooltip-mode="
-                markerById.get(feature.properties?.markerId ?? '')?.tooltip ??
-                  'hover'
-              "
-              :tooltip-content="
-                markerById.get(feature.properties?.markerId ?? '')?.label ??
-                  markerById.get(feature.properties?.markerId ?? '')?.description
-              "
-              :label="markerById.get(feature.properties?.markerId ?? '')?.label"
-              :description="
-                markerById.get(feature.properties?.markerId ?? '')?.description
-              "
-              :tooltip-class-name="tooltipClassName"
-              :popup-class-name="popupClassName"
-            />
+            <l-tooltip
+              v-if="(markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover') !== 'none' && (markerById.get(feature.properties?.markerId ?? '')?.label ?? markerById.get(feature.properties?.markerId ?? '')?.description)"
+              :direction="'top'"
+              :permanent="(markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover') === 'always'"
+              :class-name="cn('geo-map-tooltip', tooltipClassName)"
+            >
+              <span class="block">{{ markerById.get(feature.properties?.markerId ?? '')?.label ?? markerById.get(feature.properties?.markerId ?? '')?.description }}</span>
+            </l-tooltip>
+
+            <l-popup
+              v-if="markerById.get(feature.properties?.markerId ?? '')?.label || markerById.get(feature.properties?.markerId ?? '')?.description"
+              :class-name="cn('geo-map-popup', popupClassName)"
+              :close-button="true"
+            >
+              <div class="flex flex-col gap-0.5">
+                <p
+                  v-if="markerById.get(feature.properties?.markerId ?? '')?.label"
+                  class="block text-sm leading-tight font-semibold tracking-tight text-foreground"
+                >
+                  {{ markerById.get(feature.properties?.markerId ?? '')?.label }}
+                </p>
+                <p
+                  v-if="markerById.get(feature.properties?.markerId ?? '')?.description"
+                  class="block text-xs leading-relaxed text-muted-foreground"
+                >
+                  {{ markerById.get(feature.properties?.markerId ?? '')?.description }}
+                </p>
+              </div>
+            </l-popup>
           </l-circle-marker>
         </template>
       </template>
@@ -688,14 +769,35 @@ function handleRouteClick(route: GeoMapRoute) {
           :title="resolveMarkerAriaLabel(marker)"
           @click="handleMarkerClick(marker)"
         >
-          <geo-map-overlays
-            :tooltip-mode="marker.tooltip ?? 'hover'"
-            :tooltip-content="marker.label ?? marker.description"
-            :label="marker.label"
-            :description="marker.description"
-            :tooltip-class-name="tooltipClassName"
-            :popup-class-name="popupClassName"
-          />
+          <l-tooltip
+            v-if="(marker.tooltip ?? 'hover') !== 'none' && (marker.label ?? marker.description)"
+            :direction="'top'"
+            :permanent="(marker.tooltip ?? 'hover') === 'always'"
+            :class-name="cn('geo-map-tooltip', tooltipClassName)"
+          >
+            <span class="block">{{ marker.label ?? marker.description }}</span>
+          </l-tooltip>
+
+          <l-popup
+            v-if="marker.label || marker.description"
+            :class-name="cn('geo-map-popup', popupClassName)"
+            :close-button="true"
+          >
+            <div class="flex flex-col gap-0.5">
+              <p
+                v-if="marker.label"
+                class="block text-sm leading-tight font-semibold tracking-tight text-foreground"
+              >
+                {{ marker.label }}
+              </p>
+              <p
+                v-if="marker.description"
+                class="block text-xs leading-relaxed text-muted-foreground"
+              >
+                {{ marker.description }}
+              </p>
+            </div>
+          </l-popup>
         </l-marker>
 
         <!-- Circle Marker (default) -->
@@ -711,14 +813,35 @@ function handleRouteClick(route: GeoMapRoute) {
           }"
           @click="handleMarkerClick(marker)"
         >
-          <geo-map-overlays
-            :tooltip-mode="marker.tooltip ?? 'hover'"
-            :tooltip-content="marker.label ?? marker.description"
-            :label="marker.label"
-            :description="marker.description"
-            :tooltip-class-name="tooltipClassName"
-            :popup-class-name="popupClassName"
-          />
+          <l-tooltip
+            v-if="(marker.tooltip ?? 'hover') !== 'none' && (marker.label ?? marker.description)"
+            :direction="'top'"
+            :permanent="(marker.tooltip ?? 'hover') === 'always'"
+            :class-name="cn('geo-map-tooltip', tooltipClassName)"
+          >
+            <span class="block">{{ marker.label ?? marker.description }}</span>
+          </l-tooltip>
+
+          <l-popup
+            v-if="marker.label || marker.description"
+            :class-name="cn('geo-map-popup', popupClassName)"
+            :close-button="true"
+          >
+            <div class="flex flex-col gap-0.5">
+              <p
+                v-if="marker.label"
+                class="block text-sm leading-tight font-semibold tracking-tight text-foreground"
+              >
+                {{ marker.label }}
+              </p>
+              <p
+                v-if="marker.description"
+                class="block text-xs leading-relaxed text-muted-foreground"
+              >
+                {{ marker.description }}
+              </p>
+            </div>
+          </l-popup>
         </l-circle-marker>
       </template>
     </template>

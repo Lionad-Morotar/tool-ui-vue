@@ -11,8 +11,8 @@
 import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '@lionad/vtu-core';
 import { z } from 'zod';
 
-const LatitudeSchema = z.number().finite().min(-90).max(90);
-const LongitudeSchema = z.number().finite().min(-180).max(180);
+const LatitudeSchema = z.number().min(-90).max(90);
+const LongitudeSchema = z.number().min(-180).max(180);
 const HttpUrlSchema = z.url()
   .refine((value) => /^https?:\/\//i.test(value), {
       error: 'Expected an http or https URL.'

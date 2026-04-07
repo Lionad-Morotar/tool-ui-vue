@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <image> (kebab-case)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <Image> (kebab-case)
 import { Image } from '@lionad/vtu-components';
 
 const interactiveState = reactive({
@@ -18,7 +18,7 @@ const interactiveState = reactive({
   <Story title="Image/All Variants">
     <Variant title="Basic">
       <div class="w-full max-w-md">
-        <image
+        <Image
           id="image-basic"
           asset-id="image-basic-asset"
           src="https://picsum.photos/400/300?random=1"
@@ -29,7 +29,7 @@ const interactiveState = reactive({
 
     <Variant title="With Title">
       <div class="w-full max-w-md">
-        <image
+        <Image
           id="image-title"
           asset-id="image-title-asset"
           src="https://picsum.photos/400/300?random=2"
@@ -41,7 +41,7 @@ const interactiveState = reactive({
 
     <Variant title="Square Ratio">
       <div class="w-full max-w-sm">
-        <image
+        <Image
           id="image-square"
           asset-id="image-square-asset"
           src="https://picsum.photos/400/400?random=3"
@@ -53,7 +53,7 @@ const interactiveState = reactive({
 
     <Variant title="Video Ratio">
       <div class="w-full max-w-lg">
-        <image
+        <Image
           id="image-video"
           asset-id="image-video-asset"
           src="https://picsum.photos/640/360?random=4"
@@ -65,7 +65,7 @@ const interactiveState = reactive({
 
     <Variant title="With Link">
       <div class="w-full max-w-md">
-        <image
+        <Image
           id="image-link"
           asset-id="image-link-asset"
           src="https://picsum.photos/400/300?random=5"
@@ -78,7 +78,7 @@ const interactiveState = reactive({
 
     <Variant title="With Source">
       <div class="w-full max-w-md">
-        <image
+        <Image
           id="image-source"
           asset-id="image-source-asset"
           src="https://picsum.photos/400/300?random=6"
@@ -91,7 +91,7 @@ const interactiveState = reactive({
 
     <Variant title="Object Fit: Contain">
       <div class="w-full max-w-md">
-        <image
+        <Image
           id="image-contain"
           asset-id="image-contain-asset"
           src="https://picsum.photos/200/400?random=7"
@@ -105,7 +105,7 @@ const interactiveState = reactive({
 
     <Variant title="Interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <image
+        <Image
           v-bind="interactiveState"
         />
       </div>
