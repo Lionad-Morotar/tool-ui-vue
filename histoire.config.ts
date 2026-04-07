@@ -44,6 +44,8 @@ export default defineConfig({
       alias: {
         '@': '/src',
         '@lionad/vtu-components': resolve(__dirname, 'packages/components/src'),
+        '@lionad/vtu-core': resolve(__dirname, 'packages/core/src'),
+        '@lionad/vtu-theme': resolve(__dirname, 'packages/theme/src'),
       },
     },
     server: {
