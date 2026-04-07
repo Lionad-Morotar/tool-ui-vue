@@ -80,6 +80,7 @@ const categories = [
             </code>
             <a
               href="#/story/src-stories-code-block-story-vue"
+              target="_parent"
               class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
             >
               Get Started
@@ -100,6 +101,7 @@ const categories = [
               v-for="cat in categories"
               :key="cat.id"
               :href="cat.href"
+              target="_parent"
               class="group flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ring hover:shadow-md"
             >
               <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
