@@ -1,0 +1,136 @@
+<script setup lang="ts">
+import {
+  BarChart3,
+  Code2,
+  ImageIcon,
+  Layers,
+  MousePointerClick,
+  Share2,
+  Terminal,
+  Zap,
+} from 'lucide-vue-next';
+
+const categories = [
+  {
+    id: 'data-display',
+    title: 'Data Display',
+    icon: BarChart3,
+    components: ['Chart', 'DataTable', 'StatsDisplay', 'WeatherWidget'],
+    href: '#/story/src-stories-chart-story-vue',
+  },
+  {
+    id: 'code-terminal',
+    title: 'Code & Terminal',
+    icon: Terminal,
+    components: ['CodeBlock', 'CodeDiff', 'Terminal'],
+    href: '#/story/src-stories-code-block-story-vue',
+  },
+  {
+    id: 'media',
+    title: 'Media',
+    icon: ImageIcon,
+    components: ['Audio', 'Image', 'ImageGallery', 'ItemCarousel', 'Video'],
+    href: '#/story/src-stories-audio-story-vue',
+  },
+  {
+    id: 'social',
+    title: 'Social',
+    icon: Share2,
+    components: ['ApprovalCard', 'Citation', 'InstagramPost', 'LinkedInPost', 'LinkPreview', 'MessageDraft', 'XPost'],
+    href: '#/story/src-stories-approval-card-story-vue',
+  },
+  {
+    id: 'forms-input',
+    title: 'Forms & Input',
+    icon: MousePointerClick,
+    components: ['OptionList', 'ParameterSlider', 'PreferencesPanel'],
+    href: '#/story/src-stories-option-list-story-vue',
+  },
+  {
+    id: 'workflow',
+    title: 'Workflow',
+    icon: Layers,
+    components: ['GeoMap', 'Plan', 'ProgressTracker', 'QuestionFlow', 'OrderSummary'],
+    href: '#/story/src-stories-geo-map-story-vue',
+  },
+];
+</script>
+
+<template>
+  <Story title="tool-ui-vue" :layout="{ type: 'single' }">
+    <div class="min-h-screen w-full bg-background text-foreground">
+      <!-- Hero -->
+      <section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
+        <div class="mx-auto max-w-4xl text-center">
+          <div class="mb-6 inline-flex items-center justify-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
+            <Zap class="mr-1.5 h-4 w-4" />
+            <span>Vue 3 + TypeScript + Tailwind CSS v4</span>
+          </div>
+          <h1 class="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl">
+            tool-ui-vue
+          </h1>
+          <p class="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl">
+            Vue 3 components for AI tool calls
+          </p>
+
+          <!-- Install command -->
+          <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <code class="inline-flex items-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-mono text-card-foreground shadow-sm">
+              pnpm add @lionad/vtu-components
+            </code>
+            <a
+              href="#/story/src-stories-code-block-story-vue"
+              class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+            >
+              Get Started
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="px-6 pb-24 lg:px-8">
+        <div class="mx-auto max-w-6xl">
+          <h2 class="mb-10 text-center text-2xl font-semibold tracking-tight text-foreground">
+            Browse by category
+          </h2>
+
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <a
+              v-for="cat in categories"
+              :key="cat.id"
+              :href="cat.href"
+              class="group flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ring hover:shadow-md"
+            >
+              <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                <component :is="cat.icon" class="h-5 w-5" />
+              </div>
+              <h3 class="text-lg font-semibold text-card-foreground">
+                {{ cat.title }}
+              </h3>
+              <p class="mt-2 flex flex-wrap gap-2">
+                <span
+                  v-for="comp in cat.components"
+                  :key="comp"
+                  class="inline-flex rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+                >
+                  {{ comp }}
+                </span>
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="border-t border-border px-6 py-10 text-center text-sm text-muted-foreground">
+        <p>
+          Built by
+          <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar" target="_blank" rel="noopener noreferrer">Lionad-Morotar</a>
+          · View on
+          <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar/tool-ui-vue" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </Story>
+</template>

@@ -3,14 +3,26 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'histoire';
 import { resolve } from 'path';
 
+const storyGroups = [
+  { title: 'Getting Started', stories: ['landing'] },
+  { title: 'Data Display', stories: ['chart', 'data-table', 'stats-display', 'weather-widget'] },
+  { title: 'Code & Terminal', stories: ['code-block', 'code-diff', 'terminal'] },
+  { title: 'Media', stories: ['audio', 'image', 'image-gallery', 'item-carousel', 'video'] },
+  { title: 'Social', stories: ['approval-card', 'citation', 'instagram-post', 'linkedin-post', 'link-preview', 'message-draft', 'x-post'] },
+  { title: 'Forms & Input', stories: ['option-list', 'parameter-slider', 'preferences-panel'] },
+  { title: 'Workflow', stories: ['geo-map', 'plan', 'progress-tracker', 'question-flow', 'order-summary'] },
+];
+
 export default defineConfig({
   plugins: [HstVue()],
   storyMatch: ['src/**/*.story.vue'],
-  storyIgnored: ['**/.git/**', '**/node_modules/**', '**/dist*/**'],
+  storyIgnored: ['**/.git/**', '**/node_modules/**', '**/dist*/**', '**/tailwind-test.story.vue'],
   outDir: 'dist-histoire',
   setupFile: 'src/stories/_shared/histoire-setup.ts',
+  routerMode: 'hash',
   theme: {
     title: 'tool-ui-vue',
+    logoHref: '/#/story/src-stories-landing-story-vue',
   },
   defaultStoryProps: {
     layout: {
@@ -18,7 +30,15 @@ export default defineConfig({
       width: '100%',
     },
   },
+  tree: {
+    groups: storyGroups.map(g => ({
+      title: g.title,
+      include: (file: { path: string }) =>
+        g.stories.some(story => file.path.includes(`${story}.story.vue`)),
+    })),
+  },
   vite: {
+    base: '/tool-ui-vue/',
     plugins: [tailwindcss()],
     resolve: {
       alias: {
