@@ -72,7 +72,7 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
       <!-- Content -->
       <div
         :class="cn(
-          'overflow-x-auto overflow-y-clip text-[13px] leading-[1.4] [&_pre]:bg-transparent [&_pre]:py-4',
+          'overflow-x-auto overflow-y-clip text-[13px] leading-[1.4] [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4 [&_code]:block [&_code]:w-full',
           codeBlockState.isCollapsed && 'max-h-[200px]',
         )"
       >

@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from '../schema';
 import type { Highlighter, ShikiTransformer } from 'shiki';
 import type { ComputedRef, Ref } from 'vue';
@@ -254,22 +254,25 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
   );
 
   // Theme detection
+  let mql: MediaQueryList | undefined;
+  let observer: MutationObserver | undefined;
+
   onMounted(() => {
     updateTheme();
 
-    const mql = window.matchMedia?.('(prefers-color-scheme: dark)');
+    mql = window.matchMedia?.('(prefers-color-scheme: dark)');
     mql?.addEventListener('change', updateTheme);
 
-    const observer = new MutationObserver(updateTheme);
+    observer = new MutationObserver(updateTheme);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class', 'data-theme'],
     });
+  });
 
-    return () => {
-      mql?.removeEventListener('change', updateTheme);
-      observer.disconnect();
-    };
+  onBeforeUnmount(() => {
+    mql?.removeEventListener('change', updateTheme);
+    observer?.disconnect();
   });
 
   return {
