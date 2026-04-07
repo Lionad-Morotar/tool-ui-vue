@@ -54,7 +54,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Empty State -->
             <tbody v-if="data.length === 0">
-              <tr class="h-24 bg-card text-center">
+              <tr class="bg-card h-24 text-center">
                 <td
                   :colspan="columns.length"
                   role="status"
@@ -68,7 +68,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Table Content -->
             <template v-else>
-              <thead class="[&_tr]:border-b">
+              <thead class="[&_tr]:border-border [&_tr]:border-b">
                 <tr class="hover:bg-transparent">
                   <th
                     v-for="(column, columnIndex) in columns"
@@ -108,7 +108,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <template v-if="column.abbr">
                           <abbr
                             :title="column.label"
-                            class="cursor-help border-b border-dotted border-current no-underline"
+                            class="border-current border-b border-dotted no-underline cursor-help"
                           >
                             {{ column.abbr }}
                           </abbr>
@@ -128,11 +128,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   </th>
                 </tr>
               </thead>
-              <tbody class="[&_tr:last-child]:border-0">
+              <tbody class="[&_tr:last-child]:border-0 [&_tr]:border-border">
                 <tr
                   v-for="(row, index) in state.sortedData"
                   :key="state.getRowId(row, index)"
-                  class="border-b transition-colors hover:bg-muted/50"
+                  class="hover:bg-muted/50 border-b transition-colors"
                 >
                   <td
                     v-for="(column, columnIndex) in columns"
@@ -178,12 +178,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :href="state.resolveSafeNavigationHref(column.format.hrefKey ? String(row[column.format.hrefKey]) : String(row[column.key])) || undefined"
                         :target="column.format.external ? '_blank' : undefined"
                         :rel="column.format.external ? 'noopener noreferrer' : undefined"
-                        class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
+                        class="inline-block hover:opacity-90 max-w-full text-primary underline underline-offset-2 break-words"
                         :aria-label="column.format.external ? `${state.formatCellValue(row[column.key], column)} (opens in a new tab)` : undefined"
                         @click.stop
                       >
                         {{ state.formatCellValue(row[column.key], column) }}
-                        <span v-if="column.format.external" class="ml-1 inline-block" aria-label="Opens in new tab">&#x2197;</span>
+                        <span v-if="column.format.external" class="inline-block ml-1" aria-label="Opens in new tab">&#x2197;</span>
                       </a>
                     </template>
 
@@ -193,13 +193,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <span
                           v-for="(item, i) in state.getArrayItems(row[column.key], column.format.maxVisible).items"
                           :key="i"
-                          class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                          class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
                         >
                           {{ item === null ? "null" : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[column.key], column.format.maxVisible).remaining > 0"
-                          class="text-xs text-muted-foreground"
+                          class="text-muted-foreground text-xs"
                         >
                           +{{ state.getArrayItems(row[column.key], column.format.maxVisible).remaining }} more
                         </span>
@@ -249,13 +249,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
         </template>
       </div>
 
-      <div v-if="data.length === 0" class="py-8 text-center text-muted-foreground">
+      <div v-if="data.length === 0" class="py-8 text-muted-foreground text-center">
         {{ emptyMessage || "No data available" }}
       </div>
 
       <div
         v-else
-        class="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs"
+        class="flex flex-col bg-card shadow-xs border border-border rounded-2xl overflow-hidden"
       >
         <div
           v-for="(row, index) in state.sortedData"
@@ -282,11 +282,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
               :aria-controls="`row-details-${state.getDataTableRowDomId(state.getRowId(row, index))}`"
               @click="state.toggleRowExpansion(state.getRowId(row, index))"
             >
-              <div class="flex min-w-0 flex-1 flex-col gap-2">
+              <div class="flex flex-col flex-1 gap-2 min-w-0">
                 <!-- Primary Column -->
                 <div
                   v-if="primaryColumns[0]"
-                  class="truncate font-medium"
+                  class="font-medium truncate"
                 >
                   {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
                 </div>
@@ -294,12 +294,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                 <!-- Remaining Primary Columns Summary -->
                 <div
                   v-if="primaryColumns.slice(1).length > 0"
-                  class="flex w-full flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground"
+                  class="flex flex-wrap gap-x-4 gap-y-0.5 w-full text-muted-foreground"
                 >
                   <span
                     v-for="col in primaryColumns.slice(1)"
                     :key="col.key"
-                    class="flex min-w-0 gap-1 font-normal"
+                    class="flex gap-1 min-w-0 font-normal"
                   >
                     <span class="sr-only">{{ col.label }}:</span>
                     <span aria-hidden="true">{{ col.label }}:</span>
@@ -342,9 +342,9 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                 <div
                   v-for="col in secondaryColumns"
                   :key="col.key"
-                  class="flex items-start justify-between gap-4"
+                  class="flex justify-between items-start gap-4"
                 >
-                  <dt class="shrink-0 text-muted-foreground">
+                  <dt class="text-muted-foreground shrink-0">
                     {{ col.label }}
                   </dt>
                   <dd
@@ -389,11 +389,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :href="state.resolveSafeNavigationHref(col.format.hrefKey ? String(row[col.format.hrefKey]) : String(row[col.key])) || undefined"
                         :target="col.format.external ? '_blank' : undefined"
                         :rel="col.format.external ? 'noopener noreferrer' : undefined"
-                        class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
+                        class="inline-block hover:opacity-90 max-w-full text-primary underline underline-offset-2 break-words"
                         @click.stop
                       >
                         {{ state.formatCellValue(row[col.key], col) }}
-                        <span v-if="col.format.external" class="ml-1 inline-block">&#x2197;</span>
+                        <span v-if="col.format.external" class="inline-block ml-1">&#x2197;</span>
                       </a>
                     </template>
 
@@ -403,13 +403,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <span
                           v-for="(item, i) in state.getArrayItems(row[col.key], col.format.maxVisible).items"
                           :key="i"
-                          class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                          class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
                         >
                           {{ item === null ? "null" : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[col.key], col.format.maxVisible).remaining > 0"
-                          class="text-xs text-muted-foreground"
+                          class="text-muted-foreground text-xs"
                         >
                           +{{ state.getArrayItems(row[col.key], col.format.maxVisible).remaining }} more
                         </span>
@@ -457,7 +457,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
             <div
               v-for="col in primaryColumns.slice(1)"
               :key="col.key"
-              class="flex items-start justify-between gap-4"
+              class="flex justify-between items-start gap-4"
             >
               <span class="text-muted-foreground">
                 {{ col.label }}:

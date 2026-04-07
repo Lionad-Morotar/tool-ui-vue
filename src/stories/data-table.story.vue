@@ -11,6 +11,10 @@ function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
     sortableState.sort = { by: sort.by, direction: sort.direction };
   }
 }
+
+const playgroundState = reactive({
+  layout: 'cards' as 'auto' | 'table' | 'cards',
+});
 </script>
 
 <template>
@@ -197,113 +201,29 @@ function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
       </div>
     </Variant>
 
-    <Variant title="Layout: Table Mode">
-      <div class="w-full max-w-2xl">
-        <data-table
-          id="data-table-layout-table"
-          layout="table"
-          :columns="[
-            { key: 'name', label: 'Name', sortable: true },
-            { key: 'role', label: 'Role', sortable: true },
-            { key: 'department', label: 'Department', sortable: true },
-          ]"
-          :data="[
-            { name: 'Alice Johnson', role: 'Engineer', department: 'Engineering' },
-            { name: 'Bob Smith', role: 'Designer', department: 'Design' },
-            { name: 'Carol White', role: 'Manager', department: 'Product' },
-          ]"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="Layout: Cards Mode (Mobile View)">
-      <div class="w-full max-w-md">
-        <p class="mb-4 text-sm text-muted-foreground">
-          Cards layout shows mobile-friendly expandable cards
+    <Variant title="Interactive Layout Playground" auto-props-disabled>
+      <div class="w-full max-w-2xl space-y-4">
+        <p class="text-sm text-muted-foreground">
+          Use the right panel to change <code>layout</code>. Default is <code>cards</code> (accordion view).
+          This demo combines primary, secondary, tertiary, and hideOnMobile columns.
         </p>
         <data-table
-          id="data-table-layout-cards"
-          layout="cards"
+          id="data-table-playground"
+          v-bind="playgroundState"
           :columns="[
-            { key: 'name', label: 'Name', priority: 'primary' },
-            { key: 'role', label: 'Role', priority: 'primary' },
-            { key: 'department', label: 'Department', priority: 'secondary' },
-            { key: 'location', label: 'Location', priority: 'secondary' },
+            { key: 'project', label: 'Project', priority: 'primary' },
+            { key: 'owner', label: 'Owner', priority: 'primary' },
+            { key: 'status', label: 'Status', priority: 'secondary' },
+            { key: 'budget', label: 'Budget', priority: 'secondary', format: { kind: 'currency', currency: 'USD' } },
+            { key: 'deadline', label: 'Deadline', priority: 'tertiary' },
+            { key: 'notes', label: 'Notes', hideOnMobile: true },
           ]"
           :data="[
-            { name: 'Alice Johnson', role: 'Senior Engineer', department: 'Engineering', location: 'San Francisco' },
-            { name: 'Bob Smith', role: 'Product Designer', department: 'Design', location: 'New York' },
-            { name: 'Carol White', role: 'Product Manager', department: 'Product', location: 'London' },
+            { project: 'Website Redesign', owner: 'Alice', status: 'In Progress', budget: 45000, deadline: '2024-03-15', notes: 'Needs brand assets' },
+            { project: 'Mobile App', owner: 'Bob', status: 'Planning', budget: 120000, deadline: '2024-06-30', notes: 'iOS-first approach' },
+            { project: 'API Migration', owner: 'Carol', status: 'Completed', budget: 28000, deadline: '2024-01-20', notes: 'Zero downtime' },
           ]"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="Layout: Auto Mode (Responsive)">
-      <div class="w-full max-w-2xl">
-        <p class="mb-4 text-sm text-muted-foreground">
-          Auto mode shows table on desktop, cards on mobile (resize viewport to see change)
-        </p>
-        <data-table
-          id="data-table-layout-auto"
-          layout="auto"
-          :columns="[
-            { key: 'name', label: 'Name', priority: 'primary' },
-            { key: 'status', label: 'Status', priority: 'primary' },
-            { key: 'revenue', label: 'Revenue', priority: 'secondary', format: { kind: 'currency', currency: 'USD' } },
-            { key: 'growth', label: 'Growth', priority: 'secondary', format: { kind: 'percent', decimals: 1 } },
-          ]"
-          :data="[
-            { name: 'Product A', status: 'Active', revenue: 125000, growth: 0.125 },
-            { name: 'Product B', status: 'Draft', revenue: 78000, growth: -0.03 },
-            { name: 'Product C', status: 'Active', revenue: 210000, growth: 0.28 },
-          ]"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="With Column Priority (Mobile Cards)">
-      <div class="w-full max-w-md">
-        <p class="mb-4 text-sm text-muted-foreground">
-          Columns with priority: primary (always visible), secondary (expandable), tertiary (hidden on mobile)
-        </p>
-        <data-table
-          id="data-table-priority"
-          layout="cards"
-          :columns="[
-            { key: 'symbol', label: 'Symbol', priority: 'primary' },
-            { key: 'price', label: 'Price', priority: 'primary', format: { kind: 'currency', currency: 'USD' } },
-            { key: 'change', label: 'Change', priority: 'secondary', format: { kind: 'delta', decimals: 2 } },
-            { key: 'volume', label: 'Volume', priority: 'secondary', format: { kind: 'number', compact: true } },
-            { key: 'marketCap', label: 'Market Cap', priority: 'tertiary', format: { kind: 'currency', currency: 'USD', compact: true } },
-          ]"
-          :data="[
-            { symbol: 'AAPL', price: 178.25, change: 2.35, volume: 52430000, marketCap: 2800000000000 },
-            { symbol: 'MSFT', price: 380.0, change: 1.24, volume: 31250000, marketCap: 2900000000000 },
-            { symbol: 'GOOGL', price: 142.5, change: -0.85, volume: 21500000, marketCap: 1800000000000 },
-          ]"
-          row-id-key="symbol"
-        />
-      </div>
-    </Variant>
-
-    <Variant title="With hideOnMobile Columns">
-      <div class="w-full max-w-md">
-        <p class="mb-4 text-sm text-muted-foreground">
-          Columns with hideOnMobile are completely hidden in card view
-        </p>
-        <data-table
-          id="data-table-hide-mobile"
-          layout="cards"
-          :columns="[
-            { key: 'name', label: 'Name' },
-            { key: 'email', label: 'Email', hideOnMobile: true },
-            { key: 'role', label: 'Role' },
-          ]"
-          :data="[
-            { name: 'Alice Johnson', email: 'alice@example.com', role: 'Engineer' },
-            { name: 'Bob Smith', email: 'bob@example.com', role: 'Designer' },
-          ]"
+          row-id-key="project"
         />
       </div>
     </Variant>
