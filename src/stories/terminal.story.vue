@@ -41,21 +41,21 @@ const ansiExamples = {
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">Terminal Props</h2>
         <div class="overflow-x-auto">
-          <table class="w-full text-sm">
+          <table class="story-table">
             <thead>
-              <tr class="border-b">
-                <th class="px-4 py-2 text-left font-semibold">Name</th>
-                <th class="px-4 py-2 text-left font-semibold">Type</th>
-                <th class="px-4 py-2 text-left font-semibold">Default</th>
-                <th class="px-4 py-2 text-left font-semibold">Description</th>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="prop in props" :key="prop.name" class="border-b">
-                <td class="px-4 py-2 font-mono text-emerald-600">{{ prop.name }}</td>
-                <td class="px-4 py-2 font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="px-4 py-2 text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td class="px-4 py-2">{{ prop.description }}</td>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ prop.description }}</td>
               </tr>
             </tbody>
           </table>

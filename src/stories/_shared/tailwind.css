@@ -71,3 +71,48 @@
   --color-card: hsl(240 10% 3.9%);
   --color-card-foreground: hsl(0 0% 98%);
 }
+
+/* Story props table */
+.story-table {
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.story-table thead {
+  background-color: color-mix(in oklab, var(--color-muted) 60%, transparent);
+}
+
+.story-table th {
+  padding: 0.625rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted-foreground);
+}
+
+.story-table tbody {
+  background-color: var(--color-background);
+}
+
+.story-table tbody tr {
+  transition: background-color 150ms ease;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.story-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.story-table tbody tr:hover {
+  background-color: color-mix(in oklab, var(--color-muted) 40%, transparent);
+}
+
+.story-table td {
+  padding: 0.625rem 1rem;
+}

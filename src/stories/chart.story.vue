@@ -19,7 +19,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       <p>Data visualization component supporting bar and line charts with interactive features.</p>
 
       <h3>Props</h3>
-      <table>
+      <table class="story-table">
         <thead>
           <tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
         </thead>
@@ -39,7 +39,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </table>
 
       <h3>Emits</h3>
-      <table>
+      <table class="story-table">
         <thead>
           <tr><th>Name</th><th>Payload</th><th>Description</th></tr>
         </thead>

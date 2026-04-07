@@ -32,18 +32,18 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
     lang="en"
     :aria-busy="isLoading"
   >
-    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+    <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
       <!-- Header -->
       <div
-        class="flex items-center justify-between border-b bg-card px-4 py-2"
+        class="flex justify-between items-center bg-card px-4 py-2 border-border border-b"
       >
         <div class="flex items-center gap-1">
-          <span class="text-sm text-muted-foreground">
+          <span class="text-muted-foreground text-sm">
             {{ codeBlockState.languageDisplayName }}
           </span>
           <template v-if="filename">
             <span class="text-muted-foreground/50">•</span>
-            <span class="text-sm font-medium text-foreground">
+            <span class="font-medium text-foreground text-sm">
               {{ filename }}
             </span>
           </template>
@@ -60,11 +60,11 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
         >
           <check
             v-if="isCopied"
-            class="h-4 w-4 text-green-700 dark:text-green-400"
+            class="w-4 h-4 text-green-700 dark:text-green-400"
           />
           <copy
             v-else
-            class="h-4 w-4 text-muted-foreground"
+            class="w-4 h-4 text-muted-foreground"
           />
         </button>
       </div>
@@ -87,7 +87,7 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
         v-if="codeBlockState.shouldCollapse"
         type="button"
         :class="cn(
-          'w-full rounded-none border-t font-normal text-muted-foreground',
+          'w-full rounded-none border-t border-border font-normal text-muted-foreground',
           'inline-flex items-center justify-center px-4 py-2 text-sm transition-colors',
           'hover:bg-accent hover:text-accent-foreground',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
