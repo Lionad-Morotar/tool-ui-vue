@@ -103,3 +103,33 @@ HTMLDialogElement.prototype.showModal = vi.fn(function(this: HTMLDialogElement) 
 HTMLDialogElement.prototype.close = vi.fn(function(this: HTMLDialogElement) {
   this.removeAttribute('open');
 });
+
+// Popover API mocks (for citation popovers)
+HTMLElement.prototype.showPopover = vi.fn(function (this: HTMLElement) {
+  this.setAttribute('popover-open', '');
+});
+HTMLElement.prototype.hidePopover = vi.fn(function (this: HTMLElement) {
+  this.removeAttribute('popover-open');
+});
+HTMLElement.prototype.togglePopover = vi.fn(function (this: HTMLElement) {
+  if (this.hasAttribute('popover-open')) {
+    this.removeAttribute('popover-open');
+    return false;
+  } else {
+    this.setAttribute('popover-open', '');
+    return true;
+  }
+});
+Object.defineProperty(HTMLElement.prototype, 'popover', {
+  configurable: true,
+  get() {
+    return this.getAttribute('popover');
+  },
+  set(value: string | null) {
+    if (value == null) {
+      this.removeAttribute('popover');
+    } else {
+      this.setAttribute('popover', value);
+    }
+  },
+});

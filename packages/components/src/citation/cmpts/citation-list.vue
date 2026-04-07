@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { ref, computed, onUnmounted } from 'vue';
+import { computed } from 'vue';
 import Citation from '../index.vue';
+import { typeIcons } from '../icons';
+import { usePopover } from '../states/usePopover';
 import type { CitationType, SerializableCitation, CitationListProps } from '../schema';
 
 defineOptions({ name: 'CmptCitationList', inheritAttrs: false })
@@ -16,10 +18,6 @@ const props = withDefaults(defineProps<CitationListProps & { css?: { root?: stri
 const emit = defineEmits<{
   navigate: [href: string, citation: SerializableCitation];
 }>();
-
-// Popover state for overflow
-const isOverflowOpen = ref(false);
-const overflowTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const shouldTruncate = computed(() => {
   if (props.maxVisible === undefined) return false;
@@ -47,55 +45,9 @@ const stackedRemainingCount = computed(() =>
   Math.max(0, props.citations.length - maxStackedIcons)
 );
 
-// Type icons for stacked and overflow
-const typeIcons: Record<CitationType, { viewBox: string; path: string }> = {
-  webpage: {
-    viewBox: '0 0 24 24',
-    path: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z',
-  },
-  document: {
-    viewBox: '0 0 24 24',
-    path: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8M16 17H8M10 9H8',
-  },
-  article: {
-    viewBox: '0 0 24 24',
-    path: 'M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2 M18 14h-8 M15 18h-5',
-  },
-  api: {
-    viewBox: '0 0 24 24',
-    path: 'M12 2v4 M12 18v4 M4.93 4.93l2.83 2.83 M16.24 16.24l2.83 2.83 M2 12h4 M18 12h4 M4.93 19.07l2.83-2.83 M16.24 7.76l2.83-2.83',
-  },
-  code: {
-    viewBox: '0 0 24 24',
-    path: 'm16 18 6-6-6-6 M8 6l-6 6 6 6',
-  },
-  other: {
-    viewBox: '0 0 24 24',
-    path: 'M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z M14 2v6h6',
-  },
-};
-
-// Popover handlers for stacked/overflow
-function handleMouseEnter() {
-  if (overflowTimeout.value) clearTimeout(overflowTimeout.value);
-  overflowTimeout.value = setTimeout(() => {
-    isOverflowOpen.value = true;
-  }, 100);
-}
-
-function handleMouseLeave() {
-  if (overflowTimeout.value) clearTimeout(overflowTimeout.value);
-  overflowTimeout.value = setTimeout(() => {
-    isOverflowOpen.value = false;
-  }, 100);
-}
-
-function handleKeyDown(e: KeyboardEvent) {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    isOverflowOpen.value = true;
-  }
-}
+// Popover composables
+const popoverBottom = usePopover({ placement: 'bottom', id: `${props.id}-popover-bottom` });
+const popoverTop = usePopover({ placement: 'top', id: `${props.id}-popover-top` });
 
 function handleOverflowClick(citation: SerializableCitation) {
   const href = citation.href;
@@ -120,11 +72,6 @@ function handleStackedClick(citation: SerializableCitation) {
 function getTypeIcon(type: CitationType | undefined) {
   return typeIcons[type ?? 'webpage'] ?? typeIcons.webpage;
 }
-
-// Cleanup on unmount
-onUnmounted(() => {
-  if (overflowTimeout.value) clearTimeout(overflowTimeout.value);
-});
 </script>
 
 <template>
@@ -132,12 +79,11 @@ onUnmounted(() => {
   <div
     v-if="variant === 'stacked'"
     v-bind="$attrs"
-    class="relative inline-flex"
+    class="inline-flex relative"
     data-testid="citation-list-container"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
   >
     <button
+      :ref="(el: any) => { if (el) popoverBottom.triggerRef.value = el as HTMLElement }"
       type="button"
       :data-tool-ui-id="id"
       data-slot="citation-list"
@@ -149,7 +95,11 @@ onUnmounted(() => {
         'focus-visible:ring-2 focus-visible:ring-ring',
         css?.root
       )"
-      @keydown="handleKeyDown"
+      :style="popoverBottom.supportsAnchor ? { anchorName: '--citation-list-bottom' } : undefined"
+      v-bind="popoverBottom.triggerAttrs()"
+      @mouseenter="popoverBottom.handleMouseEnter"
+      @mouseleave="popoverBottom.handleMouseLeave"
+      @keydown="popoverBottom.handleTriggerKeyDown"
     >
       <div class="flex items-center">
         <div
@@ -168,7 +118,7 @@ onUnmounted(() => {
             aria-hidden="true"
             width="18"
             height="18"
-            class="size-4.5 rounded-full object-cover"
+            class="rounded-full size-4.5 object-cover"
           />
           <svg
             v-else
@@ -186,36 +136,39 @@ onUnmounted(() => {
         </div>
         <div
           v-if="stackedRemainingCount > 0"
-          class="relative -ml-2 flex size-6 items-center justify-center rounded-full border border-border bg-background shadow-xs dark:border-foreground/20"
+          class="relative flex justify-center items-center bg-background shadow-xs -ml-2 border border-border dark:border-foreground/20 rounded-full size-6"
           style="z-index: 0"
         >
-          <span class="text-[10px] font-medium tracking-tight text-muted-foreground">
+          <span class="font-medium text-[10px] text-muted-foreground tracking-tight">
             •••
           </span>
         </div>
       </div>
-      <span class="text-sm text-muted-foreground tabular-nums">
+      <span class="tabular-nums text-muted-foreground text-sm">
         {{ citations.length }} source{{ citations.length !== 1 ? 's' : '' }}
       </span>
     </button>
 
     <!-- Stacked Popover -->
     <div
-      v-if="isOverflowOpen"
+      :ref="(el: any) => { if (el) popoverBottom.popoverRef.value = el as HTMLElement }"
       data-testid="popover"
       :class="cn(
         'absolute top-full left-0 z-50 mt-2',
-        'w-80 rounded-md border border-border bg-popover p-1 shadow-md'
+        'w-80 rounded-md border border-border bg-popover p-1 shadow-md',
+        popoverBottom.supportsAnchor && 'citation-list-popover--bottom'
       )"
-      @mouseenter="handleMouseEnter"
-      @mouseleave="handleMouseLeave"
+      v-bind="popoverBottom.popoverAttrs()"
+      @mouseenter="popoverBottom.handleMouseEnter"
+      @mouseleave="popoverBottom.handleMouseLeave"
+      @keydown="popoverBottom.handlePopoverKeyDown"
     >
-      <div class="flex max-h-72 flex-col overflow-y-auto">
+      <div class="flex flex-col max-h-72 overflow-y-auto">
         <button
           v-for="citation in citations"
           :key="citation.id"
           type="button"
-          class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+          class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
           @click="handleStackedClick(citation)"
         >
           <img
@@ -225,12 +178,12 @@ onUnmounted(() => {
             aria-hidden="true"
             width="16"
             height="16"
-            class="size-4 shrink-0 rounded bg-muted object-cover"
+            class="bg-muted rounded size-4 object-cover shrink-0"
           />
           <svg
             v-else
             :viewBox="getTypeIcon(citation.type).viewBox"
-            class="size-4 shrink-0 text-muted-foreground"
+            class="size-4 text-muted-foreground shrink-0"
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
@@ -240,11 +193,11 @@ onUnmounted(() => {
           >
             <path :d="getTypeIcon(citation.type).path" />
           </svg>
-          <div class="min-w-0 flex-1">
-            <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
               {{ citation.title }}
             </p>
-            <p class="truncate text-xs text-muted-foreground">
+            <p class="text-muted-foreground text-xs truncate">
               {{ citation.domain }}
             </p>
           </div>
@@ -258,7 +211,7 @@ onUnmounted(() => {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+            class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
           >
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
             <polyline points="15 3 21 3 21 9" />
@@ -294,10 +247,9 @@ onUnmounted(() => {
       v-if="shouldTruncate"
       class="relative"
       data-testid="overflow-container"
-      @mouseenter="handleMouseEnter"
-      @mouseleave="handleMouseLeave"
     >
       <button
+        :ref="(el: any) => { if (el) popoverBottom.triggerRef.value = el as HTMLElement }"
         type="button"
         :class="cn(
           'flex items-center justify-center rounded-xl px-4 py-3',
@@ -306,28 +258,36 @@ onUnmounted(() => {
           'hover:border-foreground/25 hover:bg-muted/50',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none'
         )"
+        :style="popoverBottom.supportsAnchor ? { anchorName: '--citation-list-bottom' } : undefined"
+        v-bind="popoverBottom.triggerAttrs()"
+        @mouseenter="popoverBottom.handleMouseEnter"
+        @mouseleave="popoverBottom.handleMouseLeave"
+        @keydown="popoverBottom.handleTriggerKeyDown"
       >
-        <span class="text-sm text-muted-foreground tabular-nums">
+        <span class="tabular-nums text-muted-foreground text-sm">
           +{{ overflowCount }} more sources
         </span>
       </button>
       <!-- Overflow popover -->
       <div
-        v-if="isOverflowOpen"
+        :ref="(el: any) => { if (el) popoverBottom.popoverRef.value = el as HTMLElement }"
         data-testid="popover"
         :class="cn(
           'absolute top-full left-0 z-50 mt-2',
-          'w-80 rounded-md border border-border bg-popover p-1 shadow-md'
+          'w-80 rounded-md border border-border bg-popover p-1 shadow-md',
+          popoverBottom.supportsAnchor && 'citation-list-popover--bottom'
         )"
-        @mouseenter="handleMouseEnter"
-        @mouseleave="handleMouseLeave"
+        v-bind="popoverBottom.popoverAttrs()"
+        @mouseenter="popoverBottom.handleMouseEnter"
+        @mouseleave="popoverBottom.handleMouseLeave"
+        @keydown="popoverBottom.handlePopoverKeyDown"
       >
-        <div class="flex max-h-72 flex-col overflow-y-auto">
+        <div class="flex flex-col max-h-72 overflow-y-auto">
           <button
             v-for="citation in overflowCitations"
             :key="citation.id"
             type="button"
-            class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+            class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
             @click="handleOverflowClick(citation)"
           >
             <img
@@ -337,12 +297,12 @@ onUnmounted(() => {
               aria-hidden="true"
               width="16"
               height="16"
-              class="size-4 shrink-0 rounded bg-muted object-cover"
+              class="bg-muted rounded size-4 object-cover shrink-0"
             />
             <svg
               v-else
               :viewBox="getTypeIcon(citation.type).viewBox"
-              class="size-4 shrink-0 text-muted-foreground"
+              class="size-4 text-muted-foreground shrink-0"
               aria-hidden="true"
               fill="none"
               stroke="currentColor"
@@ -352,11 +312,11 @@ onUnmounted(() => {
             >
               <path :d="getTypeIcon(citation.type).path" />
             </svg>
-            <div class="min-w-0 flex-1">
-              <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
                 {{ citation.title }}
               </p>
-              <p class="truncate text-xs text-muted-foreground">
+              <p class="text-muted-foreground text-xs truncate">
                 {{ citation.domain }}
               </p>
             </div>
@@ -370,7 +330,7 @@ onUnmounted(() => {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+              class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
             >
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
               <polyline points="15 3 21 3 21 9" />
@@ -406,10 +366,9 @@ onUnmounted(() => {
     <div
       v-if="shouldTruncate"
       class="relative"
-      @mouseenter="handleMouseEnter"
-      @mouseleave="handleMouseLeave"
     >
       <button
+        :ref="(el: any) => { if (el) popoverTop.triggerRef.value = el as HTMLElement }"
         type="button"
         :class="cn(
           'inline-flex items-center gap-1 rounded-md px-2 py-1',
@@ -418,25 +377,33 @@ onUnmounted(() => {
           'hover:bg-muted',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none'
         )"
+        :style="popoverTop.supportsAnchor ? { anchorName: '--citation-list-top' } : undefined"
+        v-bind="popoverTop.triggerAttrs()"
+        @mouseenter="popoverTop.handleMouseEnter"
+        @mouseleave="popoverTop.handleMouseLeave"
+        @keydown="popoverTop.handleTriggerKeyDown"
       >
         <span class="text-muted-foreground">+{{ overflowCount }} more</span>
       </button>
       <!-- Overflow popover -->
       <div
-        v-if="isOverflowOpen"
+        :ref="(el: any) => { if (el) popoverTop.popoverRef.value = el as HTMLElement }"
         :class="cn(
           'absolute bottom-full left-0 z-50 mb-2',
-          'w-80 rounded-md border border-border bg-popover p-1 shadow-md'
+          'w-80 rounded-md border border-border bg-popover p-1 shadow-md',
+          popoverTop.supportsAnchor && 'citation-list-popover--top'
         )"
-        @mouseenter="handleMouseEnter"
-        @mouseleave="handleMouseLeave"
+        v-bind="popoverTop.popoverAttrs()"
+        @mouseenter="popoverTop.handleMouseEnter"
+        @mouseleave="popoverTop.handleMouseLeave"
+        @keydown="popoverTop.handlePopoverKeyDown"
       >
-        <div class="flex max-h-72 flex-col overflow-y-auto">
+        <div class="flex flex-col max-h-72 overflow-y-auto">
           <button
             v-for="citation in overflowCitations"
             :key="citation.id"
             type="button"
-            class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+            class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
             @click="handleOverflowClick(citation)"
           >
             <img
@@ -446,12 +413,12 @@ onUnmounted(() => {
               aria-hidden="true"
               width="16"
               height="16"
-              class="size-4 shrink-0 rounded bg-muted object-cover"
+              class="bg-muted rounded size-4 object-cover shrink-0"
             />
             <svg
               v-else
               :viewBox="getTypeIcon(citation.type).viewBox"
-              class="size-4 shrink-0 text-muted-foreground"
+              class="size-4 text-muted-foreground shrink-0"
               aria-hidden="true"
               fill="none"
               stroke="currentColor"
@@ -461,11 +428,11 @@ onUnmounted(() => {
             >
               <path :d="getTypeIcon(citation.type).path" />
             </svg>
-            <div class="min-w-0 flex-1">
-              <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
                 {{ citation.title }}
               </p>
-              <p class="truncate text-xs text-muted-foreground">
+              <p class="text-muted-foreground text-xs truncate">
                 {{ citation.domain }}
               </p>
             </div>
@@ -479,7 +446,7 @@ onUnmounted(() => {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+              class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
             >
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
               <polyline points="15 3 21 3 21 9" />
@@ -496,3 +463,27 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.citation-list-popover--bottom {
+  position-anchor: --citation-list-bottom;
+  position-area: bottom;
+  inset: auto;
+  margin: 0;
+  position-try: --citation-list-bottom-flip;
+}
+@position-try --citation-list-bottom-flip {
+  position-area: top;
+}
+
+.citation-list-popover--top {
+  position-anchor: --citation-list-top;
+  position-area: top;
+  inset: auto;
+  margin: 0;
+  position-try: --citation-list-top-flip;
+}
+@position-try --citation-list-top-flip {
+  position-area: bottom;
+}
+</style>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive, toRef } from 'vue';
+import { reactive } from 'vue';
 import { useCitation } from './states';
+import { usePopover } from './states/usePopover';
 import type { CitationProps } from './schema';
 
 defineOptions({ name: 'CmptCitation', inheritAttrs: false })
@@ -17,8 +18,8 @@ const emit = defineEmits<{
 // All business logic delegated to states layer
 const state = reactive(useCitation(props, emit));
 
-// Keep refs reactive
-const isPopoverOpen = toRef(state, 'isPopoverOpen');
+// Popover for inline variant
+const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
 </script>
 
 <template>
@@ -26,12 +27,12 @@ const isPopoverOpen = toRef(state, 'isPopoverOpen');
   <div
     v-if="state.resolvedVariant === 'inline'"
     class="relative inline-block"
-    @mouseenter="state.handleMouseEnter"
-    @mouseleave="state.handleMouseLeave"
   >
     <button
+      :ref="(el: any) => { if (el) popover.triggerRef.value = el as HTMLElement }"
       type="button"
       :aria-label="title"
+      v-bind="popover.triggerAttrs()"
       :data-tool-ui-id="id"
       data-slot="citation"
       :class="cn(
@@ -42,7 +43,11 @@ const isPopoverOpen = toRef(state, 'isPopoverOpen');
         'focus-visible:ring-2 focus-visible:ring-ring',
         css?.root
       )"
+      :style="popover.supportsAnchor ? { anchorName: '--citation-inline' } : undefined"
+      @mouseenter="popover.handleMouseEnter"
+      @mouseleave="popover.handleMouseLeave"
       @click="state.handleClick"
+      @keydown="popover.handleTriggerKeyDown"
     >
       <!-- Icon -->
       <img
@@ -72,15 +77,18 @@ const isPopoverOpen = toRef(state, 'isPopoverOpen');
 
     <!-- Popover -->
     <div
-      v-if="isPopoverOpen"
+      :ref="(el: any) => { if (el) popover.popoverRef.value = el as HTMLElement }"
+      v-bind="popover.popoverAttrs()"
       :class="cn(
         'absolute bottom-full left-0 z-50 mb-2',
         'w-72 rounded-md border border-border bg-popover p-0 shadow-md',
-        'cursor-pointer'
+        'cursor-pointer',
+        popover.supportsAnchor && 'citation-popover--top'
       )"
-      @mouseenter="state.handleMouseEnter"
-      @mouseleave="state.handleMouseLeave"
+      @mouseenter="popover.handleMouseEnter"
+      @mouseleave="popover.handleMouseLeave"
       @click="state.handleClick"
+      @keydown="popover.handlePopoverKeyDown"
     >
       <div class="flex flex-col gap-2 p-3 transition-colors hover:bg-muted/50">
         <div class="flex items-start gap-2">
@@ -211,3 +219,16 @@ const isPopoverOpen = toRef(state, 'isPopoverOpen');
     </div>
   </article>
 </template>
+
+<style scoped>
+.citation-popover--top {
+  position-anchor: --citation-inline;
+  position-area: top;
+  inset: auto;
+  margin: 0;
+  position-try: --citation-top-flip;
+}
+@position-try --citation-top-flip {
+  position-area: bottom;
+}
+</style>

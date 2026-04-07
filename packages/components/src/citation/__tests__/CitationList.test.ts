@@ -218,14 +218,14 @@ describe('CitationList', () => {
         },
       });
 
-      const overflowContainer = wrapper.find('[data-testid="overflow-container"]');
-      await overflowContainer.trigger('mouseenter');
+      const overflowButton = wrapper.find('[data-testid="overflow-container"] button');
+      await overflowButton.trigger('mouseenter');
 
       vi.advanceTimersByTime(150);
       await wrapper.vm.$nextTick();
 
-      // Popover should be visible
-      expect(wrapper.find('[data-testid="popover"]').exists()).toBe(true);
+      const popover = wrapper.find('[data-testid="popover"]');
+      expect(popover.attributes('popover-open')).toBeDefined();
 
       vi.useRealTimers();
     });
@@ -240,14 +240,67 @@ describe('CitationList', () => {
         },
       });
 
-      const container = wrapper.find('[data-testid="citation-list-container"]');
-      await container.trigger('mouseenter');
+      const button = wrapper.find('[data-testid="citation-list-container"] button');
+      await button.trigger('mouseenter');
       vi.advanceTimersByTime(150);
       await wrapper.vm.$nextTick();
 
-      // Popover should be visible
-      expect(wrapper.find('[data-testid="popover"]').exists()).toBe(true);
+      const popover = wrapper.find('[data-testid="popover"]');
+      expect(popover.attributes('popover-open')).toBeDefined();
 
+      vi.useRealTimers();
+    });
+
+    test('overflow button has ARIA attributes', () => {
+      const wrapper = mount(CitationList, {
+        props: {
+          id: 'test-list',
+          citations: createCitations(5),
+          variant: 'default',
+          maxVisible: 2,
+        },
+      });
+      const button = wrapper.find('[data-testid="overflow-container"] button');
+      expect(button.attributes('aria-expanded')).toBe('false');
+      expect(button.attributes('aria-haspopup')).toBe('dialog');
+      const controls = button.attributes('aria-controls');
+      expect(controls).toContain('popover');
+    });
+
+    test('stacked variant button toggles popover with Enter key', async () => {
+      const wrapper = mount(CitationList, {
+        props: {
+          id: 'test-list',
+          citations: createCitations(3),
+          variant: 'stacked',
+        },
+      });
+      const button = wrapper.find('button');
+      await button.trigger('keydown', { key: 'Enter' });
+      const popover = wrapper.find('[data-testid="popover"]');
+      expect(popover.attributes('popover-open')).toBeDefined();
+      await button.trigger('keydown', { key: 'Enter' });
+      expect(popover.attributes('popover-open')).toBeUndefined();
+    });
+
+    test('popover closes on Escape key', async () => {
+      vi.useFakeTimers();
+      const wrapper = mount(CitationList, {
+        props: {
+          id: 'test-list',
+          citations: createCitations(5),
+          variant: 'default',
+          maxVisible: 2,
+        },
+      });
+      const overflowButton = wrapper.find('[data-testid="overflow-container"] button');
+      await overflowButton.trigger('mouseenter');
+      vi.advanceTimersByTime(150);
+      await wrapper.vm.$nextTick();
+      const popover = wrapper.find('[data-testid="popover"]');
+      expect(popover.attributes('popover-open')).toBeDefined();
+      await popover.trigger('keydown', { key: 'Escape' });
+      expect(popover.attributes('popover-open')).toBeUndefined();
       vi.useRealTimers();
     });
   });
