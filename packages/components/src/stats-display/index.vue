@@ -76,7 +76,7 @@ const state = reactive(useStatsDisplay(props));
 
               <!-- Label -->
               <span
-                class="animate-in fade-in slide-in-from-bottom-1 fill-mode-both relative text-xs font-normal tracking-wider text-muted-foreground uppercase opacity-90 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                class="animate-in fade-in slide-in-from-bottom-1 fill-mode-both relative text-xs font-normal text-muted-foreground opacity-90 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175 + 75}ms` }"
               >
                 {{ stat.label }}
@@ -84,7 +84,7 @@ const state = reactive(useStatsDisplay(props));
 
               <!-- Value and Diff -->
               <div
-                class="animate-in fade-in slide-in-from-bottom-2 fill-mode-both relative flex items-baseline gap-2 pb-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                class="animate-in fade-in slide-in-from-bottom-2 fill-mode-both relative flex flex-wrap items-baseline gap-x-1.5 pb-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175 + 150}ms` }"
               >
                 <span
@@ -144,12 +144,12 @@ const state = reactive(useStatsDisplay(props));
                   </span>
                 </span>
 
-                <!-- Diff Badge -->
+                <!-- Diff -->
                 <span
                   v-if="stat.diff"
                   :class="cn(
-                    'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs tabular-nums',
-                    state.deltaClasses(stat.diff)
+                    'inline-flex items-center gap-0.5 text-sm font-medium tabular-nums',
+                    state.deltaColorClasses(stat.diff)
                   )"
                 >
                   <span v-if="state.deltaArrow(stat.diff)" class="text-[0.9em]">{{ state.deltaArrow(stat.diff) }}</span>

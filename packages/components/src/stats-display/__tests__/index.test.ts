@@ -152,7 +152,7 @@ describe('StatsDisplay', () => {
       expect(wrapper.text()).toContain('+12.5%');
     });
 
-    test('applies good diff badge classes exactly', () => {
+    test('applies good diff color classes', () => {
       const wrapper = mount(StatsDisplay, {
         props: createProps({
           stats: [
@@ -165,14 +165,12 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const badge = wrapper.find('span.inline-flex.items-center');
-      expect(badge.classes()).toContain('text-green-600');
-      expect(badge.classes()).toContain('dark:text-green-400');
-      expect(badge.classes()).toContain('bg-green-500/10');
-      expect(badge.classes()).toContain('dark:bg-green-600/15');
+      const diff = wrapper.find('span.inline-flex.items-center');
+      expect(diff.classes()).toContain('text-green-600');
+      expect(diff.classes()).toContain('dark:text-green-400');
     });
 
-    test('applies bad diff badge classes exactly', () => {
+    test('applies bad diff color classes', () => {
       const wrapper = mount(StatsDisplay, {
         props: createProps({
           stats: [
@@ -185,14 +183,12 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const badge = wrapper.find('span.inline-flex.items-center');
-      expect(badge.classes()).toContain('text-red-600');
-      expect(badge.classes()).toContain('dark:text-red-500');
-      expect(badge.classes()).toContain('bg-red-500/10');
-      expect(badge.classes()).toContain('dark:bg-red-500/15');
+      const diff = wrapper.find('span.inline-flex.items-center');
+      expect(diff.classes()).toContain('text-red-600');
+      expect(diff.classes()).toContain('dark:text-red-500');
     });
 
-    test('applies neutral diff badge classes exactly', () => {
+    test('applies neutral diff color classes', () => {
       const wrapper = mount(StatsDisplay, {
         props: createProps({
           stats: [
@@ -205,9 +201,8 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const badge = wrapper.find('span.inline-flex.items-center');
-      expect(badge.classes()).toContain('text-muted-foreground');
-      expect(badge.classes()).toContain('bg-muted');
+      const diff = wrapper.find('span.inline-flex.items-center');
+      expect(diff.classes()).toContain('text-muted-foreground');
     });
 
     test('inverts trend indicator when upIsPositive is false', () => {

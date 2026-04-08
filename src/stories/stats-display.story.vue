@@ -12,6 +12,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
             { key: 'revenue', label: 'Revenue', value: '$48.2K' },
             { key: 'users', label: 'Users', value: '2,420' },
             { key: 'churn', label: 'Churn', value: '2.1%' },
+            { key: 'nps', label: 'NPS', value: '72' },
           ]"
         />
       </div>
@@ -24,9 +25,10 @@ import { StatsDisplay } from '@lionad/vtu-components';
           title="Key Metrics"
           description="Performance overview"
           :stats="[
-            { key: 'revenue', label: 'Revenue', value: 48200, format: { kind: 'currency', currency: 'USD', decimals: 0 }, diff: { value: 0.125, decimals: 1 } },
-            { key: 'users', label: 'Active Users', value: 2420, format: { kind: 'number', compact: true }, diff: { value: 0.082, decimals: 1 } },
-            { key: 'churn', label: 'Churn Rate', value: 0.021, format: { kind: 'percent', decimals: 1 }, diff: { value: -0.005, decimals: 1, upIsPositive: false } },
+            { key: 'revenue', label: 'Revenue', value: 48200, format: { kind: 'currency', currency: 'USD', decimals: 0 }, diff: { value: 12.5, decimals: 1 } },
+            { key: 'users', label: 'Active Users', value: 2420, format: { kind: 'number', compact: true }, diff: { value: 8.2, decimals: 1 } },
+            { key: 'churn', label: 'Churn Rate', value: 2.1, format: { kind: 'percent', decimals: 1, basis: 'unit' }, diff: { value: -0.5, decimals: 1, upIsPositive: false } },
+            { key: 'nps', label: 'NPS Score', value: 72, format: { kind: 'number' }, diff: { value: 5, decimals: 0 } },
           ]"
         />
       </div>
@@ -148,6 +150,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
             { key: 'conversion', label: 'Conversion Rate', value: 0.0345, format: { kind: 'percent', decimals: 2 } },
             { key: 'bounce', label: 'Bounce Rate', value: 0.42, format: { kind: 'percent', decimals: 1 } },
             { key: 'retention', label: 'Retention', value: 85, format: { kind: 'percent', decimals: 0, basis: 'unit' } },
+            { key: 'engagement', label: 'Engagement', value: 0.678, format: { kind: 'percent', decimals: 1 } },
           ]"
         />
       </div>
@@ -162,6 +165,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
             { key: 'up-good', label: 'Revenue (up is good)', value: 100, diff: { value: 15, decimals: 0 } },
             { key: 'down-good', label: 'Cost (down is good)', value: 50, diff: { value: -10, decimals: 0, upIsPositive: false } },
             { key: 'neutral', label: 'Neutral Change', value: 75, diff: { value: 0, decimals: 0 } },
+            { key: 'up-bad', label: 'Errors (up is bad)', value: 23, diff: { value: 8, decimals: 0, upIsPositive: false } },
           ]"
         />
       </div>

@@ -10,7 +10,8 @@ export interface StatsDisplayState {
   locale: string;
   hasHeader: boolean;
   isSingle: boolean;
-  deltaClasses: (diff: StatDiff) => string;
+  deltaColorClasses: (diff: StatDiff) => string;
+  deltaBgClasses: (diff: StatDiff) => string;
   deltaDisplay: (diff: StatDiff) => string;
   deltaArrow: (diff: StatDiff) => string | null;
   formatCompactNumberParts: (value: number, decimals: number) => Intl.NumberFormatPart[];
@@ -21,37 +22,45 @@ export interface StatsDisplayState {
   formatPercent: (value: number, decimals: number, basis: 'fraction' | 'unit') => string;
 }
 
+function getDeltaMeta(diff: StatDiff) {
+  const { value, upIsPositive = true } = diff;
+  const isPositive = value > 0;
+  const isNegative = value < 0;
+
+  const isGood = upIsPositive ? isPositive : isNegative;
+  const isBad = upIsPositive ? isNegative : isPositive;
+
+  return { isPositive, isNegative, isGood, isBad };
+}
+
 export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplayState {
-  const { locale: localeProp, title, description, stats } = options;
+  const { locale: localeProp, title, description } = options;
 
   const locale = computed(() => {
     return localeProp ?? (typeof navigator !== 'undefined' ? navigator.language : 'en');
   });
 
   const hasHeader = computed(() => Boolean(title || description));
-  const isSingle = computed(() => stats.length === 1);
+  const isSingle = computed(() => options.stats.length === 1);
 
-  function deltaClasses(diff: StatDiff): string {
-    const { value, upIsPositive = true } = diff;
-    const isPositive = value > 0;
-    const isNegative = value < 0;
+  function deltaColorClasses(diff: StatDiff): string {
+    const { isGood, isBad } = getDeltaMeta(diff);
 
-    const isGood = upIsPositive ? isPositive : isNegative;
-    const isBad = upIsPositive ? isNegative : isPositive;
-
-    const colorClass = isGood
+    return isGood
       ? 'text-green-600 dark:text-green-400'
       : isBad
         ? 'text-red-600 dark:text-red-500'
         : 'text-muted-foreground';
+  }
 
-    const bgClass = isGood
+  function deltaBgClasses(diff: StatDiff): string {
+    const { isGood, isBad } = getDeltaMeta(diff);
+
+    return isGood
       ? 'bg-green-500/10 dark:bg-green-600/15'
       : isBad
         ? 'bg-red-500/10 dark:bg-red-500/15'
         : 'bg-muted';
-
-    return `${colorClass} ${bgClass}`;
   }
 
   function deltaDisplay(diff: StatDiff): string {
@@ -63,9 +72,7 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
 
   function deltaArrow(diff: StatDiff): string | null {
     if (diff.upIsPositive !== false) return null;
-    const isPositive = diff.value > 0;
-    const isNegative = diff.value < 0;
-    const isGood = isPositive ? false : isNegative ? true : false;
+    const { isGood } = getDeltaMeta(diff);
     return isGood ? '↓' : '↑';
   }
 
@@ -116,7 +123,8 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
     locale: locale.value,
     hasHeader: hasHeader.value,
     isSingle: isSingle.value,
-    deltaClasses,
+    deltaColorClasses,
+    deltaBgClasses,
     deltaDisplay,
     deltaArrow,
     formatCompactNumberParts,
