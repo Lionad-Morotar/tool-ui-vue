@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
-import { reactive, toRef } from 'vue';
+import { computed, reactive, toRef } from 'vue';
 import { useTerminal } from './states';
 import type { TerminalProps } from './schema';
 
@@ -16,6 +17,18 @@ const state = reactive(useTerminal(props));
 
 // Keep refs reactive
 const isCopied = toRef(state, 'isCopied');
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const copyButtonAriaLabel = computed(() =>
+  !state.hasOutput
+    ? t('terminal.noOutputToCopy').value
+    : isCopied.value
+      ? t('terminal.copied').value
+      : t('terminal.copyOutput').value
+)
 </script>
 
 <template>
@@ -64,11 +77,7 @@ const isCopied = toRef(state, 'isCopied');
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
               !state.hasOutput && 'cursor-not-allowed opacity-50',
             )"
-            :aria-label="!state.hasOutput
-              ? 'No output to copy'
-              : isCopied
-                ? 'Copied'
-                : 'Copy output'"
+            :aria-label="copyButtonAriaLabel"
             @click="state.copyOutput"
           >
             <check
@@ -106,7 +115,7 @@ const isCopied = toRef(state, 'isCopied');
               v-if="truncated"
               class="mt-2 text-muted-foreground text-xs italic"
             >
-              Output truncated...
+              {{ t('terminal.outputTruncated') }}
             </div>
           </div>
 
@@ -131,11 +140,11 @@ const isCopied = toRef(state, 'isCopied');
         >
           <template v-if="state.isCollapsed">
             <chevron-down class="mr-1 size-4" />
-            Show all {{ state.lineCount }} lines
+            {{ t('terminal.showAllLines', { count: state.lineCount }) }}
           </template>
           <template v-else>
             <chevron-up class="mr-1 size-4" />
-            Collapse
+            {{ t('terminal.collapse') }}
           </template>
         </button>
       </template>
@@ -145,7 +154,7 @@ const isCopied = toRef(state, 'isCopied');
         v-else
         class="px-4 py-3 font-mono text-muted-foreground text-sm italic"
       >
-        No output
+        {{ t('terminal.noOutput') }}
       </div>
     </div>
   </div>
