@@ -83,6 +83,7 @@ const props = [
   { name: 'diffStyle', type: "'unified' | 'split'", default: 'unified', description: 'Diff display style' },
   { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
   { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
+];
 const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
 const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
 const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
