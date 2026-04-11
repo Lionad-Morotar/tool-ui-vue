@@ -15,7 +15,7 @@
 ## I18N-COMPS — 组件改造
 
 - [x] **COMPS-01**: 高优 7 组件改造（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）
-- [ ] **COMPS-02**: 中优 6 组件改造（audio, video, image-gallery, geo-map, item-carousel, preferences-panel）
+- [x] **COMPS-02**: 中优 6 组件改造（audio, video, image-gallery, geo-map, item-carousel, preferences-panel）
 - [ ] **COMPS-03**: 低优 10 组件改造（x-post, instagram-post, chart, stats-display, weather-widget 等）
 
 ## I18N-DOCS — 文档
@@ -63,7 +63,7 @@
 | CORE-05     | Phase 1 | Pending |
 | CORE-06     | Phase 1 | Pending |
 | COMPS-01    | Phase 2 | Pending |
-| COMPS-02    | Phase 2 | Pending |
+| COMPS-02    | Phase 2 | Complete |
 | COMPS-03    | Phase 3 | Pending |
 | DOCS-01     | Phase 5 | Pending |
 | DOCS-02     | Phase 5 | Pending |

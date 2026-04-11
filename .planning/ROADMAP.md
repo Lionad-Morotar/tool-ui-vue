@@ -42,10 +42,10 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — terminal, code-block, code-diff i18n + JSON files
-- [ ] 02-02-PLAN.md — order-summary, question-flow i18n + JSON files
-- [ ] 02-03-PLAN.md — data-table, message-draft i18n + JSON files
-- [ ] 02-04-PLAN.md — audio, video, geo-map, item-carousel, preferences-panel i18n
+- [x] 02-01-PLAN.md — terminal, code-block, code-diff i18n + JSON files
+- [x] 02-02-PLAN.md — order-summary, question-flow i18n + JSON files
+- [x] 02-03-PLAN.md — data-table, message-draft i18n + JSON files
+- [x] 02-04-PLAN.md — audio, video, geo-map, item-carousel, preferences-panel i18n
 - [ ] 02-05-PLAN.md — global default LocaleProvider auto-registration at core entry
 
 ### Phase 3: Component i18n (Low) + Tests
