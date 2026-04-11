@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { reactive } from 'vue';
 import { usePlan } from './states';
 import type { PlanProps } from './schema';
@@ -17,6 +18,9 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(usePlan(props, emit));
+
+// i18n
+const { t } = useI18n()
 </script>
 
 <template>
@@ -55,7 +59,7 @@ const state = reactive(usePlan(props, emit));
     <div class="min-w-0 px-4">
       <div class="min-w-0 rounded-lg bg-muted/70 px-6 py-4">
         <div class="mb-2 text-sm text-muted-foreground">
-          {{ state.progress.completed }} of {{ state.progress.total }} complete
+          {{ state.progress.completed }} / {{ state.progress.total }} {{ t('plan.complete') }}
         </div>
 
         <!-- Progress Bar -->
@@ -235,7 +239,7 @@ const state = reactive(usePlan(props, emit));
                 <circle cx="19" cy="12" r="1" />
                 <circle cx="5" cy="12" r="1" />
               </svg>
-              <span>{{ state.hiddenCount }} more</span>
+              <span>{{ t('plan.more', { count: state.hiddenCount }) }}</span>
             </button>
 
             <!-- Hidden Todos -->
