@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed, reactive } from 'vue';
 import { useInstagramPost } from './states';
 import type { InstagramPostProps, InstagramPostData } from './schema';
 
@@ -16,6 +17,15 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(useInstagramPost(props, emit));
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings
+const likeAriaLabel = computed(() => t('instagramPost.like').value)
+const shareAriaLabel = computed(() => t('instagramPost.share').value)
+const verifiedAriaLabel = computed(() => t('xPost.verified').value)
+const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
 </script>
 
 <template>
@@ -42,7 +52,7 @@ const state = reactive(useInstagramPost(props, emit));
             viewBox="0 0 24 24"
             class="size-3.5 shrink-0 text-sky-500"
             role="img"
-            aria-label="Verified"
+            :aria-label="verifiedAriaLabel"
           >
             <path
               fill="currentColor"
@@ -59,7 +69,7 @@ const state = reactive(useInstagramPost(props, emit));
           viewBox="0 0 132 132"
           class="size-5"
           role="img"
-          aria-label="Instagram logo"
+          :aria-label="instagramLogoAriaLabel"
         >
           <defs>
             <radialGradient
@@ -253,8 +263,9 @@ const state = reactive(useInstagramPost(props, emit));
               'h-auto rounded-md px-3 py-2 transition-colors hover:opacity-60',
               post.stats?.isLiked ? 'fill-red-500 text-red-500' : ''
             )"
-            aria-label="Like"
+            :aria-label="likeAriaLabel"
             @click="state.handleAction('like')"
+          >
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +285,7 @@ const state = reactive(useInstagramPost(props, emit));
           <button
             type="button"
             class="h-auto rounded-md px-3 py-2 transition-colors hover:opacity-60"
-            aria-label="Share"
+            :aria-label="shareAriaLabel"
             @click="state.handleAction('share')"
           >
             <svg
