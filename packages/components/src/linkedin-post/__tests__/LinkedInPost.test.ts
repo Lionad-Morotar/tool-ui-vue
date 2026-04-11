@@ -1,5 +1,42 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: {
+    'linkedinPost.like': 'Like',
+    'linkedinPost.share': 'Share',
+    'linkedinPost.edited': 'Edited',
+    'linkedinPost.logo': 'LinkedIn logo',
+    'linkedinPost.seeMore': 'see more',
+    'xPost.verified': 'Verified account',
+  },
+  'zh-CN': {
+    'linkedinPost.like': '赞同',
+    'linkedinPost.share': '发送',
+    'linkedinPost.edited': '已编辑',
+    'linkedinPost.logo': 'LinkedIn 标志',
+    'linkedinPost.seeMore': '查看更多',
+    'xPost.verified': '认证账号',
+  },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import LinkedInPost from '../cmpts/linkedin-post.vue';
 
 describe('LinkedInPost', () => {
@@ -476,6 +513,28 @@ describe('LinkedInPost', () => {
       });
       const text = wrapper.text();
       expect(text.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    it('uses zh-CN aria-labels for action buttons', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mount(LinkedInPost, {
+        props: { post: basePost },
+      });
+      const likeBtn = wrapper.find('button[aria-label="赞同"]');
+      expect(likeBtn.exists()).toBe(true);
+    });
+
+    it('uses English aria-labels for action buttons', () => {
+      currentLocale.value = 'en';
+      const wrapper = mount(LinkedInPost, {
+        props: { post: basePost },
+      });
+      const likeBtn = wrapper.find('button[aria-label="Like"]');
+      expect(likeBtn.exists()).toBe(true);
     });
   });
 });

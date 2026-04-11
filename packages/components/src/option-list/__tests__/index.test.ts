@@ -1,5 +1,28 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: { 'optionList.selected': 'Confirmed selection', 'optionList.select': 'Select', 'optionList.noOptions': 'No options', 'optionList.search': 'Search options...', 'optionList.clear': 'Clear', 'optionList.all': 'All' },
+  'zh-CN': { 'optionList.selected': '已选', 'optionList.select': '选择', 'optionList.noOptions': '无选项', 'optionList.search': '搜索选项...', 'optionList.clear': '清除', 'optionList.all': '全部' },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import OptionList from '../index.vue';
 
 const OPTIONS = [
@@ -402,5 +425,27 @@ describe('accessibility', () => {
     });
     const group = wrapper.find("[role='group']");
     expect(group.attributes('aria-label')).toBe('Option list');
+  });
+});
+
+describe('i18n', () => {
+  beforeEach(() => { currentLocale.value = 'en'; });
+
+  test('uses zh-CN aria-label in receipt mode', () => {
+    currentLocale.value = 'zh-CN';
+    const wrapper = mount(OptionList, {
+      props: { id: 'ol-1', options: OPTIONS, choice: 'a' },
+    });
+    const receipt = wrapper.find("[data-receipt='true']");
+    expect(receipt.attributes('aria-label')).toBe('已选');
+  });
+
+  test('uses English aria-label in receipt mode', () => {
+    currentLocale.value = 'en';
+    const wrapper = mount(OptionList, {
+      props: { id: 'ol-1', options: OPTIONS, choice: 'a' },
+    });
+    const receipt = wrapper.find("[data-receipt='true']");
+    expect(receipt.attributes('aria-label')).toBe('Confirmed selection');
   });
 });

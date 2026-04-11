@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref } from 'vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {
@@ -18,21 +19,30 @@ function createProps(overrides: Record<string, unknown> = {}) {
   };
 }
 
+// Shared locale state for i18n switching
+const currentLocale = ref('en');
+
 // Mock useI18n before any component imports it
 vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
   const { computed } = await import('vue');
   const actual = await importOriginal<Record<string, unknown>>();
+  const messagesByLocale: Record<string, Record<string, string>> = {
+    en: { 'plan.complete': 'complete', 'plan.more': '{count} more' },
+    'zh-CN': { 'plan.complete': '已完成', 'plan.more': '还有 {count} 项' },
+  };
   return {
     ...actual,
     useI18n: () => ({
       t: (key: string, params?: Record<string, unknown>) => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        let text = msgs[key] ?? key;
         if (params && params.count !== undefined) {
-          return computed(() => key.replace('{count}', String(params.count)));
+          text = text.replace('{count}', String(params.count));
         }
-        return computed(() => key);
+        return computed(() => text);
       },
-      locale: computed(() => 'en'),
-      setLocale: () => {},
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
     }),
   };
 });
@@ -55,10 +65,10 @@ describe('Plan', () => {
       expect(wrapper.text()).toContain('Step by step');
     });
 
-    test('renders progress text with i18n key', () => {
+    test('renders progress text with i18n', () => {
       const wrapper = mountPlan();
-      // With mocked t(), should see the i18n key instead of hardcoded text
-      expect(wrapper.text()).toContain('plan.complete');
+      // With mocked t(), should see translated text
+      expect(wrapper.text()).toContain('complete');
     });
 
     test('renders todo labels', () => {
@@ -192,16 +202,16 @@ describe('Plan', () => {
     test('shows hidden todos when clicking show more', async () => {
       const wrapper = mountPlan();
       expect(wrapper.text()).not.toContain('Monitor');
-      const showMore = wrapper.findAll('button').find((b) => b.text().includes('plan.more'));
+      const showMore = wrapper.findAll('button').find((b) => b.text().includes('more'));
       expect(showMore).toBeDefined();
       await showMore!.trigger('click');
       expect(wrapper.text()).toContain('Monitor');
     });
 
-    test('shows correct hidden count with i18n key', () => {
+    test('shows correct hidden count text', () => {
       const wrapper = mountPlan();
-      // With mocked t(), the key is returned (mock returns key as text)
-      expect(wrapper.text()).toContain('plan.more');
+      // t() returns translated text like "1 more" (en) or "还有 1 项" (zh-CN)
+      expect(wrapper.text()).toMatch(/\d+ more/);
     });
 
     test('hides show more when all todos visible', () => {
@@ -268,7 +278,7 @@ describe('Plan', () => {
           { id: '5', label: 'Monitor', status: 'pending' },
         ],
       });
-      const showMore = wrapper.findAll('button').find((b) => b.text().includes('plan.more'));
+      const showMore = wrapper.findAll('button').find((b) => b.text().includes('more'));
       await showMore!.trigger('click');
       await wrapper.vm.$nextTick();
       const allUls = wrapper.findAll('ul');
@@ -315,7 +325,7 @@ describe('Plan', () => {
         'utf-8'
       );
       expect(code).toContain("t('plan.complete')");
-      expect(code).not.toContain("}} complete");
+      expect(code).not.toContain("complete</");
     });
 
     test('uses t() for hidden count with params', async () => {
@@ -326,7 +336,23 @@ describe('Plan', () => {
         'utf-8'
       );
       expect(code).toContain("t('plan.more'");
-      expect(code).not.toContain("}} more");
+      expect(code).not.toContain("more</");
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    test('renders zh-CN text when locale is zh-CN', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mountPlan();
+      expect(wrapper.text()).toContain('已完成');
+    });
+
+    test('renders English text when locale is en', () => {
+      currentLocale.value = 'en';
+      const wrapper = mountPlan();
+      expect(wrapper.text()).toContain('complete');
     });
   });
 });

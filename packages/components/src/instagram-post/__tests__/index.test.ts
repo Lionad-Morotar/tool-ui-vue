@@ -1,5 +1,28 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: { 'instagramPost.like': 'Like', 'instagramPost.share': 'Share', 'xPost.verified': 'Verified account', 'instagramPost.logo': 'Instagram logo' },
+  'zh-CN': { 'instagramPost.like': '赞', 'instagramPost.share': '分享', 'xPost.verified': '认证账号', 'instagramPost.logo': 'Instagram 标志' },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import InstagramPost from '../index.vue';
 
 describe('InstagramPost', () => {
@@ -419,6 +442,32 @@ describe('InstagramPost', () => {
       });
       const text = wrapper.text();
       expect(text.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    test('uses zh-CN aria-labels for action buttons', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mount(InstagramPost, {
+        props: { post: basePost },
+      });
+      const likeBtn = wrapper.find('button[aria-label="赞"]');
+      expect(likeBtn.exists()).toBe(true);
+      const shareBtn = wrapper.find('button[aria-label="分享"]');
+      expect(shareBtn.exists()).toBe(true);
+    });
+
+    test('uses English aria-labels for action buttons', () => {
+      currentLocale.value = 'en';
+      const wrapper = mount(InstagramPost, {
+        props: { post: basePost },
+      });
+      const likeBtn = wrapper.find('button[aria-label="Like"]');
+      expect(likeBtn.exists()).toBe(true);
+      const shareBtn = wrapper.find('button[aria-label="Share"]');
+      expect(shareBtn.exists()).toBe(true);
     });
   });
 });

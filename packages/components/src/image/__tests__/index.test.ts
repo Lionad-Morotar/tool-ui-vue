@@ -1,5 +1,29 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+// Shared locale state
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: { 'image.alt': 'Image description', 'image.loading': 'Loading image...', 'image.error': 'Failed to load image', 'image.retry': 'Reload' },
+  'zh-CN': { 'image.alt': '图片描述', 'image.loading': '图片加载中...', 'image.error': '图片加载失败', 'image.retry': '重新加载' },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import Image from '../index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
@@ -61,6 +85,30 @@ describe('Image', () => {
         props: createProps(),
       });
       expect(wrapper.find("[data-slot='image']").attributes('data-tool-ui-id')).toBe('test-image');
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    test('uses zh-CN alt text when locale is zh-CN', () => {
+      currentLocale.value = 'zh-CN';
+      const { alt: _, ...propsWithoutAlt } = createProps();
+      const wrapper = mount(Image, {
+        props: propsWithoutAlt,
+      });
+      const img = wrapper.find('img');
+      expect(img.attributes('alt')).toBe('图片描述');
+    });
+
+    test('uses English alt text when locale is en', () => {
+      currentLocale.value = 'en';
+      const { alt: _, ...propsWithoutAlt } = createProps();
+      const wrapper = mount(Image, {
+        props: propsWithoutAlt,
+      });
+      const img = wrapper.find('img');
+      expect(img.attributes('alt')).toBe('Image description');
     });
   });
 });

@@ -1,5 +1,28 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: { 'parameterSlider.reset': 'Reset', 'shared.confirm': 'Apply' },
+  'zh-CN': { 'parameterSlider.reset': '重置', 'shared.confirm': '确认' },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import ParameterSlider from '../index.vue';
 
 const SLIDERS = [
@@ -358,5 +381,27 @@ describe('attributes', () => {
       props: { id: 'ps-1', sliders: SLIDERS, css: { root: 'my-slider' } },
     });
     expect(wrapper.find('article').classes()).toContain('my-slider');
+  });
+});
+
+describe('i18n', () => {
+  beforeEach(() => { currentLocale.value = 'en'; });
+
+  test('uses zh-CN action labels when locale is zh-CN', () => {
+    currentLocale.value = 'zh-CN';
+    const wrapper = mount(ParameterSlider, {
+      props: { id: 'ps-1', sliders: SLIDERS },
+    });
+    expect(wrapper.text()).toContain('重置');
+    expect(wrapper.text()).toContain('确认');
+  });
+
+  test('uses English action labels when locale is en', () => {
+    currentLocale.value = 'en';
+    const wrapper = mount(ParameterSlider, {
+      props: { id: 'ps-1', sliders: SLIDERS },
+    });
+    expect(wrapper.text()).toContain('Reset');
+    expect(wrapper.text()).toContain('Apply');
   });
 });

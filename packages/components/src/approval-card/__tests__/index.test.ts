@@ -1,5 +1,45 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+// Shared locale state so i18n tests can switch languages
+const currentLocale = ref('en');
+
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: {
+    'approvalCard.approve': 'Approve',
+    'approvalCard.reject': 'Deny',
+  },
+  'zh-CN': {
+    'approvalCard.approve': '批准',
+    'approvalCard.reject': '拒绝',
+  },
+};
+
+// Mock useI18n to provide locale-aware translations
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string, params?: Record<string, unknown>) => {
+        return computed(() => {
+          const msgs = messagesByLocale[currentLocale.value] ?? {};
+          let text = msgs[key] ?? key;
+          if (params) {
+            Object.entries(params).forEach(([k, v]) => {
+              text = text.replace(`{${k}}`, String(v));
+            });
+          }
+          return text;
+        });
+      },
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import ApprovalCard from '../index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
@@ -293,6 +333,30 @@ describe('ApprovalCard', () => {
       });
       const receipt = wrapper.find('[data-receipt="true"]');
       expect(receipt.attributes('data-slot')).toBe('approval-card');
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    test('uses zh-CN labels when locale is set to zh-CN', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mount(ApprovalCard, {
+        props: createProps(),
+      });
+      const buttons = wrapper.findAll('button');
+      expect(buttons[0].text()).toBe('拒绝');
+      expect(buttons[buttons.length - 1].text()).toBe('批准');
+    });
+
+    test('uses English labels when locale is en', () => {
+      currentLocale.value = 'en';
+      const wrapper = mount(ApprovalCard, {
+        props: createProps(),
+      });
+      const buttons = wrapper.findAll('button');
+      expect(buttons[0].text()).toBe('Deny');
+      expect(buttons[buttons.length - 1].text()).toBe('Approve');
     });
   });
 });

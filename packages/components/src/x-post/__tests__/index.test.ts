@@ -1,5 +1,28 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: { 'xPost.verified': 'Verified account', 'xPost.logo': 'X (formerly Twitter) logo' },
+  'zh-CN': { 'xPost.verified': '认证账号', 'xPost.logo': 'X（原 Twitter）标志' },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import XPost from '../index.vue';
 
 describe('XPost', () => {
@@ -513,6 +536,26 @@ describe('XPost', () => {
       const text = wrapper.text();
       // Should contain date formatting
       expect(text.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    it('uses zh-CN aria-label for verified badge', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mount(XPost, {
+        props: { post: basePost },
+      });
+      expect(wrapper.html()).toContain('认证账号');
+    });
+
+    it('uses English aria-label for verified badge', () => {
+      currentLocale.value = 'en';
+      const wrapper = mount(XPost, {
+        props: { post: basePost },
+      });
+      expect(wrapper.html()).toContain('Verified account');
     });
   });
 });

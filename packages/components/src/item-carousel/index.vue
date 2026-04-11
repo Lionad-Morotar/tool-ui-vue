@@ -28,9 +28,7 @@ const { t } = useI18n();
 const ariaLabel = computed(() => props.title || t('itemCarousel.itemCarouselLabel').value);
 const scrollLeftLabel = computed(() => t('itemCarousel.scrollLeft').value);
 const scrollRightLabel = computed(() => t('itemCarousel.scrollRight').value);
-const paginationLabel = computed(() => t('itemCarousel.paginationLabel').value);
 const getItemAriaLabel = (index: number) => t('itemCarousel.itemOf', { current: index + 1, total: props.items.length }).value;
-const getSlideAriaLabel = (index: number) => t('itemCarousel.goToSlide', { slide: index + 1 }).value;
 
 // Expose methods for programmatic control
 defineExpose({
@@ -51,7 +49,7 @@ defineExpose({
     data-slot="item-carousel"
     :data-tool-ui-id="id"
   >
-    <p class="text-sm text-muted-foreground">{{ t('itemCarousel.noItems') }}</p>
+    <p class="text-muted-foreground text-sm">{{ t('itemCarousel.noItems') }}</p>
   </div>
 
   <!-- Carousel -->
@@ -72,10 +70,10 @@ defineExpose({
   >
     <!-- Header -->
     <div v-if="title || description" class="px-4 pt-4 pb-1">
-      <h3 v-if="title" class="text-[15px] leading-tight font-semibold tracking-tight">
+      <h3 v-if="title" class="font-semibold text-[15px] leading-tight tracking-tight">
         {{ title }}
       </h3>
-      <p v-if="description" class="mt-1 text-sm leading-snug text-muted-foreground">
+      <p v-if="description" class="mt-1 text-muted-foreground text-sm leading-snug">
         {{ description }}
       </p>
     </div>
@@ -86,11 +84,11 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl bg-background/60 backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] w-6 min-h-[50px] rounded-2xl bg-background/60 hover:bg-background/50 backdrop-blur-lg',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
-          '@md:flex',
+          'justify-center items-center',
           'left-1.5',
-          carouselState.canScrollLeft && 'pointer-events-auto scale-100 opacity-100 @md:group-focus-within:pointer-events-auto @md:group-focus-within:scale-100 @md:group-focus-within:opacity-100 @md:group-hover:pointer-events-auto @md:group-hover:scale-100 @md:group-hover:opacity-100'
+          carouselState.canScrollLeft && 'pointer-events-auto scale-100 opacity-100'
         )"
         :tabindex="carouselState.canScrollLeft ? 0 : -1"
         :aria-hidden="!carouselState.canScrollLeft"
@@ -108,7 +106,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="h-4 w-4"
+          class="w-4 h-4"
         >
           <path d="m15 18-6-6 6-6" />
         </svg>
@@ -118,11 +116,11 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'absolute inset-y-0 z-20 my-auto hidden h-[6cqh] min-h-[50px] rounded-2xl bg-background/60 backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] w-6 min-h-[50px] rounded-2xl bg-background/60 hover:bg-background/50 backdrop-blur-lg',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
-          '@md:flex',
+          'justify-center items-center',
           'right-1.5',
-          carouselState.canScrollRight && 'pointer-events-auto scale-100 opacity-100 @md:group-focus-within:pointer-events-auto @md:group-focus-within:scale-100 @md:group-focus-within:opacity-100 @md:group-hover:pointer-events-auto @md:group-hover:scale-100 @md:group-hover:opacity-100'
+          carouselState.canScrollRight && 'pointer-events-auto scale-100 opacity-100'
         )"
         :tabindex="carouselState.canScrollRight ? 0 : -1"
         :aria-hidden="!carouselState.canScrollRight"
@@ -140,7 +138,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="h-4 w-4"
+          class="w-4 h-4"
         >
           <path d="m9 18 6-6-6-6" />
         </svg>
@@ -151,7 +149,8 @@ defineExpose({
         ref="carouselState.scrollRef"
         :class="cn(
           'grid auto-cols-max grid-flow-col gap-4 overflow-x-auto overscroll-x-contain p-4',
-          'snap-x snap-mandatory'
+          'snap-x snap-mandatory',
+          '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
         )"
         role="list"
         style="scroll-padding-inline: 1rem;"
@@ -167,7 +166,7 @@ defineExpose({
           :data-item-id="item.id"
           :data-index="index"
           role="listitem"
-          class="flex snap-start snap-always"
+          class="flex snap-always snap-start"
           :aria-label="getItemAriaLabel(index)"
         >
           <item-card
@@ -180,28 +179,5 @@ defineExpose({
       </div>
     </div>
 
-    <!-- Pagination Dots (optional visual indicator) -->
-    <div
-      v-if="items.length > 1"
-      class="flex justify-center gap-1.5 pb-3"
-      role="tablist"
-      :aria-label="paginationLabel"
-    >
-      <button
-        v-for="(item, index) in items"
-        :key="item.id"
-        type="button"
-        role="tab"
-        :aria-label="getSlideAriaLabel(index)"
-        :aria-selected="carouselState.currentIndex.value === index"
-        :class="cn(
-          'h-1.5 rounded-full transition-all duration-200',
-          carouselState.currentIndex.value === index
-            ? 'w-4 bg-primary'
-            : 'w-1.5 bg-muted-foreground/30 hover:bg-muted-foreground/50'
-        )"
-        @click="carouselState.scrollToIndex(index)"
-      />
-    </div>
   </div>
 </template>

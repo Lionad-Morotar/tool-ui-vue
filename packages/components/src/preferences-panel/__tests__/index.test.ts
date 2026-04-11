@@ -1,5 +1,38 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { ref, computed } from 'vue';
+
+const currentLocale = ref('en');
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: {
+    'preferencesPanel.preferencesWithErrors': 'Preferences with errors',
+    'preferencesPanel.confirmedPreferences': 'Confirmed preferences',
+    'preferencesPanel.error': 'Error',
+    'preferencesPanel.saved': 'Saved',
+  },
+  'zh-CN': {
+    'preferencesPanel.preferencesWithErrors': '有错误的偏好设置',
+    'preferencesPanel.confirmedPreferences': '已确认的偏好设置',
+    'preferencesPanel.error': '错误',
+    'preferencesPanel.saved': '已保存',
+  },
+};
+
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string) => computed(() => {
+        const msgs = messagesByLocale[currentLocale.value] ?? {};
+        return msgs[key] ?? key;
+      }),
+      locale: computed(() => currentLocale.value),
+      setLocale: (locale: string) => { currentLocale.value = locale; },
+    }),
+  };
+});
+
 import PreferencesPanel from '../index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
@@ -685,6 +718,26 @@ describe('PreferencesPanel', () => {
       const changeCount = wrapper.emitted('change')?.length || 0;
       // The change from initial click + potential reset
       expect(changeCount).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe('i18n', () => {
+    beforeEach(() => { currentLocale.value = 'en'; });
+
+    test('uses zh-CN labels in receipt mode', () => {
+      currentLocale.value = 'zh-CN';
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({ choice: { notifications: false, theme: 'dark', language: 'en' } }),
+      });
+      expect(wrapper.text()).toContain('已保存');
+    });
+
+    test('uses English labels in receipt mode', () => {
+      currentLocale.value = 'en';
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({ choice: { notifications: false, theme: 'dark', language: 'en' } }),
+      });
+      expect(wrapper.text()).toContain('Saved');
     });
   });
 });
