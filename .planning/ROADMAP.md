@@ -6,7 +6,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: I18N Core** - LocaleProvider, useI18n(), 类型定义, zh-CN/en 消息文件, fallback 逻辑
+- [x] **Phase 1: I18N Core** - LocaleProvider, useI18n(), 类型定义, zh-CN/en 消息文件, fallback 逻辑 (completed 2026-04-11)
 - [ ] **Phase 2: Component i18n (High + Medium)** - 13 个高/中优组件消除硬编码英文文本
 - [ ] **Phase 3: Component i18n (Low) + Tests** - 剩余 10 组件 + 核心 i18n 测试
 - [ ] **Phase 4: Quality + Compat** - CI 校验 + 向后兼容 + 零侵入
@@ -24,7 +24,10 @@
   3. t('nested.key.path', { param: value }) 正确解析并插值
   4. TypeScript 自动补全 t() key，无效 key 路径报类型错误
   5. dev 环境缺失 key 时 console.warn 显示 key 路径，prod 环境 fallback 到 zh-CN
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [x] 01-01-PLAN.md — i18n core: types, composable, LocaleProvider, locales, exports
 
 ### Phase 2: Component i18n (High + Medium)
 **Goal**: 13 个高/中优组件无硬编码英文文本，响应语言切换
@@ -36,6 +39,14 @@
   3. 切换 LocaleProvider 语言后，13 个组件 UI 文本实时更新，无需刷新
   4. 模板和渲染逻辑中无硬编码英文字符串
 **UI hint**: yes
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — terminal, code-block, code-diff i18n + JSON files
+- [ ] 02-02-PLAN.md — order-summary, question-flow i18n + JSON files
+- [ ] 02-03-PLAN.md — data-table, message-draft i18n + JSON files
+- [ ] 02-04-PLAN.md — audio, video, geo-map, item-carousel, preferences-panel i18n
+- [ ] 02-05-PLAN.md — global default LocaleProvider auto-registration at core entry
 
 ### Phase 3: Component i18n (Low) + Tests
 **Goal**: 剩余 10 个低优组件 i18n 改造完成，核心 i18n 系统有测试覆盖
@@ -78,8 +89,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. I18N Core | 0/TBD | Not started | - |
-| 2. Component i18n (High + Med) | 0/TBD | Not started | - |
+| 1. I18N Core | 1/1 | Complete    | 2026-04-11 |
+| 2. Component i18n (High + Med) | 0/5 | Planned     | - |
 | 3. Component i18n (Low) + Tests | 0/TBD | Not started | - |
 | 4. Quality + Compat | 0/TBD | Not started | - |
 | 5. Documentation + Histoire | 0/TBD | Not started | - |

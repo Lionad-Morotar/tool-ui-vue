@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0.0
+milestone_name: milestone
+status: executing
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-11T06:07:14.158Z"
+last_activity: 2026-04-11
+progress:
+  total_phases: 5
+  completed_phases: 1
+  total_plans: 6
+  completed_plans: 3
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -6,34 +22,39 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Components installable via `pnpm add @lionad/components`, all 26 tool components work with Zod contracts unchanged
 **Current milestone:** v1.0.0 多语言 i18n 系统
-**Current focus:** Phase 1: I18N Core
+**Current focus:** Phase 1 — I18N Core
 
 ## Current Position
 
-Phase: 1 (I18N Core)
-Plan: —
-Status: Not started (roadmap defined)
-Last activity: 2026-04-11 — Milestone v1.0.0 多语言 i18n 系统 roadmap created, Phase 1~5 舍弃
+Phase: 02
+Plan: 02 (complete)
+Status: Executing Phase 2 — Component i18n (High + Medium)
+Last activity: 2026-04-11
 
 Progress: [#.........] 0% (milestone v1.0.0)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 8 min
-- Total execution time: ~16 min
+
+- Total plans completed: 3
+- Average duration: 11 min
+- Total execution time: ~28 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-infrastructure (archived) | 2 | 16min | 8min |
+| 02-component-i18n-high-medium | 1 | 12min | 12min |
 
 **Recent Trend:**
+
 - Baseline from prior milestone, Phase 1~5 discarded, numbering reset to 1
 
 *Updated after each plan completion*
+| Phase 02-component-i18n-high-medium P01 | 15 | 3 tasks | 9 files |
+| Phase 02-component-i18n-high-medium P02 | 12 | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -55,6 +76,9 @@ Recent decisions affecting current work:
 - [i18n-roadmap]: zh-CN is default language, en is fallback
 - [i18n-roadmap]: Components must remain copy-paste compatible for non-i18n users
 - [i18n-roadmap]: 5 phases (1-5) derived from 21 i18n requirements, numbering reset
+- [Phase 02-component-i18n-high-medium]: Added i18n subpath export to core vite build (multi-entry) to enable @lionad/vtu-core/i18n type resolution
+- [Phase 02-component-i18n-high-medium]: Used computed wrappers for aria-label bindings because vue-tsc does not auto-unwrap ComputedRef in attribute expressions
+- [Phase 02-component-i18n-high-medium]: order-summary and question-flow i18n: used computed wrappers for aria-label bindings because vue-tsc does not auto-unwrap ComputedRef in attribute expressions
 
 ### Pending Todos
 
@@ -67,5 +91,5 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-11
-Stopped at: Milestone v1.0.0 roadmap created, Phase 1~5 舍弃, ready for Phase 1 planning
+Last session: 2026-04-11T06:14:52Z
+Stopped at: Completed 02-02-PLAN.md
