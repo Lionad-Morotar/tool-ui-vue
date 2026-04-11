@@ -19,7 +19,7 @@ for (const file of files) {
 }
 
 // Copy subdirectory .d.ts files
-const subdirs = ['components', 'media', 'parse', 'schema', 'contract', 'utils']
+const subdirs = ['components', 'media', 'parse', 'schema', 'contract', 'utils', 'i18n']
 for (const subdir of subdirs) {
   const srcSubdir = join(srcDir, subdir)
   const distSubdir = join(distDir, subdir)

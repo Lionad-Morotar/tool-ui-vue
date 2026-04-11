@@ -16,10 +16,18 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        'i18n/index': resolve(__dirname, 'src/i18n/index.ts'),
+      },
       name: 'ToolUiVueCore',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
+      fileName: (format, entryName) => {
+        if (entryName === 'index') {
+          return `index.${format === 'es' ? 'js' : 'cjs'}`
+        }
+        return `${entryName}.${format === 'es' ? 'js' : 'cjs'}`
+      },
     },
     rollupOptions: {
       external: ['vue', 'zod', 'class-variance-authority', 'tailwind-merge', 'clsx'],
