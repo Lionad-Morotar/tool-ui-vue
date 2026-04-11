@@ -273,8 +273,9 @@ function getTimeOfDayValue(hour: number): number {
           :units="{ temperature: weatherState.unit }"
           :current="currentWeather"
           :forecast="forecast"
+          :time="{ localTimeOfDay: 0.5 }"
           :updated-at="new Date().toISOString()"
-          :effects="{ enabled: ['rain', 'heavy-rain', 'snow', 'thunderstorm'].includes(weatherState.condition) }"
+          :effects="{ enabled: true }"
         />
       </div>
     </Variant>

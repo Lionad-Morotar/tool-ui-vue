@@ -1,9 +1,9 @@
 import { usePreferredReducedMotion } from '@vueuse/core';
-import { computed } from 'vue';
+import { type ComputedRef, computed } from 'vue';
 import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from '../effects/generated/tuned-presets.generated';
 import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from '../effects/parameter-mapper';
 import { getNearestCheckpoint, type WeatherEffectsOverrides } from '../effects/tuning';
-import { resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from '../time';
+import { type ResolvedWeatherTime, resolveWeatherTime, snapTimeOfDayToNearestCheckpoint } from '../time';
 import type { WeatherWidgetProps } from '../schema';
 // WeatherWidget component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
@@ -22,40 +22,38 @@ interface GlassEffectParams {
 export type UseWeatherWidgetOptions = WeatherWidgetProps;
 
 export interface WeatherWidgetState {
-  reducedMotion: boolean;
-  effectsEnabled: boolean;
-  resolvedTime: { timeOfDay: number };
-  timeOfDay: number;
-  checkpointOverrides: WeatherEffectsOverrides | undefined;
-  glassParams: GlassEffectParams | undefined;
-  brightness: number;
-  weatherTheme: 'light' | 'dark';
-  isWeatherDark: boolean;
-  units: { temperature: 'celsius' | 'fahrenheit' };
-  backgroundClass: string;
+  reducedMotion: ComputedRef<boolean>;
+  effectsEnabled: ComputedRef<boolean>;
+  resolvedTime: ComputedRef<ResolvedWeatherTime>;
+  timeOfDay: ComputedRef<number>;
+  checkpointOverrides: ComputedRef<WeatherEffectsOverrides | undefined>;
+  glassParams: ComputedRef<GlassEffectParams | undefined>;
+  brightness: ComputedRef<number>;
+  weatherTheme: ComputedRef<'light' | 'dark'>;
+  isWeatherDark: ComputedRef<boolean>;
+  units: ComputedRef<{ temperature: 'celsius' | 'fahrenheit' }>;
+  backgroundClass: ComputedRef<string>;
 }
 
 export function useWeatherWidget(options: UseWeatherWidgetOptions): WeatherWidgetState {
-  const { effects, time, updatedAt, current } = options;
-
   const preferredReducedMotion = usePreferredReducedMotion();
 
   const reducedMotion = computed(() => {
-    if (typeof effects?.reducedMotion === 'boolean') {
-      return effects.reducedMotion;
+    if (typeof options.effects?.reducedMotion === 'boolean') {
+      return options.effects.reducedMotion;
     }
     return preferredReducedMotion.value === 'reduce';
   });
 
   const effectsEnabled = computed(() => {
     if (reducedMotion.value) return false;
-    return effects?.enabled !== false;
+    return options.effects?.enabled !== false;
   });
 
   const resolvedTime = computed(() => {
     return resolveWeatherTime({
-      time,
-      updatedAt,
+      time: options.time,
+      updatedAt: options.updatedAt,
     });
   });
 
@@ -64,7 +62,7 @@ export function useWeatherWidget(options: UseWeatherWidgetOptions): WeatherWidge
   });
 
   const tunedOverrides = computed(() => {
-    return TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES[current.conditionCode];
+    return TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES[options.current.conditionCode];
   });
 
   const checkpointOverrides = computed(() => {
@@ -79,7 +77,7 @@ export function useWeatherWidget(options: UseWeatherWidgetOptions): WeatherWidge
   const brightness = computed(() => {
     return getSceneBrightnessFromTimeOfDay(
       timeOfDay.value,
-      current.conditionCode
+      options.current.conditionCode
     );
   });
 
@@ -100,16 +98,16 @@ export function useWeatherWidget(options: UseWeatherWidgetOptions): WeatherWidge
   });
 
   return {
-    reducedMotion: reducedMotion.value,
-    effectsEnabled: effectsEnabled.value,
-    resolvedTime: resolvedTime.value,
-    timeOfDay: timeOfDay.value,
-    checkpointOverrides: checkpointOverrides.value,
-    glassParams: glassParams.value,
-    brightness: brightness.value,
-    weatherTheme: weatherTheme.value,
-    isWeatherDark: isWeatherDark.value,
-    units: units.value,
-    backgroundClass: backgroundClass.value,
+    reducedMotion,
+    effectsEnabled,
+    resolvedTime,
+    timeOfDay,
+    checkpointOverrides,
+    glassParams,
+    brightness,
+    weatherTheme,
+    isWeatherDark,
+    units,
+    backgroundClass,
   };
 }

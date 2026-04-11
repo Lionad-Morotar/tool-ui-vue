@@ -41,7 +41,7 @@ const state = reactive(useWeatherWidget(props));
         :visibility="current.visibility"
         :timestamp="updatedAt"
         :time-of-day="state.timeOfDay"
-        :settings="{ enabled: true, reducedMotion: false }"
+        :settings="{ enabled: state.effectsEnabled, reducedMotion: state.reducedMotion }"
       />
 
       <!-- Weather Data Overlay -->
