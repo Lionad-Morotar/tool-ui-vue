@@ -2,13 +2,13 @@
 
 ## Overview
 
-为 tool-ui-vue 组件库添加轻量级多语言 i18n 系统。23 个组件消除硬编码英文文本，zh-CN 为默认语言，en 为 fallback。零外部依赖，copy-paste 兼容。
+为 tool-ui-vue 组件库添加轻量级多语言 i18n 系统。26 个组件消除硬编码英文文本，zh-CN 为默认语言，en 为 fallback。零外部依赖，copy-paste 兼容。
 
 ## Phases
 
 - [x] **Phase 1: I18N Core** - LocaleProvider, useI18n(), 类型定义, zh-CN/en 消息文件, fallback 逻辑 (completed 2026-04-11)
-- [ ] **Phase 2: Component i18n (High + Medium)** - 13 个高/中优组件消除硬编码英文文本
-- [ ] **Phase 3: Component i18n (Low) + Tests** - 剩余 10 组件 + 核心 i18n 测试
+- [x] **Phase 2: Component i18n (High + Medium)** - 13 个高/中优组件消除硬编码英文文本 (completed 2026-04-11)
+- [ ] **Phase 3: Component i18n (Low) + Tests** - 剩余 14 组件 + 核心 i18n 测试
 - [ ] **Phase 4: Quality + Compat** - CI 校验 + 向后兼容 + 零侵入
 - [ ] **Phase 5: Documentation + Histoire** - README / Story 双语, Histoire 语言切换, API 文档
 
@@ -49,15 +49,23 @@ Plans:
 - [ ] 02-05-PLAN.md — global default LocaleProvider auto-registration at core entry
 
 ### Phase 3: Component i18n (Low) + Tests
-**Goal**: 剩余 10 个低优组件 i18n 改造完成，核心 i18n 系统有测试覆盖
+**Goal**: 剩余 14 个低优组件 i18n 改造完成（零硬编码英文遗留），核心 i18n 系统有测试覆盖
 **Depends on**: Phase 2
 **Requirements**: COMPS-03, TEST-01, TEST-02, TEST-03
 **Success Criteria** (what must be TRUE):
-  1. 低优 10 组件（x-post, instagram-post, chart, stats-display, weather-widget 等）全部使用 t()
+  1. 低优 14 组件全部使用 t()（x-post, instagram-post, chart, stats-display, weather-widget, approval-card, citation, image, link-preview, linkedin-post, option-list, parameter-slider, plan, progress-tracker）
   2. LocaleProvider 测试通过：provide/inject 工作正常、messages 切换触发更新、缺失 key 正确 fallback
   3. useI18n() 测试通过：t() 解析 key、{param} 插值、缺失 key 处理
-  4. 测试环境中切换 locale 后，全部 23 个组件显示对应语言文本
+  4. 测试环境中切换 locale 后，全部组件显示对应语言文本
 **UI hint**: yes
+**Plans**: 5 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — 7 个简单组件 i18n + plan 命名空间 locale 条目
+- [ ] 03-02-PLAN.md — 3 个社交媒体组件 i18n（x-post, instagram-post, linkedin-post）
+- [ ] 03-03-PLAN.md — chart, stats-display, plan 组件 i18n
+- [ ] 03-04-PLAN.md — weather-widget accessibility 层 i18n
+- [ ] 03-05-PLAN.md — 核心 i18n 测试 + 14 组件集成测试
 
 ### Phase 4: Quality + Compat
 **Goal**: i18n 系统 CI 门禁、向后兼容、非 i18n 用户零侵入
@@ -90,7 +98,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. I18N Core | 1/1 | Complete    | 2026-04-11 |
-| 2. Component i18n (High + Med) | 0/5 | Planned     | - |
-| 3. Component i18n (Low) + Tests | 0/TBD | Not started | - |
+| 2. Component i18n (High + Med) | 0/5 | Complete    | 2026-04-11 |
+| 3. Component i18n (Low) + Tests | 0/5 | Not started | - |
 | 4. Quality + Compat | 0/TBD | Not started | - |
 | 5. Documentation + Histoire | 0/TBD | Not started | - |

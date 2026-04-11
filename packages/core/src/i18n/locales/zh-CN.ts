@@ -254,6 +254,8 @@ export const zhCN = {
     follow: '关注',
     following: '已关注',
     unfollow: '取消关注',
+    verified: '认证账号',
+    logo: 'X（原 Twitter）标志',
   },
   instagramPost: {
     like: '赞',
@@ -268,6 +270,7 @@ export const zhCN = {
     saved: '已收藏',
     hoursAgo: '{count} 小时前',
     daysAgo: '{count} 天前',
+    logo: 'Instagram 标志',
   },
   approvalCard: {
     title: '审批',
@@ -304,6 +307,10 @@ export const zhCN = {
     reposts: '{count} 次转发',
     follow: '关注',
     following: '已关注',
+    edited: '已编辑',
+    seeMore: '查看更多',
+    logo: 'LinkedIn 标志',
+    verified: '认证账号',
   },
   optionList: {
     select: '选择',

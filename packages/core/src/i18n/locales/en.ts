@@ -254,6 +254,8 @@ export const en = {
     follow: 'Follow',
     following: 'Following',
     unfollow: 'Unfollow',
+    verified: 'Verified account',
+    logo: 'X (formerly Twitter) logo',
   },
   instagramPost: {
     like: 'Like',
@@ -268,6 +270,7 @@ export const en = {
     saved: 'Saved',
     hoursAgo: '{count} hours ago',
     daysAgo: '{count} days ago',
+    logo: 'Instagram logo',
   },
   approvalCard: {
     title: 'Approval',
@@ -304,6 +307,10 @@ export const en = {
     reposts: '{count} reposts',
     follow: 'Follow',
     following: 'Following',
+    edited: 'Edited',
+    seeMore: 'See more',
+    logo: 'LinkedIn logo',
+    verified: 'Verified account',
   },
   optionList: {
     select: 'Select',
