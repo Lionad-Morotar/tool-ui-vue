@@ -28,3 +28,7 @@ export type { BadgeProps, BadgeVariants } from './components/badge'
 // Export CopyButton component
 export { CopyButton } from './components/copy-button'
 export type { CopyButtonProps } from './components/copy-button'
+
+// Export i18n system
+export { useI18n, LocaleProvider, zhCN, en, i18nInjectionKey } from './i18n'
+export type { DeepKeyPath, DeepValueOf, KeysFor, ParamValue, I18nContext, I18nReturn } from './i18n'
