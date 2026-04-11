@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-04-11T07:16:55.396Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-04-11T15:56:00Z"
 last_activity: 2026-04-11
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 11
-  completed_plans: 7
+  completed_plans: 9
   percent: 0
 ---
 
@@ -37,7 +37,7 @@ Progress: [##........] 0% (milestone v1.0.0)
 
 **Velocity:**
 
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 12min
 - Total execution time: ~40min
 
@@ -58,6 +58,8 @@ Progress: [##........] 0% (milestone v1.0.0)
 | Phase 02-component-i18n-high-medium P03 | 15 | 3 tasks | 6 files |
 | Phase 02-component-i18n-high-medium P05 | 5min | 2 tasks | 25 files |
 | Phase 03 P01 | auto | 5 tasks | 8 files |
+| Phase 03-component-i18n-low-tests P02 | 5min | 3 tasks | 5 files |
+| Phase 03-component-i18n-low-tests P03 | 22min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -85,6 +87,10 @@ Recent decisions affecting current work:
 - [Phase 02-03]: ARIA spec values (aria-sort ascending/descending) NOT i18n-ized — WAI-ARIA requires exact English values
 - [Phase 02-03]: All :aria-label bindings with t() use .value unwrapping for vue-tsc compatibility
 - [Phase 02-component-i18n-high-medium]: Computed wrappers with .value unwrapping used for :aria-label bindings (t() returns ComputedRef, attributes need string) -- matches terminal established pattern
+- [Phase 03-03]: plan 组件使用中文习惯的 "/" 分隔符而非 "of"（"1 / 5 已完成"）
+- [Phase 03-03]: stats-display 使用 helper function percentAriaLabel 而非 computed（stat 在 v-for 作用域内）
+- [Phase 03-03]: 移除 stats-display 根元素上的 lang="en" 硬编码，让其继承父级语言设置
+- [Phase 03-03]: 测试使用 vi.mock('@lionad/vtu-core/i18n') 而非 LocaleProvider 包裹（vitest 模块缓存导致 inject 不传递）
 
 ### Pending Todos
 
@@ -97,5 +103,5 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-11T07:16:55.393Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-04-11T15:34:00Z
+Stopped at: Completed 03-03-PLAN.md

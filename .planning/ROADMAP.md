@@ -61,9 +61,9 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — 7 个简单组件 i18n + plan 命名空间 locale 条目
-- [ ] 03-02-PLAN.md — 3 个社交媒体组件 i18n（x-post, instagram-post, linkedin-post）
-- [ ] 03-03-PLAN.md — chart, stats-display, plan 组件 i18n
+- [x] 03-01-PLAN.md — 7 个简单组件 i18n + plan 命名空间 locale 条目
+- [x] 03-02-PLAN.md — 3 个社交媒体组件 i18n（x-post, instagram-post, linkedin-post）
+- [x] 03-03-PLAN.md — chart, stats-display, plan 组件 i18n
 - [ ] 03-04-PLAN.md — weather-widget accessibility 层 i18n
 - [ ] 03-05-PLAN.md — 核心 i18n 测试 + 14 组件集成测试
 
