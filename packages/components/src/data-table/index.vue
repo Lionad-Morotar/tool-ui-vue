@@ -86,7 +86,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     )"
                     :style="column.width ? { width: column.width } : undefined"
                     :aria-sort="state.currentSort?.by === column.key
-                      ? (state.currentSort?.direction === 'asc' ? t('dataTable.sortAscending').value : t('dataTable.sortDescending').value)
+                      ? (state.currentSort?.direction === 'asc' ? 'ascending' : 'descending')
                       : undefined"
                   >
                     <button
@@ -103,7 +103,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         columnIndex === columns.length - 1 && 'pr-4',
                       )"
                       :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
-                        ? ` (${state.currentSort.direction === 'asc' ? t('dataTable.sortAscending').value : t('dataTable.sortDescending').value})`
+                        ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
                         : '')"
                       :aria-disabled="column.sortable === false || undefined"
                       @click="state.handleSort(column)"
@@ -243,7 +243,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
     <div
       :class="state.cardsContainerClass"
       role="list"
-      :aria-label="t('dataTable.mobileViewLabel')"
+      :aria-label="t('dataTable.mobileViewLabel').value"
       :aria-describedby="state.mobileDescriptionId"
     >
       <div :id="state.mobileDescriptionId" class="sr-only">
