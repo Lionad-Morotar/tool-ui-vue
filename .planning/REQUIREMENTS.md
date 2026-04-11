@@ -14,7 +14,7 @@
 
 ## I18N-COMPS — 组件改造
 
-- [ ] **COMPS-01**: 高优 7 组件改造（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）
+- [x] **COMPS-01**: 高优 7 组件改造（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）
 - [ ] **COMPS-02**: 中优 6 组件改造（audio, video, image-gallery, geo-map, item-carousel, preferences-panel）
 - [ ] **COMPS-03**: 低优 10 组件改造（x-post, instagram-post, chart, stats-display, weather-widget 等）
 
