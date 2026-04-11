@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { reactive } from 'vue';
 import { useQuestionFlow } from './states';
 import type { QuestionFlowProps } from './schema';
@@ -19,6 +20,9 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(useQuestionFlow(props, emit));
+
+// i18n
+const { t } = useI18n()
 
 // Chevron left icon
 const ChevronLeftIcon = {
@@ -54,10 +58,10 @@ const CheckIcon = {
       class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card/60 px-5 py-4 shadow-xs"
     >
       <div class="flex items-center justify-between gap-3">
-        <span class="text-base font-medium">{{ state.receiptProps.choice?.title ?? 'Completed' }}</span>
+        <span class="text-base font-medium">{{ state.receiptProps.choice?.title ?? t('questionFlow.completed') }}</span>
         <span class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500">
           <component :is="CheckIcon" class="size-3.5" />
-          Complete
+          {{ t('questionFlow.complete') }}
         </span>
       </div>
       <div v-if="state.receiptProps.choice?.summary" class="flex flex-col">
@@ -100,9 +104,9 @@ const CheckIcon = {
         <div class="flex flex-col gap-2">
           <span
             class="text-xs font-medium tracking-wide text-muted-foreground uppercase"
-            :aria-label="`Step ${state.currentStepNumber} of ${state.totalSteps}`"
+            :aria-label="t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps })"
           >
-            Step {{ state.currentStepNumber }} of {{ state.totalSteps }}
+            {{ t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps }) }}
           </span>
           <div
             v-if="state.totalSteps > 1"
@@ -332,7 +336,7 @@ const CheckIcon = {
           @click="state.handleBack"
         >
           <component :is="ChevronLeftIcon" class="size-4" />
-          Back
+          {{ t('questionFlow.back') }}
         </button>
         <div v-else />
         <button
@@ -348,7 +352,7 @@ const CheckIcon = {
           "
           @click="state.handleNext"
         >
-          {{ state.isLastStep ? 'Complete' : 'Next' }}
+          {{ state.isLastStep ? t('questionFlow.complete') : t('questionFlow.next') }}
         </button>
       </div>
     </div>
