@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { reactive, toRef } from 'vue';
 import { useMessageDraft } from '../states';
 import type { RuntimeMessageDraftProps } from '../schema';
@@ -23,6 +24,7 @@ const emit = defineEmits<{
 }>();
 
 const state = reactive(useMessageDraft(props, emit));
+const { t } = useI18n()
 const draftState = toRef(state, 'state');
 const isExpanded = toRef(state, 'isExpanded');
 const needsExpansion = toRef(state, 'needsExpansion');
@@ -47,11 +49,11 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
       :data-tool-ui-id="id"
       data-receipt="true"
       role="status"
-      aria-label="Message sent"
+      :aria-label="t('messageDraft.messageSent').value"
     >
       <div class="flex items-center justify-end gap-2 text-sm">
         <span class="text-muted-foreground">
-          Sent at {{ state.formatSentTime(state.sentAt ?? new Date()) }}
+          {{ t('messageDraft.sentAt', { time: state.formatSentTime(state.sentAt ?? new Date()) }) }}
         </span>
         <span class="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <svg
@@ -108,7 +110,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                 <td
                   class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
-                  From
+                  {{ t('messageDraft.fromLabel') }}
                 </td>
                 <td class="pb-1 align-top">{{ state.emailProps.from }}</td>
               </tr>
@@ -116,7 +118,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                 <td
                   class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
-                  To
+                  {{ t('messageDraft.toLabel') }}
                 </td>
                 <td class="pb-1 align-top">
                   {{ (state.emailProps.to || []).slice(0, 3).join(", ") }}
@@ -124,7 +126,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                     v-if="(state.emailProps.to || []).length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ (state.emailProps.to || []).length - 3 }} more
+                    {{ t('messageDraft.moreRecipients', { count: (state.emailProps.to || []).length - 3 }) }}
                   </span>
                 </td>
               </tr>
@@ -135,7 +137,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                 <td
                   class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
-                  Cc
+                  {{ t('messageDraft.ccLabel') }}
                 </td>
                 <td class="pb-1 align-top">
                   {{ state.emailProps.cc.slice(0, 3).join(", ") }}
@@ -143,7 +145,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                     v-if="state.emailProps.cc.length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ state.emailProps.cc.length - 3 }} more
+                    {{ t('messageDraft.moreRecipients', { count: state.emailProps.cc.length - 3 }) }}
                   </span>
                 </td>
               </tr>
@@ -154,7 +156,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                 <td
                   class="w-0 pr-4 pb-1 text-right align-top font-medium whitespace-nowrap text-muted-foreground"
                 >
-                  Bcc
+                  {{ t('messageDraft.bccLabel') }}
                 </td>
                 <td
                   class="pb-1 align-top text-muted-foreground"
@@ -164,7 +166,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
                     v-if="state.emailProps.bcc.length > 3"
                     class="text-muted-foreground"
                   >
-                    +{{ state.emailProps.bcc.length - 3 }} more
+                    {{ t('messageDraft.moreRecipients', { count: state.emailProps.bcc.length - 3 }) }}
                   </span>
                 </td>
               </tr>
@@ -238,7 +240,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
               v-if="state.slackProps.target.type === 'channel' && state.slackProps.target.memberCount !== undefined"
               class="ml-auto text-sm font-normal text-muted-foreground"
             >
-              {{ state.slackProps.target.memberCount.toLocaleString() }} members
+              {{ t('messageDraft.members', { count: state.slackProps.target.memberCount.toLocaleString() }) }}
             </span>
           </div>
 
@@ -291,7 +293,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
           "
           @click="state.handleToggleExpand"
         >
-          {{ isExpanded ? "Show less" : "Read more" }}
+          {{ isExpanded ? t('messageDraft.showLess') : t('messageDraft.readMore') }}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -318,7 +320,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
           aria-live="polite"
         >
           <span class="text-sm text-muted-foreground">
-            Sending in {{ state.countdown }}s
+            {{ t('messageDraft.sendingIn', { count: state.countdown }) }}
           </span>
           <button
             :ref="(el) => { undoButtonRef = el as HTMLButtonElement | null }"
@@ -334,7 +336,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
             "
             @click="state.handleUndo"
           >
-            Undo
+            {{ t('messageDraft.undo') }}
           </button>
         </div>
 
@@ -361,7 +363,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
             "
             @click="state.handleCancel"
           >
-            Cancel
+            {{ t('messageDraft.cancel') }}
           </button>
           <button
             type="button"
@@ -376,7 +378,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
             "
             @click="state.handleSend"
           >
-            Send
+            {{ t('messageDraft.send') }}
           </button>
         </div>
       </div>
