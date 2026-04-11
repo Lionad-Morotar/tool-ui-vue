@@ -3,6 +3,7 @@
 
 import { icons } from 'lucide-vue-next';
 import { computed, type ComputedRef, type Component } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import type { ApprovalCardBaseProps } from '../schema';
 
 export type ApprovalCardEmit = {
@@ -26,9 +27,10 @@ export function useApprovalCard(
   props: ApprovalCardBaseProps,
   emit: ApprovalCardEmit,
 ): ApprovalCardState {
+  const { t } = useI18n();
   const resolvedVariant = computed(() => props.variant ?? 'default');
-  const resolvedConfirmLabel = computed(() => props.confirmLabel ?? 'Approve');
-  const resolvedCancelLabel = computed(() => props.cancelLabel ?? 'Deny');
+  const resolvedConfirmLabel = computed(() => props.confirmLabel ?? t('approvalCard.approve').value);
+  const resolvedCancelLabel = computed(() => props.cancelLabel ?? t('approvalCard.reject').value);
   const isDestructive = computed(() => resolvedVariant.value === 'destructive');
 
   // Dynamic icon lookup using lucide-vue-next
