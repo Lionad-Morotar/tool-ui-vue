@@ -125,19 +125,19 @@ const props = [
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">CodeDiff Features</h2>
         <div class="grid grid-cols-2 gap-4">
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold">Unified View</h3>
             <p class="text-sm text-muted-foreground">Shows changes inline with +/- indicators</p>
           </div>
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold">Split View</h3>
             <p class="text-sm text-muted-foreground">Side-by-side comparison of old and new</p>
           </div>
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold">Word-Level Diff</h3>
             <p class="text-sm text-muted-foreground">Highlights specific words that changed within lines</p>
           </div>
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold">Statistics</h3>
             <p class="text-sm text-muted-foreground">Shows number of additions and deletions</p>
           </div>
@@ -194,7 +194,7 @@ const props = [
           <label class="flex items-center gap-2 text-sm">
             <select
               v-model="diffState.style"
-              class="rounded border px-2 py-1"
+              class="rounded border-border border px-2 py-1"
             >
               <option value="unified">Unified</option>
               <option value="split">Split</option>
@@ -205,7 +205,7 @@ const props = [
             <input
               v-model="diffState.showLines"
               type="checkbox"
-              class="rounded border"
+              class="rounded border-border border"
             />
             Show Line Numbers
           </label>

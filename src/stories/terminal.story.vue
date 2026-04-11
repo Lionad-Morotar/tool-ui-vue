@@ -82,11 +82,11 @@ const ansiExamples = {
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">Exit Code Display</h2>
         <div class="grid grid-cols-2 gap-4">
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold text-emerald-600">Exit Code 0</h3>
             <p class="text-sm text-muted-foreground">Displayed in muted color indicating success</p>
           </div>
-          <div class="rounded-lg border p-4">
+          <div class="rounded-lg border-border border p-4">
             <h3 class="mb-2 font-semibold text-red-600">Exit Code &gt; 0</h3>
             <p class="text-sm text-muted-foreground">Displayed in red indicating an error</p>
           </div>
@@ -267,7 +267,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             <input
               v-model="interactiveState.command"
               type="text"
-              class="w-40 rounded-md border bg-background px-3 py-1 text-sm"
+              class="w-40 rounded-md border-border border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -276,7 +276,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
               v-model.number="interactiveState.exitCode"
               type="number"
               min="0"
-              class="w-20 rounded-md border bg-background px-3 py-1 text-sm"
+              class="w-20 rounded-md border-border border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -285,7 +285,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
               v-model.number="interactiveState.durationMs"
               type="number"
               min="0"
-              class="w-24 rounded-md border bg-background px-3 py-1 text-sm"
+              class="w-24 rounded-md border-border border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -293,7 +293,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             <input
               v-model="interactiveState.cwd"
               type="text"
-              class="w-32 rounded-md border bg-background px-3 py-1 text-sm"
+              class="w-32 rounded-md border-border border bg-background px-3 py-1 text-sm"
             />
           </div>
         </div>

@@ -175,7 +175,7 @@ const chartState = reactive(useChart(props, emit));
         <div
           v-if="chartState.tooltip.visible"
           data-testid="chart-tooltip"
-          class="z-10 fixed bg-background shadow px-2 py-1.5 border rounded min-w-[120px] text-xs pointer-events-none"
+          class="z-10 fixed bg-background shadow px-2 py-1.5 border border-border rounded min-w-[120px] text-xs pointer-events-none"
           :style="{ left: `${chartState.tooltip.x}px`, top: `${chartState.tooltip.y}px` }"
         >
           <div class="mb-1 font-medium">{{ chartState.tooltip.title }}</div>

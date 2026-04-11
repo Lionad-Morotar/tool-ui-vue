@@ -96,7 +96,7 @@ const state = reactive(useXPost(props, emit));
           </div>
 
           <!-- Quoted Post -->
-          <div v-if="post.quotedPost" class="mt-2 rounded-xl border p-3 transition-colors hover:bg-muted/30">
+          <div v-if="post.quotedPost" class="mt-2 rounded-xl border-border border p-3 transition-colors hover:bg-muted/30">
             <div class="flex min-w-0 items-center gap-1">
               <img
                 :src="post.quotedPost.author.avatarUrl"

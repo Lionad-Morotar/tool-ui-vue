@@ -28,12 +28,12 @@ const isCopied = toRef(state, 'isCopied');
     :data-tool-ui-id="id"
     data-slot="terminal"
   >
-    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+    <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="flex items-center justify-between border-b bg-card px-4 py-2">
+      <div class="flex justify-between items-center bg-card px-4 py-2 border-border border-b">
         <div class="flex items-center gap-2 overflow-hidden">
-          <terminal-icon class="h-4 w-4 shrink-0 text-muted-foreground" />
-          <code class="truncate font-mono text-xs text-foreground">
+          <terminal-icon class="w-4 h-4 text-muted-foreground shrink-0" />
+          <code class="font-mono text-foreground text-xs truncate">
             <span v-if="cwd" class="text-muted-foreground">{{ cwd }}$ </span>
             {{ command }}
           </code>
@@ -41,7 +41,7 @@ const isCopied = toRef(state, 'isCopied');
         <div class="flex items-center gap-3">
           <span
             v-if="state.formattedDuration"
-            class="font-mono text-sm text-muted-foreground tabular-nums"
+            class="font-mono tabular-nums text-muted-foreground text-sm"
           >
             {{ state.formattedDuration }}
           </span>
@@ -73,11 +73,11 @@ const isCopied = toRef(state, 'isCopied');
           >
             <check
               v-if="state.hasOutput && isCopied"
-              class="h-4 w-4 text-green-700 dark:text-green-400"
+              class="w-4 h-4 text-green-700 dark:text-green-400"
             />
             <copy
               v-else
-              class="h-4 w-4 text-muted-foreground"
+              class="w-4 h-4 text-muted-foreground"
             />
           </button>
         </div>
@@ -91,20 +91,20 @@ const isCopied = toRef(state, 'isCopied');
             state.isCollapsed && 'max-h-[200px] overflow-hidden',
           )"
         >
-          <div class="overflow-x-auto p-4">
+          <div class="p-4 overflow-x-auto">
             <div
               v-if="stdout"
-              class="whitespace-pre text-foreground"
+              class="text-foreground whitespace-pre"
               v-html="state.ansiToHtml(stdout)"
             />
             <div
               v-if="stderr"
-              class="mt-2 whitespace-pre text-red-500 dark:text-red-400"
+              class="mt-2 text-red-500 dark:text-red-400 whitespace-pre"
               v-html="state.ansiToHtml(stderr)"
             />
             <div
               v-if="truncated"
-              class="mt-2 text-xs text-muted-foreground italic"
+              class="mt-2 text-muted-foreground text-xs italic"
             >
               Output truncated...
             </div>
@@ -113,7 +113,7 @@ const isCopied = toRef(state, 'isCopied');
           <!-- Gradient overlay when collapsed -->
           <div
             v-if="state.isCollapsed"
-            class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent"
+            class="bottom-0 absolute inset-x-0 bg-gradient-to-t from-card to-transparent h-16"
           />
         </div>
 
@@ -122,7 +122,7 @@ const isCopied = toRef(state, 'isCopied');
           v-if="state.shouldCollapse"
           type="button"
           :class="cn(
-            'w-full rounded-none border-t font-normal text-muted-foreground',
+            'w-full rounded-none border-t border-border font-normal text-muted-foreground',
             'inline-flex items-center justify-center px-4 py-2 text-sm transition-colors',
             'hover:bg-accent hover:text-accent-foreground',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
@@ -143,7 +143,7 @@ const isCopied = toRef(state, 'isCopied');
       <!-- Empty State -->
       <div
         v-else
-        class="px-4 py-3 font-mono text-sm text-muted-foreground italic"
+        class="px-4 py-3 font-mono text-muted-foreground text-sm italic"
       >
         No output
       </div>

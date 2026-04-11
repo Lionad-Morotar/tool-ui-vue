@@ -27,7 +27,7 @@ const { isCopied } = toRefs(states);
   >
     <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
       <!-- Header -->
-      <div class="flex justify-between items-center gap-2 bg-card px-4 py-2 border-b">
+      <div class="flex justify-between items-center gap-2 bg-card px-4 py-2 border-border border-b">
         <div class="flex items-center gap-1">
           <span class="text-muted-foreground text-sm">
             {{ states.languageDisplayName }}
@@ -226,7 +226,7 @@ const { isCopied } = toRefs(states);
         v-if="states.shouldCollapse"
         type="button"
         :class="cn(
-          'w-full rounded-none border-t font-normal text-muted-foreground',
+          'w-full rounded-none border-t border-border font-normal text-muted-foreground',
           'inline-flex items-center justify-center px-4 py-2 text-sm transition-colors',
           'hover:bg-accent hover:text-accent-foreground',
           'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',

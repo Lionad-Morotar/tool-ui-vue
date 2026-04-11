@@ -276,7 +276,7 @@ const colors = {
             <label class="text-sm font-medium">Language:</label>
             <select
               v-model="interactiveState.language"
-              class="rounded-md border bg-background px-3 py-1 text-sm"
+              class="rounded-md border-border border bg-background px-3 py-1 text-sm"
             >
               <option v-for="lang in languages" :key="lang" :value="lang">
                 {{ lang }}
@@ -289,7 +289,7 @@ const colors = {
               type="checkbox"
               true-value="visible"
               false-value="hidden"
-              class="rounded border"
+              class="rounded border-border border"
             />
             Show Line Numbers
           </label>

@@ -130,7 +130,7 @@ const isExpanded = toRef(state, 'isExpanded');
       </div>
 
       <!-- Actions -->
-      <div class="mt-1 flex items-center gap-1 border-t pt-1.5">
+      <div class="mt-1 flex items-center gap-1 border-t border-border pt-1.5">
         <button
           type="button"
           :class="cn(

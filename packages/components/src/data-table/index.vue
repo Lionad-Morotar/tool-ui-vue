@@ -132,7 +132,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                 <tr
                   v-for="(row, index) in state.sortedData"
                   :key="state.getRowId(row, index)"
-                  class="hover:bg-muted/50 border-b transition-colors"
+                  class="hover:bg-muted/50 border-b border-border transition-colors"
                 >
                   <td
                     v-for="(column, columnIndex) in columns"
