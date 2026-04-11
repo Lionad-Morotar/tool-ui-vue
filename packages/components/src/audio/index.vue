@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { computed } from 'vue';
 import { useAudio } from './states';
 import type { AudioProps } from './schema';
@@ -34,6 +35,9 @@ const {
   handleSeekEnd,
   domHandlers,
 } = useAudio(props, emit);
+
+// i18n
+const { t } = useI18n();
 </script>
 
 <template>
@@ -115,7 +119,7 @@ const {
               <button
                 type="button"
                 class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
-                :aria-label="playing ? 'Pause' : 'Play'"
+                :aria-label="playing ? t('audio.pause') : t('audio.play')"
                 @click="togglePlay"
               >
                 <svg
@@ -209,7 +213,7 @@ const {
           <button
             type="button"
             class="relative inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-            :aria-label="playing ? 'Pause' : 'Play'"
+            :aria-label="playing ? t('audio.pause') : t('audio.play')"
             @click="togglePlay"
           >
             <svg

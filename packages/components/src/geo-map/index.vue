@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { reactive } from 'vue';
 import GeoMapEngine from './cmpts/geo-map-engine.vue';
 import styles from './geo-map-theme.module.css';
@@ -19,6 +20,7 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(useGeoMap(props, emit));
+const { t } = useI18n();
 </script>
 
 <template>
@@ -81,7 +83,7 @@ const state = reactive(useGeoMap(props, emit));
         data-slot="geo-map-loading"
         class="pointer-events-none absolute inset-0 flex items-center justify-center bg-muted/30 text-muted-foreground"
       >
-        <span data-slot="geo-map-loading-label">Loading map...</span>
+        <span data-slot="geo-map-loading-label">{{ t('geoMap.loadingMap') }}</span>
       </div>
     </div>
   </div>
