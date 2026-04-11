@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { Package, CheckCircle } from 'lucide-vue-next';
 import { reactive } from 'vue';
 import { useOrderSummary } from './states';
@@ -13,6 +14,9 @@ const props = withDefaults(defineProps<OrderSummaryProps & { css?: { root?: stri
 
 // All business logic delegated to states layer
 const state = reactive(useOrderSummary(props));
+
+// i18n
+const { t } = useI18n()
 </script>
 
 <template>
@@ -27,10 +31,10 @@ const state = reactive(useOrderSummary(props));
   >
     <div class="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
       <h2 :id="`${id}-title`" class="text-base font-semibold">
-        {{ title || "Order Summary" }}
+        {{ title || t('orderSummary.title') }}
       </h2>
       <p class="mt-2 text-sm text-muted-foreground">
-        Unable to render order summary
+        {{ t('orderSummary.unableToRender') }}
       </p>
     </div>
   </article>
@@ -62,7 +66,7 @@ const state = reactive(useOrderSummary(props));
               aria-hidden="true"
               :focusable="undefined"
             />
-            {{ title || "Order Summary" }}
+            {{ title || t('orderSummary.title') }}
           </h2>
           <p v-if="state.receiptBadgeText" class="mt-1 text-sm text-muted-foreground">
             {{ state.receiptBadgeText }}
@@ -109,29 +113,29 @@ const state = reactive(useOrderSummary(props));
         <!-- Pricing -->
         <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">Subtotal</dt>
+            <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
-            <dt>{{ pricing.discountLabel || "Discount" }}</dt>
+            <dt>{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
             <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">Shipping</dt>
+            <dt class="text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
             <dd class="tabular-nums">
-              {{ pricing.shipping === 0 ? 'Free' : state.formatCurrency(pricing.shipping, pricing.currency) }}
+              {{ pricing.shipping === 0 ? t('orderSummary.free') : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ pricing.taxLabel || "Tax" }}</dt>
+            <dt class="text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
-            <dt class="font-medium">Total</dt>
+            <dt class="font-medium">{{ t('orderSummary.total') }}</dt>
             <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>
@@ -155,7 +159,7 @@ const state = reactive(useOrderSummary(props));
     <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
       <div class="space-y-4 p-4">
         <div>
-          <h2 :id="`${id}-title`" class="text-base font-semibold">{{ title || "Order Summary" }}</h2>
+          <h2 :id="`${id}-title`" class="text-base font-semibold">{{ title || t('orderSummary.title') }}</h2>
         </div>
 
         <div class="space-y-3">
@@ -198,29 +202,29 @@ const state = reactive(useOrderSummary(props));
         <!-- Pricing -->
         <dl class="flex flex-col gap-2 text-sm">
           <div class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">Subtotal</dt>
+            <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
-            <dt>{{ pricing.discountLabel || "Discount" }}</dt>
+            <dt>{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
             <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">Shipping</dt>
+            <dt class="text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
             <dd class="tabular-nums">
-              {{ pricing.shipping === 0 ? 'Free' : state.formatCurrency(pricing.shipping, pricing.currency) }}
+              {{ pricing.shipping === 0 ? t('orderSummary.free') : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ pricing.taxLabel || "Tax" }}</dt>
+            <dt class="text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
-            <dt class="font-medium">Total</dt>
+            <dt class="font-medium">{{ t('orderSummary.total') }}</dt>
             <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>
