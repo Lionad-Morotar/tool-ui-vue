@@ -92,6 +92,11 @@ Plans:
   4. API 文档覆盖 LocaleProvider props、useI18n 返回类型、t() 签名、消息文件格式
   5. 消费者接入指南逐步说明如何添加 i18n、扩展语言、自定义消息文件
 **UI hint**: yes
+**Plans**: 2 plans
+
+Plans:
+- [x] 05-01-PLAN.md — Histoire i18n infrastructure: locale state, nav toggle, useStoryLocale
+- [x] 05-02-PLAN.md — README i18n sections, API docs, consumer guide, story file bilingual update
 
 ## Progress
 
@@ -101,7 +106,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. I18N Core | 1/1 | Complete    | 2026-04-11 |
-| 2. Component i18n (High + Med) | 0/5 | Complete    | 2026-04-11 |
+| 2. Component i18n (High + Med) | 5/5 | Complete    | 2026-04-11 |
 | 3. Component i18n (Low) + Tests | 5/5 | Complete    | 2026-04-11 |
 | 4. Quality + Compat | 1/1 | Complete    | 2026-04-11 |
-| 5. Documentation + Histoire | 0/TBD | Not started | - |
+| 5. Documentation + Histoire | 2/2 | Complete    | 2026-04-11 |
