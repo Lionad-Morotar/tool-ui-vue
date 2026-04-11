@@ -240,6 +240,7 @@ export const en = {
     period: 'Period',
     comparedTo: 'vs previous',
     trend: 'Trend',
+    percent: 'Percent',
   },
   xPost: {
     retweet: 'Repost',

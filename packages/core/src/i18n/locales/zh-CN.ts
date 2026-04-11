@@ -240,6 +240,7 @@ export const zhCN = {
     period: '统计周期',
     comparedTo: '较上期',
     trend: '趋势',
+    percent: '百分比',
   },
   xPost: {
     retweet: '转发',

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed, reactive } from 'vue';
 import Sparkline from './cmpts/sparkline.vue';
 import { useStatsDisplay } from './states';
 import type { StatsDisplayProps } from './schema';
@@ -13,6 +14,14 @@ const props = withDefaults(defineProps<StatsDisplayProps & { css?: { root?: stri
 
 // All business logic delegated to states layer
 const state = reactive(useStatsDisplay(props));
+
+// i18n
+const { t } = useI18n()
+
+// i18n-aware aria-label for percent formatted values
+function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'fraction' | 'unit' }): string {
+  return `${state.formatPercent(value, format.decimals ?? 2, format.basis ?? 'fraction')} ${t('statsDisplay.percent').value}`
+}
 </script>
 
 <template>
@@ -25,7 +34,6 @@ const state = reactive(useStatsDisplay(props));
     )"
     data-slot="stats-display"
     :data-tool-ui-id="props.id"
-    lang="en"
     aria-busy="false"
   >
     <div
@@ -127,7 +135,7 @@ const state = reactive(useStatsDisplay(props));
                   <span
                     v-else-if="stat.format?.kind === 'percent'"
                     class="font-light tabular-nums"
-                    :aria-label="`${state.formatPercent(Number(stat.value), stat.format.decimals ?? 2, stat.format.basis ?? 'fraction')} percent`"
+                    :aria-label="percentAriaLabel(Number(stat.value), stat.format ?? {})"
                   >
                     {{ state.formatPercent(Number(stat.value), stat.format.decimals ?? 2, stat.format.basis ?? 'fraction') }}
                     <span class="ml-0.5 text-[0.65em] opacity-80" aria-hidden="true">%</span>
