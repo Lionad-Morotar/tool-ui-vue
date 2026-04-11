@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed, reactive } from 'vue';
 import { useXPost } from './states';
 import type { XPostProps, XPostData } from './schema';
 
@@ -16,6 +17,13 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(useXPost(props, emit));
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings
+const verifiedAriaLabel = computed(() => t('xPost.verified').value)
+const logoAriaLabel = computed(() => t('xPost.logo').value)
 </script>
 
 <template>
@@ -45,7 +53,7 @@ const state = reactive(useXPost(props, emit));
                 viewBox="0 0 24 24"
                 class="size-[18px] shrink-0 text-blue-500"
                 role="img"
-                aria-label="Verified account"
+                :aria-label="verifiedAriaLabel"
               >
                 <path
                   fill="currentColor"
@@ -61,7 +69,7 @@ const state = reactive(useXPost(props, emit));
               viewBox="0 0 300 271"
               class="size-4 shrink-0 text-muted-foreground/40"
               role="img"
-              aria-label="X (formerly Twitter) logo"
+              :aria-label="logoAriaLabel"
             >
               <path
                 fill="currentColor"
@@ -111,7 +119,7 @@ const state = reactive(useXPost(props, emit));
                 viewBox="0 0 24 24"
                 class="size-3.5 shrink-0 text-blue-500"
                 role="img"
-                aria-label="Verified account"
+                :aria-label="verifiedAriaLabel"
               >
                 <path
                   fill="currentColor"
