@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { useImage } from './states';
 import type { ImageProps } from './schema';
 
@@ -13,6 +14,10 @@ const props = withDefaults(defineProps<ImageProps & { css?: { root?: string } }>
 const emit = defineEmits<{
   navigate: [href: string];
 }>();
+
+// i18n
+const { t } = useI18n();
+const imageAlt = computed(() => props.alt ? props.alt : t('image.alt').value);
 
 // All business logic delegated to states layer
 const state = reactive(useImage(props, emit));
@@ -51,7 +56,7 @@ const state = reactive(useImage(props, emit));
       >
         <img
           :src="state.sanitizedSrc"
-          :alt="alt"
+          :alt="imageAlt"
           loading="lazy"
           decoding="async"
           :class="cn('absolute inset-0 h-full w-full', state.fitClassMap[state.resolvedFit])"

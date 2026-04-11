@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { useOptionList } from './states';
 import type { OptionListProps, OptionListSelection } from './schema';
 
@@ -15,6 +16,9 @@ const emit = defineEmits<{
   action: [actionId: string, value: OptionListSelection];
   'update:modelValue': [value: OptionListSelection];
 }>()
+
+// i18n
+const { t } = useI18n();
 
 // All business logic delegated to states layer
 const state = reactive(useOptionList(props, emit));
@@ -37,7 +41,7 @@ const state = reactive(useOptionList(props, emit));
     :data-tool-ui-id="props.id"
     data-receipt="true"
     role="status"
-    aria-label="Confirmed selection"
+    :aria-label="t('optionList.selected').value"
   >
     <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 px-5 py-2.5 shadow-xs">
       <template v-for="(option, index) in state.selectedOptions" :key="option.id">

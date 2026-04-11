@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { computed } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import {
   useSlider,
   useDrag,
@@ -19,6 +20,9 @@ const props = withDefaults(defineProps<ParameterSliderProps & { css?: { root?: s
   css: () => ({ root: '' })
 })
 
+// i18n
+const { t } = useI18n();
+
 const emit = defineEmits<{
   change: [values: SliderValue[]];
   action: [actionId: string, values: SliderValue[]];
@@ -30,8 +34,8 @@ const normalizedActions = computed(() => {
   if (!props.actions) {
     return {
       items: [
-        { id: 'reset', label: 'Reset', variant: 'ghost' as const },
-        { id: 'apply', label: 'Apply', variant: 'default' as const },
+        { id: 'reset', label: t('parameterSlider.reset').value, variant: 'ghost' as const },
+        { id: 'apply', label: t('shared.confirm').value, variant: 'default' as const },
       ],
       align: 'right' as const,
     };

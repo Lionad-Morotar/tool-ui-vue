@@ -163,11 +163,11 @@ export function getAriaValueText(
   const crossesZero = min < 0 && max > 0;
   if (crossesZero) {
     if (value > 0) {
-      return unit ? `plus ${value} ${unit}` : `plus ${value}`;
+      return unit ? `+${value} ${unit}` : `+${value}`;
     } else if (value < 0) {
       return unit
-        ? `minus ${Math.abs(value)} ${unit}`
-        : `minus ${Math.abs(value)}`;
+        ? `${value} ${unit}`
+        : String(value);
     }
   }
   return unit ? `${value} ${unit}` : String(value);

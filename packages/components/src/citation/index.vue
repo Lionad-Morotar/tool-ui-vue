@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { reactive } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { useCitation } from './states';
 import { usePopover } from './states/usePopover';
 import type { CitationProps } from './schema';
@@ -14,6 +15,9 @@ const props = withDefaults(defineProps<CitationProps & { css?: { root?: string }
 const emit = defineEmits<{
   navigate: [href: string, citation: CitationProps];
 }>();
+
+// i18n
+const { t } = useI18n();
 
 // All business logic delegated to states layer
 const state = reactive(useCitation(props, emit));
@@ -31,7 +35,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
     <button
       :ref="(el: any) => { if (el) popover.triggerRef.value = el as HTMLElement }"
       type="button"
-      :aria-label="title"
+      :aria-label="t('citation.viewSource').value"
       v-bind="popover.triggerAttrs()"
       :data-tool-ui-id="id"
       data-slot="citation"
