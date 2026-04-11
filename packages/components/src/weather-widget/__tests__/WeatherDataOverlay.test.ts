@@ -3,6 +3,8 @@ import { describe, expect, test, vi } from 'vitest';
 import { nextTick } from 'vue';
 import WeatherDataOverlay from '../cmpts/weather-data-overlay.vue';
 import type { WeatherConditionCode, ForecastDay } from '../schema';
+import { setMessages } from '@lionad/vtu-core/i18n';
+import { en } from '../../../../core/src/i18n/locales/en';
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn(function () {
@@ -300,7 +302,9 @@ describe('WeatherDataOverlay', () => {
   });
 
   describe('accessibility', () => {
-    test('has sr-only text for temperature', () => {
+    test('has sr-only text for temperature (en)', async () => {
+      setMessages(en);
+      await nextTick();
       const wrapper = mount(WeatherDataOverlay, {
         props: createProps({ temperature: 72, unit: 'fahrenheit' }),
       });

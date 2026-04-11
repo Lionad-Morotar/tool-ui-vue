@@ -2,6 +2,7 @@
 defineOptions({ name: 'CmptWeatherDataOverlay', inheritAttrs: false })
 
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import {
   Sun,
   Cloud,
@@ -340,11 +341,15 @@ const conditionIcons: Record<WeatherConditionCode, typeof Sun> = {
 };
 
 // Formatting helpers
-const roundedTemperature = computed(() => Math.round(props.temperature));
-const unitSymbol = computed(() => (props.unit === 'celsius' ? 'C' : 'F'));
-const spokenUnit = computed(() =>
-  props.unit === 'celsius' ? 'Celsius' : 'Fahrenheit'
-);
+const { t } = useI18n()
+const roundedTemperature = computed(() => Math.round(props.temperature))
+const unitSymbol = computed(() => (props.unit === 'celsius' ? 'C' : 'F'))
+const spokenUnit = computed(() => {
+  const key = props.unit === 'celsius'
+    ? 'weatherWidget.spokenUnitCelsius'
+    : 'weatherWidget.spokenUnitFahrenheit'
+  return t(key).value
+})
 
 // Font styles - computed to avoid template escaping issues
 const forecastFontFamily = '"SF Pro Text", Inter, "Noto Sans", system-ui, sans-serif';
@@ -488,7 +493,7 @@ const innerGlowStyle = computed(() => ({
             °{{ unitSymbol }}
           </span>
           <span class="sr-only">
-            {{ roundedTemperature }} degrees {{ spokenUnit }}
+            {{ t('weatherWidget.srTemperature', { temp: roundedTemperature, unit: spokenUnit }) }}
           </span>
         </div>
 
