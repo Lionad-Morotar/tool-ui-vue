@@ -10,6 +10,7 @@ import vueParser from 'vue-eslint-parser'
 
 import vTwMergePlugin from './lib/eslint-plugin-v-tw-merge.mjs'
 import bemOrderPlugin from './lib/eslint-plugin-bem-order.mjs'
+import i18nPlugin from './lib/eslint-plugin-i18n.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -44,7 +45,8 @@ export default tseslint.config(
       'v-tw-merge': vTwMergePlugin,
       'import-x': importX,
       'tailwindcss': tailwind,
-      'bem-order': bemOrderPlugin
+      'bem-order': bemOrderPlugin,
+      'i18n': i18nPlugin
     },
     settings: {
       'import-x/resolver-next': [
@@ -143,6 +145,9 @@ export default tseslint.config(
 
       // ========== BEM 排序规则 ==========
       'bem-order/bem-order': 'warn',
+
+      // ========== i18n ==========
+      'i18n/key-consistency': 'error',
 
       // ========== tailwindcss 规则 ==========
       'tailwindcss/classnames-order': 'warn',
