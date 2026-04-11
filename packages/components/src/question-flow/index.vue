@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { useQuestionFlow } from './states';
 import type { QuestionFlowProps } from './schema';
 
@@ -23,6 +23,11 @@ const state = reactive(useQuestionFlow(props, emit));
 
 // i18n
 const { t } = useI18n()
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const stepProgressAriaLabel = computed(() =>
+  t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps }).value
+)
 
 // Chevron left icon
 const ChevronLeftIcon = {
@@ -104,7 +109,7 @@ const CheckIcon = {
         <div class="flex flex-col gap-2">
           <span
             class="text-xs font-medium tracking-wide text-muted-foreground uppercase"
-            :aria-label="t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps })"
+            :aria-label="stepProgressAriaLabel"
           >
             {{ t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps }) }}
           </span>
