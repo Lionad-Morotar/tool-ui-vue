@@ -1,5 +1,6 @@
 import { inject, computed, ref, type Ref, type ComputedRef } from 'vue'
 import type { DeepKeyPath, ParamValue, I18nContext, I18nReturn } from './types'
+import { zhCN } from './locales/zh-CN'
 
 export const i18nInjectionKey = Symbol('vtu:i18n')
 
@@ -43,10 +44,14 @@ export function useI18n<TMessages extends Record<string, unknown>>(): I18nReturn
   const context = inject<I18nContext<TMessages> | null>(i18nInjectionKey, null)
 
   if (!context && !_messages.value) {
-    // No LocaleProvider and no global messages -- return fallback t() that returns key
+    // No LocaleProvider and no global messages -- fallback to zh-CN built-in messages
+    if ((import.meta as any).env?.DEV) {
+      console.warn('[vtu:i18n] No LocaleProvider configured. Using built-in zh-CN messages as fallback.')
+    }
+
     const t = <TKey extends string>(key: TKey, params?: Record<string, ParamValue>): ComputedRef<string> => {
       return computed(() => {
-        const resolved = resolveMessage(_messages.value, key) ?? key
+        const resolved = resolveMessage(zhCN, key) ?? key
         return interpolate(resolved, params)
       })
     }

@@ -7,6 +7,12 @@ export const ALLOWED_PATTERNS: RegExp[] = [
   /\[Vue warn\]: injection "Symbol\(ImageGalleryContext\)" not found/,
   // QuestionFlow union type props - Vue validates all union props at runtime
   /\[Vue warn\]: Missing required prop: "(step|options|steps|choice|title)"/,
+  // i18n missing key warning - expected when testing fallback behavior
+  /\[vtu:i18n\] Missing key:/,
+  // No LocaleProvider configured - expected when testing fallback mode
+  /\[vtu:i18n\] No LocaleProvider configured/,
+  // Image component alt prop - expected when testing i18n fallback behavior
+  /\[Vue warn\]: Missing required prop: "alt"/,
 ];
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
