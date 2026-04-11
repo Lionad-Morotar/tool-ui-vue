@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive, toRef } from 'vue';
+import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed, reactive, toRef } from 'vue';
 import { useLinkedinPost } from '../states';
 import type { LinkedInPostProps, LinkedInPostData } from '../schema';
 
@@ -16,6 +17,13 @@ const emit = defineEmits<{
 
 const state = reactive(useLinkedinPost(props, emit));
 const isExpanded = toRef(state, 'isExpanded');
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings
+const likeAriaLabel = computed(() => t('linkedinPost.like').value)
+const shareAriaLabel = computed(() => t('linkedinPost.share').value)
 </script>
 
 <script lang="ts">
@@ -46,7 +54,7 @@ const isExpanded = toRef(state, 'isExpanded');
           <div v-if="post.createdAt" class="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
             <span>{{ state.formatRelativeTime(post.createdAt) }}</span>
             <span>·</span>
-            <span>Edited</span>
+            <span>{{ t('linkedinPost.edited') }}</span>
           </div>
         </div>
         <!-- LinkedIn Logo -->
@@ -54,7 +62,7 @@ const isExpanded = toRef(state, 'isExpanded');
           viewBox="0 0 72 72"
           class="size-5 text-[#0077b5]"
           role="img"
-          aria-label="LinkedIn logo"
+          :aria-label="t('linkedinPost.logo').value"
         >
           <g fill="none" fill-rule="evenodd">
             <path
@@ -78,7 +86,7 @@ const isExpanded = toRef(state, 'isExpanded');
             class="ml-1 font-medium text-muted-foreground hover:text-foreground hover:underline"
             @click="isExpanded = true"
           >
-            see more
+            {{ t('linkedinPost.seeMore') }}
           </button>
         </template>
       </div>
@@ -137,7 +145,7 @@ const isExpanded = toRef(state, 'isExpanded');
             'h-auto gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted',
             post.stats?.isLiked ? 'fill-blue-600 text-blue-600' : ''
           )"
-          aria-label="Like"
+          :aria-label="likeAriaLabel"
           @click="state.handleAction('like')"
         >
           <svg
@@ -154,7 +162,7 @@ const isExpanded = toRef(state, 'isExpanded');
           >
             <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
           </svg>
-          <span>Like</span>
+          <span>{{ t('linkedinPost.like') }}</span>
           <span v-if="post.stats?.likes" class="text-muted-foreground">
             ({{ state.formatCount(post.stats.likes) }})
           </span>
@@ -162,7 +170,7 @@ const isExpanded = toRef(state, 'isExpanded');
         <button
           type="button"
           class="h-auto gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
-          aria-label="Share"
+          :aria-label="shareAriaLabel"
           @click="state.handleAction('share')"
         >
           <svg
@@ -186,7 +194,7 @@ const isExpanded = toRef(state, 'isExpanded');
               y2="15"
             />
           </svg>
-          <span>Share</span>
+          <span>{{ t('linkedinPost.share') }}</span>
         </button>
       </div>
     </article>
