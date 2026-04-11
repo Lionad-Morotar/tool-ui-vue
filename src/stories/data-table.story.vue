@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { DataTable } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '数据表格组件，支持排序、格式化（货币、百分比、日期）、状态徽标和响应式列优先级', en: 'Data table with sorting, formatting (currency, percent, date), status badges, and responsive column priority.' });
 
 const sortableState = reactive({
   sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
@@ -20,6 +23,7 @@ const playgroundState = reactive({
 <template>
   <Story title="DataTable/All Variants">
     <Variant title="Basic">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-basic"
@@ -38,6 +42,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="Stock Data (Delta + Currency + Percent)">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-3xl">
         <data-table
           id="data-table-stocks"
@@ -62,6 +67,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="With Formatting">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-formatted"
@@ -81,6 +87,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="With Status Badges">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-badges"
@@ -104,6 +111,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="With Column Alignment">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-align"
@@ -123,6 +131,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="Empty State">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-empty"
@@ -137,6 +146,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="With Default Sort">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-sorted"
@@ -178,6 +188,7 @@ const playgroundState = reactive({
     </Variant>
 
     <Variant title="With Max Height">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-scroll"

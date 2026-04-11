@@ -2,6 +2,7 @@
 import { reactive, computed } from 'vue';
 import { WeatherWidget } from '@lionad/vtu-components';
 import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,
@@ -88,6 +89,7 @@ function getTimeOfDayValue(hour: number): number {
 <template>
   <Story title="WeatherWidget/All Variants">
     <Variant title="Sunny">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-sunny"
@@ -112,6 +114,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="Cloudy">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-cloudy"
@@ -136,6 +139,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="Rainy">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-rainy"
@@ -160,6 +164,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="Snowy">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-snowy"
@@ -184,6 +189,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="Thunderstorm">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-storm"
@@ -209,6 +215,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="Celsius">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-celsius"
@@ -281,6 +288,7 @@ function getTimeOfDayValue(hour: number): number {
     </Variant>
 
     <Variant title="All Weather Conditions">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="grid grid-cols-2 gap-4">
         <weather-widget
           id="weather-all-sunny"

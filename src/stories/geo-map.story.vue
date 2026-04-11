@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { GeoMap } from '@lionad/vtu-components';
 import type { GeoMapMarker, GeoMapRoute } from '@lionad/vtu-components/geo-map/schema';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const mapState = reactive({
   selectedMarker: null as string | null,
@@ -20,6 +21,7 @@ function handleRouteClick(route: GeoMapRoute) {
 <template>
   <Story title="GeoMap/All Variants">
     <Variant title="Single Marker">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-single"
@@ -34,6 +36,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Multiple Markers">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-multiple"
@@ -50,6 +53,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="With Routes">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-routes"
@@ -80,6 +84,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="With Custom Icons">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-icons"
@@ -95,6 +100,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Dark Theme">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-dark"
@@ -184,6 +190,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="With Clustering">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-clustering"
@@ -206,6 +213,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Without Title">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-no-title"
@@ -220,6 +228,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="With Image Icons">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-image-icons"
@@ -234,6 +243,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="With Custom Dot Icons">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-dot-icons"
@@ -249,6 +259,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Dense Clustering Demo">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-dense-clustering"
@@ -275,6 +286,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Complex Route with Styling">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-complex-route"
@@ -310,6 +322,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Center Viewport Mode">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-center-mode"
@@ -324,6 +337,7 @@ function handleRouteClick(route: GeoMapRoute) {
     </Variant>
 
     <Variant title="Without Zoom Control">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
           id="geo-map-no-zoom"

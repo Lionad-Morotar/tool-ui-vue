@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { QuestionFlow } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const progressiveState = reactive({
   step: 1,
@@ -94,6 +95,7 @@ function handleComplete(answers: Record<string, string[]>) {
 <template>
   <Story title="QuestionFlow/All Variants">
     <Variant title="Progressive Mode - Step 1">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-progressive-1"
@@ -111,6 +113,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Progressive Mode - Step 2">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-progressive-2"
@@ -128,6 +131,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Progressive Mode - Multi Select">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-multi"
@@ -146,6 +150,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Progressive Mode - With Default Value">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-default"
@@ -164,6 +169,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Upfront Mode - Multi Step">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-upfront"
@@ -206,6 +212,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Upfront Mode - With Disabled Options">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-disabled"
@@ -226,6 +233,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Receipt Mode">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-receipt"
@@ -242,6 +250,7 @@ function handleComplete(answers: Record<string, string[]>) {
     </Variant>
 
     <Variant title="Receipt Mode - Multiple Items">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
           id="question-flow-receipt-multi"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 /**
  * # ApprovalCard
@@ -72,6 +73,7 @@ function resetChoice() {
 <template>
   <Story title="ApprovalCard/Basic">
     <Variant title="Default">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-basic"
         title="Deploy to Production"
@@ -83,6 +85,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="Destructive">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-destructive"
         title="Delete Project"
@@ -95,6 +98,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="With Metadata">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-metadata"
         title="Send Email Campaign"
@@ -111,6 +115,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="Minimal">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-minimal"
         title="Confirm action?"
@@ -118,6 +123,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="Receipt State (Approved)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-approved"
         title="Back up database"
@@ -127,6 +133,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="Receipt State (Denied)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-denied"
         title="Delete all project files"
@@ -136,6 +143,7 @@ function resetChoice() {
     </Variant>
 
     <Variant title="Custom Labels">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-custom"
         title="Submit proposal?"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { InstagramPost } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 /**
  * # InstagramPost
@@ -95,6 +96,7 @@ function handleAction(action: string) {
 <template>
   <Story title="InstagramPost/All Variants">
     <Variant title="Single Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -120,6 +122,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Multiple Images (2)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -145,6 +148,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Multiple Images (3)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -171,6 +175,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Multiple Images (4+)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -200,6 +205,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Video Post">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -225,6 +231,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Caption Only">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -245,6 +252,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Long Caption">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{
@@ -269,6 +277,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Unverified Author">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{

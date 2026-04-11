@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { Terminal } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const interactiveState = reactive({
   command: 'npm install',
@@ -25,6 +26,11 @@ const props = [
   { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
 ];
 
+const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
+const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
+const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
+const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
+
 const ansiExamples = {
   success: '\x1b[32m✓\x1b[0m Build completed successfully',
   warning: '\x1b[33m⚠\x1b[0m 3 warnings found',
@@ -38,16 +44,17 @@ const ansiExamples = {
 <template>
   <Story title="Terminal/All">
     <Variant title="Props">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">Terminal Props</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
               </tr>
             </thead>
             <tbody>
@@ -64,6 +71,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="ANSI Color Support">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">ANSI Color Codes</h2>
         <p class="mb-4 text-sm text-muted-foreground">
@@ -79,6 +87,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="Exit Codes">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">Exit Code Display</h2>
         <div class="grid grid-cols-2 gap-4">
@@ -95,6 +104,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="Success with ANSI Colors">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-ansi-colors"
@@ -108,6 +118,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="Lint Output with ANSI Colors">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-lint-ansi"
@@ -120,6 +131,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="Docker Build Output">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-docker-build"
@@ -132,6 +144,7 @@ const ansiExamples = {
     </Variant>
 
     <Variant title="With Error">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-error"
@@ -150,6 +163,7 @@ AssertionError: expected true to be false
     </Variant>
 
     <Variant title="With Working Directory">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-cwd"
@@ -170,6 +184,7 @@ no changes added to commit"
     </Variant>
 
     <Variant title="Long Output (Collapsed)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-long"
@@ -195,6 +210,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
     </Variant>
 
     <Variant title="Truncated">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-truncated"
@@ -211,6 +227,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
     </Variant>
 
     <Variant title="No Output">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
           id="terminal-empty"
@@ -222,6 +239,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
     </Variant>
 
     <Variant title="Simple Command">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <terminal
           id="terminal-simple"
@@ -234,6 +252,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
     </Variant>
 
     <Variant title="Dark Theme - Success">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
           id="terminal-dark-success"
@@ -247,6 +266,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
     </Variant>
 
     <Variant title="Dark Theme - Error">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
           id="terminal-dark-error"

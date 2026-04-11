@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-// Audio is used in template as <Audio> (PascalCase) to resolve to the Vue component
 import { Audio } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const interactiveState = reactive({
   title: 'Custom Audio Track',
@@ -31,6 +31,7 @@ function clearEvents() {
 <template>
   <Story title="Audio/All Variants">
     <Variant title="Basic">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
           id="audio-basic"
@@ -41,6 +42,7 @@ function clearEvents() {
     </Variant>
 
     <Variant title="With Metadata">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
           id="audio-metadata"
@@ -55,6 +57,7 @@ function clearEvents() {
     </Variant>
 
     <Variant title="Compact Variant">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
           id="audio-compact"
@@ -69,6 +72,7 @@ function clearEvents() {
     </Variant>
 
     <Variant title="Compact Without Artwork">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
           id="audio-compact-no-art"
@@ -82,6 +86,7 @@ function clearEvents() {
     </Variant>
 
     <Variant title="With Event Logging" auto-props-disabled>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
           <Audio

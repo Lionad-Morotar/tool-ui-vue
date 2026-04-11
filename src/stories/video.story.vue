@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-// Video is used in template as <Video> (PascalCase) to resolve to the Vue component
 import { Video } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const interactiveState = reactive({
   src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
@@ -44,6 +44,7 @@ function clearNavigateLog() {
 <template>
   <Story title="Video/All Variants">
     <Variant title="Basic">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
           id="video-basic"
@@ -54,6 +55,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="With Poster">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
           id="video-poster"
@@ -66,6 +68,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="With Description">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
           id="video-description"
@@ -80,6 +83,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="With Navigation">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
           id="video-nav"
@@ -96,6 +100,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="Square Format">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <Video
           id="video-square"
@@ -108,6 +113,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="Vertical Format">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xs">
         <Video
           id="video-vertical"
@@ -120,6 +126,7 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant title="With Event Logging" auto-props-disabled>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
           <Video

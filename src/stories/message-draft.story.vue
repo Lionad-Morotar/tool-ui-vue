@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { MessageDraft } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const emailState = ref({
   outcome: undefined as 'sent' | 'cancelled' | undefined,
@@ -113,6 +114,7 @@ function resetSlack() {
 <template>
   <Story title="MessageDraft/All Variants">
     <Variant title="Email Draft">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <button
           v-if="emailState.outcome"
@@ -139,6 +141,7 @@ Thanks!"
     </Variant>
 
     <Variant title="Email with CC/BCC">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
           id="message-draft-cc"
@@ -158,6 +161,7 @@ Best regards"
     </Variant>
 
     <Variant title="Email with Long Body">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
           id="message-draft-long"
@@ -198,6 +202,7 @@ The CEO"
     </Variant>
 
     <Variant title="Slack Channel">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <button
           v-if="slackState.outcome"
@@ -219,6 +224,7 @@ The CEO"
     </Variant>
 
     <Variant title="Slack DM">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <message-draft
           id="message-draft-slack-dm"
@@ -230,6 +236,7 @@ The CEO"
     </Variant>
 
     <Variant title="Sent Receipt">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
           id="message-draft-sent"
@@ -247,6 +254,7 @@ Best regards"
     </Variant>
 
     <Variant title="Cancelled">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <p class="mb-2 text-sm text-muted-foreground">
           Cancelled state renders nothing (as per design)

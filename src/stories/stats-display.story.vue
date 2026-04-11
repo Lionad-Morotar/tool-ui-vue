@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { StatsDisplay } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 </script>
 
 <template>
   <Story title="StatsDisplay/All Variants">
     <Variant title="Basic">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-basic"
@@ -19,6 +21,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="With Trends">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trends"
@@ -35,6 +38,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="With Sparklines">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-sparklines"
@@ -91,6 +95,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Single Stat">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <stats-display
           id="stats-single"
@@ -112,6 +117,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Currency Formats">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-currency"
@@ -127,6 +133,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Number Formats">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-numbers"
@@ -142,6 +149,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Percent Formats">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-percent"
@@ -157,6 +165,7 @@ import { StatsDisplay } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Trend Indicators">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trends"

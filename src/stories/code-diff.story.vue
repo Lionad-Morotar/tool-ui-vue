@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeDiff } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const oldFunction = `export async function fetchUser(id: string) {
   const res = await db.users.findUnique({ where: { id } });
@@ -82,22 +83,26 @@ const props = [
   { name: 'diffStyle', type: "'unified' | 'split'", default: 'unified', description: 'Diff display style' },
   { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
   { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
-];
+const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
+const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
+const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
+const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
 </script>
 
 <template>
   <Story title="CodeDiff/All">
     <Variant title="Props">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">CodeDiff Props</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
               </tr>
             </thead>
             <tbody>
@@ -122,6 +127,7 @@ const props = [
     </Variant>
 
     <Variant title="Features">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">CodeDiff Features</h2>
         <div class="grid grid-cols-2 gap-4">
@@ -146,6 +152,7 @@ const props = [
     </Variant>
 
     <Variant title="Word-Level Diff">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Word-level diff highlights specific changes within modified lines:
@@ -162,6 +169,7 @@ const props = [
     </Variant>
 
     <Variant title="Split Diff">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl">
         <code-diff
           id="diff-split"
@@ -175,6 +183,7 @@ const props = [
     </Variant>
 
     <Variant title="Split Diff (No Line Numbers)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl">
         <code-diff
           id="diff-split-no-lines"
@@ -223,6 +232,7 @@ const props = [
     </Variant>
 
     <Variant title="Unified Diff">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-unified"
@@ -236,6 +246,7 @@ const props = [
     </Variant>
 
     <Variant title="Patch Mode">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-patch"
@@ -247,6 +258,7 @@ const props = [
     </Variant>
 
     <Variant title="Without Line Numbers">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-no-lines"
@@ -260,6 +272,7 @@ const props = [
     </Variant>
 
     <Variant title="No Filename">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-diff
           id="diff-no-filename"
@@ -271,6 +284,7 @@ const props = [
     </Variant>
 
     <Variant title="Additions Only">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-add"
@@ -284,6 +298,7 @@ const props = [
     </Variant>
 
     <Variant title="Deletions Only">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-remove"
@@ -297,6 +312,7 @@ const props = [
     </Variant>
 
     <Variant title="Modifications">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-modify"
@@ -310,6 +326,7 @@ const props = [
     </Variant>
 
     <Variant title="Dark Theme - Unified">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-3xl">
         <code-diff
           id="diff-dark-unified"
@@ -323,6 +340,7 @@ const props = [
     </Variant>
 
     <Variant title="Dark Theme - Split">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-4xl">
         <code-diff
           id="diff-dark-split"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { LinkedInPost } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 /**
  * # LinkedInPost
@@ -99,6 +100,7 @@ function handleAction(action: string) {
 <template>
   <Story title="LinkedInPost/All Variants">
     <Variant title="Text Only">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -121,6 +123,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -148,6 +151,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Video">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -175,6 +179,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Link Preview">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -204,6 +209,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Long Post (Truncated)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -226,6 +232,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Celebration Post">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -248,6 +255,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Without Headline">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{
@@ -268,6 +276,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Link Preview without Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{

@@ -9,6 +9,9 @@ import {
   Terminal,
   Zap,
 } from 'lucide-vue-next';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: 'tool-ui-vue — 为 AI 工具调用设计的 Vue 3 组件库，按类别浏览所有组件', en: 'tool-ui-vue — A Vue 3 component library for AI tool calls, browse all components by category.' });
 
 const categories = [
   {
@@ -58,6 +61,7 @@ const categories = [
 
 <template>
   <Story title="tool-ui-vue" :layout="{ type: 'single' }">
+    <p class="mb-6 text-xs text-muted-foreground">{{ subtitle }}</p>
     <div class="min-h-screen w-full bg-background text-foreground">
       <!-- Hero -->
       <section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">

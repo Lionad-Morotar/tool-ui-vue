@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { Citation, CitationList } from '@lionad/vtu-components';
 import type { SerializableCitation } from '@lionad/vtu-components/citation/schema';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 const interactiveState = reactive({
   href: 'https://example.com/article',
@@ -80,6 +81,7 @@ const stackedCitations: SerializableCitation[] = [
 <template>
   <Story title="Citation/All Variants">
     <Variant title="Default">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-default"
@@ -95,6 +97,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="Inline">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-inline"
@@ -107,6 +110,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="Stacked">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-stacked"
@@ -121,6 +125,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="Webpage">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-webpage"
@@ -134,6 +139,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="Code Repository">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-code"
@@ -147,6 +153,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="Document">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-document"
@@ -171,6 +178,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="CitationList - Default">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-default"
@@ -181,6 +189,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="CitationList - Inline">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-inline"
@@ -191,6 +200,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="CitationList - Stacked">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-stacked"
@@ -201,6 +211,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="CitationList - With Overflow">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-overflow"
@@ -212,6 +223,7 @@ const stackedCitations: SerializableCitation[] = [
     </Variant>
 
     <Variant title="CitationList - Inline with Overflow">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-inline-overflow"

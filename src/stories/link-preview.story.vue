@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { LinkPreview } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 const interactiveState = reactive({
   href: 'https://example.com/interactive',
@@ -50,6 +51,7 @@ const interactiveState = reactive({
 <template>
   <Story title="LinkPreview/All Variants">
     <Variant title="With Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-image"
@@ -63,6 +65,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="Without Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-no-image"
@@ -75,6 +78,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="Compact">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <link-preview
           id="link-preview-compact"
@@ -86,6 +90,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="Long Description">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-long"
@@ -99,6 +104,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="News Article">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-news"
@@ -112,6 +118,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="With Favicon">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-favicon"
@@ -126,6 +133,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="Square Ratio (1:1)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-square"
@@ -140,6 +148,7 @@ const interactiveState = reactive({
     </Variant>
 
     <Variant title="Portrait Ratio (9:16)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <link-preview
           id="link-preview-portrait"

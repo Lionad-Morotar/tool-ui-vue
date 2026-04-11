@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ProgressTracker } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '多步骤进度组件，支持待处理、进行中、完成和失败状态', en: 'Multi-step progress component with pending, in-progress, completed, and failed states.' });
 
 /**
  * # ProgressTracker
@@ -77,6 +80,7 @@ function advanceStep() {
 <template>
   <Story title="ProgressTracker/All Variants">
     <Variant title="Horizontal Steps">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-horizontal"

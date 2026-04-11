@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { Plan } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
 import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
+
+const subtitle = useStoryLocale({ zh: '任务计划列表组件，支持进度追踪、可展开描述和状态切换', en: 'Task plan list component with progress tracking, expandable descriptions, and status cycling.' });
 
 /**
  * # Plan
@@ -70,6 +73,7 @@ function cycleStatus(index: number) {
 <template>
   <Story title="Plan/All Variants">
     <Variant title="Basic Todo List">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <plan
           id="plan-basic"

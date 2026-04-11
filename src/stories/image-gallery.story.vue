@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ImageGallery } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '图片画廊组件，支持网格 / 瀑布流布局、Lightbox 全屏预览和来源标注', en: 'Image gallery with grid/masonry layout, fullscreen lightbox, and source attribution.' });
 
 const galleryState = reactive({
   clickCount: 0,
@@ -69,6 +72,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 <template>
   <Story title="ImageGallery/All Variants">
     <Variant title="Grid Layout">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <image-gallery
           id="image-gallery-grid"

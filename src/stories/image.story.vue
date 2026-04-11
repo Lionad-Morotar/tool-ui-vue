@@ -2,6 +2,9 @@
 import { reactive } from 'vue';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <Image> (kebab-case)
 import { Image } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '图片组件，支持比例、自适应、链接和来源 attribution', en: 'Image component with ratio support, object-fit, links, and source attribution.' });
 
 const interactiveState = reactive({
   id: 'image-interactive',
@@ -17,6 +20,7 @@ const interactiveState = reactive({
 <template>
   <Story title="Image/All Variants">
     <Variant title="Basic">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <Image
           id="image-basic"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { OrderSummaryRoot } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 /**
  * ## Props
@@ -65,6 +66,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
 <template>
   <Story title="OrderSummary/All Variants">
     <Variant title="Summary">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-basic"
@@ -100,6 +102,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="With Discount">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-discount"
@@ -127,6 +130,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Receipt">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-receipt"
@@ -163,6 +167,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Receipt Without Images">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-receipt-no-images"
@@ -197,6 +202,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Single Item">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-single"
@@ -221,6 +227,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Many Items">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-many"
@@ -243,6 +250,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Different Currency (EUR)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-eur"
@@ -268,6 +276,7 @@ import { OrderSummaryRoot } from '@lionad/vtu-components';
     </Variant>
 
     <Variant title="Malformed Payload (Empty Items)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-error"

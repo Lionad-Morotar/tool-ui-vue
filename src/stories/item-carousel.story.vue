@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { ItemCarousel, ItemCard } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '轮播组件，支持手势滑动、键盘导航、可交互点击和多种操作按钮样式', en: 'Carousel with swipe gestures, keyboard navigation, interactive clicks, and action button variants.' });
 
 const carouselState = reactive({
   items: [
@@ -46,6 +49,7 @@ function scroll(direction: 'left' | 'right') {
 <template>
   <Story title="ItemCarousel/All Variants">
     <Variant title="Product Cards">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <item-carousel
           id="carousel-products"

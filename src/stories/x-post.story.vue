@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { XPost } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale'
 
 /**
  * # XPost
@@ -94,6 +95,7 @@ function handleAction(action: string) {
 <template>
   <Story title="XPost/All Variants">
     <Variant title="Text Only">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -116,6 +118,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Image">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -143,6 +146,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Video">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -170,6 +174,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="With Link Preview">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -200,6 +205,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Quoted Post">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -231,6 +237,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Quoted Post with Media">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -266,6 +273,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Long Text">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{
@@ -288,6 +296,7 @@ function handleAction(action: string) {
     </Variant>
 
     <Variant title="Unverified Author">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
           :post="{

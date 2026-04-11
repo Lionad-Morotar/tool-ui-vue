@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { OptionList } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '提供单选 / 多选、键盘导航和回执状态的选项列表组件', en: 'A selection component for choosing one or more options from a list with keyboard navigation and receipt states.' });
 
 /**
  * # OptionList
@@ -66,6 +69,7 @@ const interactiveState = reactive({
 <template>
   <Story title="OptionList/All Variants">
     <Variant title="Single Select">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-single"
@@ -82,6 +86,7 @@ const interactiveState = reactive({
 
     <Variant title="Multi Select">
       <div class="w-full max-w-sm">
+        <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
         <option-list
           id="option-list-multi"
           v-model="multiSelection"

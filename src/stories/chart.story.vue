@@ -2,6 +2,13 @@
 import { reactive } from 'vue';
 import { Chart } from '@lionad/vtu-components';
 import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
+import { useStoryLocale } from './_shared/use-story-locale'
+
+const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
+const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
+const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
+const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
+const headerPayload = useStoryLocale({ zh: '载荷', en: 'Payload' })
 
 const chartData = reactive({
   selectedPoint: null as string | null,
@@ -21,7 +28,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       <h3>Props</h3>
       <table class="story-table">
         <thead>
-          <tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+          <tr><th>{{ headerName }}</th><th>{{ headerType }}</th><th>{{ headerDefault }}</th><th>{{ headerDesc }}</th></tr>
         </thead>
         <tbody>
           <tr><td>id</td><td>string</td><td>required</td><td>Unique identifier for the chart</td></tr>
@@ -41,7 +48,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       <h3>Emits</h3>
       <table class="story-table">
         <thead>
-          <tr><th>Name</th><th>Payload</th><th>Description</th></tr>
+          <tr><th>{{ headerName }}</th><th>{{ headerPayload }}</th><th>{{ headerDesc }}</th></tr>
         </thead>
         <tbody>
           <tr>
@@ -69,6 +76,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </ul>
     </template>
     <Variant title="Line Chart">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-line"
@@ -95,6 +103,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Bar Chart">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-bar"
@@ -122,6 +131,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Multi-Series">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-multi"
@@ -146,6 +156,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="With Custom Colors">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-colors"
@@ -200,6 +211,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Without Grid">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-no-grid"
@@ -222,6 +234,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Without Legend">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-no-legend"
@@ -246,6 +259,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Minimal">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-minimal"
@@ -266,6 +280,7 @@ function handleDataPointClick(point: ChartDataPoint) {
     </Variant>
 
     <Variant title="Dense Dataset">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
           id="chart-dense"

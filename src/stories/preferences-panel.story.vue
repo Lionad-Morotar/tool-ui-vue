@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { PreferencesPanel } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const prefs = ref({
   email: true,
@@ -85,6 +86,7 @@ const prefs = ref({
 <template>
   <Story title="PreferencesPanel/All Variants">
     <Variant title="Notification Settings">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-notifications"
@@ -120,6 +122,7 @@ const prefs = ref({
     </Variant>
 
     <Variant title="Appearance Settings">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-appearance"
@@ -166,6 +169,7 @@ const prefs = ref({
     </Variant>
 
     <Variant title="With Custom Actions">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-actions"
@@ -199,6 +203,7 @@ const prefs = ref({
     </Variant>
 
     <Variant title="All Control Types">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-all-types"

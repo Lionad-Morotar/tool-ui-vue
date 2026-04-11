@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ParameterSlider } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
+
+const subtitle = useStoryLocale({ zh: '多滑块调节组件，支持单位、精度、禁用状态和自定义样式', en: 'Multi-slider component with units, precision, disabled states, and custom styling.' });
 
 const imageAdjustments = reactive({
   exposure: 0.3,
@@ -127,6 +130,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
 <template>
   <Story title="ParameterSlider/All Variants">
     <Variant title="Photo Adjustments (Gallery)">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Current Values:</p>

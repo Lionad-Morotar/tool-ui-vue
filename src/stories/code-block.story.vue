@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeBlock } from '@lionad/vtu-components';
+import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
 
 const exampleCode = `interface User {
   id: string;
@@ -79,6 +80,11 @@ const props = [
   { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
 ];
 
+const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
+const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
+const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
+const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
+
 const languages = [
   'typescript', 'javascript', 'python', 'tsx', 'jsx',
   'json', 'bash', 'shell', 'css', 'html',
@@ -89,16 +95,17 @@ const languages = [
 <template>
   <Story title="CodeBlock/All">
     <Variant title="Props">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">CodeBlock Props</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
               </tr>
             </thead>
             <tbody>
@@ -115,6 +122,7 @@ const languages = [
     </Variant>
 
     <Variant title="Supported Languages">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">Supported Languages</h2>
         <div class="flex flex-wrap gap-2">
@@ -130,6 +138,7 @@ const languages = [
     </Variant>
 
     <Variant title="TypeScript">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
           id="code-typescript"
@@ -141,6 +150,7 @@ const languages = [
     </Variant>
 
     <Variant title="JavaScript">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-javascript"
@@ -157,6 +167,7 @@ console.log(result); // 8"
     </Variant>
 
     <Variant title="Python">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-python"
@@ -174,6 +185,7 @@ for i in range(10):
     </Variant>
 
     <Variant title="CSS">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-css"
@@ -191,6 +203,7 @@ for i in range(10):
     </Variant>
 
     <Variant title="With Highlighted Lines">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-highlight"
@@ -214,6 +227,7 @@ for i in range(10):
     </Variant>
 
     <Variant title="Without Line Numbers">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-no-lines"
@@ -231,6 +245,7 @@ for i in range(10):
     </Variant>
 
     <Variant title="Collapsed (Long Code)">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
           id="code-collapsed"
@@ -243,6 +258,7 @@ for i in range(10):
     </Variant>
 
     <Variant title="No Filename">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
           id="code-no-filename"
@@ -254,6 +270,7 @@ npm run dev"
     </Variant>
 
     <Variant title="Dark Theme">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-xl">
         <code-block
           id="code-dark"
