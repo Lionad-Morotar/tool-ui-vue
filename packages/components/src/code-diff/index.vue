@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
-import { reactive, toRefs } from 'vue';
+import { computed, reactive, toRefs } from 'vue';
 import { useCodeDiff } from './states';
 import type { CodeDiffProps } from './schema';
 
@@ -16,6 +17,14 @@ const states = reactive(useCodeDiff(props));
 
 // Destructure state refs for v-model binding in template
 const { isCopied } = toRefs(states);
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const copyButtonAriaLabel = computed(() =>
+  isCopied.value ? t('codeDiff.copied').value : t('codeDiff.copyCode').value
+)
 </script>
 
 <template>
@@ -50,7 +59,7 @@ const { isCopied } = toRefs(states);
               'hover:bg-accent hover:text-accent-foreground',
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
             )"
-            :aria-label="isCopied ? 'Copied' : 'Copy code'"
+            :aria-label="copyButtonAriaLabel"
             @click="states.copyCode"
           >
             <check v-if="isCopied" class="w-4 h-4 text-green-700 dark:text-green-400" />
@@ -235,11 +244,11 @@ const { isCopied } = toRefs(states);
       >
         <template v-if="states.isCollapsed">
           <chevron-down class="mr-1 size-4" />
-          Show full diff
+          {{ t('codeDiff.showFullDiff') }}
         </template>
         <template v-else>
           <chevron-up class="mr-1 size-4" />
-          Collapse
+          {{ t('codeDiff.collapse') }}
         </template>
       </button>
     </div>

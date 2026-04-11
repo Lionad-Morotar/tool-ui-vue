@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
-import { reactive, toRefs } from 'vue';
+import { computed, reactive, toRefs } from 'vue';
 import { useCodeBlock } from './states';
 import type { CodeBlockProps } from './schema';
 
@@ -18,6 +19,14 @@ const codeBlockState = reactive(useCodeBlock(props));
 
 // Destructure state refs for v-model binding
 const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
+
+// i18n
+const { t } = useI18n()
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const copyButtonAriaLabel = computed(() =>
+  isCopied.value ? t('codeBlock.copied').value : t('codeBlock.copyCode').value
+)
 </script>
 
 <template>
@@ -55,7 +64,7 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
             'hover:bg-accent hover:text-accent-foreground',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
           )"
-          :aria-label="isCopied ? 'Copied' : 'Copy code'"
+          :aria-label="copyButtonAriaLabel"
           @click="codeBlockState.copyCode"
         >
           <check
@@ -96,11 +105,11 @@ const { highlightedHtml, isCopied, isLoading } = toRefs(codeBlockState);
       >
         <template v-if="codeBlockState.isCollapsed">
           <chevron-down class="mr-1 size-4" />
-          Show all {{ codeBlockState.lineCount }} lines
+          {{ t('codeBlock.showAllLines', { count: codeBlockState.lineCount }) }}
         </template>
         <template v-else>
           <chevron-up class="mr-1 size-4" />
-          Collapse
+          {{ t('codeBlock.collapse') }}
         </template>
       </button>
     </div>
