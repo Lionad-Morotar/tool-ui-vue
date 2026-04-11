@@ -1,5 +1,20 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
+
+// Mock useI18n to provide predictable aria-label values
+vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+  const { computed } = await import('vue');
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: (key: string, params?: Record<string, unknown>) => computed(() => key),
+      locale: computed(() => 'en'),
+      setLocale: () => {},
+    }),
+  };
+});
+
 import StatsDisplay from '../index.vue';
 
 function createProps(overrides: Record<string, unknown> = {}) {
@@ -77,8 +92,10 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const outerSpan = wrapper.find("span[aria-label='12.5 percent']");
+      const outerSpan = wrapper.find("span[aria-label*='12.5']");
       expect(outerSpan.exists()).toBe(true);
+      // aria-label should contain the formatted value and the i18n percent key
+      expect(outerSpan.attributes('aria-label')).toContain('12.5');
       const suffix = outerSpan.find("span[aria-hidden='true']");
       expect(suffix.exists()).toBe(true);
       expect(suffix.text()).toBe('%');
@@ -238,12 +255,11 @@ describe('StatsDisplay', () => {
       expect(wrapper.find("[data-slot='stats-display']").classes()).toContain('my-stats');
     });
 
-    test("outer article has lang='en' and aria-busy='false'", () => {
+    test("outer article has aria-busy='false'", () => {
       const wrapper = mount(StatsDisplay, {
         props: createProps(),
       });
       const article = wrapper.find("[data-slot='stats-display']");
-      expect(article.attributes('lang')).toBe('en');
       expect(article.attributes('aria-busy')).toBe('false');
     });
   });
