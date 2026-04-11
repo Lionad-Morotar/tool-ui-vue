@@ -1,0 +1,18 @@
+{
+  "messageDraft": {
+    "messageSent": "消息已发送",
+    "sentAt": "发送于 {time}",
+    "fromLabel": "发件人",
+    "toLabel": "收件人",
+    "ccLabel": "抄送",
+    "bccLabel": "密送",
+    "moreRecipients": "+{count} 更多",
+    "members": "{count} 位成员",
+    "showLess": "收起显示",
+    "readMore": "查看更多",
+    "sendingIn": "{count} 秒后发送",
+    "undo": "撤销",
+    "cancel": "取消",
+    "send": "发送"
+  }
+}
