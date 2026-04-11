@@ -51,13 +51,9 @@ export function useSlider(options: UseSliderOptions): SliderReturns {
   const localValues = ref<Record<string, number>>({});
 
   // Reset when sliders change
-  const previousSignature = ref(slidersSignature.value);
-  watch(slidersSignature, (newSignature) => {
-    if (newSignature !== previousSignature.value) {
-      previousSignature.value = newSignature;
-      if (!isControlled.value) {
-        localValues.value = {};
-      }
+  watch(slidersSignature, () => {
+    if (!isControlled.value) {
+      localValues.value = {};
     }
   });
 

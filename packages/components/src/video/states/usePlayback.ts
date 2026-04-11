@@ -1,6 +1,6 @@
 import { useMediaControls } from '@vueuse/core';
-import { ref, toRef, watch } from 'vue';
-import type { Ref } from 'vue';
+import { computed, ref, toRef } from 'vue';
+import type { ComputedRef } from 'vue';
 
 export interface VideoPlaybackOptions {
   src: string;
@@ -24,9 +24,9 @@ export interface VideoPlaybackActions {
 
 export interface VideoPlaybackReturns {
   state: VideoPlaybackState;
-  stateRef: Ref<VideoPlaybackState>;
+  stateRef: ComputedRef<VideoPlaybackState>;
   actions: VideoPlaybackActions;
-  mediaElementRef: Ref<HTMLVideoElement | null>;
+  mediaElementRef: ReturnType<typeof ref<HTMLVideoElement | null>>;
 }
 
 export function usePlayback(props: VideoPlaybackOptions): VideoPlaybackReturns {
@@ -34,26 +34,11 @@ export function usePlayback(props: VideoPlaybackOptions): VideoPlaybackReturns {
 
   const mediaControls = useMediaControls(mediaElementRef, { src: toRef(props, 'src') });
 
-  const state = ref<VideoPlaybackState>({
-    playing: props.autoPlay ?? false,
-    muted: props.muted ?? (props.autoPlay === true),
-    volume: props.volume ?? 1,
-  });
-
-  watch(
-    () => mediaControls.playing.value,
-    (playing) => { state.value.playing = playing; }
-  );
-
-  watch(
-    () => mediaControls.muted.value,
-    (muted) => { state.value.muted = muted; }
-  );
-
-  watch(
-    () => mediaControls.volume.value,
-    (volume) => { state.value.volume = volume; }
-  );
+  const stateRef = computed<VideoPlaybackState>(() => ({
+    playing: mediaControls.playing.value,
+    muted: mediaControls.muted.value,
+    volume: mediaControls.volume.value,
+  }));
 
   const actions: VideoPlaybackActions = {
     togglePlay: () => {
@@ -68,8 +53,8 @@ export function usePlayback(props: VideoPlaybackOptions): VideoPlaybackReturns {
   };
 
   return {
-    state: state.value,
-    stateRef: state,
+    state: stateRef.value,
+    stateRef,
     actions,
     mediaElementRef,
   };

@@ -115,14 +115,10 @@ export function useMessageDraft(
     isExpanded.value = !isExpanded.value;
   }
 
-  // Watch for outcome prop changes
-  let previousOutcome = props.outcome;
   watch(
     () => props.outcome,
     (newOutcome) => {
-      if (previousOutcome === newOutcome) return;
       const nextState = resolveStateFromOutcome(newOutcome);
-      previousOutcome = newOutcome;
 
       clearTimers();
       state.value = nextState;
