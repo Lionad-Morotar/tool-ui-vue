@@ -174,6 +174,9 @@ export const zhCN = {
     updated: '更新于 {time}',
     high: '最高 {temp}',
     low: '最低 {temp}',
+    spokenUnitCelsius: '摄氏度',
+    spokenUnitFahrenheit: '华氏度',
+    srTemperature: '{temp} 度',
   },
   geoMap: {
     zoomIn: '放大',

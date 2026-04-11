@@ -174,6 +174,9 @@ export const en = {
     updated: 'Updated {time}',
     high: 'H {temp}',
     low: 'L {temp}',
+    spokenUnitCelsius: 'Celsius',
+    spokenUnitFahrenheit: 'Fahrenheit',
+    srTemperature: '{temp} degrees {unit}',
   },
   geoMap: {
     zoomIn: 'Zoom in',
