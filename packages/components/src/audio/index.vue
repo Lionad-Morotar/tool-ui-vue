@@ -38,6 +38,10 @@ const {
 
 // i18n
 const { t } = useI18n();
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const playPauseAriaLabel = computed(() => playing.value ? t('audio.pause').value : t('audio.play').value);
+const progressAriaLabel = computed(() => t('audio.progress').value);
 </script>
 
 <template>
@@ -98,7 +102,7 @@ const { t } = useI18n();
                     :max="duration || 100"
                     step="0.1"
                     class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                    aria-label="Audio progress"
+                    :aria-label="progressAriaLabel"
                     @input="handleSeek"
                     @pointerdown="handleSeekStart"
                     @pointerup="handleSeekEnd"
@@ -119,7 +123,7 @@ const { t } = useI18n();
               <button
                 type="button"
                 class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
-                :aria-label="playing ? t('audio.pause') : t('audio.play')"
+                :aria-label="playPauseAriaLabel"
                 @click="togglePlay"
               >
                 <svg
@@ -213,7 +217,7 @@ const { t } = useI18n();
           <button
             type="button"
             class="relative inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
-            :aria-label="playing ? t('audio.pause') : t('audio.play')"
+            :aria-label="playPauseAriaLabel"
             @click="togglePlay"
           >
             <svg

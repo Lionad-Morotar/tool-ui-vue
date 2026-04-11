@@ -1,6 +1,7 @@
 {
   "audio": {
     "play": "Play",
-    "pause": "Pause"
+    "pause": "Pause",
+    "progress": "Audio progress"
   }
 }
