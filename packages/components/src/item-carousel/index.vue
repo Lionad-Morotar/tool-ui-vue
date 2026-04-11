@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
-import { computed } from 'vue';
+import { computed, nextTick, ref, watchEffect } from 'vue';
 import ItemCard from './cmpts/item-card.vue';
 import { useItemCarousel } from './states';
 import type { ItemCarouselProps } from './schema';
@@ -14,12 +14,37 @@ const emit = defineEmits<{
   slideChange: [index: number];
 }>();
 
+// DOM refs - bound directly in template
+const scrollContainerRef = ref<HTMLDivElement | null>(null);
+const outerContainerRef = ref<HTMLDivElement | null>(null);
+
 // All business logic delegated to states layer
 const carouselState = useItemCarousel(props, {
   itemClick: (itemId) => emit('itemClick', itemId),
   itemAction: (itemId, actionId) => emit('itemAction', itemId, actionId),
   slideChange: (index) => emit('slideChange', index),
 });
+
+// Sync DOM refs to composable refs when they change
+watchEffect(() => {
+  if (scrollContainerRef.value) {
+    carouselState.scrollRef.value = scrollContainerRef.value;
+  }
+  if (outerContainerRef.value) {
+    carouselState.containerRef.value = outerContainerRef.value;
+  }
+});
+
+// Wrapper that ensures refs are synced before calling scroll
+function handleScroll(direction: 'left' | 'right') {
+  if (scrollContainerRef.value) {
+    carouselState.scrollRef.value = scrollContainerRef.value;
+  }
+  if (outerContainerRef.value) {
+    carouselState.containerRef.value = outerContainerRef.value;
+  }
+  carouselState.scroll(direction);
+}
 
 // i18n
 const { t } = useI18n();
@@ -55,7 +80,7 @@ defineExpose({
   <!-- Carousel -->
   <div
     v-else
-    ref="carouselState.containerRef"
+    ref="outerContainerRef"
     :class="cn(
       '@container relative isolate w-full gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0',
       $attrs.class as string
@@ -94,7 +119,7 @@ defineExpose({
         :aria-hidden="!carouselState.canScrollLeft"
         :aria-label="scrollLeftLabel"
         :disabled="!carouselState.canScrollLeft"
-        @click="carouselState.scroll('left')"
+        @click="handleScroll('left')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +151,7 @@ defineExpose({
         :aria-hidden="!carouselState.canScrollRight"
         :aria-label="scrollRightLabel"
         :disabled="!carouselState.canScrollRight"
-        @click="carouselState.scroll('right')"
+        @click="handleScroll('right')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +171,7 @@ defineExpose({
 
       <!-- Scroll Container -->
       <div
-        ref="carouselState.scrollRef"
+        ref="scrollContainerRef"
         :class="cn(
           'grid auto-cols-max grid-flow-col gap-4 overflow-x-auto overscroll-x-contain p-4',
           'snap-x snap-mandatory',
@@ -154,6 +179,7 @@ defineExpose({
         )"
         role="list"
         style="scroll-padding-inline: 1rem;"
+        data-scroll-ref="true"
         @scroll="carouselState.handleScroll"
         @touchstart.passive="carouselState.handleTouchStart"
         @touchmove="carouselState.handleTouchMove"

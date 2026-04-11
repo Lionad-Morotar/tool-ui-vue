@@ -169,8 +169,16 @@ export function useItemCarousel(
   }
 
   async function scroll(direction: 'left' | 'right') {
-    const container = scrollRef.value;
-    if (!container || isAnimating.value) return;
+    let container = scrollRef.value;
+
+    // Fallback: query DOM if ref is null (e.g. ref binding hasn't synced yet)
+    if (!container) {
+      const el = document.querySelector<HTMLElement>('[data-scroll-ref]');
+      if (!el) return;
+      container = el as HTMLDivElement;
+    }
+
+    if (isAnimating.value) return;
 
     const paddingValue = window.getComputedStyle(container).scrollPaddingLeft;
     const scrollPaddingLeft = Number.isFinite(Number.parseFloat(paddingValue))
@@ -238,8 +246,15 @@ export function useItemCarousel(
   }
 
   function scrollToIndex(index: number) {
-    const container = scrollRef.value;
-    if (!container || isAnimating.value) return;
+    let container = scrollRef.value;
+
+    if (!container) {
+      const el = document.querySelector<HTMLElement>('[data-scroll-ref]');
+      if (!el) return;
+      container = el as HTMLDivElement;
+    }
+
+    if (isAnimating.value) return;
 
     const itemElements = Array.from(
       container.querySelectorAll<HTMLElement>('[data-carousel-item]')
