@@ -335,4 +335,8 @@ export const en = {
     retry: 'Reload',
     alt: 'Image description',
   },
+  plan: {
+    complete: 'complete',
+    more: '{count} more',
+  },
 } as const

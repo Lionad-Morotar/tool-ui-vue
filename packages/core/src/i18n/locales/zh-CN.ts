@@ -335,4 +335,8 @@ export const zhCN = {
     retry: '重新加载',
     alt: '图片描述',
   },
+  plan: {
+    complete: '已完成',
+    more: '还有 {count} 项',
+  },
 } as const
