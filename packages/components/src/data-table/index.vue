@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { reactive, computed } from 'vue';
 import { useDataTable } from './states';
 import type { DataTableProps } from './schema';
@@ -17,6 +18,9 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(useDataTable(props, emit));
+
+// i18n
+const { t } = useI18n()
 
 // Column categorization for mobile view
 const categorizedColumns = computed(() => state.categorizeColumns(props.columns));
@@ -61,7 +65,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   aria-live="polite"
                   class="text-muted-foreground"
                 >
-                  {{ emptyMessage || "No data available" }}
+                  {{ emptyMessage || t('dataTable.noDataAvailable') }}
                 </td>
               </tr>
             </tbody>
@@ -82,7 +86,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     )"
                     :style="column.width ? { width: column.width } : undefined"
                     :aria-sort="state.currentSort?.by === column.key
-                      ? (state.currentSort?.direction === 'asc' ? 'ascending' : 'descending')
+                      ? (state.currentSort?.direction === 'asc' ? t('dataTable.sortAscending').value : t('dataTable.sortDescending').value)
                       : undefined"
                   >
                     <button
@@ -99,7 +103,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         columnIndex === columns.length - 1 && 'pr-4',
                       )"
                       :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
-                        ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
+                        ? ` (${state.currentSort.direction === 'asc' ? t('dataTable.sortAscending').value : t('dataTable.sortDescending').value})`
                         : '')"
                       :aria-disabled="column.sortable === false || undefined"
                       @click="state.handleSort(column)"
@@ -179,11 +183,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :target="column.format.external ? '_blank' : undefined"
                         :rel="column.format.external ? 'noopener noreferrer' : undefined"
                         class="inline-block hover:opacity-90 max-w-full text-primary underline underline-offset-2 break-words"
-                        :aria-label="column.format.external ? `${state.formatCellValue(row[column.key], column)} (opens in a new tab)` : undefined"
+                        :aria-label="column.format.external ? t('dataTable.opensInNewTab', { label: state.formatCellValue(row[column.key], column) }).value : undefined"
                         @click.stop
                       >
                         {{ state.formatCellValue(row[column.key], column) }}
-                        <span v-if="column.format.external" class="inline-block ml-1" aria-label="Opens in new tab">&#x2197;</span>
+                        <span v-if="column.format.external" class="inline-block ml-1" aria-hidden="true">&#x2197;</span>
                       </a>
                     </template>
 
@@ -195,13 +199,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                           :key="i"
                           class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
                         >
-                          {{ item === null ? "null" : String(item) }}
+                          {{ item === null ? t('dataTable.nullLabel') : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[column.key], column.format.maxVisible).remaining > 0"
                           class="text-muted-foreground text-xs"
                         >
-                          +{{ state.getArrayItems(row[column.key], column.format.maxVisible).remaining }} more
+                          {{ t('dataTable.moreCount', { count: state.getArrayItems(row[column.key], column.format.maxVisible).remaining }) }}
                         </span>
                       </span>
                     </template>
@@ -239,18 +243,18 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
     <div
       :class="state.cardsContainerClass"
       role="list"
-      :aria-label="`Data table (mobile card view)`"
+      :aria-label="t('dataTable.mobileViewLabel')"
       :aria-describedby="state.mobileDescriptionId"
     >
       <div :id="state.mobileDescriptionId" class="sr-only">
-        Table data shown as expandable cards. Each card represents one row.
+        {{ t('dataTable.mobileViewDescription') }}
         <template v-if="columns.length > 0">
-          Columns: {{ columns.map((c) => c.label).join(", ") }}.
+          {{ t('dataTable.columnsLabel') }}: {{ columns.map((c) => c.label).join(", ") }}.
         </template>
       </div>
 
       <div v-if="data.length === 0" class="py-8 text-muted-foreground text-center">
-        {{ emptyMessage || "No data available" }}
+        {{ emptyMessage || t('dataTable.noDataAvailable') }}
       </div>
 
       <div
@@ -405,13 +409,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                           :key="i"
                           class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
                         >
-                          {{ item === null ? "null" : String(item) }}
+                          {{ item === null ? t('dataTable.nullLabel') : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[col.key], col.format.maxVisible).remaining > 0"
                           class="text-muted-foreground text-xs"
                         >
-                          +{{ state.getArrayItems(row[col.key], col.format.maxVisible).remaining }} more
+                          {{ t('dataTable.moreCount', { count: state.getArrayItems(row[col.key], col.format.maxVisible).remaining }) }}
                         </span>
                       </span>
                     </template>
