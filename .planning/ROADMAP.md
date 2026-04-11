@@ -8,8 +8,8 @@
 
 - [x] **Phase 1: I18N Core** - LocaleProvider, useI18n(), 类型定义, zh-CN/en 消息文件, fallback 逻辑 (completed 2026-04-11)
 - [x] **Phase 2: Component i18n (High + Medium)** - 13 个高/中优组件消除硬编码英文文本 (completed 2026-04-11)
-- [ ] **Phase 3: Component i18n (Low) + Tests** - 剩余 14 组件 + 核心 i18n 测试
-- [ ] **Phase 4: Quality + Compat** - CI 校验 + 向后兼容 + 零侵入
+- [x] **Phase 3: Component i18n (Low) + Tests** - 剩余 14 组件 + 核心 i18n 测试
+- [x] **Phase 4: Quality + Compat** - CI 校验 + 向后兼容 + 零侵入
 - [ ] **Phase 5: Documentation + Histoire** - README / Story 双语, Histoire 语言切换, API 文档
 
 ## Phase Details
@@ -64,8 +64,8 @@ Plans:
 - [x] 03-01-PLAN.md — 7 个简单组件 i18n + plan 命名空间 locale 条目
 - [x] 03-02-PLAN.md — 3 个社交媒体组件 i18n（x-post, instagram-post, linkedin-post）
 - [x] 03-03-PLAN.md — chart, stats-display, plan 组件 i18n
-- [ ] 03-04-PLAN.md — weather-widget accessibility 层 i18n
-- [ ] 03-05-PLAN.md — 核心 i18n 测试 + 14 组件集成测试
+- [x] 03-04-PLAN.md — weather-widget accessibility 层 i18n
+- [x] 03-05-PLAN.md — 核心 i18n 测试 + 14 组件集成测试
 
 ### Phase 4: Quality + Compat
 **Goal**: i18n 系统 CI 门禁、向后兼容、非 i18n 用户零侵入
@@ -76,7 +76,10 @@ Plans:
   2. CI 或 lint 工具标记含硬编码英文的新组件
   3. 无 LocaleProvider 时组件以 zh-CN 默认消息正常渲染
   4. copy-paste 消费者（无 @lionad/core 依赖）使用组件与之前完全一致
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [x] 04-01-PLAN.md — fallback fix + tests + validation script + ESLint plugin + CI + copy-paste verify
 
 ### Phase 5: Documentation + Histoire
 **Goal**: 用户可通过双语文档和 Histoire stories 学习集成 i18n
@@ -99,6 +102,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. I18N Core | 1/1 | Complete    | 2026-04-11 |
 | 2. Component i18n (High + Med) | 0/5 | Complete    | 2026-04-11 |
-| 3. Component i18n (Low) + Tests | 0/5 | Not started | - |
-| 4. Quality + Compat | 0/TBD | Not started | - |
+| 3. Component i18n (Low) + Tests | 5/5 | Complete    | 2026-04-11 |
+| 4. Quality + Compat | 1/1 | Complete    | 2026-04-11 |
 | 5. Documentation + Histoire | 0/TBD | Not started | - |
