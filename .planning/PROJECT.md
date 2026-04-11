@@ -6,6 +6,17 @@ Vue 3 组件库，为 AI/LLM 工具调用提供可序列化的 UI widgets。当�
 
 目标：从 copy-paste 模式重构为标准 npm 包组件库，采用 Monorepo 分层架构（core → components → nuxt-module → theme），支持版本管理、Tree-shaking、主题定制。
 
+## Current Milestone: v1.0.0 多语言 i18n 系统
+
+**Goal:** 为所有组件、文档和 Histoire 站点添加中英文支持，zh-CN 为默认语言
+
+**Target features:**
+- LocaleProvider + useI18n() 核心基础设施（provide/inject 模式，返回 computed）
+- zh-CN（默认）+ en 消息文件，嵌套 key 路径，{param} 插值
+- 23 个组件改造：高优 7（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）→ 中优 6 → 低优 10
+- README / Story / Histoire 多语言文档
+- 零外部依赖，copy-paste 兼容，tree-shakeable
+
 ## Core Value
 
 组件可以通过 `pnpm add @lionad/components` 安装使用，所有 26 个现有工具组件正常运行且 Zod 契约不变。
@@ -34,6 +45,9 @@ Vue 3 组件库，为 AI/LLM 工具调用提供可序列化的 UI widgets。当�
 - [ ] 主题系统：CSS 变量 + `@theme` 指令，`data-theme` 属性切换
 - [ ] 构建系统：纯 pnpm scripts，Vite 库模式，支持 ESM/CJS + Tree-shaking
 - [ ] TypeScript 类型声明：完整的 `.d.ts` 输出
+- [ ] 多语言 i18n 系统：LocaleProvider + useI18n() + zh-CN/en 消息文件
+- [ ] 组件 i18n 改造：23 个组件消除硬编码英文文本
+- [ ] 文档多语言：README / Story / Histoire 站点中英文支持
 
 ### Out of Scope
 

@@ -1,117 +1,88 @@
-# Requirements: tool-ui-vue Monorepo Refactor
+# Requirements: tool-ui-vue v1.0.0 多语言 i18n 系统
 
-**Defined:** 2026-04-03
-**Core Value:** 组件可以通过 `pnpm add @lionad/components` 安装，26 个现有工具组件正常运行且 Zod 契约不变
+**Defined:** 2026-04-11
+**Core Value:** 所有组件 UI 文本无硬编码英文，可通过 LocaleProvider 切换语言，zh-CN 为默认语言
 
-## v1 Requirements
+## I18N-CORE — 核心基础设施
 
-### Infrastructure
+- [ ] **CORE-01**: LocaleProvider 组件（provide/inject 模式，接受 messages prop）
+- [ ] **CORE-02**: useI18n() composable（返回 computed，支持 t() 函数和 {param} 插值）
+- [ ] **CORE-03**: TypeScript 类型定义（LocaleKey, MessageSchema，t() key 有类型推导）
+- [ ] **CORE-04**: zh-CN 消息文件（默认语言，覆盖所有组件文案）
+- [ ] **CORE-05**: en 消息文件（英文翻译，key 与 zh-CN 一致）
+- [ ] **CORE-06**: 缺失 key fallback 逻辑（dev: console.warn + 显示 key；prod: fallback 到 zh-CN）
 
-- [ ] **INFRA-01**: pnpm workspace 配置完成，packages/* 可被正确解析
-- [ ] **INFRA-02**: packages/core 包结构创建，包含 Vite 库模式构建配置
-- [ ] **INFRA-03**: packages/components 包结构创建，依赖 @lionad/core
-- [ ] **INFRA-04**: packages/theme 包结构创建，包含设计 tokens 和 CSS 变量
-- [ ] **INFRA-05**: 纯 pnpm scripts 构建流程（build/typecheck/test），不使用 Turborepo
-- [ ] **INFRA-06**: Root package.json scripts 支持批量构建（pnpm -r build）
+## I18N-COMPS — 组件改造
 
-### Base Components (P0)
+- [ ] **COMPS-01**: 高优 7 组件改造（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）
+- [ ] **COMPS-02**: 中优 6 组件改造（audio, video, image-gallery, geo-map, item-carousel, preferences-panel）
+- [ ] **COMPS-03**: 低优 10 组件改造（x-post, instagram-post, chart, stats-display, weather-widget 等）
 
-- [ ] **BASE-01**: Button 基础组件实现，使用 cva 变体系统（variant: default/destructive/outline/ghost，size: default/sm/lg）
-- [ ] **BASE-02**: Button 支持 asChild/slot 模式，允许外部元素继承 Button 样式
-- [ ] **BASE-03**: Card 基础组件实现，包含 Card/CardHeader/CardContent/CardFooter 子组件
-- [ ] **BASE-04**: Card 容器样式统一，替代 25 处内联重复
+## I18N-DOCS — 文档
 
-### Base Components (P1)
+- [ ] **DOCS-01**: README.md 添加多语言说明章节（中文为主）
+- [ ] **DOCS-02**: Story 文件描述提供 zh-CN + en 双语版本
+- [ ] **DOCS-03**: Histoire 站点支持语言切换（导航、标题、描述）
+- [ ] **DOCS-04**: API 文档（LocaleProvider props、useI18n 返回值、t() 签名、消息文件格式）
+- [ ] **DOCS-05**: 消费者接入指南（如何引入、如何自定义语言包、如何扩展新语言）
 
-- [ ] **BASE-05**: Badge 基础组件实现，使用 cva 变体系统（variant: default/secondary/destructive/outline）
-- [ ] **BASE-06**: CopyButton 基础组件实现，封装复制到剪贴板逻辑 + 图标状态切换
+## I18N-TEST — 测试
 
-### Component Migration
+- [ ] **TEST-01**: LocaleProvider 组件测试（provide/inject、messages 切换、fallback 逻辑）
+- [ ] **TEST-02**: useI18n() composable 测试（t() 函数、{param} 插值、缺失 key 处理）
+- [ ] **TEST-03**: 组件 i18n 改造验证测试（切换语言后 UI 文本实时更新）
 
-- [ ] **MIGR-01**: 26 个工具组件迁移到 packages/components，保持 Zod schemas 不变
-- [ ] **MIGR-02**: 工具组件消费 core 基础组件（Button 替代内联按钮样式，Card 替代内联容器样式）
-- [ ] **MIGR-03**: 所有现有 Vitest 测试通过
-- [ ] **MIGR-04**: 组件支持按需加载（Tree-shaking），named exports
+## I18N-QUALITY — 质量保障
 
-### Theme System
+- [ ] **QUALITY-01**: CI 校验脚本（en 和 zh-CN key 一致性检查）
+- [ ] **QUALITY-02**: 新增组件 i18n 遗漏检查（lint 或 CI）
 
-- [ ] **THEME-01**: CSS 变量系统（colors/spacing/radius/shadows），使用 Tailwind v4 @theme 指令
-- [ ] **THEME-02**: Light/dark 主题切换支持（data-theme 属性）
-- [ ] **THEME-03**: 主题可通过 CSS 变量定制，无需修改组件源码
+## I18N-COMPAT — 向后兼容
 
-### Distribution
-
-- [ ] **DIST-01**: packages/components 可通过 pnpm add 安装（本地 workspace 验证）
-- [ ] **DIST-02**: 完整 TypeScript 类型声明输出（.d.ts）
-- [ ] **DIST-03**: ESM + CJS 双格式输出
-
-## v2 Requirements
-
-Deferred to post-core-stability.
-
-### Nuxt Module
-
-- **NUXT-01**: packages/nuxt-module 实现 Nuxt 3 集成模块
-- **NUXT-02**: 自动导入组件（auto-import）
-- **NUXT-03**: 组件注册 + Nuxt 特定配置选项
-
-### Documentation
-
-- **DOCS-01**: VitePress 文档站点搭建
-- **DOCS-02**: 组件使用文档（含示例代码）
-- **DOCS-03**: API 参考文档自动生成
-
-### Release
-
-- **REL-01**: Changesets 版本管理
-- **REL-02**: CI/CD 发布 Pipeline
-- **REL-03**: CHANGELOG 自动生成
+- [ ] **COMPAT-01**: 无 LocaleProvider 时组件使用 zh-CN 默认消息正常工作
+- [ ] **COMPAT-02**: copy-paste 消费者不受影响（零侵入非 i18n 用户）
 
 ## Out of Scope
 
-| Feature | Reason |
-|---------|--------|
-| Vue 2 支持 | Vue 2 已停止维护，团队使用 Vue 3 + Nuxt 3 |
-| Input/Select/Dialog/Table 基础组件 | 使用频率低（< 3 处），当前阶段不需要独立组件 |
-| Turborepo | 3-4 个包不需要，pnpm scripts 足够 |
-| 自定义变体系统 | 使用 cva 库替代，成熟且与参考项目一致 |
-| 代码生成器方案 | 概念验证性质，短期交付价值不如标准组件库 |
-| Storybook | 项目已使用 Histoire，不需要迁移 |
+- vue-i18n 等第三方 i18n 库集成（本项目采用轻量自研方案）
+- Histoire 站点本身的完整多语言翻译（仅基础导航/标题/描述）
+- 组件业务逻辑的 i18n 改造（仅 UI 文本）
+- 更多语言支持（ja, ko, fr, de 等）— 推迟到后续 milestone
+- 复数形式支持（pluralization）— 推迟到后续 milestone
+- 日期/数字格式化（Intl API 集成）— 推迟到后续 milestone
+- RTL（Right-to-Left）语言布局支持 — 推迟到后续 milestone
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
-| BASE-01 | Phase 2 | Pending |
-| BASE-02 | Phase 2 | Pending |
-| BASE-03 | Phase 2 | Pending |
-| BASE-04 | Phase 2 | Pending |
-| BASE-05 | Phase 3 | Pending |
-| BASE-06 | Phase 3 | Pending |
-| THEME-01 | Phase 3 | Pending |
-| THEME-02 | Phase 3 | Pending |
-| THEME-03 | Phase 3 | Pending |
-| MIGR-01 | Phase 4 | Pending |
-| MIGR-02 | Phase 4 | Pending |
-| MIGR-03 | Phase 4 | Pending |
-| MIGR-04 | Phase 4 | Pending |
-| DIST-01 | Phase 5 | Pending |
-| DIST-02 | Phase 5 | Pending |
-| DIST-03 | Phase 5 | Pending |
+| CORE-01     | Phase 1 | Pending |
+| CORE-02     | Phase 1 | Pending |
+| CORE-03     | Phase 1 | Pending |
+| CORE-04     | Phase 1 | Pending |
+| CORE-05     | Phase 1 | Pending |
+| CORE-06     | Phase 1 | Pending |
+| COMPS-01    | Phase 2 | Pending |
+| COMPS-02    | Phase 2 | Pending |
+| COMPS-03    | Phase 3 | Pending |
+| DOCS-01     | Phase 5 | Pending |
+| DOCS-02     | Phase 5 | Pending |
+| DOCS-03     | Phase 5 | Pending |
+| DOCS-04     | Phase 5 | Pending |
+| DOCS-05     | Phase 5 | Pending |
+| TEST-01     | Phase 3 | Pending |
+| TEST-02     | Phase 3 | Pending |
+| TEST-03     | Phase 3 | Pending |
+| QUALITY-01  | Phase 4 | Pending |
+| QUALITY-02  | Phase 4 | Pending |
+| COMPAT-01   | Phase 4 | Pending |
+| COMPAT-02   | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 22 total
-- Mapped to phases: 22
+- v1.0.0 i18n requirements: 21 total
+- Mapped to phases: 21
 - Unmapped: 0
 
 ---
-*Requirements defined: 2026-04-03*
-*Last updated: 2026-04-03 after roadmap creation*
+*Requirements defined: 2026-04-11*
+*Last updated: 2026-04-11 after v1.0.0 roadmap creation*

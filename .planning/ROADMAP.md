@@ -1,103 +1,75 @@
-# Roadmap: tool-ui-vue Monorepo Refactor
+# Roadmap: tool-ui-vue v1.0.0 多语言 i18n 系统
 
 ## Overview
 
-Transform tool-ui-vue from a copy-paste component collection into a proper npm package library. Start with monorepo infrastructure, then build the base component layer (Button, Card, Badge, CopyButton) with cva variant system, migrate all 26 tool components to consume those base components, establish the theme system, and finally verify distribution readiness with TypeScript declarations and tree-shaking.
+为 tool-ui-vue 组件库添加轻量级多语言 i18n 系统。23 个组件消除硬编码英文文本，zh-CN 为默认语言，en 为 fallback。零外部依赖，copy-paste 兼容。
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
-
-Decimal phases appear between their surrounding integers in numeric order.
-
-- [ ] **Phase 1: Infrastructure** - pnpm workspace, package scaffolding, build configs
-- [ ] **Phase 2: P0 Base Components** - Button (cva + asChild) and Card (sub-components)
-- [ ] **Phase 3: P1 Components + Theme System** - Badge, CopyButton, theme tokens and CSS variables
-- [ ] **Phase 4: Component Migration** - Migrate 26 tool components to packages/components
-- [ ] **Phase 5: Distribution Readiness** - TypeScript declarations, tree-shaking, ESM+CJS, install verification
+- [ ] **Phase 1: I18N Core** - LocaleProvider, useI18n(), 类型定义, zh-CN/en 消息文件, fallback 逻辑
+- [ ] **Phase 2: Component i18n (High + Medium)** - 13 个高/中优组件消除硬编码英文文本
+- [ ] **Phase 3: Component i18n (Low) + Tests** - 剩余 10 组件 + 核心 i18n 测试
+- [ ] **Phase 4: Quality + Compat** - CI 校验 + 向后兼容 + 零侵入
+- [ ] **Phase 5: Documentation + Histoire** - README / Story 双语, Histoire 语言切换, API 文档
 
 ## Phase Details
 
-### Phase 1: Infrastructure
-**Goal**: A working monorepo where packages/core, packages/components, and packages/theme are buildable with pure pnpm scripts
-**Depends on**: Nothing (first phase)
-**Requirements**: INFRA-01, INFRA-02, INFRA-03, INFRA-04, INFRA-05, INFRA-06
+### Phase 1: I18N Core
+**Goal**: 轻量 i18n 基础设施，provide/inject 模式，zh-CN 默认，en fallback，零外部依赖
+**Depends on**: 无（首个 Phase）
+**Requirements**: CORE-01, CORE-02, CORE-03, CORE-04, CORE-05, CORE-06
 **Success Criteria** (what must be TRUE):
-  1. `pnpm install` resolves all workspace packages without errors
-  2. `pnpm -r build` successfully builds all three packages (core, components, theme) in dependency order
-  3. `pnpm -r typecheck` passes for all packages
-  4. Each package has a valid package.json with correct workspace dependencies (e.g., components depends on core via `workspace:*`)
-**Plans**: 2 plans
-
-Plans:
-- [x] 01-01 — Workspace config + theme package + core package scaffolding
-- [x] 01-02 — Components package with workspace:* dependency on core + end-to-end build verification
-
-### Phase 2: P0 Base Components
-**Goal**: Button and Card base components are available in @lionad/core and usable by downstream packages
-**Depends on**: Phase 1
-**Requirements**: BASE-01, BASE-02, BASE-03, BASE-04
-**Success Criteria** (what must be TRUE):
-  1. Button renders with cva variants (default/destructive/outline/ghost) and sizes (default/sm/lg)
-  2. Button asChild mode works -- a child element inherits Button styles without rendering a `<button>` tag
-  3. Card renders with Card/CardHeader/CardContent/CardFooter sub-components as a cohesive container
-  4. Button and Card are exported from @lionad/core and consumable by other workspace packages
-**Plans**: 3 plans
-
-Plans:
-- [ ] 02-01 — Button component with cva variants + asChild slot pattern
-- [ ] 02-02 — Card component with Card/CardHeader/CardTitle/CardDescription/CardContent/CardFooter sub-components
-- [ ] 02-03 — Export Button and Card from @lionad/core barrel file + end-to-end verification
-
-### Phase 3: P1 Components + Theme System
-**Goal**: Badge and CopyButton base components complete the core layer, and the theme system provides CSS-variable-driven design tokens with light/dark switching
-**Depends on**: Phase 2
-**Requirements**: BASE-05, BASE-06, THEME-01, THEME-02, THEME-03
-**Success Criteria** (what must be TRUE):
-  1. Badge renders with cva variants (default/secondary/destructive/outline)
-  2. CopyButton copies text to clipboard and shows icon state transition (copy -> check)
-  3. @lionad/theme exposes CSS variables for colors/spacing/radius/shadows via Tailwind v4 @theme directive
-  4. Setting `data-theme="dark"` on the document root switches all theme variables to dark values
-  5. A consumer can override CSS variables without modifying any package source code
-**Plans**: 2 plans
-
-Plans:
-- [ ] 03-01 — Badge + CopyButton components in @lionad/core
-- [ ] 03-02 — Theme system with CSS variables, data-theme switching, and consumer overridability
-
-### Phase 4: Component Migration
-**Goal**: All 26 tool components live in packages/components, consume core base components, and their Zod schemas remain unchanged
-**Depends on**: Phase 3
-**Requirements**: MIGR-01, MIGR-02, MIGR-03, MIGR-04
-**Success Criteria** (what must be TRUE):
-  1. All 26 tool components are importable from @lionad/components via named exports
-  2. Tool components use core Button/Card/Badge instead of inline Tailwind button/container/badge patterns
-  3. All existing Vitest tests pass without modification to test assertions (schemas unchanged)
-  4. Each component supports tree-shaking -- importing one component does not bundle others
-**Plans**: 5 plans
-
-Plans:
-- [x] 04-01 — Add shared infrastructure (contract/schema/parse) to @lionad/core
-- [x] 04-02 — Batch migrate 15 simple components (approval-card, audio, citation, code-diff, image, instagram-post, link-preview, linkedin-post, message-draft, order-summary, plan, preferences-panel, progress-tracker, terminal, x-post)
-- [ ] 04-03 — Batch migrate 7 medium components (chart, code-block, data-table, option-list, question-flow, stats-display, video) + media utilities
-- [ ] 04-04 — Migrate 5 complex components (parameter-slider, image-gallery, item-carousel, geo-map, weather-widget)
-- [ ] 04-05 — Final barrel exports, build verification, test suite, tree-shaking check
-
-### Phase 5: Distribution Readiness
-**Goal**: @lionad/components is installable via pnpm add and produces correct build output
-**Depends on**: Phase 4
-**Requirements**: DIST-01, DIST-02, DIST-03
-**Success Criteria** (what must be TRUE):
-  1. `pnpm add @lionad/components` works in a fresh project (verified via local workspace)
-  2. TypeScript consumers get full IntelliSense -- .d.ts files ship for all exported components and types
-  3. Build output includes both ESM (.mjs) and CJS (.cjs) entry points
+  1. 开发者用 LocaleProvider 包裹应用后，子组件可通过 useI18n() 获取翻译
+  2. useI18n() 返回 computed，切换语言实时更新（无需手动刷新）
+  3. t('nested.key.path', { param: value }) 正确解析并插值
+  4. TypeScript 自动补全 t() key，无效 key 路径报类型错误
+  5. dev 环境缺失 key 时 console.warn 显示 key 路径，prod 环境 fallback 到 zh-CN
 **Plans**: TBD
 
-Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+### Phase 2: Component i18n (High + Medium)
+**Goal**: 13 个高/中优组件无硬编码英文文本，响应语言切换
+**Depends on**: Phase 1
+**Requirements**: COMPS-01, COMPS-02
+**Success Criteria** (what must be TRUE):
+  1. 高优 7 组件（terminal, code-block, code-diff, order-summary, question-flow, message-draft, data-table）全部使用 t()
+  2. 中优 6 组件（audio, video, image-gallery, geo-map, item-carousel, preferences-panel）全部使用 t()
+  3. 切换 LocaleProvider 语言后，13 个组件 UI 文本实时更新，无需刷新
+  4. 模板和渲染逻辑中无硬编码英文字符串
+**UI hint**: yes
+
+### Phase 3: Component i18n (Low) + Tests
+**Goal**: 剩余 10 个低优组件 i18n 改造完成，核心 i18n 系统有测试覆盖
+**Depends on**: Phase 2
+**Requirements**: COMPS-03, TEST-01, TEST-02, TEST-03
+**Success Criteria** (what must be TRUE):
+  1. 低优 10 组件（x-post, instagram-post, chart, stats-display, weather-widget 等）全部使用 t()
+  2. LocaleProvider 测试通过：provide/inject 工作正常、messages 切换触发更新、缺失 key 正确 fallback
+  3. useI18n() 测试通过：t() 解析 key、{param} 插值、缺失 key 处理
+  4. 测试环境中切换 locale 后，全部 23 个组件显示对应语言文本
+**UI hint**: yes
+
+### Phase 4: Quality + Compat
+**Goal**: i18n 系统 CI 门禁、向后兼容、非 i18n 用户零侵入
+**Depends on**: Phase 3
+**Requirements**: QUALITY-01, QUALITY-02, COMPAT-01, COMPAT-02
+**Success Criteria** (what must be TRUE):
+  1. CI 脚本在 en 和 zh-CN 消息文件 key 不一致时失败
+  2. CI 或 lint 工具标记含硬编码英文的新组件
+  3. 无 LocaleProvider 时组件以 zh-CN 默认消息正常渲染
+  4. copy-paste 消费者（无 @lionad/core 依赖）使用组件与之前完全一致
+**Plans**: TBD
+
+### Phase 5: Documentation + Histoire
+**Goal**: 用户可通过双语文档和 Histoire stories 学习集成 i18n
+**Depends on**: Phase 3（API 表面需稳定）
+**Requirements**: DOCS-01, DOCS-02, DOCS-03, DOCS-04, DOCS-05
+**Success Criteria** (what must be TRUE):
+  1. README.md 包含中文优先的 i18n 章节，含 LocaleProvider 使用示例、t() 用法、自定义语言包示例
+  2. Story 描述根据当前 locale 显示 zh-CN/en 文本
+  3. Histoire 站点渲染语言切换器，切换后导航和标签同步更新
+  4. API 文档覆盖 LocaleProvider props、useI18n 返回类型、t() 签名、消息文件格式
+  5. 消费者接入指南逐步说明如何添加 i18n、扩展语言、自定义消息文件
+**UI hint**: yes
 
 ## Progress
 
@@ -106,8 +78,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 2/2 | Complete | 2026-04-03 |
-| 2. P0 Base Components | 0/3 | Planned | - |
-| 3. P1 Components + Theme | 0/2 | Planned | - |
-| 4. Component Migration | 0/5 | Planned | - |
-| 5. Distribution Readiness | 0/2 | Not started | - |
+| 1. I18N Core | 0/TBD | Not started | - |
+| 2. Component i18n (High + Med) | 0/TBD | Not started | - |
+| 3. Component i18n (Low) + Tests | 0/TBD | Not started | - |
+| 4. Quality + Compat | 0/TBD | Not started | - |
+| 5. Documentation + Histoire | 0/TBD | Not started | - |
