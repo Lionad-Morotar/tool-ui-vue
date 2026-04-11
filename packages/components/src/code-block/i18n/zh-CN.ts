@@ -1,0 +1,8 @@
+export const zhCN = {
+  codeBlock: {
+    copied: '已复制',
+    copyCode: '复制代码',
+    showAllLines: '显示全部 {count} 行',
+    collapse: '收起',
+  },
+} as const

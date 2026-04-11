@@ -1,0 +1,13 @@
+export const zhCN = {
+  orderSummary: {
+    title: '订单摘要',
+    unableToRender: '无法渲染订单摘要',
+    malformedPayload: '数据格式错误',
+    free: '免费',
+    subtotal: '小计',
+    shipping: '运费',
+    total: '总计',
+    discount: '折扣',
+    tax: '税费',
+  },
+} as const

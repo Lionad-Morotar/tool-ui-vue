@@ -1,0 +1,8 @@
+export const zhCN = {
+  preferencesPanel: {
+    preferencesWithErrors: '存在错误的偏好设置',
+    confirmedPreferences: '已确认的偏好设置',
+    error: '错误',
+    saved: '已保存',
+  },
+} as const
