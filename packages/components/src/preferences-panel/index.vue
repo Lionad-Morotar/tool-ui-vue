@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { Check, AlertCircle } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { usePreferencesPanel } from './states';
 import type {
   PreferencesPanelProps,
@@ -23,6 +24,10 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const state = reactive(usePreferencesPanel(props, emit));
+const { t } = useI18n();
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.preferencesWithErrors').value : t('preferencesPanel.confirmedPreferences').value);
 </script>
 
 <template>
@@ -37,7 +42,7 @@ const state = reactive(usePreferencesPanel(props, emit));
     role="status"
     lang="en"
     :aria-busy="false"
-    :aria-label="state.hasErrors ? 'Preferences with errors' : 'Confirmed preferences'"
+    :aria-label="receiptAriaLabel"
   >
     <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 opacity-95 shadow-xs">
       <!-- Header -->
@@ -49,14 +54,14 @@ const state = reactive(usePreferencesPanel(props, emit));
             class="flex items-center gap-1.5 text-xs font-medium text-destructive"
           >
             <alert-circle class="size-3.5" />
-            Error
+            {{ t('preferencesPanel.error') }}
           </span>
           <span
             v-else
             class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500"
           >
             <check class="size-3.5" />
-            Saved
+            {{ t('preferencesPanel.saved') }}
           </span>
         </div>
         <hr class="border-border" />

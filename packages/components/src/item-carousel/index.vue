@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
+import { useI18n } from '@lionad/vtu-core/i18n';
 import { computed } from 'vue';
 import ItemCard from './cmpts/item-card.vue';
 import { useItemCarousel } from './states';
@@ -20,6 +21,17 @@ const carouselState = useItemCarousel(props, {
   slideChange: (index) => emit('slideChange', index),
 });
 
+// i18n
+const { t } = useI18n();
+
+// Derived i18n values for attribute bindings (type-safe unwrapping)
+const ariaLabel = computed(() => props.title || t('itemCarousel.itemCarouselLabel').value);
+const scrollLeftLabel = computed(() => t('itemCarousel.scrollLeft').value);
+const scrollRightLabel = computed(() => t('itemCarousel.scrollRight').value);
+const paginationLabel = computed(() => t('itemCarousel.paginationLabel').value);
+const getItemAriaLabel = (index: number) => t('itemCarousel.itemOf', { current: index + 1, total: props.items.length }).value;
+const getSlideAriaLabel = (index: number) => t('itemCarousel.goToSlide', { slide: index + 1 }).value;
+
 // Expose methods for programmatic control
 defineExpose({
   scrollToIndex: carouselState.scrollToIndex,
@@ -39,7 +51,7 @@ defineExpose({
     data-slot="item-carousel"
     :data-tool-ui-id="id"
   >
-    <p class="text-sm text-muted-foreground">No items to display</p>
+    <p class="text-sm text-muted-foreground">{{ t('itemCarousel.noItems') }}</p>
   </div>
 
   <!-- Carousel -->
@@ -55,7 +67,7 @@ defineExpose({
     tabindex="0"
     role="region"
     aria-roledescription="carousel"
-    :aria-label="title || 'Item carousel'"
+    :aria-label="ariaLabel"
     @keydown="carouselState.handleKeyDown"
   >
     <!-- Header -->
@@ -82,7 +94,7 @@ defineExpose({
         )"
         :tabindex="carouselState.canScrollLeft ? 0 : -1"
         :aria-hidden="!carouselState.canScrollLeft"
-        :aria-label="'Scroll left'"
+        :aria-label="scrollLeftLabel"
         :disabled="!carouselState.canScrollLeft"
         @click="carouselState.scroll('left')"
       >
@@ -114,7 +126,7 @@ defineExpose({
         )"
         :tabindex="carouselState.canScrollRight ? 0 : -1"
         :aria-hidden="!carouselState.canScrollRight"
-        :aria-label="'Scroll right'"
+        :aria-label="scrollRightLabel"
         :disabled="!carouselState.canScrollRight"
         @click="carouselState.scroll('right')"
       >
@@ -156,7 +168,7 @@ defineExpose({
           :data-index="index"
           role="listitem"
           class="flex snap-start snap-always"
-          :aria-label="`Item ${index + 1} of ${items.length}`"
+          :aria-label="getItemAriaLabel(index)"
         >
           <item-card
             :item="item"
@@ -173,14 +185,14 @@ defineExpose({
       v-if="items.length > 1"
       class="flex justify-center gap-1.5 pb-3"
       role="tablist"
-      aria-label="Carousel pagination"
+      :aria-label="paginationLabel"
     >
       <button
         v-for="(item, index) in items"
         :key="item.id"
         type="button"
         role="tab"
-        :aria-label="`Go to slide ${index + 1}`"
+        :aria-label="getSlideAriaLabel(index)"
         :aria-selected="carouselState.currentIndex.value === index"
         :class="cn(
           'h-1.5 rounded-full transition-all duration-200',
