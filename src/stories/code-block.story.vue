@@ -70,14 +70,14 @@ const interactiveState = reactive({
 
 // Props documentation
 const props = [
-  { name: 'id', type: 'string', required: true, description: 'Unique identifier for the code block' },
-  { name: 'code', type: 'string', required: true, description: 'The code content to display' },
-  { name: 'language', type: 'string', default: 'text', description: 'Programming language for syntax highlighting' },
-  { name: 'filename', type: 'string', description: 'Optional filename to display in the header' },
-  { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: 'Whether to show line numbers' },
-  { name: 'highlightLines', type: 'number[]', description: 'Array of line numbers to highlight' },
-  { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines to show before collapsing' },
-  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
+  { name: 'id', type: 'string', required: true, description: { zh: '代码块的唯一标识符', en: 'Unique identifier for the code block' } },
+  { name: 'code', type: 'string', required: true, description: { zh: '要显示的代码内容', en: 'The code content to display' } },
+  { name: 'language', type: 'string', default: 'text', description: { zh: '语法高亮的编程语言', en: 'Programming language for syntax highlighting' } },
+  { name: 'filename', type: 'string', description: { zh: '可选的显示文件名', en: 'Optional filename to display in the header' } },
+  { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: { zh: '是否显示行号', en: 'Whether to show line numbers' } },
+  { name: 'highlightLines', type: 'number[]', description: { zh: '要高亮的行号数组', en: 'Array of line numbers to highlight' } },
+  { name: 'maxCollapsedLines', type: 'number', description: { zh: '折叠前的最大行数', en: 'Maximum lines to show before collapsing' } },
+  { name: 'css', type: '{ root?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
 const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
@@ -94,10 +94,10 @@ const languages = [
 
 <template>
   <Story title="CodeBlock/All">
-    <Variant title="Props">
+    <Variant :title="useStoryLocale({ zh: '属性', en: 'Props' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">CodeBlock Props</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'CodeBlock 属性', en: 'CodeBlock Props' }) }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -113,7 +113,7 @@ const languages = [
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
                 <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td>{{ prop.description }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>
           </table>
@@ -121,10 +121,10 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant title="Supported Languages">
+    <Variant :title="useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">Supported Languages</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' }) }}</h2>
         <div class="flex flex-wrap gap-2">
           <span
             v-for="lang in languages"
@@ -137,7 +137,7 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant title="TypeScript">
+    <Variant :title="useStoryLocale({ zh: 'TypeScript', en: 'TypeScript' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
@@ -149,7 +149,7 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant title="JavaScript">
+    <Variant :title="useStoryLocale({ zh: 'JavaScript', en: 'JavaScript' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -166,7 +166,7 @@ console.log(result); // 8"
       </div>
     </Variant>
 
-    <Variant title="Python">
+    <Variant :title="useStoryLocale({ zh: 'Python', en: 'Python' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -184,7 +184,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant title="CSS">
+    <Variant :title="useStoryLocale({ zh: 'CSS', en: 'CSS' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -202,7 +202,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant title="With Highlighted Lines">
+    <Variant :title="useStoryLocale({ zh: '高亮行', en: 'With Highlighted Lines' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -226,7 +226,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant title="Without Line Numbers">
+    <Variant :title="useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -244,7 +244,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant title="Collapsed (Long Code)">
+    <Variant :title="useStoryLocale({ zh: '折叠（长代码）', en: 'Collapsed (Long Code)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
@@ -257,7 +257,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant title="No Filename">
+    <Variant :title="useStoryLocale({ zh: '无文件名', en: 'No Filename' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -269,7 +269,7 @@ npm run dev"
       </div>
     </Variant>
 
-    <Variant title="Dark Theme">
+    <Variant :title="useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-xl">
         <code-block
@@ -286,11 +286,11 @@ const colors = {
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">Language:</label>
+            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '语言:', en: 'Language:' }) }}</label>
             <select
               v-model="interactiveState.language"
               class="rounded-md border-border border bg-background px-3 py-1 text-sm"
@@ -308,7 +308,7 @@ const colors = {
               false-value="hidden"
               class="rounded border-border border"
             />
-            Show Line Numbers
+            {{ useStoryLocale({ zh: '显示行号', en: 'Show Line Numbers' }) }}
           </label>
         </div>
         <code-block

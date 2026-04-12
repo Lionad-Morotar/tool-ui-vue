@@ -14,16 +14,16 @@ const interactiveState = reactive({
 
 // Props documentation
 const props = [
-  { name: 'id', type: 'string', required: true, description: 'Unique identifier for the terminal' },
-  { name: 'command', type: 'string', required: true, description: 'The command that was executed' },
-  { name: 'stdout', type: 'string', description: 'Standard output from the command' },
-  { name: 'stderr', type: 'string', description: 'Standard error from the command' },
-  { name: 'exitCode', type: 'number', required: true, description: 'Exit code (0 = success, >0 = error)' },
-  { name: 'durationMs', type: 'number', description: 'Command execution duration in milliseconds' },
-  { name: 'cwd', type: 'string', description: 'Current working directory' },
-  { name: 'truncated', type: 'boolean', description: 'Whether output was truncated' },
-  { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
-  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
+  { name: 'id', type: 'string', required: true, description: { zh: '终端的唯一标识符', en: 'Unique identifier for the terminal' } },
+  { name: 'command', type: 'string', required: true, description: { zh: '执行的命令', en: 'The command that was executed' } },
+  { name: 'stdout', type: 'string', description: { zh: '标准输出', en: 'Standard output from the command' } },
+  { name: 'stderr', type: 'string', description: { zh: '标准错误', en: 'Standard error from the command' } },
+  { name: 'exitCode', type: 'number', required: true, description: { zh: '退出码（0=成功，>0=错误）', en: 'Exit code (0 = success, >0 = error)' } },
+  { name: 'durationMs', type: 'number', description: { zh: '命令执行时长（毫秒）', en: 'Command execution duration in milliseconds' } },
+  { name: 'cwd', type: 'string', description: { zh: '当前工作目录', en: 'Current working directory' } },
+  { name: 'truncated', type: 'boolean', description: { zh: '输出是否被截断', en: 'Whether output was truncated' } },
+  { name: 'maxCollapsedLines', type: 'number', description: { zh: '折叠前的最大行数', en: 'Maximum lines before collapsing' } },
+  { name: 'css', type: '{ root?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
 const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
@@ -43,10 +43,10 @@ const ansiExamples = {
 
 <template>
   <Story title="Terminal/All">
-    <Variant title="Props">
+    <Variant :title="useStoryLocale({ zh: '属性', en: 'Props' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">Terminal Props</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'Terminal 属性', en: 'Terminal Props' }) }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -62,7 +62,7 @@ const ansiExamples = {
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
                 <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td>{{ prop.description }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>
           </table>
@@ -70,12 +70,12 @@ const ansiExamples = {
       </div>
     </Variant>
 
-    <Variant title="ANSI Color Support">
+    <Variant :title="useStoryLocale({ zh: 'ANSI 颜色支持', en: 'ANSI Color Support' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">ANSI Color Codes</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'ANSI 颜色码', en: 'ANSI Color Codes' }) }}</h2>
         <p class="mb-4 text-sm text-muted-foreground">
-          Terminal component supports ANSI escape codes for colors and formatting.
+          {{ useStoryLocale({ zh: 'Terminal 支持 ANSI 转义码进行颜色和格式化。', en: 'Terminal supports ANSI escape codes for colors and formatting.' }) }}
         </p>
         <div class="space-y-2 font-mono text-sm">
           <div v-for="(example, name) in ansiExamples" :key="name" class="flex items-center gap-4">
@@ -86,24 +86,24 @@ const ansiExamples = {
       </div>
     </Variant>
 
-    <Variant title="Exit Codes">
+    <Variant :title="useStoryLocale({ zh: '退出码', en: 'Exit Codes' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">Exit Code Display</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: '退出码显示', en: 'Exit Code Display' }) }}</h2>
         <div class="grid grid-cols-2 gap-4">
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold text-emerald-600">Exit Code 0</h3>
-            <p class="text-sm text-muted-foreground">Displayed in muted color indicating success</p>
+            <h3 class="mb-2 font-semibold text-emerald-600">{{ useStoryLocale({ zh: '退出码 0', en: 'Exit Code 0' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '以柔和的颜色显示，表示成功', en: 'Displayed in muted color indicating success' }) }}</p>
           </div>
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold text-red-600">Exit Code &gt; 0</h3>
-            <p class="text-sm text-muted-foreground">Displayed in red indicating an error</p>
+            <h3 class="mb-2 font-semibold text-red-600">{{ useStoryLocale({ zh: '退出码 > 0', en: 'Exit Code > 0' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '以红色显示，表示错误', en: 'Displayed in red indicating an error' }) }}</p>
           </div>
         </div>
       </div>
     </Variant>
 
-    <Variant title="Success with ANSI Colors">
+    <Variant :title="useStoryLocale({ zh: 'ANSI 颜色成功输出', en: 'Success with ANSI Colors' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -117,7 +117,7 @@ const ansiExamples = {
       </div>
     </Variant>
 
-    <Variant title="Lint Output with ANSI Colors">
+    <Variant :title="useStoryLocale({ zh: 'ANSI 颜色 Lint 输出', en: 'Lint Output with ANSI Colors' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -130,7 +130,7 @@ const ansiExamples = {
       </div>
     </Variant>
 
-    <Variant title="Docker Build Output">
+    <Variant :title="useStoryLocale({ zh: 'Docker 构建输出', en: 'Docker Build Output' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -143,7 +143,7 @@ const ansiExamples = {
       </div>
     </Variant>
 
-    <Variant title="With Error">
+    <Variant :title="useStoryLocale({ zh: '错误输出', en: 'With Error' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -162,7 +162,7 @@ AssertionError: expected true to be false
       </div>
     </Variant>
 
-    <Variant title="With Working Directory">
+    <Variant :title="useStoryLocale({ zh: '带工作目录', en: 'With Working Directory' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -183,7 +183,7 @@ no changes added to commit"
       </div>
     </Variant>
 
-    <Variant title="Long Output (Collapsed)">
+    <Variant :title="useStoryLocale({ zh: '长输出（折叠）', en: 'Long Output (Collapsed)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -209,7 +209,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="Truncated">
+    <Variant :title="useStoryLocale({ zh: '截断输出', en: 'Truncated' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -226,7 +226,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="No Output">
+    <Variant :title="useStoryLocale({ zh: '无输出', en: 'No Output' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -238,7 +238,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="Simple Command">
+    <Variant :title="useStoryLocale({ zh: '简单命令', en: 'Simple Command' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <terminal
@@ -251,7 +251,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="Dark Theme - Success">
+    <Variant :title="useStoryLocale({ zh: '暗色主题 - 成功', en: 'Dark Theme - Success' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -265,7 +265,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="Dark Theme - Error">
+    <Variant :title="useStoryLocale({ zh: '暗色主题 - 错误', en: 'Dark Theme - Error' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -279,11 +279,11 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex flex-wrap items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">Command:</label>
+            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '命令:', en: 'Command:' }) }}</label>
             <input
               v-model="interactiveState.command"
               type="text"
@@ -291,7 +291,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             />
           </div>
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">Exit Code:</label>
+            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '退出码:', en: 'Exit Code:' }) }}</label>
             <input
               v-model.number="interactiveState.exitCode"
               type="number"
@@ -300,7 +300,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             />
           </div>
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">Duration (ms):</label>
+            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '时长 (ms):', en: 'Duration (ms):' }) }}</label>
             <input
               v-model.number="interactiveState.durationMs"
               type="number"
@@ -309,7 +309,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             />
           </div>
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">CWD:</label>
+            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '工作目录:', en: 'CWD:' }) }}</label>
             <input
               v-model="interactiveState.cwd"
               type="text"

@@ -73,16 +73,16 @@ const diffState = reactive({
 
 // Props documentation
 const props = [
-  { name: 'id', type: 'string', required: true, description: 'Unique identifier for the diff' },
-  { name: 'oldCode', type: 'string', description: 'Original code (for file diff mode)' },
-  { name: 'newCode', type: 'string', description: 'Modified code (for file diff mode)' },
-  { name: 'patch', type: 'string', description: 'Git patch string (for patch mode)' },
-  { name: 'language', type: 'string', default: 'text', description: 'Language for display' },
-  { name: 'filename', type: 'string', description: 'Optional filename to display' },
-  { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: 'Whether to show line numbers' },
-  { name: 'diffStyle', type: "'unified' | 'split'", default: 'unified', description: 'Diff display style' },
-  { name: 'maxCollapsedLines', type: 'number', description: 'Maximum lines before collapsing' },
-  { name: 'css', type: '{ root?: string }', description: 'CSS classes for component elements' },
+  { name: 'id', type: 'string', required: true, description: { zh: '差异的唯一标识符', en: 'Unique identifier for the diff' } },
+  { name: 'oldCode', type: 'string', description: { zh: '原始代码（文件差异模式）', en: 'Original code (for file diff mode)' } },
+  { name: 'newCode', type: 'string', description: { zh: '修改后的代码（文件差异模式）', en: 'Modified code (for file diff mode)' } },
+  { name: 'patch', type: 'string', description: { zh: 'Git 补丁字符串（补丁模式）', en: 'Git patch string (for patch mode)' } },
+  { name: 'language', type: 'string', default: 'text', description: { zh: '显示语言', en: 'Language for display' } },
+  { name: 'filename', type: 'string', description: { zh: '可选的显示文件名', en: 'Optional filename to display' } },
+  { name: 'lineNumbers', type: "'visible' | 'hidden'", default: 'visible', description: { zh: '是否显示行号', en: 'Whether to show line numbers' } },
+  { name: 'diffStyle', type: "'unified' | 'split'", default: 'unified', description: { zh: '差异显示样式', en: 'Diff display style' } },
+  { name: 'maxCollapsedLines', type: 'number', description: { zh: '折叠前的最大行数', en: 'Maximum lines before collapsing' } },
+  { name: 'css', type: '{ root?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
 const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
@@ -92,10 +92,10 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
 
 <template>
   <Story title="CodeDiff/All">
-    <Variant title="Props">
+    <Variant :title="useStoryLocale({ zh: '属性', en: 'Props' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">CodeDiff Props</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'CodeDiff 属性', en: 'CodeDiff Props' }) }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -111,48 +111,48 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
                 <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td>{{ prop.description }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="mt-6 rounded-lg bg-muted p-4">
-          <h3 class="mb-2 font-semibold">Usage Modes</h3>
+          <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '使用模式', en: 'Usage Modes' }) }}</h3>
           <ul class="list-inside list-disc space-y-1 text-sm">
-            <li><strong>File Diff Mode:</strong> Provide <code>oldCode</code> and/or <code>newCode</code> to compare two versions</li>
-            <li><strong>Patch Mode:</strong> Provide <code>patch</code> with a git diff string</li>
-            <li><strong>Note:</strong> Cannot mix patch mode with oldCode/newCode - use one or the other</li>
+            <li><strong>{{ useStoryLocale({ zh: '文件差异模式:', en: 'File Diff Mode:' }) }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
+            <li><strong>{{ useStoryLocale({ zh: '补丁模式:', en: 'Patch Mode:' }) }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
+            <li><strong>{{ useStoryLocale({ zh: '注意:', en: 'Note:' }) }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
           </ul>
         </div>
       </div>
     </Variant>
 
-    <Variant title="Features">
+    <Variant :title="useStoryLocale({ zh: '使用模式', en: 'Usage Modes' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">CodeDiff Features</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'CodeDiff 功能', en: 'CodeDiff Features' }) }}</h2>
         <div class="grid grid-cols-2 gap-4">
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold">Unified View</h3>
-            <p class="text-sm text-muted-foreground">Shows changes inline with +/- indicators</p>
+            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '统一视图', en: 'Unified View' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '在单行内使用 +/- 标记显示变更', en: 'Shows changes inline with +/- indicators' }) }}</p>
           </div>
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold">Split View</h3>
-            <p class="text-sm text-muted-foreground">Side-by-side comparison of old and new</p>
+            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '分栏视图', en: 'Split View' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '新旧代码并排比较', en: 'Side-by-side comparison of old and new' }) }}</p>
           </div>
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold">Word-Level Diff</h3>
-            <p class="text-sm text-muted-foreground">Highlights specific words that changed within lines</p>
+            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '单词级差异', en: 'Word-Level Diff' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '高亮行内已更改的特定单词', en: 'Highlights specific words that changed within lines' }) }}</p>
           </div>
           <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold">Statistics</h3>
-            <p class="text-sm text-muted-foreground">Shows number of additions and deletions</p>
+            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '统计信息', en: 'Statistics' }) }}</h3>
+            <p class="text-sm text-muted-foreground">{{ useStoryLocale({ zh: '显示新增和删除的行数', en: 'Shows number of additions and deletions' }) }}</p>
           </div>
         </div>
       </div>
     </Variant>
 
-    <Variant title="Word-Level Diff">
+    <Variant :title="useStoryLocale({ zh: '单词级差异', en: 'Word-Level Diff' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <p class="mb-4 text-sm text-muted-foreground">
@@ -169,7 +169,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Split Diff">
+    <Variant :title="useStoryLocale({ zh: '分栏视图', en: 'Split Diff' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl">
         <code-diff
@@ -183,7 +183,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Split Diff (No Line Numbers)">
+    <Variant :title="useStoryLocale({ zh: '分栏视图（无行号）', en: 'Split Diff (No Line Numbers)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl">
         <code-diff
@@ -198,7 +198,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Interactive - Toggle Diff Style">
+    <Variant :title="useStoryLocale({ zh: '交互 - 切换分栏样式', en: 'Interactive - Toggle Diff Style' })">
       <div class="w-full max-w-4xl">
         <div class="mb-4 flex items-center gap-4 rounded-lg bg-muted p-4">
           <label class="flex items-center gap-2 text-sm">
@@ -209,7 +209,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
               <option value="unified">Unified</option>
               <option value="split">Split</option>
             </select>
-            Diff Style
+            {{ useStoryLocale({ zh: '差异样式', en: 'Diff Style' }) }}
           </label>
           <label class="flex items-center gap-2 text-sm">
             <input
@@ -217,7 +217,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
               type="checkbox"
               class="rounded border-border border"
             />
-            Show Line Numbers
+            {{ useStoryLocale({ zh: '显示行号', en: 'Show Line Numbers' }) }}
           </label>
         </div>
         <code-diff
@@ -232,7 +232,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Unified Diff">
+    <Variant :title="useStoryLocale({ zh: '统一视图', en: 'Unified Diff' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -246,7 +246,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Patch Mode">
+    <Variant :title="useStoryLocale({ zh: '补丁模式', en: 'Patch Mode' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -258,7 +258,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Without Line Numbers">
+    <Variant :title="useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -272,7 +272,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="No Filename">
+    <Variant :title="useStoryLocale({ zh: '无文件名', en: 'No Filename' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-diff
@@ -284,7 +284,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Additions Only">
+    <Variant :title="useStoryLocale({ zh: '仅新增', en: 'Additions Only' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -298,7 +298,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Deletions Only">
+    <Variant :title="useStoryLocale({ zh: '仅删除', en: 'Deletions Only' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -312,7 +312,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Modifications">
+    <Variant :title="useStoryLocale({ zh: '修改', en: 'Modifications' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
@@ -326,7 +326,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Dark Theme - Unified">
+    <Variant :title="useStoryLocale({ zh: '暗色主题 - 统一', en: 'Dark Theme - Unified' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-3xl">
         <code-diff
@@ -340,7 +340,7 @@ const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
       </div>
     </Variant>
 
-    <Variant title="Dark Theme - Split">
+    <Variant :title="useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark Theme - Split' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-4xl">
         <code-diff

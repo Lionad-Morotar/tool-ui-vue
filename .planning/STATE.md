@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-04-11T10:55:00Z"
-last_activity: 2026-04-11 -- Phase 05 Plan 02 completed, all phases done
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-04-12T05:22:25.494Z"
+last_activity: 2026-04-12 -- Phase 06 execution started
 progress:
-  total_phases: 5
+  total_phases: 7
   completed_phases: 5
-  total_plans: 14
+  total_plans: 18
   completed_plans: 14
-  percent: 100
+  percent: 60
 ---
 
 # Project State
@@ -22,14 +22,14 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Components installable via `pnpm add @lionad/components`, all 26 tool components work with Zod contracts unchanged
 **Current milestone:** v1.0.0 多语言 i18n 系统
-**Current focus:** Phase 04 — Quality + Compat
+**Current focus:** Phase 06 — history-i18n
 
 ## Current Position
 
-Phase: 04 (Quality + Compat) — EXECUTING
-Plan: 1 of 1
-Status: Executing Phase 04
-Last activity: 2026-04-11 -- Phase 04 execution started
+Phase: 06 (history-i18n) — EXECUTING
+Plan: 1 of 4
+Status: Executing Phase 06
+Last activity: 2026-04-12 -- Phase 06 execution started
 
 Progress: [######....] 60% (milestone v1.0.0)
 
@@ -63,6 +63,10 @@ Progress: [######....] 60% (milestone v1.0.0)
 | Phase 03-component-i18n-low-tests P03 | 22min | 3 tasks | 7 files |
 
 ## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 06 added: History 组件数据跟随 I18N 变化
 
 ### Decisions
 

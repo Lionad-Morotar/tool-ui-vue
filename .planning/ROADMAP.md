@@ -110,3 +110,23 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Component i18n (Low) + Tests | 5/5 | Complete    | 2026-04-11 |
 | 4. Quality + Compat | 1/1 | Complete    | 2026-04-11 |
 | 5. Documentation + Histoire | 2/2 | Complete    | 2026-04-11 |
+
+### Phase 6: Histoire 站点数据 i18n
+
+**Goal:** Histoire 站点中所有用户可见文本（Variant titles、页面标题、描述、示例数据、Landing Page）接入 i18n 系统，跟随 LocaleToggle 语言切换实时更新
+**Requirements**: HIST-01, HIST-02, HIST-03, HIST-04, HIST-05
+**Depends on:** Phase 5
+**Success Criteria** (what must be TRUE):
+  1. 全部 28+ story 文件中无硬编码英文 Variant title，使用 `:title` 动态绑定 + `useStoryLocale`
+  2. `<h2>`/`<h3>` 标题、`<p>` 描述文本双语化
+  3. 示例数据（props 数组 description 等字段）双语化
+  4. Landing Page 用户可见文本全部双语化
+  5. Histoire 站点切换语言后，全部用户可见文本实时更新
+**UI hint**: yes
+**Plans:** 4 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Complex stories (terminal, code-block, code-diff, chart): Variant titles + h2/h3 + props + descriptions
+- [ ] 06-02-PLAN.md — Data-heavy stories (data-table, preferences-panel, geo-map, weather + 5 social): Variant titles + inline data
+- [ ] 06-03-PLAN.md — Remaining 13 stories (citation, carousel, order-summary, etc.): Variant titles + inline data
+- [ ] 06-04-PLAN.md — Landing Page bilingual + phase-wide verification (Wave 2, depends on 01/02/03)

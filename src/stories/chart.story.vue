@@ -22,30 +22,30 @@ function handleDataPointClick(point: ChartDataPoint) {
 <template>
   <Story title="Chart/All Variants">
     <template #docs>
-      <h2>Chart Component</h2>
-      <p>Data visualization component supporting bar and line charts with interactive features.</p>
+      <h2>{{ useStoryLocale({ zh: 'Chart 组件', en: 'Chart Component' }) }}</h2>
+      <p>{{ useStoryLocale({ zh: '支持柱状图和折线图的数据可视化组件，带交互功能。', en: 'Data visualization component supporting bar and line charts with interactive features.' }) }}</p>
 
-      <h3>Props</h3>
+      <h3>{{ useStoryLocale({ zh: '属性', en: 'Props' }) }}</h3>
       <table class="story-table">
         <thead>
           <tr><th>{{ headerName }}</th><th>{{ headerType }}</th><th>{{ headerDefault }}</th><th>{{ headerDesc }}</th></tr>
         </thead>
         <tbody>
-          <tr><td>id</td><td>string</td><td>required</td><td>Unique identifier for the chart</td></tr>
-          <tr><td>type</td><td>'bar' | 'line'</td><td>required</td><td>Chart type</td></tr>
-          <tr><td>title</td><td>string</td><td>undefined</td><td>Chart title displayed in header</td></tr>
-          <tr><td>description</td><td>string</td><td>undefined</td><td>Chart description displayed in header</td></tr>
-          <tr><td>data</td><td>Record&lt;string, unknown>[]</td><td>required</td><td>Data array for the chart</td></tr>
-          <tr><td>xKey</td><td>string</td><td>required</td><td>Key for x-axis values in data</td></tr>
-          <tr><td>series</td><td>ChartSeries[]</td><td>required</td><td>Array of series configurations</td></tr>
-          <tr><td>colors</td><td>string[]</td><td>undefined</td><td>Custom colors for series (defaults to CSS vars)</td></tr>
-          <tr><td>showLegend</td><td>boolean</td><td>false</td><td>Whether to show the legend</td></tr>
-          <tr><td>showGrid</td><td>boolean</td><td>true</td><td>Whether to show grid lines</td></tr>
-          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>CSS classes for component elements</td></tr>
+          <tr><td>id</td><td>string</td><td>required</td><td>{{ useStoryLocale({ zh: '图表的唯一标识符', en: 'Unique identifier for the chart' }) }}</td></tr>
+          <tr><td>type</td><td>'bar' | 'line'</td><td>required</td><td>{{ useStoryLocale({ zh: '图表类型', en: 'Chart type' }) }}</td></tr>
+          <tr><td>title</td><td>string</td><td>undefined</td><td>{{ useStoryLocale({ zh: '显示的图表标题', en: 'Chart title displayed in header' }) }}</td></tr>
+          <tr><td>description</td><td>string</td><td>undefined</td><td>{{ useStoryLocale({ zh: '显示的图表描述', en: 'Chart description displayed in header' }) }}</td></tr>
+          <tr><td>data</td><td>Record&lt;string, unknown>[]</td><td>required</td><td>{{ useStoryLocale({ zh: '图表数据数组', en: 'Data array for the chart' }) }}</td></tr>
+          <tr><td>xKey</td><td>string</td><td>required</td><td>{{ useStoryLocale({ zh: 'x 轴数据的键', en: 'Key for x-axis values in data' }) }}</td></tr>
+          <tr><td>series</td><td>ChartSeries[]</td><td>required</td><td>{{ useStoryLocale({ zh: '系列配置数组', en: 'Array of series configurations' }) }}</td></tr>
+          <tr><td>colors</td><td>string[]</td><td>undefined</td><td>{{ useStoryLocale({ zh: '系列自定义颜色（默认 CSS 变量）', en: 'Custom colors for series (defaults to CSS vars)' }) }}</td></tr>
+          <tr><td>showLegend</td><td>boolean</td><td>false</td><td>{{ useStoryLocale({ zh: '是否显示图例', en: 'Whether to show the legend' }) }}</td></tr>
+          <tr><td>showGrid</td><td>boolean</td><td>true</td><td>{{ useStoryLocale({ zh: '是否显示网格线', en: 'Whether to show grid lines' }) }}</td></tr>
+          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>{{ useStoryLocale({ zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' }) }}</td></tr>
         </tbody>
       </table>
 
-      <h3>Emits</h3>
+      <h3>{{ useStoryLocale({ zh: '事件', en: 'Emits' }) }}</h3>
       <table class="story-table">
         <thead>
           <tr><th>{{ headerName }}</th><th>{{ headerPayload }}</th><th>{{ headerDesc }}</th></tr>
@@ -54,28 +54,28 @@ function handleDataPointClick(point: ChartDataPoint) {
           <tr>
             <td>dataPointClick</td>
             <td>{ seriesKey, seriesLabel, xValue, yValue, index, payload }</td>
-            <td>Emitted when a data point is clicked</td>
+            <td>{{ useStoryLocale({ zh: '点击数据点时触发', en: 'Emitted when a data point is clicked' }) }}</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Slots</h3>
-      <p>This component does not expose any slots.</p>
+      <h3>{{ useStoryLocale({ zh: '插槽', en: 'Slots' }) }}</h3>
+      <p>{{ useStoryLocale({ zh: '此组件不暴露任何插槽。', en: 'This component does not expose any slots.' }) }}</p>
 
-      <h3>ChartSeries Type</h3>
+      <h3>{{ useStoryLocale({ zh: 'ChartSeries 类型', en: 'ChartSeries Type' }) }}</h3>
       <pre><code>{
   key: string;      // Unique key for the series
   label: string;    // Display label
   color?: string;   // Optional custom color
 }</code></pre>
 
-      <h3>CSS Variables</h3>
-      <p>The chart uses the following CSS variables for default colors:</p>
+      <h3>{{ useStoryLocale({ zh: 'CSS 变量', en: 'CSS Variables' }) }}</h3>
+      <p>{{ useStoryLocale({ zh: 'Chart 使用以下 CSS 变量作为默认颜色：', en: 'The chart uses the following CSS variables for default colors:' }) }}</p>
       <ul>
         <li><code>--chart-1</code> through <code>--chart-5</code> - Default series colors</li>
       </ul>
     </template>
-    <Variant title="Line Chart">
+    <Variant :title="useStoryLocale({ zh: '折线图', en: 'Line Chart' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -102,7 +102,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Bar Chart">
+    <Variant :title="useStoryLocale({ zh: '柱状图', en: 'Bar Chart' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -130,7 +130,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Multi-Series">
+    <Variant :title="useStoryLocale({ zh: '多系列', en: 'Multi-Series' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -155,7 +155,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="With Custom Colors">
+    <Variant :title="useStoryLocale({ zh: '自定义颜色', en: 'With Custom Colors' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -179,7 +179,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Interactive - Click Data Points">
+    <Variant :title="useStoryLocale({ zh: '交互 - 点击数据点', en: 'Interactive - Click Data Points' })">
       <div class="w-full max-w-2xl">
         <div v-if="chartData.selectedPoint" class="bg-primary/10 mb-4 p-3 rounded-lg text-sm">
           <strong>Clicked:</strong> {{ chartData.selectedPoint }}
@@ -210,7 +210,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Without Grid">
+    <Variant :title="useStoryLocale({ zh: '无网格', en: 'Without Grid' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -233,7 +233,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Without Legend">
+    <Variant :title="useStoryLocale({ zh: '无图例', en: 'Without Legend' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -258,7 +258,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Minimal">
+    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -279,7 +279,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant title="Dense Dataset">
+    <Variant :title="useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
