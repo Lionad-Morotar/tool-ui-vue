@@ -94,7 +94,7 @@ function handleAction(action: string) {
 
 <template>
   <Story title="XPost/All Variants">
-    <Variant title="Text Only">
+    <Variant :title="useStoryLocale({ zh: '纯文本', en: 'Text Only' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -117,7 +117,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Image">
+    <Variant :title="useStoryLocale({ zh: '含图片', en: 'With Image' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -145,7 +145,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Video">
+    <Variant :title="useStoryLocale({ zh: '含视频', en: 'With Video' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -173,7 +173,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Link Preview">
+    <Variant :title="useStoryLocale({ zh: '含链接预览', en: 'With Link Preview' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -204,7 +204,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Quoted Post">
+    <Variant :title="useStoryLocale({ zh: '引用帖子', en: 'Quoted Post' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -236,7 +236,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Quoted Post with Media">
+    <Variant :title="useStoryLocale({ zh: '含媒体的引用', en: 'Quoted Post with Media' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -272,7 +272,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Long Text">
+    <Variant :title="useStoryLocale({ zh: '长文本', en: 'Long Text' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -295,7 +295,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Unverified Author">
+    <Variant :title="useStoryLocale({ zh: '未验证作者', en: 'Unverified Author' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <x-post
@@ -317,7 +317,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-md">
         <x-post
           :post="{

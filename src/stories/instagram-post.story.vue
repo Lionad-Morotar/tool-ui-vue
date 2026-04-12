@@ -95,7 +95,7 @@ function handleAction(action: string) {
 
 <template>
   <Story title="InstagramPost/All Variants">
-    <Variant title="Single Image">
+    <Variant :title="useStoryLocale({ zh: '单图', en: 'Single Image' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -121,7 +121,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Multiple Images (2)">
+    <Variant :title="useStoryLocale({ zh: '多图 (2)', en: 'Multiple Images (2)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -147,7 +147,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Multiple Images (3)">
+    <Variant :title="useStoryLocale({ zh: '多图 (3)', en: 'Multiple Images (3)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -174,7 +174,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Multiple Images (4+)">
+    <Variant :title="useStoryLocale({ zh: '多图 (4+)', en: 'Multiple Images (4+)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -204,7 +204,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Video Post">
+    <Variant :title="useStoryLocale({ zh: '视频帖子', en: 'Video Post' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -230,7 +230,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Caption Only">
+    <Variant :title="useStoryLocale({ zh: '仅说明', en: 'Caption Only' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -251,7 +251,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Long Caption">
+    <Variant :title="useStoryLocale({ zh: '长说明', en: 'Long Caption' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -276,7 +276,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Unverified Author">
+    <Variant :title="useStoryLocale({ zh: '未验证作者', en: 'Unverified Author' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <instagram-post
@@ -301,7 +301,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-md">
         <instagram-post
           :post="{

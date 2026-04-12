@@ -99,7 +99,7 @@ function handleAction(action: string) {
 
 <template>
   <Story title="LinkedInPost/All Variants">
-    <Variant title="Text Only">
+    <Variant :title="useStoryLocale({ zh: '纯文本', en: 'Text Only' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -122,7 +122,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Image">
+    <Variant :title="useStoryLocale({ zh: '含图片', en: 'With Image' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -150,7 +150,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Video">
+    <Variant :title="useStoryLocale({ zh: '含视频', en: 'With Video' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -178,7 +178,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="With Link Preview">
+    <Variant :title="useStoryLocale({ zh: '含链接预览', en: 'With Link Preview' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -208,7 +208,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Long Post (Truncated)">
+    <Variant :title="useStoryLocale({ zh: '长帖子（截断）', en: 'Long Post (Truncated)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -231,7 +231,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Celebration Post">
+    <Variant :title="useStoryLocale({ zh: '庆祝帖子', en: 'Celebration Post' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -254,7 +254,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Without Headline">
+    <Variant :title="useStoryLocale({ zh: '无标题', en: 'Without Headline' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -275,7 +275,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Link Preview without Image">
+    <Variant :title="useStoryLocale({ zh: '无图链接预览', en: 'Link Preview without Image' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <linked-in-post
@@ -302,7 +302,7 @@ function handleAction(action: string) {
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-md">
         <linked-in-post
           :post="{

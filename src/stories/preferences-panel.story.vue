@@ -85,7 +85,7 @@ const prefs = ref({
 
 <template>
   <Story title="PreferencesPanel/All Variants">
-    <Variant title="Notification Settings">
+    <Variant :title="useStoryLocale({ zh: '通知设置', en: 'Notification Settings' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -121,7 +121,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="Appearance Settings">
+    <Variant :title="useStoryLocale({ zh: '外观设置', en: 'Appearance Settings' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -168,7 +168,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="With Custom Actions">
+    <Variant :title="useStoryLocale({ zh: '自定义操作', en: 'With Custom Actions' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -202,7 +202,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="All Control Types">
+    <Variant :title="useStoryLocale({ zh: '所有控件类型', en: 'All Control Types' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -267,7 +267,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="Receipt Mode - Success">
+    <Variant :title="useStoryLocale({ zh: '回执模式 - 成功', en: 'Receipt Mode - Success' })">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-receipt-success"
@@ -314,7 +314,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="Receipt Mode - With Errors">
+    <Variant :title="useStoryLocale({ zh: '回执模式 - 含错误', en: 'Receipt Mode - With Errors' })">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-receipt-error"
@@ -346,7 +346,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="Without Title">
+    <Variant :title="useStoryLocale({ zh: '无标题', en: 'Without Title' })">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-no-title"
@@ -372,7 +372,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant title="Without Section Headings">
+    <Variant :title="useStoryLocale({ zh: '无分区标题', en: 'Without Section Headings' })">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-no-headings"

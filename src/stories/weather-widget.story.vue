@@ -88,7 +88,7 @@ function getTimeOfDayValue(hour: number): number {
 
 <template>
   <Story title="WeatherWidget/All Variants">
-    <Variant title="Sunny">
+    <Variant :title="useStoryLocale({ zh: '晴天', en: 'Sunny' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -113,7 +113,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Cloudy">
+    <Variant :title="useStoryLocale({ zh: '多云', en: 'Cloudy' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -138,7 +138,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Rainy">
+    <Variant :title="useStoryLocale({ zh: '雨天', en: 'Rainy' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -163,7 +163,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Snowy">
+    <Variant :title="useStoryLocale({ zh: '雪天', en: 'Snowy' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -188,7 +188,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Thunderstorm">
+    <Variant :title="useStoryLocale({ zh: '雷暴', en: 'Thunderstorm' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -214,7 +214,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Celsius">
+    <Variant :title="useStoryLocale({ zh: '摄氏度', en: 'Celsius' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <weather-widget
@@ -239,7 +239,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Interactive - Weather Simulator">
+    <Variant :title="useStoryLocale({ zh: '交互 - 天气模拟器', en: 'Interactive - Weather Simulator' })">
       <div class="w-full max-w-sm">
         <div class="mb-4 space-y-3">
           <div class="flex flex-wrap gap-2">
@@ -287,7 +287,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="All Weather Conditions">
+    <Variant :title="useStoryLocale({ zh: '所有天气状况', en: 'All Weather Conditions' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="grid grid-cols-2 gap-4">
         <weather-widget
@@ -325,7 +325,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Time of Day - Lighting Simulation">
+    <Variant :title="useStoryLocale({ zh: '一天中的时间 - 光照模拟', en: 'Time of Day - Lighting Simulation' })">
       <div class="space-y-4">
         <div class="flex flex-wrap items-center gap-4">
           <div class="flex items-center gap-2">
@@ -390,7 +390,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Accessibility - Reduced Motion">
+    <Variant :title="useStoryLocale({ zh: '无障碍 - 减少动画', en: 'Accessibility - Reduced Motion' })">
       <div class="space-y-4">
         <div class="flex items-center gap-4">
           <label class="flex items-center gap-2 text-sm">
@@ -446,7 +446,7 @@ function getTimeOfDayValue(hour: number): number {
       </div>
     </Variant>
 
-    <Variant title="Effect Quality Settings">
+    <Variant :title="useStoryLocale({ zh: '特效质量设置', en: 'Effect Quality Settings' })">
       <div class="space-y-4">
         <div class="flex items-center gap-2">
           <span class="text-sm font-medium">Quality:</span>
