@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
+import { useStoryLocale } from './_shared/use-story-locale';
 
 // Load Tailwind CSS
 onMounted(() => {
