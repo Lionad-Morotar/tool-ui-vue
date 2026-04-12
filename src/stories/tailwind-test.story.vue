@@ -41,13 +41,13 @@ onMounted(() => {
 
 <template>
   <Story title="TailwindTest/Test">
-    <Variant title="With Tailwind">
+    <Variant :title="useStoryLocale({ zh: '含 Tailwind', en: 'With Tailwind' })">
       <div class="rounded-lg bg-gray-100 p-6">
         <h2 class="text-xl font-bold text-blue-600">Tailwind Test</h2>
         <p class="mt-2 text-gray-700">If you see styled text, Tailwind is working!</p>
       </div>
     </Variant>
-    <Variant title="Component">
+    <Variant :title="useStoryLocale({ zh: '组件', en: 'Component' })">
       <approval-card
         id="test-approval"
         title="Test Card"

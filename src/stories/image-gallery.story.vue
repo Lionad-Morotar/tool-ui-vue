@@ -71,7 +71,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
 
 <template>
   <Story title="ImageGallery/All Variants">
-    <Variant title="Grid Layout">
+    <Variant :title="useStoryLocale({ zh: '网格布局', en: 'Grid Layout' })">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <image-gallery
@@ -83,7 +83,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Waterfall Layout (Masonry)">
+    <Variant :title="useStoryLocale({ zh: '瀑布流布局（Masonry）', en: 'Waterfall Layout (Masonry)' })">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Portrait images (height > width) automatically span 2 rows
@@ -97,7 +97,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="With Titles">
+    <Variant :title="useStoryLocale({ zh: '含标题', en: 'With Titles' })">
       <div class="w-full max-w-2xl">
         <image-gallery
           id="image-gallery-titles"
@@ -106,7 +106,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="With Source Attribution">
+    <Variant :title="useStoryLocale({ zh: '含来源标注', en: 'With Source Attribution' })">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Images can include source information with optional links
@@ -120,7 +120,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Single Image">
+    <Variant :title="useStoryLocale({ zh: '单图', en: 'Single Image' })">
       <div class="w-full max-w-md">
         <image-gallery
           id="image-gallery-single"
@@ -129,7 +129,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Interactive - Lightbox Demo">
+    <Variant :title="useStoryLocale({ zh: '交互 - 灯箱演示', en: 'Interactive - Lightbox Demo' })">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Click count: {{ galleryState.clickCount }}
@@ -147,7 +147,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Different Image Counts - 2 Images">
+    <Variant :title="useStoryLocale({ zh: '不同图片数量 - 2 张', en: 'Different Image Counts - 2 Images' })">
       <div class="w-full max-w-md">
         <image-gallery
           id="image-gallery-2"
@@ -156,7 +156,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Different Image Counts - 9 Images">
+    <Variant :title="useStoryLocale({ zh: '不同图片数量 - 9 张', en: 'Different Image Counts - 9 Images' })">
       <div class="w-full max-w-2xl">
         <image-gallery
           id="image-gallery-9"
@@ -166,7 +166,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant title="Lightbox Features">
+    <Variant :title="useStoryLocale({ zh: '灯箱功能', en: 'Lightbox Features' })">
       <div class="w-full max-w-2xl space-y-4">
         <div class="space-y-2 text-sm text-muted-foreground">
           <p>The lightbox supports:</p>

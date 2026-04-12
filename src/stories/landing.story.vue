@@ -16,47 +16,53 @@ const subtitle = useStoryLocale({ zh: 'tool-ui-vue — 为 AI 工具调用设计
 const categories = [
   {
     id: 'data-display',
-    title: 'Data Display',
+    title: { zh: '数据展示', en: 'Data Display' },
     icon: BarChart3,
     components: ['Chart', 'DataTable', 'StatsDisplay', 'WeatherWidget'],
     href: '#/story/src-stories-chart-story-vue',
   },
   {
     id: 'code-terminal',
-    title: 'Code & Terminal',
+    title: { zh: '代码与终端', en: 'Code & Terminal' },
     icon: Terminal,
     components: ['CodeBlock', 'CodeDiff', 'Terminal'],
     href: '#/story/src-stories-code-block-story-vue',
   },
   {
     id: 'media',
-    title: 'Media',
+    title: { zh: '媒体', en: 'Media' },
     icon: ImageIcon,
     components: ['Audio', 'Image', 'ImageGallery', 'ItemCarousel', 'Video'],
     href: '#/story/src-stories-audio-story-vue',
   },
   {
     id: 'social',
-    title: 'Social',
+    title: { zh: '社交', en: 'Social' },
     icon: Share2,
     components: ['ApprovalCard', 'Citation', 'InstagramPost', 'LinkedInPost', 'LinkPreview', 'MessageDraft', 'XPost'],
     href: '#/story/src-stories-approval-card-story-vue',
   },
   {
     id: 'forms-input',
-    title: 'Forms & Input',
+    title: { zh: '表单与输入', en: 'Forms & Input' },
     icon: MousePointerClick,
     components: ['OptionList', 'ParameterSlider', 'PreferencesPanel'],
     href: '#/story/src-stories-option-list-story-vue',
   },
   {
     id: 'workflow',
-    title: 'Workflow',
+    title: { zh: '工作流', en: 'Workflow' },
     icon: Layers,
     components: ['GeoMap', 'Plan', 'ProgressTracker', 'QuestionFlow', 'OrderSummary'],
     href: '#/story/src-stories-geo-map-story-vue',
   },
 ];
+
+const heroTagline = useStoryLocale({ zh: '为 AI 工具调用设计的 Vue 3 组件', en: 'Vue 3 components for AI tool calls' });
+const heroCta = useStoryLocale({ zh: '开始使用', en: 'Get Started' });
+const browseByCategory = useStoryLocale({ zh: '按类别浏览', en: 'Browse by category' });
+const footerText = useStoryLocale({ zh: '由', en: 'Built by' });
+const footerViewOn = useStoryLocale({ zh: '在', en: 'View on' });
 </script>
 
 <template>
@@ -74,7 +80,7 @@ const categories = [
             tool-ui-vue
           </h1>
           <p class="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl">
-            Vue 3 components for AI tool calls
+            {{ heroTagline }}
           </p>
 
           <!-- Install command -->
@@ -87,7 +93,7 @@ const categories = [
               target="_parent"
               class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
             >
-              Get Started
+              {{ heroCta }}
             </a>
           </div>
         </div>
@@ -97,7 +103,7 @@ const categories = [
       <section class="px-6 pb-24 lg:px-8">
         <div class="mx-auto max-w-6xl">
           <h2 class="mb-10 text-center text-2xl font-semibold tracking-tight text-foreground">
-            Browse by category
+            {{ browseByCategory }}
           </h2>
 
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -112,7 +118,7 @@ const categories = [
                 <component :is="cat.icon" class="h-5 w-5" />
               </div>
               <h3 class="text-lg font-semibold text-card-foreground">
-                {{ cat.title }}
+                {{ useStoryLocale(cat.title) }}
               </h3>
               <p class="mt-2 flex flex-wrap gap-2">
                 <span
@@ -131,9 +137,9 @@ const categories = [
       <!-- Footer -->
       <footer class="border-t border-border px-6 py-10 text-center text-sm text-muted-foreground">
         <p>
-          Built by
+          {{ footerText }}
           <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar" target="_blank" rel="noopener noreferrer">Lionad-Morotar</a>
-          · View on
+          · {{ footerViewOn }}
           <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar/tool-ui-vue" target="_blank" rel="noopener noreferrer">GitHub</a>
         </p>
       </footer>
