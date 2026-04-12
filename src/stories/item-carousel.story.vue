@@ -48,7 +48,7 @@ function scroll(direction: 'left' | 'right') {
 
 <template>
   <Story title="ItemCarousel/All Variants">
-    <Variant title="Product Cards">
+    <Variant :title="useStoryLocale({ zh: '商品卡片', en: 'Product Cards' })">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <item-carousel
@@ -67,7 +67,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Without Images">
+    <Variant :title="useStoryLocale({ zh: '无图片', en: 'Without Images' })">
       <div class="w-full max-w-xl">
         <item-carousel
           id="carousel-no-images"
@@ -82,7 +82,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Minimal">
+    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
       <div class="w-full max-w-md">
         <item-carousel
           id="carousel-minimal"
@@ -95,7 +95,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Interactive - Click Items">
+    <Variant :title="useStoryLocale({ zh: '交互 - 点击项目', en: 'Interactive - Click Items' })">
       <div class="w-full max-w-2xl space-y-4">
         <p v-if="carouselState.selectedItem" class="rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
           Selected: {{ carouselState.items.find(i => i.id === carouselState.selectedItem)?.name }}
@@ -111,7 +111,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="With Actions">
+    <Variant :title="useStoryLocale({ zh: '含操作', en: 'With Actions' })">
       <div class="w-full max-w-2xl space-y-4">
         <div v-if="carouselState.actionLog.length > 0" class="rounded-md bg-muted p-3">
           <p class="mb-1 text-xs font-medium text-muted-foreground">Action Log:</p>
@@ -134,7 +134,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="With Multiple Action Variants">
+    <Variant :title="useStoryLocale({ zh: '含多种操作变体', en: 'With Multiple Action Variants' })">
       <div class="w-full max-w-2xl">
         <item-carousel
           id="carousel-action-variants"
@@ -151,7 +151,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Keyboard Navigation Demo">
+    <Variant :title="useStoryLocale({ zh: '键盘导航演示', en: 'Keyboard Navigation Demo' })">
       <div class="w-full max-w-2xl space-y-4">
         <div class="rounded-md bg-blue-50 p-3 text-sm text-blue-800 dark:bg-blue-950 dark:text-blue-200">
           <p class="font-medium">Keyboard Navigation:</p>
@@ -172,7 +172,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Touch/Swipe Demo">
+    <Variant :title="useStoryLocale({ zh: '触摸/滑动演示', en: 'Touch/Swipe Demo' })">
       <div class="w-full max-w-2xl space-y-4">
         <div class="rounded-md bg-green-50 p-3 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
           <p class="font-medium">Touch Gestures:</p>
@@ -193,7 +193,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Programmatic Control">
+    <Variant :title="useStoryLocale({ zh: '编程控制', en: 'Programmatic Control' })">
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex items-center gap-2">
           <span class="text-sm font-medium">Current Slide: {{ carouselState.currentSlide + 1 }} / {{ carouselState.items.length }}</span>
@@ -236,7 +236,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="Empty State">
+    <Variant :title="useStoryLocale({ zh: '空状态', en: 'Empty State' })">
       <div class="w-full max-w-2xl">
         <item-carousel
           id="carousel-empty"
@@ -247,7 +247,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant title="ItemCard - Standalone">
+    <Variant :title="useStoryLocale({ zh: 'ItemCard - 独立', en: 'ItemCard - Standalone' })">
       <div class="flex flex-wrap gap-4 p-4">
         <div class="w-52">
           <item-card

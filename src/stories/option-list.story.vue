@@ -68,7 +68,7 @@ const interactiveState = reactive({
 
 <template>
   <Story title="OptionList/All Variants">
-    <Variant title="Single Select">
+    <Variant :title="useStoryLocale({ zh: '单选', en: 'Single Select' })">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-sm">
         <option-list
@@ -84,7 +84,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Multi Select">
+    <Variant :title="useStoryLocale({ zh: '多选', en: 'Multi Select' })">
       <div class="w-full max-w-sm">
         <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
         <option-list
@@ -102,7 +102,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="With Actions">
+    <Variant :title="useStoryLocale({ zh: '含操作', en: 'With Actions' })">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-actions"
@@ -120,7 +120,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="With Disabled Options">
+    <Variant :title="useStoryLocale({ zh: '含禁用选项', en: 'With Disabled Options' })">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-disabled"
@@ -134,7 +134,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Receipt State (Single)">
+    <Variant :title="useStoryLocale({ zh: '回执状态（单项）', en: 'Receipt State (Single)' })">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-receipt-single"
@@ -149,7 +149,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Receipt State (Multi)">
+    <Variant :title="useStoryLocale({ zh: '回执状态（多项）', en: 'Receipt State (Multi)' })">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-receipt-multi"
@@ -164,7 +164,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-interactive"

@@ -65,7 +65,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
 
 <template>
   <Story title="OrderSummary/All Variants">
-    <Variant title="Summary">
+    <Variant :title="useStoryLocale({ zh: '订单摘要', en: 'Summary' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -101,7 +101,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="With Discount">
+    <Variant :title="useStoryLocale({ zh: '含折扣', en: 'With Discount' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -129,7 +129,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Receipt">
+    <Variant :title="useStoryLocale({ zh: '收据', en: 'Receipt' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -166,7 +166,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Receipt Without Images">
+    <Variant :title="useStoryLocale({ zh: '无图收据', en: 'Receipt Without Images' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -201,7 +201,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Single Item">
+    <Variant :title="useStoryLocale({ zh: '单项', en: 'Single Item' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -226,7 +226,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Many Items">
+    <Variant :title="useStoryLocale({ zh: '多项', en: 'Many Items' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -249,7 +249,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Different Currency (EUR)">
+    <Variant :title="useStoryLocale({ zh: '不同货币（欧元）', en: 'Different Currency (EUR)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary
@@ -275,7 +275,7 @@ import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-loca
       </div>
     </Variant>
 
-    <Variant title="Malformed Payload (Empty Items)">
+    <Variant :title="useStoryLocale({ zh: '异常数据（空项目）', en: 'Malformed Payload (Empty Items)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <order-summary

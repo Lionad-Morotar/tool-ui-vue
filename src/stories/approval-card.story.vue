@@ -72,7 +72,7 @@ function resetChoice() {
 
 <template>
   <Story title="ApprovalCard/Basic">
-    <Variant title="Default">
+    <Variant :title="useStoryLocale({ zh: '默认', en: 'Default' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-basic"
@@ -84,7 +84,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Destructive">
+    <Variant :title="useStoryLocale({ zh: '破坏性操作', en: 'Destructive' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-destructive"
@@ -97,7 +97,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="With Metadata">
+    <Variant :title="useStoryLocale({ zh: '含元数据', en: 'With Metadata' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-metadata"
@@ -114,7 +114,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Minimal">
+    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-minimal"
@@ -122,7 +122,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Receipt State (Approved)">
+    <Variant :title="useStoryLocale({ zh: '回执状态（已批准）', en: 'Receipt State (Approved)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-approved"
@@ -132,7 +132,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Receipt State (Denied)">
+    <Variant :title="useStoryLocale({ zh: '回执状态（已拒绝）', en: 'Receipt State (Denied)' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-denied"
@@ -142,7 +142,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Custom Labels">
+    <Variant :title="useStoryLocale({ zh: '自定义标签', en: 'Custom Labels' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-custom"
@@ -154,7 +154,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <approval-card
           id="approval-card-interactive"

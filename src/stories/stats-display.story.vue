@@ -5,7 +5,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
 
 <template>
   <Story title="StatsDisplay/All Variants">
-    <Variant title="Basic">
+    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -20,7 +20,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="With Trends">
+    <Variant :title="useStoryLocale({ zh: '含趋势', en: 'With Trends' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -37,7 +37,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="With Sparklines">
+    <Variant :title="useStoryLocale({ zh: '含迷你图', en: 'With Sparklines' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -94,7 +94,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="Single Stat">
+    <Variant :title="useStoryLocale({ zh: '单个统计', en: 'Single Stat' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <stats-display
@@ -116,7 +116,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="Currency Formats">
+    <Variant :title="useStoryLocale({ zh: '货币格式', en: 'Currency Formats' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -132,7 +132,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="Number Formats">
+    <Variant :title="useStoryLocale({ zh: '数字格式', en: 'Number Formats' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -148,7 +148,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="Percent Formats">
+    <Variant :title="useStoryLocale({ zh: '百分比格式', en: 'Percent Formats' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -164,7 +164,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant title="Trend Indicators">
+    <Variant :title="useStoryLocale({ zh: '趋势指示器', en: 'Trend Indicators' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display

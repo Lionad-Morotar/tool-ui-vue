@@ -30,7 +30,7 @@ function clearEvents() {
 
 <template>
   <Story title="Audio/All Variants">
-    <Variant title="Basic">
+    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -41,7 +41,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant title="With Metadata">
+    <Variant :title="useStoryLocale({ zh: '含元数据', en: 'With Metadata' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -56,7 +56,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant title="Compact Variant">
+    <Variant :title="useStoryLocale({ zh: '紧凑变体', en: 'Compact Variant' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -71,7 +71,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant title="Compact Without Artwork">
+    <Variant :title="useStoryLocale({ zh: '无封面紧凑', en: 'Compact Without Artwork' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -85,7 +85,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant title="With Event Logging" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })" auto-props-disabled>
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
@@ -123,7 +123,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
           <Audio

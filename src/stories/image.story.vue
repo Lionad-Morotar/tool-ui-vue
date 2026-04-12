@@ -19,7 +19,7 @@ const interactiveState = reactive({
 
 <template>
   <Story title="Image/All Variants">
-    <Variant title="Basic">
+    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <Image
@@ -31,7 +31,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="With Title">
+    <Variant :title="useStoryLocale({ zh: '含标题', en: 'With Title' })">
       <div class="w-full max-w-md">
         <Image
           id="image-title"
@@ -43,7 +43,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Square Ratio">
+    <Variant :title="useStoryLocale({ zh: '方形比例', en: 'Square Ratio' })">
       <div class="w-full max-w-sm">
         <Image
           id="image-square"
@@ -55,7 +55,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Video Ratio">
+    <Variant :title="useStoryLocale({ zh: '视频比例', en: 'Video Ratio' })">
       <div class="w-full max-w-lg">
         <Image
           id="image-video"
@@ -67,7 +67,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="With Link">
+    <Variant :title="useStoryLocale({ zh: '含链接', en: 'With Link' })">
       <div class="w-full max-w-md">
         <Image
           id="image-link"
@@ -80,7 +80,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="With Source">
+    <Variant :title="useStoryLocale({ zh: '含来源', en: 'With Source' })">
       <div class="w-full max-w-md">
         <Image
           id="image-source"
@@ -93,7 +93,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Object Fit: Contain">
+    <Variant :title="useStoryLocale({ zh: '缩放模式: 包含', en: 'Object Fit: Contain' })">
       <div class="w-full max-w-md">
         <Image
           id="image-contain"
@@ -107,7 +107,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant title="Interactive" auto-props-disabled>
+    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
       <div class="w-full max-w-md">
         <Image
           v-bind="interactiveState"

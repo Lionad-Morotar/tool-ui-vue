@@ -72,7 +72,7 @@ function cycleStatus(index: number) {
 
 <template>
   <Story title="Plan/All Variants">
-    <Variant title="Basic Todo List">
+    <Variant :title="useStoryLocale({ zh: '基础待办列表', en: 'Basic Todo List' })">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <plan
@@ -90,7 +90,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="With Descriptions">
+    <Variant :title="useStoryLocale({ zh: '含描述', en: 'With Descriptions' })">
       <div class="w-full max-w-md">
         <plan
           id="plan-descriptions"
@@ -106,7 +106,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="All Statuses">
+    <Variant :title="useStoryLocale({ zh: '全部状态', en: 'All Statuses' })">
       <div class="w-full max-w-md">
         <plan
           id="plan-all-statuses"
@@ -121,7 +121,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="All Complete">
+    <Variant :title="useStoryLocale({ zh: '全部完成', en: 'All Complete' })">
       <div class="w-full max-w-md">
         <plan
           id="plan-complete"
@@ -137,7 +137,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="Interactive - Click to Cycle Status">
+    <Variant :title="useStoryLocale({ zh: '交互 - 点击切换状态', en: 'Interactive - Click to Cycle Status' })">
       <div class="w-full max-w-md">
         <p class="mb-4 text-sm text-muted-foreground">Click on any todo item to cycle through statuses</p>
         <plan
@@ -150,7 +150,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="With Progress">
+    <Variant :title="useStoryLocale({ zh: '含进度', en: 'With Progress' })">
       <div class="w-full max-w-md">
         <plan
           id="plan-progress"
@@ -167,7 +167,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant title="Minimal">
+    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
       <div class="w-full max-w-md">
         <plan
           id="plan-minimal"

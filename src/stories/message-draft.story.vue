@@ -113,7 +113,7 @@ function resetSlack() {
 
 <template>
   <Story title="MessageDraft/All Variants">
-    <Variant title="Email Draft">
+    <Variant :title="useStoryLocale({ zh: '邮件草稿', en: 'Email Draft' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <button
@@ -140,7 +140,7 @@ Thanks!"
       </div>
     </Variant>
 
-    <Variant title="Email with CC/BCC">
+    <Variant :title="useStoryLocale({ zh: '含抄送/密送邮件', en: 'Email with CC/BCC' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -160,7 +160,7 @@ Best regards"
       </div>
     </Variant>
 
-    <Variant title="Email with Long Body">
+    <Variant :title="useStoryLocale({ zh: '含长正文邮件', en: 'Email with Long Body' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -201,7 +201,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant title="Slack Channel">
+    <Variant :title="useStoryLocale({ zh: 'Slack 频道', en: 'Slack Channel' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <button
@@ -223,7 +223,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant title="Slack DM">
+    <Variant :title="useStoryLocale({ zh: 'Slack 私聊', en: 'Slack DM' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <message-draft
@@ -235,7 +235,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant title="Sent Receipt">
+    <Variant :title="useStoryLocale({ zh: '已发送回执', en: 'Sent Receipt' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -253,7 +253,7 @@ Best regards"
       </div>
     </Variant>
 
-    <Variant title="Cancelled">
+    <Variant :title="useStoryLocale({ zh: '已取消', en: 'Cancelled' })">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <p class="mb-2 text-sm text-muted-foreground">
