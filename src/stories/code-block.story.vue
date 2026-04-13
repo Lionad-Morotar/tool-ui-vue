@@ -131,9 +131,6 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
           </table>
         </div>
       </div>
-    </Variant>
-
-    <Variant :title="supportedLanguages">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' }) }}</h2>
