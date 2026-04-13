@@ -2,13 +2,14 @@
 import { reactive } from 'vue';
 import { Chart } from '@lionad/vtu-components';
 import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
-const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
-const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
-const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
-const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
-const headerPayload = useStoryLocale({ zh: '载荷', en: 'Payload' })
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const headerPayload = Payload
 
 const chartData = reactive({
   selectedPoint: null as string | null,
@@ -18,90 +19,155 @@ function handleDataPointClick(point: ChartDataPoint) {
   chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
 }
 
-const lineChart = useStoryLocale({ zh: '折线图', en: 'Line Chart' })
-const barChart = useStoryLocale({ zh: '柱状图', en: 'Bar Chart' })
-const multiSeries = useStoryLocale({ zh: '多系列', en: 'Multi-Series' })
-const withCustomColors = useStoryLocale({ zh: '自定义颜色', en: 'With Custom Colors' })
-const interactiveClickDataPoints = useStoryLocale({ zh: '交互 - 点击数据点', en: 'Interactive - Click Data Points' })
-const withoutGrid = useStoryLocale({ zh: '无网格', en: 'Without Grid' })
-const withoutLegend = useStoryLocale({ zh: '无图例', en: 'Without Legend' })
-const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
-const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset' })
+const lineChart = LineChart
+const barChart = BarChart
+const multiSeries = MultiSeries
+const withCustomColors = WithCustomColors
+const interactiveClickDataPoints = InteractiveClickData
+const withoutGrid = WithoutGrid
+const withoutLegend = WithoutLegend
+const minimal = Minimal
+const denseDataset = DenseDataset
 
 // Line chart
-const systemPerfTitle = useStoryLocale({ zh: '系统性能', en: 'System Performance' })
-const systemPerfDesc = useStoryLocale({ zh: 'CPU 和内存使用率随时间变化', en: 'CPU and Memory usage over time' })
-const cpuLabel = useStoryLocale({ zh: 'CPU %', en: 'CPU %' })
-const memoryLabel = useStoryLocale({ zh: '内存 %', en: 'Memory %' })
+const systemPerfTitle = SystemPerformance
+const systemPerfDesc = CPUAndMemory
+const cpuLabel = CPU
+const memoryLabel = Memory
 
 // Bar chart
-const monthlyRevTitle = useStoryLocale({ zh: '月度收入', en: 'Monthly Revenue' })
-const monthlyRevDesc = useStoryLocale({ zh: '收入 vs 支出 (2024)', en: 'Revenue vs Expenses (2024)' })
-const revenueLabel = useStoryLocale({ zh: '收入', en: 'Revenue' })
-const expensesLabel = useStoryLocale({ zh: '支出', en: 'Expenses' })
+const monthlyRevTitle = MonthlyRevenue
+const monthlyRevDesc = RevenueVsExpenses
+const revenueLabel = Revenue
+const expensesLabel = Expenses
 
 // Multi-series
-const trafficSourcesTitle = useStoryLocale({ zh: '流量来源', en: 'Traffic Sources' })
-const organicLabel = useStoryLocale({ zh: '自然流量', en: 'Organic' })
-const paidLabel = useStoryLocale({ zh: '付费流量', en: 'Paid' })
-const socialLabel = useStoryLocale({ zh: '社交媒体', en: 'Social' })
+const trafficSourcesTitle = TrafficSources
+const organicLabel = Organic
+const paidLabel = Paid
+const socialLabel = Social
 
 // Custom colors
-const perfMetricsTitle = useStoryLocale({ zh: '性能指标', en: 'Performance Metrics' })
-const speedLabel = useStoryLocale({ zh: '速度', en: 'Speed' })
-const qualityLabel = useStoryLocale({ zh: '质量', en: 'Quality' })
-const reliabilityLabel = useStoryLocale({ zh: '可靠性', en: 'Reliability' })
-const usabilityLabel = useStoryLocale({ zh: '可用性', en: 'Usability' })
+const perfMetricsTitle = PerformanceMetrics
+const speedLabel = Speed
+const qualityLabel = Quality
+const reliabilityLabel = Reliability
+const usabilityLabel = Usability
 
 // Interactive
-const clickableChartTitle = useStoryLocale({ zh: '可点击图表', en: 'Clickable Chart' })
-const clickableChartDesc = useStoryLocale({ zh: '点击任意数据点', en: 'Click on any data point' })
-const clickedText = useStoryLocale({ zh: '已点击:', en: 'Clicked:' })
+const clickableChartTitle = ClickableChart
+const clickableChartDesc = ClickOnAny
+const clickedText = Clicked
 
 // Without grid
-const noGridTitle = useStoryLocale({ zh: '无网格线', en: 'No Grid Lines' })
-const noGridDesc = useStoryLocale({ zh: '干净无网格的图表', en: 'Clean chart without grid' })
-const salesLabel = useStoryLocale({ zh: '销售额', en: 'Sales' })
+const noGridTitle = NoGridLines
+const noGridDesc = CleanChartWithout
+const salesLabel = Sales
 
 // Without legend
-const noLegendTitle = useStoryLocale({ zh: '无图例', en: 'No Legend' })
-const noLegendDesc = useStoryLocale({ zh: '紧凑无图例图表', en: 'Compact chart without legend' })
-const visitsLabel = useStoryLocale({ zh: '访问量', en: 'Visits' })
+const noLegendTitle = NoLegend
+const noLegendDesc = CompactChartWithout
+const visitsLabel = Visits
 
 // Dense dataset
-const financialTrendsTitle = useStoryLocale({ zh: '24 个月财务趋势', en: '24-Month Financial Trends' })
-const financialTrendsDesc = useStoryLocale({ zh: '24 个数据点的高密度数据集', en: 'High-density dataset with 24 points' })
-const costLabel = useStoryLocale({ zh: '成本', en: 'Cost' })
-const valueLabel = useStoryLocale({ zh: '值', en: 'Value' })
+const financialTrendsTitle = 24MonthFinancial
+const financialTrendsDesc = HighDensityDataset
+const costLabel = Cost
+const valueLabel = Value
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Payload = useStoryLocale('content.payload', messages)
+const LineChart = useStoryLocale('content.lineChart', messages)
+const BarChart = useStoryLocale('content.barChart', messages)
+const MultiSeries = useStoryLocale('content.multiSeries', messages)
+const WithCustomColors = useStoryLocale('content.withCustomColors', messages)
+const InteractiveClickData = useStoryLocale('content.interactiveClickData', messages)
+const WithoutGrid = useStoryLocale('content.withoutGrid', messages)
+const WithoutLegend = useStoryLocale('content.withoutLegend', messages)
+const Minimal = useStoryLocale('content.minimal', messages)
+const DenseDataset = useStoryLocale('content.denseDataset', messages)
+const SystemPerformance = useStoryLocale('content.systemPerformance', messages)
+const CPUAndMemory = useStoryLocale('content.cPUAndMemory', messages)
+const CPU = useStoryLocale('content.cPU', messages)
+const Memory = useStoryLocale('content.memory', messages)
+const MonthlyRevenue = useStoryLocale('content.monthlyRevenue', messages)
+const RevenueVsExpenses = useStoryLocale('content.revenueVsExpenses', messages)
+const Revenue = useStoryLocale('content.revenue', messages)
+const Expenses = useStoryLocale('content.expenses', messages)
+const TrafficSources = useStoryLocale('content.trafficSources', messages)
+const Organic = useStoryLocale('content.organic', messages)
+const Paid = useStoryLocale('content.paid', messages)
+const Social = useStoryLocale('content.social', messages)
+const PerformanceMetrics = useStoryLocale('content.performanceMetrics', messages)
+const Speed = useStoryLocale('content.speed', messages)
+const Quality = useStoryLocale('content.quality', messages)
+const Reliability = useStoryLocale('content.reliability', messages)
+const Usability = useStoryLocale('content.usability', messages)
+const ClickableChart = useStoryLocale('content.clickableChart', messages)
+const ClickOnAny = useStoryLocale('content.clickOnAny', messages)
+const Clicked = useStoryLocale('content.clicked', messages)
+const NoGridLines = useStoryLocale('content.noGridLines', messages)
+const CleanChartWithout = useStoryLocale('content.cleanChartWithout', messages)
+const Sales = useStoryLocale('content.sales', messages)
+const NoLegend = useStoryLocale('content.noLegend', messages)
+const CompactChartWithout = useStoryLocale('content.compactChartWithout', messages)
+const Visits = useStoryLocale('content.visits', messages)
+const 24MonthFinancial = useStoryLocale('content.24MonthFinancial', messages)
+const HighDensityDataset = useStoryLocale('content.highDensityDataset', messages)
+const Cost = useStoryLocale('content.cost', messages)
+const Value = useStoryLocale('content.value', messages)
+const ChartComponent = useStoryLocale('content.chartComponent', messages)
+const DataVisualizationComponent = useStoryLocale('content.dataVisualizationComponent', messages)
+const Props = useStoryLocale('content.props', messages)
+const UniqueIdentifierFor = useStoryLocale('content.uniqueIdentifierFor', messages)
+const ChartType = useStoryLocale('content.chartType', messages)
+const ChartTitleDisplayed = useStoryLocale('content.chartTitleDisplayed', messages)
+const ChartDescriptionDisplayed = useStoryLocale('content.chartDescriptionDisplayed', messages)
+const DataArrayFor = useStoryLocale('content.dataArrayFor', messages)
+const KeyForX = useStoryLocale('content.keyForX', messages)
+const ArrayOfSeries = useStoryLocale('content.arrayOfSeries', messages)
+const CustomColorsFor = useStoryLocale('content.customColorsFor', messages)
+const WhetherToShow = useStoryLocale('content.whetherToShow', messages)
+const WhetherToShow1 = useStoryLocale('content.whetherToShow1', messages)
+const CSSClassesFor = useStoryLocale('content.cSSClassesFor', messages)
+const Emits = useStoryLocale('content.emits', messages)
+const EmittedWhenA = useStoryLocale('content.emittedWhenA', messages)
+const Slots = useStoryLocale('content.slots', messages)
+const ThisComponentDoes = useStoryLocale('content.thisComponentDoes', messages)
+const ChartSeriesType = useStoryLocale('content.chartSeriesType', messages)
+const CSSVariables = useStoryLocale('content.cSSVariables', messages)
+const TheChartUses = useStoryLocale('content.theChartUses', messages)
 </script>
 
 <template>
   <Story title="Chart/All Variants">
     <template #docs>
-      <h2>{{ useStoryLocale({ zh: 'Chart 组件', en: 'Chart Component' }) }}</h2>
-      <p>{{ useStoryLocale({ zh: '支持柱状图和折线图的数据可视化组件，带交互功能。', en: 'Data visualization component supporting bar and line charts with interactive features.' }) }}</p>
+      <h2>{{ ChartComponent }}</h2>
+      <p>{{ DataVisualizationComponent }}</p>
 
-      <h3>{{ useStoryLocale({ zh: '属性', en: 'Props' }) }}</h3>
+      <h3>{{ Props }}</h3>
       <table class="story-table">
         <thead>
           <tr><th>{{ headerName }}</th><th>{{ headerType }}</th><th>{{ headerDefault }}</th><th>{{ headerDesc }}</th></tr>
         </thead>
         <tbody>
-          <tr><td>id</td><td>string</td><td>required</td><td>{{ useStoryLocale({ zh: '图表的唯一标识符', en: 'Unique identifier for the chart' }) }}</td></tr>
-          <tr><td>type</td><td>'bar' | 'line'</td><td>required</td><td>{{ useStoryLocale({ zh: '图表类型', en: 'Chart type' }) }}</td></tr>
-          <tr><td>title</td><td>string</td><td>undefined</td><td>{{ useStoryLocale({ zh: '显示的图表标题', en: 'Chart title displayed in header' }) }}</td></tr>
-          <tr><td>description</td><td>string</td><td>undefined</td><td>{{ useStoryLocale({ zh: '显示的图表描述', en: 'Chart description displayed in header' }) }}</td></tr>
-          <tr><td>data</td><td>Record&lt;string, unknown>[]</td><td>required</td><td>{{ useStoryLocale({ zh: '图表数据数组', en: 'Data array for the chart' }) }}</td></tr>
-          <tr><td>xKey</td><td>string</td><td>required</td><td>{{ useStoryLocale({ zh: 'x 轴数据的键', en: 'Key for x-axis values in data' }) }}</td></tr>
-          <tr><td>series</td><td>ChartSeries[]</td><td>required</td><td>{{ useStoryLocale({ zh: '系列配置数组', en: 'Array of series configurations' }) }}</td></tr>
-          <tr><td>colors</td><td>string[]</td><td>undefined</td><td>{{ useStoryLocale({ zh: '系列自定义颜色（默认 CSS 变量）', en: 'Custom colors for series (defaults to CSS vars)' }) }}</td></tr>
-          <tr><td>showLegend</td><td>boolean</td><td>false</td><td>{{ useStoryLocale({ zh: '是否显示图例', en: 'Whether to show the legend' }) }}</td></tr>
-          <tr><td>showGrid</td><td>boolean</td><td>true</td><td>{{ useStoryLocale({ zh: '是否显示网格线', en: 'Whether to show grid lines' }) }}</td></tr>
-          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>{{ useStoryLocale({ zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' }) }}</td></tr>
+          <tr><td>id</td><td>string</td><td>required</td><td>{{ UniqueIdentifierFor }}</td></tr>
+          <tr><td>type</td><td>'bar' | 'line'</td><td>required</td><td>{{ ChartType }}</td></tr>
+          <tr><td>title</td><td>string</td><td>undefined</td><td>{{ ChartTitleDisplayed }}</td></tr>
+          <tr><td>description</td><td>string</td><td>undefined</td><td>{{ ChartDescriptionDisplayed }}</td></tr>
+          <tr><td>data</td><td>Record&lt;string, unknown>[]</td><td>required</td><td>{{ DataArrayFor }}</td></tr>
+          <tr><td>xKey</td><td>string</td><td>required</td><td>{{ KeyForX }}</td></tr>
+          <tr><td>series</td><td>ChartSeries[]</td><td>required</td><td>{{ ArrayOfSeries }}</td></tr>
+          <tr><td>colors</td><td>string[]</td><td>undefined</td><td>{{ CustomColorsFor }}</td></tr>
+          <tr><td>showLegend</td><td>boolean</td><td>false</td><td>{{ WhetherToShow }}</td></tr>
+          <tr><td>showGrid</td><td>boolean</td><td>true</td><td>{{ WhetherToShow1 }}</td></tr>
+          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>{{ CSSClassesFor }}</td></tr>
         </tbody>
       </table>
 
-      <h3>{{ useStoryLocale({ zh: '事件', en: 'Emits' }) }}</h3>
+      <h3>{{ Emits }}</h3>
       <table class="story-table">
         <thead>
           <tr><th>{{ headerName }}</th><th>{{ headerPayload }}</th><th>{{ headerDesc }}</th></tr>
@@ -110,23 +176,23 @@ const valueLabel = useStoryLocale({ zh: '值', en: 'Value' })
           <tr>
             <td>dataPointClick</td>
             <td>{ seriesKey, seriesLabel, xValue, yValue, index, payload }</td>
-            <td>{{ useStoryLocale({ zh: '点击数据点时触发', en: 'Emitted when a data point is clicked' }) }}</td>
+            <td>{{ EmittedWhenA }}</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>{{ useStoryLocale({ zh: '插槽', en: 'Slots' }) }}</h3>
-      <p>{{ useStoryLocale({ zh: '此组件不暴露任何插槽。', en: 'This component does not expose any slots.' }) }}</p>
+      <h3>{{ Slots }}</h3>
+      <p>{{ ThisComponentDoes }}</p>
 
-      <h3>{{ useStoryLocale({ zh: 'ChartSeries 类型', en: 'ChartSeries Type' }) }}</h3>
+      <h3>{{ ChartSeriesType }}</h3>
       <pre><code>{
   key: string;      // Unique key for the series
   label: string;    // Display label
   color?: string;   // Optional custom color
 }</code></pre>
 
-      <h3>{{ useStoryLocale({ zh: 'CSS 变量', en: 'CSS Variables' }) }}</h3>
-      <p>{{ useStoryLocale({ zh: 'Chart 使用以下 CSS 变量作为默认颜色：', en: 'The chart uses the following CSS variables for default colors:' }) }}</p>
+      <h3>{{ CSSVariables }}</h3>
+      <p>{{ TheChartUses }}</p>
       <ul>
         <li><code>--chart-1</code> through <code>--chart-5</code> - Default series colors</li>
       </ul>
