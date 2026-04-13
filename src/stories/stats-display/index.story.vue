@@ -1,8 +1,23 @@
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import { StatsDisplay } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const StatsDisplayPropsTitle = useStoryLocale('content.statsDisplayProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = StatsDisplayPropsTitle
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basic = useStoryLocale('content.basic', messages)
@@ -45,20 +60,6 @@ const costDownIsGoodLabel = useStoryLocale('content.costDownIsGoodLabel', messag
 const neutralChangeLabel = useStoryLocale('content.neutralChangeLabel', messages)
 const errorsUpIsBadLabel = useStoryLocale('content.errorsUpIsBadLabel', messages)
 
-// Stats labels
-
-// With trends
-
-// With sparklines
-
-// Currency
-
-// Number formats
-
-// Percent formats
-
-// Trend indicators
-
 // Currency format stats
 const currencyStats = computed<any[]>(() => [
   { key: 'usd', label: usdLabel.value, value: 125000, format: { kind: 'currency', currency: 'USD', decimals: 0 } },
@@ -66,6 +67,17 @@ const currencyStats = computed<any[]>(() => [
   { key: 'gbp', label: gbpLabel.value, value: 75000, format: { kind: 'currency', currency: 'GBP', decimals: 0 } },
   { key: 'jpy', label: jpyLabel.value, value: 15000000, format: { kind: 'currency', currency: 'JPY', decimals: 0 } },
 ])
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'role', type: "'information' | 'decision' | 'control' | 'state' | 'composite'", description: { zh: '组件的 ARIA 角色', en: 'ARIA role of the component' } },
+  { name: 'title', type: 'string', description: { zh: '统计卡片的标题', en: 'Title of the stats display' } },
+  { name: 'description', type: 'string', description: { zh: '统计卡片的描述', en: 'Description of the stats display' } },
+  { name: 'stats', type: 'StatItem[]', required: true, description: { zh: '统计数据项数组', en: 'Array of statistical items' } },
+  { name: 'css', type: '{ root?: string; header?: string; stat?: string; sparkline?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+  { name: 'locale', type: 'string', description: { zh: '用于数字格式化的本地化字符串', en: 'Locale string for number formatting' } },
+]
 </script>
 
 <template>
@@ -237,6 +249,33 @@ const currencyStats = computed<any[]>(() => [
             { key: 'up-bad', label: errorsUpIsBadLabel, value: 23, diff: { value: 8, decimals: 0, upIsPositive: false } },
           ]"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default ?? '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

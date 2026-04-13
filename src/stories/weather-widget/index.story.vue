@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { reactive, computed, type ComputedRef } from 'vue';
 import { WeatherWidget } from '@lionad/vtu-components';
@@ -5,12 +6,24 @@ import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const WeatherWidgetProps = useStoryLocale('content.weatherWidgetProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = WeatherWidgetProps
+
 const locLA = useStoryLocale('content.locLA', messages)
 const locSeattle = useStoryLocale('content.locSeattle', messages)
 const locLondon = useStoryLocale('content.locLondon', messages)
 const locDenver = useStoryLocale('content.locDenver', messages)
-const locMiami = useStoryLocale('content.locMiami', messages)
-const locTokyo = useStoryLocale('content.locTokyo', messages)
 const locPhoenix = useStoryLocale('content.locPhoenix', messages)
 const locSF = useStoryLocale('content.locSF', messages)
 const locChicago = useStoryLocale('content.locChicago', messages)
@@ -47,8 +60,6 @@ const sunny = useStoryLocale('content.sunny', messages)
 const cloudy = useStoryLocale('content.cloudy', messages)
 const rainy = useStoryLocale('content.rainy', messages)
 const snowy = useStoryLocale('content.snowy', messages)
-const thunderstorm = useStoryLocale('content.thunderstorm', messages)
-const celsius = useStoryLocale('content.celsius', messages)
 const interactiveWeatherSimulator = useStoryLocale('content.interactiveWeatherSimulator', messages)
 const allWeatherConditions = useStoryLocale('content.allWeatherConditions', messages)
 const timeOfDayLightingSimulation = useStoryLocale('content.timeOfDayLightingSimulation', messages)
@@ -141,6 +152,18 @@ function getTimeOfDayValue(hour: number): number {
   return hour / 24;
 }
 
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'location', type: 'WeatherWidgetLocation', required: true, description: { zh: '位置信息（名称、坐标等）', en: 'Location information (name, coordinates, etc.)' } },
+  { name: 'units', type: '{ temperature: TemperatureUnit }', required: true, description: { zh: '温度单位（celsius 或 fahrenheit）', en: 'Temperature unit (celsius or fahrenheit)' } },
+  { name: 'current', type: 'WeatherWidgetCurrent', required: true, description: { zh: '当前天气数据', en: 'Current weather data' } },
+  { name: 'forecast', type: 'ForecastDay[]', required: true, description: { zh: '未来几天预报数据', en: 'Daily forecast data' } },
+  { name: 'time', type: 'WeatherWidgetTime', description: { zh: '时间配置（可选）', en: 'Time configuration (optional)' } },
+  { name: 'updatedAt', type: 'string', description: { zh: '最后更新时间（ISO 8601）', en: 'Last updated time (ISO 8601)' } },
+  { name: 'css', type: '{ root?: string; header?: string; current?: string; forecast?: string; canvas?: string; overlay?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+  { name: 'effects', type: 'EffectSettings', description: { zh: '特效设置（启用、质量、减少动画）', en: 'Effect settings (enabled, quality, reduced motion)' } },
+]
 </script>
 
 <template>
@@ -239,57 +262,6 @@ function getTimeOfDayValue(hour: number): number {
             { label: dayThu, conditionCode: 'partly-cloudy', tempMin: 16, tempMax: 33 },
             { label: dayFri, conditionCode: 'clear', tempMin: 18, tempMax: 35 },
             { label: daySat, conditionCode: 'snow', tempMin: 15, tempMax: 29 },
-          ]"
-          :updated-at="new Date().toISOString()"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="thunderstorm">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-sm">
-        <weather-widget
-          id="weather-storm"
-          :location="{ name: locMiami }"
-          :units="{ temperature: 'fahrenheit' }"
-          :current="{
-            conditionCode: 'thunderstorm',
-            temperature: 85,
-            tempMin: 78,
-            tempMax: 90,
-          }"
-          :forecast="[
-            { label: dayTue, conditionCode: 'thunderstorm', tempMin: 76, tempMax: 88 },
-            { label: dayWed, conditionCode: 'heavy-rain', tempMin: 75, tempMax: 86 },
-            { label: dayThu, conditionCode: 'rain', tempMin: 77, tempMax: 87 },
-            { label: dayFri, conditionCode: 'partly-cloudy', tempMin: 78, tempMax: 89 },
-            { label: daySat, conditionCode: 'clear', tempMin: 79, tempMax: 91 },
-          ]"
-          :updated-at="new Date().toISOString()"
-          :effects="{ enabled: true }"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="celsius">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-sm">
-        <weather-widget
-          id="weather-celsius"
-          :location="{ name: locTokyo }"
-          :units="{ temperature: 'celsius' }"
-          :current="{
-            conditionCode: 'partly-cloudy',
-            temperature: 22,
-            tempMin: 18,
-            tempMax: 25,
-          }"
-          :forecast="[
-            { label: dayTue, conditionCode: 'clear', tempMin: 17, tempMax: 26 },
-            { label: dayWed, conditionCode: 'clear', tempMin: 18, tempMax: 27 },
-            { label: dayThu, conditionCode: 'partly-cloudy', tempMin: 19, tempMax: 25 },
-            { label: dayFri, conditionCode: 'cloudy', tempMin: 18, tempMax: 24 },
-            { label: daySat, conditionCode: 'rain', tempMin: 17, tempMax: 22 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -558,6 +530,33 @@ function getTimeOfDayValue(hour: number): number {
         <p class="text-xs text-muted-foreground">
           {{ textQualitySettings }}
         </p>
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default ?? '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

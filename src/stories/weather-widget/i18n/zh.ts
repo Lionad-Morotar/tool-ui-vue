@@ -2,7 +2,6 @@ export default {
   content: {
     accessibilityReducedMotion: '无障碍 - 减少动画',
     allWeatherConditions: '所有天气状况',
-    celsius: '摄氏度',
     cloudy: '多云',
     dayFri: '周五',
     dayNow: '现在',
@@ -10,6 +9,8 @@ export default {
     dayThu: '周四',
     dayTue: '周二',
     dayWed: '周三',
+    default: '默认值',
+    description: '描述',
     effectQualitySettings: '特效质量设置',
     interactiveWeatherSimulator: '交互 - 天气模拟器',
     lblClear: '晴朗',
@@ -40,6 +41,8 @@ export default {
     locSeattle: '西雅图，华盛顿州',
     locSnowy: '雪落小镇',
     locTokyo: '东京，日本',
+    name: '属性名',
+    props: '属性',
     rainy: '雨天',
     snowy: '雪天',
     sunny: '晴天',
@@ -49,5 +52,7 @@ export default {
     textTimeOfDay: '演示一天中不同时间的光照模拟。黎明（早上6点）、正午（中午12点）、黄昏（下午6点）和午夜（凌晨12点）根据太阳的位置显示不同的背景渐变和亮度级别。',
     thunderstorm: '雷暴',
     timeOfDayLightingSimulation: '一天中的时间 - 光照模拟',
+    type: '类型',
+    weatherWidgetProps: 'WeatherWidget 属性',
   },
 }

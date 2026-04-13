@@ -1,9 +1,24 @@
+
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { GeoMap } from '@lionad/vtu-components';
 import type { GeoMapMarker, GeoMapRoute } from '@lionad/vtu-components/geo-map/schema';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const GeoMapPropsTitle = useStoryLocale('content.geoMapProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = GeoMapPropsTitle
 
 const singleMarkerTitle = useStoryLocale('content.singleMarkerTitle', messages)
 const singleMarkerDesc = useStoryLocale('content.singleMarkerDesc', messages)
@@ -19,12 +34,6 @@ const stop1Label = useStoryLocale('content.stop1Label', messages)
 const stop2Label = useStoryLocale('content.stop2Label', messages)
 const endLabel = useStoryLocale('content.endLabel', messages)
 const mainRouteLabel = useStoryLocale('content.mainRouteLabel', messages)
-const withCustomIconsTitle = useStoryLocale('content.withCustomIconsTitle', messages)
-const restaurantLabel = useStoryLocale('content.restaurantLabel', messages)
-const hotelLabel = useStoryLocale('content.hotelLabel', messages)
-const parkLabel = useStoryLocale('content.parkLabel', messages)
-const darkThemeTitle = useStoryLocale('content.darkThemeTitle', messages)
-const nyLabel = useStoryLocale('content.nyLabel', messages)
 const timesSquareLabel = useStoryLocale('content.timesSquareLabel', messages)
 const interactiveClickMarkersTitle = useStoryLocale('content.interactiveClickMarkersTitle', messages)
 const interactiveClickMarkersDesc = useStoryLocale('content.interactiveClickMarkersDesc', messages)
@@ -37,15 +46,9 @@ const hubALabel = useStoryLocale('content.hubALabel', messages)
 const hubBLabel = useStoryLocale('content.hubBLabel', messages)
 const routeALabel = useStoryLocale('content.routeALabel', messages)
 const routeBLabel = useStoryLocale('content.routeBLabel', messages)
-const withClusteringTitle = useStoryLocale('content.withClusteringTitle', messages)
-const withClusteringDesc = useStoryLocale('content.withClusteringDesc', messages)
-const denseLocationPrefix = useStoryLocale('content.denseLocationPrefix', messages)
 const denseClusteringTitle = useStoryLocale('content.denseClusteringTitle', messages)
 const denseClusteringDesc = useStoryLocale('content.denseClusteringDesc', messages)
 const densePointPrefix = useStoryLocale('content.densePointPrefix', messages)
-const londonLabel = useStoryLocale('content.londonLabel', messages)
-const parisLabel = useStoryLocale('content.parisLabel', messages)
-const berlinLabel = useStoryLocale('content.berlinLabel', messages)
 const withImageIconsTitle = useStoryLocale('content.withImageIconsTitle', messages)
 const centralParkLabel = useStoryLocale('content.centralParkLabel', messages)
 const withCustomDotIconsTitle = useStoryLocale('content.withCustomDotIconsTitle', messages)
@@ -57,26 +60,15 @@ const complexRouteDesc = useStoryLocale('content.complexRouteDesc', messages)
 const depotLabel = useStoryLocale('content.depotLabel', messages)
 const deliveryRouteLabel = useStoryLocale('content.deliveryRouteLabel', messages)
 const deliveryRouteDesc = useStoryLocale('content.deliveryRouteDesc', messages)
-const centerViewportTitle = useStoryLocale('content.centerViewportTitle', messages)
-const centerViewportDesc = useStoryLocale('content.centerViewportDesc', messages)
-const tokyoLabel = useStoryLocale('content.tokyoLabel', messages)
-const withoutZoomTitle = useStoryLocale('content.withoutZoomTitle', messages)
-const withoutZoomDesc = useStoryLocale('content.withoutZoomDesc', messages)
 const singleMarker = useStoryLocale('content.singleMarker', messages)
 const multipleMarkers = useStoryLocale('content.multipleMarkers', messages)
 const withRoutes = useStoryLocale('content.withRoutes', messages)
-const withCustomIcons = useStoryLocale('content.withCustomIcons', messages)
-const darkTheme = useStoryLocale('content.darkTheme', messages)
 const interactiveClickMarkers = useStoryLocale('content.interactiveClickMarkers', messages)
 const interactiveClickRoutes = useStoryLocale('content.interactiveClickRoutes', messages)
-const withClustering = useStoryLocale('content.withClustering', messages)
-const withoutTitle = useStoryLocale('content.withoutTitle', messages)
 const withImageIcons = useStoryLocale('content.withImageIcons', messages)
 const withCustomDotIcons = useStoryLocale('content.withCustomDotIcons', messages)
 const denseClusteringDemo = useStoryLocale('content.denseClusteringDemo', messages)
 const complexRouteWithStyling = useStoryLocale('content.complexRouteWithStyling', messages)
-const centerViewportMode = useStoryLocale('variant.centerViewportMode', messages)
-const withoutZoomControl = useStoryLocale('content.withoutZoomControl', messages)
 
 const mapState = reactive({
   selectedMarker: null as string | null,
@@ -91,6 +83,21 @@ function handleRouteClick(route: GeoMapRoute) {
   mapState.selectedRoute = route.id || route.label || 'Unknown';
 }
 
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'role', type: "'information' | 'decision' | 'control' | 'state' | 'composite'", description: { zh: '组件的 ARIA 角色', en: 'ARIA role of the component' } },
+  { name: 'receipt', type: 'ToolUIReceipt', description: { zh: '工具调用回执状态', en: 'Tool call receipt state' } },
+  { name: 'title', type: 'string', description: { zh: '地图标题', en: 'Map title' } },
+  { name: 'description', type: 'string', description: { zh: '地图描述', en: 'Map description' } },
+  { name: 'markers', type: 'GeoMapMarker[]', required: true, description: { zh: '标记点数组', en: 'Array of map markers' } },
+  { name: 'routes', type: 'GeoMapRoute[]', description: { zh: '路线数组', en: 'Array of map routes' } },
+  { name: 'clustering', type: 'GeoMapClustering', description: { zh: '聚类配置', en: 'Marker clustering configuration' } },
+  { name: 'viewport', type: 'GeoMapViewport', description: { zh: '视口配置（适配或居中）', en: 'Viewport configuration (fit or center)' } },
+  { name: 'showZoomControl', type: 'boolean', default: 'true', description: { zh: '是否显示缩放控件', en: 'Whether to show zoom controls' } },
+  { name: 'theme', type: "'light' | 'dark'", description: { zh: '地图主题', en: 'Map theme' } },
+  { name: 'css', type: '{ root?: string; title?: string; canvas?: string; overlay?: string; controls?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 </script>
 
 <template>
@@ -153,38 +160,6 @@ function handleRouteClick(route: GeoMapRoute) {
               label: mainRouteLabel,
             },
           ]"
-          :viewport="{ mode: 'fit', padding: 50 }"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="withCustomIcons">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-icons"
-          :title="withCustomIconsTitle"
-          :markers="[
-            { id: '1', lat: 37.7749, lng: -122.4194, label: restaurantLabel, icon: { type: 'emoji', value: '🍽️' } },
-            { id: '2', lat: 37.7849, lng: -122.4094, label: hotelLabel, icon: { type: 'emoji', value: '🏨' } },
-            { id: '3', lat: 37.7649, lng: -122.4294, label: parkLabel, icon: { type: 'emoji', value: '🌳' } },
-          ]"
-          :viewport="{ mode: 'fit', padding: 50 }"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="darkTheme">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-dark"
-          :title="darkThemeTitle"
-          :markers="[
-            { id: '1', lat: 40.7128, lng: -74.006, label: nyLabel },
-            { id: '2', lat: 40.7589, lng: -73.9851, label: timesSquareLabel },
-          ]"
-          theme="dark"
           :viewport="{ mode: 'fit', padding: 50 }"
         />
       </div>
@@ -260,44 +235,6 @@ function handleRouteClick(route: GeoMapRoute) {
           ]"
           :viewport="{ mode: 'fit', padding: 50 }"
           @route-click="handleRouteClick"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="withClustering">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-clustering"
-          :title="withClusteringTitle"
-          :description="withClusteringDesc"
-          :markers="[
-            { id: '1', lat: 37.7749, lng: -122.4194, label: `${denseLocationPrefix} 1` },
-            { id: '2', lat: 37.775, lng: -122.4195, label: `${denseLocationPrefix} 2` },
-            { id: '3', lat: 37.7748, lng: -122.4193, label: `${denseLocationPrefix} 3` },
-            { id: '4', lat: 37.7751, lng: -122.4196, label: `${denseLocationPrefix} 4` },
-            { id: '5', lat: 37.7747, lng: -122.4192, label: `${denseLocationPrefix} 5` },
-            { id: '6', lat: 37.7752, lng: -122.4197, label: `${denseLocationPrefix} 6` },
-            { id: '7', lat: 37.7746, lng: -122.4191, label: `${denseLocationPrefix} 7` },
-            { id: '8', lat: 37.7753, lng: -122.4198, label: `${denseLocationPrefix} 8` },
-          ]"
-          :clustering="{ enabled: true, radius: 40 }"
-          :viewport="{ mode: 'fit', padding: 50 }"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="withoutTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-no-title"
-          :markers="[
-            { id: '1', lat: 51.5074, lng: -0.1278, label: londonLabel },
-            { id: '2', lat: 48.8566, lng: 2.3522, label: parisLabel },
-            { id: '3', lat: 52.5200, lng: 13.4050, label: berlinLabel },
-          ]"
-          :viewport="{ mode: 'fit', padding: 50 }"
         />
       </div>
     </Variant>
@@ -396,35 +333,30 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="centerViewportMode">
+    <Variant :title="propsTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-center-mode"
-          :title="centerViewportTitle"
-          :description="centerViewportDesc"
-          :markers="[
-            { id: '1', lat: 35.6762, lng: 139.6503, label: tokyoLabel },
-          ]"
-          :viewport="{ mode: 'center', center: { lat: 35.6762, lng: 139.6503 }, zoom: 10 }"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="withoutZoomControl">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <geo-map
-          id="geo-map-no-zoom"
-          :title="withoutZoomTitle"
-          :description="withoutZoomDesc"
-          :markers="[
-            { id: '1', lat: 51.5074, lng: -0.1278, label: londonLabel },
-            { id: '2', lat: 48.8566, lng: 2.3522, label: parisLabel },
-          ]"
-          :show-zoom-control="false"
-          :viewport="{ mode: 'fit', padding: 50 }"
-        />
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default ?? '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

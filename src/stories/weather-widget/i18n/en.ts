@@ -2,7 +2,6 @@ export default {
   content: {
     accessibilityReducedMotion: 'Accessibility - Reduced Motion',
     allWeatherConditions: 'All Weather Conditions',
-    celsius: 'Celsius',
     cloudy: 'Cloudy',
     dayFri: 'Fri',
     dayNow: 'Now',
@@ -10,6 +9,8 @@ export default {
     dayThu: 'Thu',
     dayTue: 'Tue',
     dayWed: 'Wed',
+    default: 'Default',
+    description: 'Description',
     effectQualitySettings: 'Effect Quality Settings',
     interactiveWeatherSimulator: 'Interactive - Weather Simulator',
     lblClear: 'Clear',
@@ -40,6 +41,8 @@ export default {
     locSeattle: 'Seattle, WA',
     locSnowy: 'Snowy Town',
     locTokyo: 'Tokyo, Japan',
+    name: 'Name',
+    props: 'Props',
     rainy: 'Rainy',
     snowy: 'Snowy',
     sunny: 'Sunny',
@@ -49,5 +52,7 @@ export default {
     textTimeOfDay: "Demonstrates time-of-day lighting simulation. Dawn (6 AM), Noon (12 PM), Dusk (6 PM), and Midnight (12 AM) show different background gradients and brightness levels based on the sun's position.",
     thunderstorm: 'Thunderstorm',
     timeOfDayLightingSimulation: 'Time of Day - Lighting Simulation',
+    type: 'Type',
+    weatherWidgetProps: 'WeatherWidget Props',
   },
 }
