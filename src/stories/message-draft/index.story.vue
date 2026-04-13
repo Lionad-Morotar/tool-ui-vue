@@ -4,6 +4,36 @@ import { MessageDraft } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const MessageDraftProps = useStoryLocale('content.messageDraftProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = MessageDraftProps
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'channel', type: "'email' | 'slack'", required: true, description: { zh: '消息渠道类型', en: 'Message channel type' } },
+  { name: 'body', type: 'string', required: true, description: { zh: '消息正文内容', en: 'Message body content' } },
+  { name: 'outcome', type: "'sent' | 'cancelled'", description: { zh: '最终结果状态', en: 'Final outcome state' } },
+  { name: 'subject', type: 'string', description: { zh: '邮件主题（email 渠道必填）', en: 'Email subject line (required for email channel)' } },
+  { name: 'from', type: 'string', description: { zh: '发件人邮箱地址', en: 'Sender email address' } },
+  { name: 'to', type: 'string[]', description: { zh: '收件人邮箱地址数组（email 渠道必填）', en: 'Recipient email addresses (required for email channel)' } },
+  { name: 'cc', type: 'string[]', description: { zh: '抄送收件人', en: 'CC recipients' } },
+  { name: 'bcc', type: 'string[]', description: { zh: '密送收件人', en: 'BCC recipients' } },
+  { name: 'target', type: 'SlackTarget', description: { zh: 'Slack 目标频道或私聊（slack 渠道必填）', en: 'Slack target channel or DM (required for slack channel)' } },
+  { name: 'undoGracePeriod', type: 'number', default: '5000', description: { zh: '发送最终确认前的宽限时间（毫秒）', en: 'Grace period before send is final (ms)' } },
+  { name: 'css', type: '{ root?: string; header?: string; body?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+];
+
 const lblReset = useStoryLocale('content.lblReset', messages)
 const textCancelledRenders = useStoryLocale('content.textCancelledRenders', messages)
 const subjQ4Planning = useStoryLocale('content.subjQ4Planning', messages)
@@ -253,6 +283,32 @@ function resetSlack() {
           :body="bodyDraftNotSent"
           outcome="cancelled"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>
