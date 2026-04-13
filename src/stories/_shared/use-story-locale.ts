@@ -5,6 +5,18 @@ import { ref, computed, type Ref, type ComputedRef } from 'vue'
 
 export interface StoryLocaleLabels { zh: string; en: string }
 
+export interface StoryLocaleMessages {
+  [key: string]: string | StoryLocaleMessages
+}
+
+function getPath(obj: StoryLocaleMessages | undefined, path: string): string {
+  const result = path.split('.').reduce<unknown>((o, key) => {
+    if (o && typeof o === 'object') return (o as Record<string, unknown>)[key]
+    return undefined
+  }, obj)
+  return typeof result === 'string' ? result : path
+}
+
 // Module-level reactive state (shared across all story imports)
 export const currentLocale: Ref<string> = ref('zh-CN')
 
@@ -13,13 +25,24 @@ export function toggleLocale(): void {
 }
 
 /**
- * Get a locale-aware computed string from bilingual labels.
+ * Get a locale-aware computed string from bilingual labels or key-based messages.
  *
  * @example
  * const title = useStoryLocale({ zh: '终端组件', en: 'Terminal Component' })
+ * const title = useStoryLocale('variant.default', { zh: { variant: { default: '默认' } }, en: { variant: { default: 'Default' } } })
  */
-export function useStoryLocale(labels: StoryLocaleLabels): ComputedRef<string> {
-  return computed(() => (currentLocale.value === 'zh-CN' ? labels.zh : labels.en))
+export function useStoryLocale(
+  source: StoryLocaleLabels | string,
+  messages?: { zh: StoryLocaleMessages; en: StoryLocaleMessages }
+): ComputedRef<string> {
+  return computed(() => {
+    const isZh = currentLocale.value === 'zh-CN'
+    if (typeof source === 'string' && messages) {
+      return getPath(isZh ? messages.zh : messages.en, source)
+    }
+    const labels = source as StoryLocaleLabels
+    return isZh ? labels.zh : labels.en
+  })
 }
 
 /**
