@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
-import { computed, nextTick, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import ItemCard from './cmpts/item-card.vue';
 import { useItemCarousel } from './states';
 import type { ItemCarouselProps } from './schema';

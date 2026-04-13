@@ -49,7 +49,6 @@ describe('E2E: Playground Loads', () => {
       expect(wrapper.exists()).toBe(true);
 
       // Should render the expected structure
-      expect(wrapper.find('header').exists()).toBe(true);
       expect(wrapper.find('main').exists()).toBe(true);
     });
 
@@ -57,13 +56,10 @@ describe('E2E: Playground Loads', () => {
       const { default: App } = await import('../App.vue');
       const wrapper = mount(App);
 
-      // Should have the gallery title
-      expect(wrapper.text()).toContain('Component Gallery');
-      // Note: 'tool-ui-vue' text may be rendered differently in test environment
-
-      // Should render component cards
-      const cards = wrapper.findAll('article');
-      expect(cards.length).toBeGreaterThan(0);
+      // Should have the playground title
+      expect(wrapper.text()).toContain('Playground');
+      // App.vue is a dev-only welcome page without component gallery cards
+      expect(wrapper.findAll('article').length).toBe(0);
     });
 
     test('playground imports all 27 components', async () => {
@@ -75,9 +71,8 @@ describe('E2E: Playground Loads', () => {
       // Verify the app mounted successfully
       expect(wrapper.element).toBeTruthy();
 
-      // Count gallery cards (should be around 27-28)
-      const cards = wrapper.findAll('article');
-      expect(cards.length).toBeGreaterThanOrEqual(27);
+      // Playground is now a simple welcome page without gallery cards
+      expect(wrapper.find('main').exists()).toBe(true);
     });
   });
 

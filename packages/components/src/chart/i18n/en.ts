@@ -1,0 +1,18 @@
+export const en = {
+  chart: {
+    noData: 'No data available',
+    loading: 'Loading...',
+    download: 'Download chart',
+    fullscreen: 'Fullscreen',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    reset: 'Reset zoom',
+    range: {
+      day: 'Day',
+      week: 'Week',
+      month: 'Month',
+      year: 'Year',
+      all: 'All',
+    },
+  },
+} as const

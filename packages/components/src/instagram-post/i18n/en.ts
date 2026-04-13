@@ -1,0 +1,18 @@
+export const en = {
+  instagramPost: {
+    like: 'Like',
+    comment: 'Comment',
+    share: 'Share',
+    save: 'Save',
+    likes: '{count} likes',
+    comments: '{count} comments',
+    viewAllComments: 'View all {count} comments',
+    addComment: 'Add a comment...',
+    liked: 'Liked',
+    saved: 'Saved',
+    hoursAgo: '{count} hours ago',
+    daysAgo: '{count} days ago',
+    logo: 'Instagram logo',
+    verified: 'Verified account',
+  },
+} as const

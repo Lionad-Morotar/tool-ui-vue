@@ -1,7 +1,15 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { nextTick } from 'vue';
 import ItemCarousel from '../index.vue';
+
+vi.mock('@lionad/vtu-core', async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  return {
+    ...actual,
+    prefersReducedMotion: () => true,
+  };
+});
 
 const ITEMS = Array.from({ length: 10 }, (_, i) => ({
   id: String(i + 1),
@@ -19,24 +27,29 @@ describe('ItemCarousel - Button click scroll', () => {
 
     await nextTick();
     await nextTick();
-    await new Promise(r => setTimeout(r, 200));
 
     const scrollContainer = wrapper.find("[role='list']");
-    console.log('scrollContainer scrollWidth:', scrollContainer.element.scrollWidth);
-    console.log('scrollContainer clientWidth:', scrollContainer.element.clientWidth);
-    console.log('scrollContainer scrollLeft:', scrollContainer.element.scrollLeft);
+    const listItems = scrollContainer.element.querySelectorAll('[data-carousel-item]');
 
-    // Try manual scroll to verify element works
-    scrollContainer.element.scrollLeft = 100;
-    console.log('scrollLeft after manual set:', scrollContainer.element.scrollLeft);
+    // Stub layout metrics so scroll target can be computed in jsdom
+    Object.defineProperty(scrollContainer.element, 'clientWidth', { value: 300, writable: true });
+    Object.defineProperty(scrollContainer.element, 'scrollWidth', { value: 1200, writable: true });
+    Object.defineProperty(scrollContainer.element, 'scrollLeft', { value: 0, writable: true });
+    Object.defineProperty(window, 'getComputedStyle', {
+      value: () => ({ scrollPaddingLeft: '0px' }),
+      writable: true,
+    });
 
-    // Reset
+    listItems.forEach((el, i) => {
+      Object.defineProperty(el, 'offsetLeft', { value: i * 150, writable: true });
+      Object.defineProperty(el, 'offsetWidth', { value: 150, writable: true });
+    });
+
+    // Reset scrollLeft
     scrollContainer.element.scrollLeft = 0;
     await nextTick();
 
-    // Call scroll method directly
     await (wrapper.vm as any).scroll('right');
-    console.log('scrollLeft after scroll("right"):', scrollContainer.element.scrollLeft);
 
     expect(scrollContainer.element.scrollLeft).toBeGreaterThan(0);
   });

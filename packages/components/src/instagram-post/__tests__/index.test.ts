@@ -4,7 +4,7 @@ import { ref, computed } from 'vue';
 
 const currentLocale = ref('en');
 const messagesByLocale: Record<string, Record<string, string>> = {
-  en: { 'instagramPost.like': 'Like', 'instagramPost.share': 'Share', 'xPost.verified': 'Verified account', 'instagramPost.logo': 'Instagram logo' },
+  en: { 'instagramPost.like': 'Like', 'instagramPost.share': 'Share', 'instagramPost.verified': 'Verified account', 'instagramPost.logo': 'Instagram logo' },
   'zh-CN': { 'instagramPost.like': '赞', 'instagramPost.share': '分享', 'xPost.verified': '认证账号', 'instagramPost.logo': 'Instagram 标志' },
 };
 

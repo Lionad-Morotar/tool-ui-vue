@@ -4,8 +4,8 @@ import { ref, computed } from 'vue';
 
 const currentLocale = ref('en');
 const messagesByLocale: Record<string, Record<string, string>> = {
-  en: { 'parameterSlider.reset': 'Reset', 'shared.confirm': 'Apply' },
-  'zh-CN': { 'parameterSlider.reset': '重置', 'shared.confirm': '确认' },
+  en: { 'parameterSlider.reset': 'Reset', 'parameterSlider.confirm': 'Confirm' },
+  'zh-CN': { 'parameterSlider.reset': '重置', 'parameterSlider.confirm': '确认' },
 };
 
 vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
@@ -56,7 +56,7 @@ describe('rendering', () => {
       props: { id: 'ps-1', sliders: SLIDERS },
     });
     expect(wrapper.text()).toContain('Reset');
-    expect(wrapper.text()).toContain('Apply');
+    expect(wrapper.text()).toContain('Confirm');
   });
 
   test('renders custom actions when provided', () => {
@@ -130,7 +130,7 @@ describe('interactions', () => {
     const wrapper = mount(ParameterSlider, {
       props: { id: 'ps-1', sliders: SLIDERS },
     });
-    const applyBtn = wrapper.findAll('button').find((b) => b.text() === 'Apply');
+    const applyBtn = wrapper.findAll('button').find((b) => b.text() === 'Confirm');
     await applyBtn?.trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['apply', expect.any(Array)]);
   });
@@ -402,6 +402,6 @@ describe('i18n', () => {
       props: { id: 'ps-1', sliders: SLIDERS },
     });
     expect(wrapper.text()).toContain('Reset');
-    expect(wrapper.text()).toContain('Apply');
+    expect(wrapper.text()).toContain('Confirm');
   });
 });

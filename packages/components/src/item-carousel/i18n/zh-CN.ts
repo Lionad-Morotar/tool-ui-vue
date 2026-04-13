@@ -5,5 +5,7 @@ export const zhCN = {
     scrollLeft: '向左滚动',
     scrollRight: '向右滚动',
     itemOf: '第 {current} / 共 {total} 项',
+    paginationLabel: '轮播分页',
+    goToSlide: '跳转到第 {slide} 项',
   },
 } as const

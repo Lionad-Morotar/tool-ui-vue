@@ -1,0 +1,8 @@
+export const en = {
+  image: {
+    loading: 'Loading image...',
+    error: 'Failed to load image',
+    retry: 'Reload',
+    alt: 'Image description',
+  },
+} as const

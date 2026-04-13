@@ -360,7 +360,7 @@ function scroll(direction: 'left' | 'right') {
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ 'default' in prop ? prop.default : '-' }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

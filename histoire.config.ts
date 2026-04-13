@@ -16,7 +16,7 @@ const storyGroups = [
 export default defineConfig({
   plugins: [HstVue()],
   storyMatch: ['src/**/*.story.vue'],
-  storyIgnored: ['**/.git/**', '**/node_modules/**', '**/dist*/**', '**/tailwind-test.story.vue'],
+  storyIgnored: ['**/.git/**', '**/node_modules/**', '**/dist*/**', '**/tailwind-test.story.vue', '**/tailwind-test/**'],
   outDir: 'dist-histoire',
   setupFile: 'src/stories/_shared/histoire-setup.ts',
   routerMode: 'hash',

@@ -54,7 +54,7 @@ describe('ItemCarousel - Rendering', () => {
     const wrapper = mount(ItemCarousel, {
       props: { id: 'ic-1', items: [] },
     });
-    expect(wrapper.text()).toContain('暂无内容');
+    expect(wrapper.text()).toContain('No items to display');
   });
 
   test('renders color background when no image', () => {
@@ -75,7 +75,7 @@ describe('ItemCarousel - Navigation', () => {
     const wrapper = mount(ItemCarousel, {
       props: { id: 'ic-1', items: MANY_ITEMS },
     });
-    const buttons = wrapper.findAll("button[aria-label='向左滚动'], button[aria-label='向右滚动']");
+    const buttons = wrapper.findAll("button[aria-label='Scroll left'], button[aria-label='Scroll right']");
     expect(buttons.length).toBe(2);
   });
 
@@ -83,8 +83,8 @@ describe('ItemCarousel - Navigation', () => {
     const wrapper = mount(ItemCarousel, {
       props: { id: 'ic-1', items: ITEMS },
     });
-    const leftButton = wrapper.find("button[aria-label='向左滚动']");
-    const rightButton = wrapper.find("button[aria-label='向右滚动']");
+    const leftButton = wrapper.find("button[aria-label='Scroll left']");
+    const rightButton = wrapper.find("button[aria-label='Scroll right']");
 
     expect(leftButton.exists()).toBe(true);
     expect(rightButton.exists()).toBe(true);
@@ -218,7 +218,7 @@ describe('ItemCarousel - Keyboard Navigation', () => {
 
     const container = wrapper.find("[role='region']");
     expect(container.exists()).toBe(true);
-    expect(container.attributes('aria-label')).toBe('商品轮播');
+    expect(container.attributes('aria-label')).toBe('Item carousel');
   });
 });
 
@@ -423,9 +423,9 @@ describe('ItemCarousel - Accessibility', () => {
     });
 
     const listitems = wrapper.findAll("[role='listitem']");
-    expect(listitems[0]?.attributes('aria-label')).toBe('第 1 / 共 3 项');
-    expect(listitems[1]?.attributes('aria-label')).toBe('第 2 / 共 3 项');
-    expect(listitems[2]?.attributes('aria-label')).toBe('第 3 / 共 3 项');
+    expect(listitems[0]?.attributes('aria-label')).toBe('Item 1 of 3');
+    expect(listitems[1]?.attributes('aria-label')).toBe('Item 2 of 3');
+    expect(listitems[2]?.attributes('aria-label')).toBe('Item 3 of 3');
   });
 
   test('images have alt text', () => {

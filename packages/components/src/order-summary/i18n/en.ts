@@ -1,0 +1,13 @@
+export const en = {
+  orderSummary: {
+    title: 'Order Summary',
+    unableToRender: 'Unable to render order summary',
+    malformedPayload: 'Malformed payload',
+    free: 'Free',
+    subtotal: 'Subtotal',
+    shipping: 'Shipping',
+    total: 'Total',
+    discount: 'Discount',
+    tax: 'Tax',
+  },
+} as const

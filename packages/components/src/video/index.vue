@@ -6,7 +6,7 @@ import {
   formatDuration, cn
 } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
-import { reactive, toRef } from 'vue';
+import { reactive } from 'vue';
 import { useVideo } from './states';
 import type { VideoProps } from './schema';
 
@@ -25,8 +25,6 @@ const emit = defineEmits<{
 const videoState = reactive(useVideo(props, emit));
 const { t } = useI18n();
 
-// videoRef is used in template via ref="videoRef"
-const _videoRef = toRef(videoState, 'videoRef');
 </script>
 
 <template>

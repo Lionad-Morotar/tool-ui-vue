@@ -1,6 +1,7 @@
 import { inject, computed, ref, type Ref, type ComputedRef } from 'vue'
 import type { DeepKeyPath, ParamValue, I18nContext, I18nReturn } from './types'
 import { zhCN } from './locales/zh-CN'
+import { en } from './locales/en'
 
 export const i18nInjectionKey = Symbol('vtu:i18n')
 
@@ -51,7 +52,8 @@ export function useI18n<TMessages extends Record<string, unknown>>(): I18nReturn
 
     const t = <TKey extends string>(key: TKey, params?: Record<string, ParamValue>): ComputedRef<string> => {
       return computed(() => {
-        const resolved = resolveMessage(zhCN, key) ?? key
+        const fallbackMessages = _locale.value === 'en' ? en : zhCN
+        const resolved = resolveMessage(fallbackMessages, key) ?? key
         return interpolate(resolved, params)
       })
     }

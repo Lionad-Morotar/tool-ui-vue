@@ -1,0 +1,10 @@
+export const en = {
+  questionFlow: {
+    completed: 'Completed',
+    complete: 'Complete',
+    step: 'Step {current} of {total}',
+    back: 'Back',
+    next: 'Next',
+    receiptStatus: 'Confirmed',
+  },
+} as const

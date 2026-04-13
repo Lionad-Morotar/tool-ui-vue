@@ -35,6 +35,7 @@ const {
   handleSeekEnd,
   domHandlers,
 } = useAudio(props, emit);
+void audioRef;
 
 // i18n
 const { t } = useI18n();

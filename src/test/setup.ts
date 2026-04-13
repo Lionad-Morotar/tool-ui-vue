@@ -1,5 +1,9 @@
 import { vi } from 'vitest';
+import { registerEnglish } from '@lionad/vtu-core';
 import { setupConsoleGuard } from './console-guard';
+
+// Switch tests to English locale so assertions match legacy English copy
+registerEnglish();
 
 // Activate console guard to catch unexpected console output during tests
 setupConsoleGuard();
@@ -20,7 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // ResizeObserver mock (for ParameterSlider, ItemCarousel)
-global.ResizeObserver = vi.fn().mockImplementation(function () {
+globalThis.ResizeObserver = vi.fn().mockImplementation(function () {
   return {
     observe: vi.fn(),
     unobserve: vi.fn(),
@@ -29,7 +33,7 @@ global.ResizeObserver = vi.fn().mockImplementation(function () {
 }) as unknown as typeof ResizeObserver;
 
 // IntersectionObserver mock (for lazy loading)
-global.IntersectionObserver = vi.fn().mockImplementation(function () {
+globalThis.IntersectionObserver = vi.fn().mockImplementation(function () {
   return {
     observe: vi.fn(),
     unobserve: vi.fn(),
@@ -89,7 +93,7 @@ HTMLCanvasElement.prototype.getContext = vi.fn((contextId: string) => {
     };
   }
   return null;
-});
+}) as unknown as HTMLCanvasElement['getContext'];
 
 // HTMLMediaElement mocks (for Audio, Video)
 window.HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined);

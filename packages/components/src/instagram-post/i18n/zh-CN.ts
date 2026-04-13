@@ -13,5 +13,6 @@ export const zhCN = {
     hoursAgo: '{count} 小时前',
     daysAgo: '{count} 天前',
     logo: 'Instagram 标志',
+    verified: '认证账号',
   },
 } as const

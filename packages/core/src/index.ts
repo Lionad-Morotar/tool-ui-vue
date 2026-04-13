@@ -39,7 +39,7 @@ export type { DeepKeyPath, DeepValueOf, KeysFor, ParamValue, I18nContext, I18nRe
 // default. An explicit <LocaleProvider> with custom messages overrides this.
 // ---------------------------------------------------------------------------
 
-import { setMessages } from './i18n'
+import { setMessages, setLocale } from './i18n'
 import { zhCN as coreZhCN } from './i18n/locales/zh-CN'
 
 // Component i18n messages (zh-CN defaults)
@@ -115,3 +115,67 @@ setMessages(mergeMessages(
   statsDisplayZhCN as unknown as Record<string, unknown>,
   xPostZhCN as unknown as Record<string, unknown>,
 ))
+
+// ---------------------------------------------------------------------------
+// English locale support
+// Import and merge all component English messages for bilingual consumers.
+// Call registerEnglish() to switch to English; zh-CN remains the default.
+// ---------------------------------------------------------------------------
+import { en as coreEn } from './i18n/locales/en'
+import { en as terminalEn } from '../../components/src/terminal/i18n/en'
+import { en as codeBlockEn } from '../../components/src/code-block/i18n/en'
+import { en as codeDiffEn } from '../../components/src/code-diff/i18n/en'
+import { en as orderSummaryEn } from '../../components/src/order-summary/i18n/en'
+import { en as questionFlowEn } from '../../components/src/question-flow/i18n/en'
+import { en as dataTableEn } from '../../components/src/data-table/i18n/en'
+import { en as messageDraftEn } from '../../components/src/message-draft/i18n/en'
+import { en as audioEn } from '../../components/src/audio/i18n/en'
+import { en as videoEn } from '../../components/src/video/i18n/en'
+import { en as geoMapEn } from '../../components/src/geo-map/i18n/en'
+import { en as itemCarouselEn } from '../../components/src/item-carousel/i18n/en'
+import { en as preferencesPanelEn } from '../../components/src/preferences-panel/i18n/en'
+import { en as approvalCardEn } from '../../components/src/approval-card/i18n/en'
+import { en as chartEn } from '../../components/src/chart/i18n/en'
+import { en as citationEn } from '../../components/src/citation/i18n/en'
+import { en as imageEn } from '../../components/src/image/i18n/en'
+import { en as instagramPostEn } from '../../components/src/instagram-post/i18n/en'
+import { en as linkedinPostEn } from '../../components/src/linkedin-post/i18n/en'
+import { en as optionListEn } from '../../components/src/option-list/i18n/en'
+import { en as parameterSliderEn } from '../../components/src/parameter-slider/i18n/en'
+import { en as planEn } from '../../components/src/plan/i18n/en'
+import { en as statsDisplayEn } from '../../components/src/stats-display/i18n/en'
+import { en as xPostEn } from '../../components/src/x-post/i18n/en'
+
+/** Merged English messages (all component locales included) */
+export const enAll = mergeMessages(
+  coreEn as unknown as Record<string, unknown>,
+  terminalEn as unknown as Record<string, unknown>,
+  codeBlockEn as unknown as Record<string, unknown>,
+  codeDiffEn as unknown as Record<string, unknown>,
+  orderSummaryEn as unknown as Record<string, unknown>,
+  questionFlowEn as unknown as Record<string, unknown>,
+  dataTableEn as unknown as Record<string, unknown>,
+  messageDraftEn as unknown as Record<string, unknown>,
+  audioEn as unknown as Record<string, unknown>,
+  videoEn as unknown as Record<string, unknown>,
+  geoMapEn as unknown as Record<string, unknown>,
+  itemCarouselEn as unknown as Record<string, unknown>,
+  preferencesPanelEn as unknown as Record<string, unknown>,
+  approvalCardEn as unknown as Record<string, unknown>,
+  chartEn as unknown as Record<string, unknown>,
+  citationEn as unknown as Record<string, unknown>,
+  imageEn as unknown as Record<string, unknown>,
+  instagramPostEn as unknown as Record<string, unknown>,
+  linkedinPostEn as unknown as Record<string, unknown>,
+  optionListEn as unknown as Record<string, unknown>,
+  parameterSliderEn as unknown as Record<string, unknown>,
+  planEn as unknown as Record<string, unknown>,
+  statsDisplayEn as unknown as Record<string, unknown>,
+  xPostEn as unknown as Record<string, unknown>,
+)
+
+/** Register English messages and switch locale atomically */
+export function registerEnglish(): void {
+  setMessages(enAll)
+  setLocale('en')
+}

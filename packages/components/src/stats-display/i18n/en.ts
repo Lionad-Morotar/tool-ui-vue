@@ -1,0 +1,12 @@
+export const en = {
+  statsDisplay: {
+    change: 'Change',
+    increase: 'Increase',
+    decrease: 'Decrease',
+    noChange: 'No change',
+    period: 'Period',
+    comparedTo: 'vs previous',
+    trend: 'Trend',
+    percent: 'Percent',
+  },
+} as const

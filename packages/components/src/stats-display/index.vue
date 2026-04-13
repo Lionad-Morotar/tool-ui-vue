@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
-import { computed, reactive } from 'vue';
+import { reactive } from 'vue';
 import Sparkline from './cmpts/sparkline.vue';
 import { useStatsDisplay } from './states';
 import type { StatsDisplayProps } from './schema';

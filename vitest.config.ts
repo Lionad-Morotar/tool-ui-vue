@@ -24,6 +24,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+      '@lionad/vtu-core': resolve(__dirname, 'packages/core/src'),
       '@lionad/vtu-components': resolve(__dirname, 'packages/components/src'),
     },
   },

@@ -24,7 +24,7 @@ const { t } = useI18n()
 // Derived i18n values for attribute bindings
 const likeAriaLabel = computed(() => t('instagramPost.like').value)
 const shareAriaLabel = computed(() => t('instagramPost.share').value)
-const verifiedAriaLabel = computed(() => t('xPost.verified').value)
+const verifiedAriaLabel = computed(() => t('instagramPost.verified').value)
 const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
 </script>
 

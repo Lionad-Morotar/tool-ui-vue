@@ -1,0 +1,18 @@
+export const en = {
+  xPost: {
+    retweet: 'Repost',
+    like: 'Like',
+    reply: 'Reply',
+    share: 'Share',
+    bookmark: 'Bookmark',
+    views: '{count} views',
+    likes: '{count} likes',
+    retweets: '{count} reposts',
+    replies: '{count} replies',
+    follow: 'Follow',
+    following: 'Following',
+    unfollow: 'Unfollow',
+    verified: 'Verified account',
+    logo: 'X (formerly Twitter) logo',
+  },
+} as const

@@ -1,0 +1,17 @@
+export const en = {
+  linkedinPost: {
+    like: 'Like',
+    comment: 'Comment',
+    repost: 'Repost',
+    share: 'Send',
+    likes: '{count} likes',
+    comments: '{count} comments',
+    reposts: '{count} reposts',
+    follow: 'Follow',
+    following: 'Following',
+    edited: 'Edited',
+    seeMore: 'See more',
+    logo: 'LinkedIn logo',
+    verified: 'Verified account',
+  },
+} as const
