@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
+
+const cancelLabel = useStoryLocale('content.cancelLabel', messages)
+const component = useStoryLocale('content.component', messages)
+const okLabel = useStoryLocale('content.okLabel', messages)
+const tailwindTestDesc = useStoryLocale('content.tailwindTestDesc', messages)
+const tailwindTestTitle = useStoryLocale('content.tailwindTestTitle', messages)
+const testCardDesc = useStoryLocale('content.testCardDesc', messages)
+const testCardTitle = useStoryLocale('content.testCardTitle', messages)
+const withTailwind = useStoryLocale('content.withTailwind', messages)
 
 // Load Tailwind CSS
 onMounted(() => {
@@ -38,14 +48,7 @@ onMounted(() => {
     document.head.appendChild(script);
   }
 });
-const withTailwind = useStoryLocale({ zh: '含 Tailwind', en: 'With Tailwind' })
-const component = useStoryLocale({ zh: '组件', en: 'Component' })
-const tailwindTestTitle = useStoryLocale({ zh: 'Tailwind 测试', en: 'Tailwind Test' })
-const tailwindTestDesc = useStoryLocale({ zh: '如果看到样式文本，Tailwind 正常工作！', en: 'If you see styled text, Tailwind is working!' })
-const testCardTitle = useStoryLocale({ zh: '测试卡片', en: 'Test Card' })
-const testCardDesc = useStoryLocale({ zh: '测试 Tailwind CSS', en: 'Testing Tailwind CSS' })
-const okLabel = useStoryLocale({ zh: '好的', en: 'OK' })
-const cancelLabel = useStoryLocale({ zh: '取消', en: 'Cancel' })
+
 </script>
 
 <template>
