@@ -5,19 +5,16 @@ import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
-
 const lblCurrentValues = useStoryLocale('content.lblCurrentValues', messages)
 const lblColorSettings = useStoryLocale('content.lblColorSettings', messages)
 const lblEQSettings = useStoryLocale('content.lblEQSettings', messages)
 const lblExportSettings = useStoryLocale('content.lblExportSettings', messages)
-
 const lblReset = useStoryLocale('content.lblReset', messages)
 const lblApply = useStoryLocale('content.lblApply', messages)
 const lblFlat = useStoryLocale('content.lblFlat', messages)
 const lblDefaults = useStoryLocale('content.lblDefaults', messages)
 const lblExport = useStoryLocale('content.lblExport', messages)
 const lblRandom = useStoryLocale('content.lblRandom', messages)
-
 const lblExposure = useStoryLocale('content.lblExposure', messages)
 const lblContrast = useStoryLocale('content.lblContrast', messages)
 const lblHighlights = useStoryLocale('content.lblHighlights', messages)
@@ -37,6 +34,13 @@ const lblMuteLevel = useStoryLocale('content.lblMuteLevel', messages)
 const lblRed = useStoryLocale('content.lblRed', messages)
 const lblGreen = useStoryLocale('content.lblGreen', messages)
 const lblBlue = useStoryLocale('content.lblBlue', messages)
+const photoAdjustmentsGallery = useStoryLocale('content.photoAdjustmentsGallery', messages)
+const colorGradingTitle = useStoryLocale('content.colorGradingTitle', messages)
+const audioEqualizerDB = useStoryLocale('content.audioEqualizerDB', messages)
+const videoExportSettings = useStoryLocale('content.videoExportSettings', messages)
+const singleSlider = useStoryLocale('content.singleSlider', messages)
+const withDisabledSlider = useStoryLocale('content.withDisabledSlider', messages)
+const customStyling = useStoryLocale('content.customStyling', messages)
 
 const imageAdjustments = reactive({
   exposure: 0.3,
@@ -158,13 +162,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
  * - Cross-zero sliders show signed values (+/-)
  * - Text labels avoid collision with handle
  */
-const photoAdjustmentsGallery = useStoryLocale('content.photoAdjustmentsGallery', messages)
-const colorGradingTitle = useStoryLocale('content.colorGradingTitle', messages)
-const audioEqualizerDB = useStoryLocale('content.audioEqualizerDB', messages)
-const videoExportSettings = useStoryLocale('content.videoExportSettings', messages)
-const singleSlider = useStoryLocale('content.singleSlider', messages)
-const withDisabledSlider = useStoryLocale('content.withDisabledSlider', messages)
-const customStyling = useStoryLocale('content.customStyling', messages)
+
 </script>
 
 <template>

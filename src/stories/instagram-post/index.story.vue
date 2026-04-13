@@ -4,6 +4,16 @@ import { InstagramPost } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const singleImage = useStoryLocale('content.singleImage', messages)
+const multipleImages2 = useStoryLocale('content.multipleImages2', messages)
+const multipleImages3 = useStoryLocale('content.multipleImages3', messages)
+const multipleImages4 = useStoryLocale('content.multipleImages4', messages)
+const videoPost = useStoryLocale('content.videoPost', messages)
+const captionOnly = useStoryLocale('content.captionOnly', messages)
+const longCaption = useStoryLocale('content.longCaption', messages)
+const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+
 /**
  * # InstagramPost
  *
@@ -92,15 +102,7 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const singleImage = useStoryLocale('content.singleImage', messages)
-const multipleImages2 = useStoryLocale('content.multipleImages2', messages)
-const multipleImages3 = useStoryLocale('content.multipleImages3', messages)
-const multipleImages4 = useStoryLocale('content.multipleImages4', messages)
-const videoPost = useStoryLocale('content.videoPost', messages)
-const captionOnly = useStoryLocale('content.captionOnly', messages)
-const longCaption = useStoryLocale('content.longCaption', messages)
-const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
-const interactive = useStoryLocale('content.interactive', messages)
+
 </script>
 
 <template>

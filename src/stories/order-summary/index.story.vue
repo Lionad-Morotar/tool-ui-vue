@@ -4,6 +4,32 @@ import { OrderSummary } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const summary = useStoryLocale('content.summary', messages)
+const withDiscount = useStoryLocale('content.withDiscount', messages)
+const receipt = useStoryLocale('content.receipt', messages)
+const receiptWithoutImages = useStoryLocale('content.receiptWithoutImages', messages)
+const singleItem = useStoryLocale('data.singleItem', messages)
+const manyItems = useStoryLocale('data.manyItems', messages)
+const differentCurrencyEUR = useStoryLocale('content.differentCurrencyEUR', messages)
+const malformedPayloadEmptyItems = useStoryLocale('content.malformedPayloadEmptyItems', messages)
+const orderSummaryTitle = useStoryLocale('content.orderSummaryTitle', messages)
+const premiumCoffeeName = useStoryLocale('content.premiumCoffeeName', messages)
+const premiumCoffeeDesc = useStoryLocale('content.premiumCoffeeDesc', messages)
+const ceramicSetName = useStoryLocale('content.ceramicSetName', messages)
+const ceramicSetDesc = useStoryLocale('content.ceramicSetDesc', messages)
+const wirelessHeadphonesName = useStoryLocale('content.wirelessHeadphonesName', messages)
+const welcomeCode = useStoryLocale('content.welcomeCode', messages)
+const orderConfirmedTitle = useStoryLocale('content.orderConfirmedTitle', messages)
+const ebookName = useStoryLocale('content.ebookName', messages)
+const courseAccessName = useStoryLocale('content.courseAccessName', messages)
+const yourOrderTitle = useStoryLocale('content.yourOrderTitle', messages)
+const annualSubName = useStoryLocale('content.annualSubName', messages)
+const annualSubDesc = useStoryLocale('content.annualSubDesc', messages)
+const shoppingCartTitle = useStoryLocale('content.shoppingCartTitle', messages)
+const genericItem = useStoryLocale('data.genericItem', messages)
+const eurOrderTitle = useStoryLocale('content.eurOrderTitle', messages)
+const eurCoffeeName = useStoryLocale('content.eurCoffeeName', messages)
+
 /**
  * ## Props
  *
@@ -64,45 +90,20 @@ import messages from './i18n';
  * ```
  */
 
-const summary = useStoryLocale('content.summary', messages)
-const withDiscount = useStoryLocale('content.withDiscount', messages)
-const receipt = useStoryLocale('content.receipt', messages)
-const receiptWithoutImages = useStoryLocale('content.receiptWithoutImages', messages)
-const singleItem = useStoryLocale('data.singleItem', messages)
-const manyItems = useStoryLocale('data.manyItems', messages)
-const differentCurrencyEUR = useStoryLocale('content.differentCurrencyEUR', messages)
-const malformedPayloadEmptyItems = useStoryLocale('content.malformedPayloadEmptyItems', messages)
-
 // Basic variant
-const orderSummaryTitle = useStoryLocale('content.orderSummaryTitle', messages)
-const premiumCoffeeName = useStoryLocale('content.premiumCoffeeName', messages)
-const premiumCoffeeDesc = useStoryLocale('content.premiumCoffeeDesc', messages)
-const ceramicSetName = useStoryLocale('content.ceramicSetName', messages)
-const ceramicSetDesc = useStoryLocale('content.ceramicSetDesc', messages)
 
 // Discount variant
-const wirelessHeadphonesName = useStoryLocale('content.wirelessHeadphonesName', messages)
-const welcomeCode = useStoryLocale('content.welcomeCode', messages)
 
 // Receipt variant
-const orderConfirmedTitle = useStoryLocale('content.orderConfirmedTitle', messages)
 
 // Receipt without images variant
-const ebookName = useStoryLocale('content.ebookName', messages)
-const courseAccessName = useStoryLocale('content.courseAccessName', messages)
 
 // Single item variant
-const yourOrderTitle = useStoryLocale('content.yourOrderTitle', messages)
-const annualSubName = useStoryLocale('content.annualSubName', messages)
-const annualSubDesc = useStoryLocale('content.annualSubDesc', messages)
 
 // Many items variant
-const shoppingCartTitle = useStoryLocale('content.shoppingCartTitle', messages)
-const genericItem = useStoryLocale('data.genericItem', messages)
 
 // EUR variant
-const eurOrderTitle = useStoryLocale('content.eurOrderTitle', messages)
-const eurCoffeeName = useStoryLocale('content.eurCoffeeName', messages)
+
 </script>
 
 <template>

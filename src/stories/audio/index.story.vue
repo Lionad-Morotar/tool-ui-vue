@@ -4,6 +4,30 @@ import { Audio } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const audioBasicTitle = useStoryLocale('content.audioBasicTitle', messages)
+const audioBasicDescription = useStoryLocale('content.audioBasicDescription', messages)
+const audioCompactTitle = useStoryLocale('content.audioCompactTitle', messages)
+const audioCompactDescription = useStoryLocale('content.audioCompactDescription', messages)
+const audioOnlyTitle = useStoryLocale('content.audioOnlyTitle', messages)
+const audioOnlyDescription = useStoryLocale('content.audioOnlyDescription', messages)
+const audioEventsTitle = useStoryLocale('content.audioEventsTitle', messages)
+const audioEventsDescription = useStoryLocale('content.audioEventsDescription', messages)
+const audioEventLogHeading = useStoryLocale('content.audioEventLogHeading', messages)
+const audioClearButton = useStoryLocale('content.audioClearButton', messages)
+const audioEmptyState = useStoryLocale('content.audioEmptyState', messages)
+const audioControlsHeading = useStoryLocale('content.audioControlsHeading', messages)
+const audioFormTitle = useStoryLocale('content.audioFormTitle', messages)
+const audioFormDescription = useStoryLocale('content.audioFormDescription', messages)
+const audioFormVariant = useStoryLocale('content.audioFormVariant', messages)
+const audioVariantFull = useStoryLocale('content.audioVariantFull', messages)
+const audioVariantCompact = useStoryLocale('content.audioVariantCompact', messages)
+const basic = useStoryLocale('content.basic', messages)
+const withMetadata = useStoryLocale('data.withMeta', messages)
+const compactVariant = useStoryLocale('content.compactVariant', messages)
+const compactWithoutArtwork = useStoryLocale('content.compactWithoutArtwork', messages)
+const withEventLogging = useStoryLocale('content.withEventLogging', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+
 const interactiveStateZh = {
   title: '自定义音频轨道',
   description: '调整下方属性查看不同状态',
@@ -44,29 +68,6 @@ function clearEvents() {
   eventLog.value = [];
 }
 
-const audioBasicTitle = useStoryLocale('content.audioBasicTitle', messages)
-const audioBasicDescription = useStoryLocale('content.audioBasicDescription', messages)
-const audioCompactTitle = useStoryLocale('content.audioCompactTitle', messages)
-const audioCompactDescription = useStoryLocale('content.audioCompactDescription', messages)
-const audioOnlyTitle = useStoryLocale('content.audioOnlyTitle', messages)
-const audioOnlyDescription = useStoryLocale('content.audioOnlyDescription', messages)
-const audioEventsTitle = useStoryLocale('content.audioEventsTitle', messages)
-const audioEventsDescription = useStoryLocale('content.audioEventsDescription', messages)
-const audioEventLogHeading = useStoryLocale('content.audioEventLogHeading', messages)
-const audioClearButton = useStoryLocale('content.audioClearButton', messages)
-const audioEmptyState = useStoryLocale('content.audioEmptyState', messages)
-const audioControlsHeading = useStoryLocale('content.audioControlsHeading', messages)
-const audioFormTitle = useStoryLocale('content.audioFormTitle', messages)
-const audioFormDescription = useStoryLocale('content.audioFormDescription', messages)
-const audioFormVariant = useStoryLocale('content.audioFormVariant', messages)
-const audioVariantFull = useStoryLocale('content.audioVariantFull', messages)
-const audioVariantCompact = useStoryLocale('content.audioVariantCompact', messages)
-const basic = useStoryLocale('content.basic', messages)
-const withMetadata = useStoryLocale('data.withMeta', messages)
-const compactVariant = useStoryLocale('content.compactVariant', messages)
-const compactWithoutArtwork = useStoryLocale('content.compactWithoutArtwork', messages)
-const withEventLogging = useStoryLocale('content.withEventLogging', messages)
-const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>

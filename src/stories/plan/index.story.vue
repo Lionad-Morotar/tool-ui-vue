@@ -3,9 +3,57 @@ import { reactive, watch } from 'vue';
 import { Plan } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
-import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
-
 const subtitle = useStoryLocale('content.subtitle', messages);
+const basicTodoList = useStoryLocale('data.basicTodoList', messages)
+const withDescriptions = useStoryLocale('content.withDescriptions', messages)
+const allStatuses = useStoryLocale('content.allStatuses', messages)
+const allComplete = useStoryLocale('content.allComplete', messages)
+const interactiveClickToCycleStatus = useStoryLocale('content.interactiveClickToCycleStatus', messages)
+const withProgress = useStoryLocale('content.withProgress', messages)
+const minimal = useStoryLocale('content.minimal', messages)
+const deploymentPlanTitle = useStoryLocale('content.deploymentPlanTitle', messages)
+const deploymentPlanDesc = useStoryLocale('content.deploymentPlanDesc', messages)
+const runMigrations = useStoryLocale('content.runMigrations', messages)
+const updateEnvVars = useStoryLocale('content.updateEnvVars', messages)
+const deployStaging = useStoryLocale('content.deployStaging', messages)
+const runSmokeTests = useStoryLocale('content.runSmokeTests', messages)
+const deployProd = useStoryLocale('content.deployProd', messages)
+const projectSetupTitle = useStoryLocale('content.projectSetupTitle', messages)
+const projectSetupDesc = useStoryLocale('content.projectSetupDesc', messages)
+const initRepo = useStoryLocale('content.initRepo', messages)
+const initRepoDesc = useStoryLocale('content.initRepoDesc', messages)
+const setupCI = useStoryLocale('content.setupCI', messages)
+const setupCIDesc = useStoryLocale('content.setupCIDesc', messages)
+const configEnv = useStoryLocale('content.configEnv', messages)
+const configEnvDesc = useStoryLocale('content.configEnvDesc', messages)
+const addMonitoring = useStoryLocale('content.addMonitoring', messages)
+const addMonitoringDesc = useStoryLocale('content.addMonitoringDesc', messages)
+const taskOverviewTitle = useStoryLocale('content.taskOverviewTitle', messages)
+const completedTask = useStoryLocale('content.completedTask', messages)
+const inProgressTask = useStoryLocale('content.inProgressTask', messages)
+const pendingTask = useStoryLocale('content.pendingTask', messages)
+const cancelledTask = useStoryLocale('content.cancelledTask', messages)
+const projectCompleteTitle = useStoryLocale('content.projectCompleteTitle', messages)
+const projectCompleteDesc = useStoryLocale('content.projectCompleteDesc', messages)
+const researchTask = useStoryLocale('content.researchTask', messages)
+const designTask = useStoryLocale('content.designTask', messages)
+const developmentTask = useStoryLocale('content.developmentTask', messages)
+const testingTask = useStoryLocale('content.testingTask', messages)
+const interactiveHint = useStoryLocale('content.interactiveHint', messages)
+const interactivePlanTitle = useStoryLocale('content.interactivePlanTitle', messages)
+const interactivePlanDesc = useStoryLocale('content.interactivePlanDesc', messages)
+const projectMilestonesTitle = useStoryLocale('content.projectMilestonesTitle', messages)
+const projectMilestonesDesc = useStoryLocale('content.projectMilestonesDesc', messages)
+const requirementsGathering = useStoryLocale('content.requirementsGathering', messages)
+const architectureDesign = useStoryLocale('content.architectureDesign', messages)
+const implementation = useStoryLocale('content.implementation', messages)
+const codeReview = useStoryLocale('content.codeReview', messages)
+const deploymentTask = useStoryLocale('content.deploymentTask', messages)
+const simplePlanTitle = useStoryLocale('content.simplePlanTitle', messages)
+const taskOne = useStoryLocale('content.taskOne', messages)
+const taskTwo = useStoryLocale('content.taskTwo', messages)
+
+import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
 
 /**
  * # Plan
@@ -92,68 +140,20 @@ function cycleStatus(index: number) {
   interactivePlan.todos[index].status = statusOrder[nextIndex];
 }
 
-const basicTodoList = useStoryLocale('data.basicTodoList', messages)
-const withDescriptions = useStoryLocale('content.withDescriptions', messages)
-const allStatuses = useStoryLocale('content.allStatuses', messages)
-const allComplete = useStoryLocale('content.allComplete', messages)
-const interactiveClickToCycleStatus = useStoryLocale('content.interactiveClickToCycleStatus', messages)
-const withProgress = useStoryLocale('content.withProgress', messages)
-const minimal = useStoryLocale('content.minimal', messages)
-
 // Basic variant
-const deploymentPlanTitle = useStoryLocale('content.deploymentPlanTitle', messages)
-const deploymentPlanDesc = useStoryLocale('content.deploymentPlanDesc', messages)
-const runMigrations = useStoryLocale('content.runMigrations', messages)
-const updateEnvVars = useStoryLocale('content.updateEnvVars', messages)
-const deployStaging = useStoryLocale('content.deployStaging', messages)
-const runSmokeTests = useStoryLocale('content.runSmokeTests', messages)
-const deployProd = useStoryLocale('content.deployProd', messages)
 
 // Descriptions variant
-const projectSetupTitle = useStoryLocale('content.projectSetupTitle', messages)
-const projectSetupDesc = useStoryLocale('content.projectSetupDesc', messages)
-const initRepo = useStoryLocale('content.initRepo', messages)
-const initRepoDesc = useStoryLocale('content.initRepoDesc', messages)
-const setupCI = useStoryLocale('content.setupCI', messages)
-const setupCIDesc = useStoryLocale('content.setupCIDesc', messages)
-const configEnv = useStoryLocale('content.configEnv', messages)
-const configEnvDesc = useStoryLocale('content.configEnvDesc', messages)
-const addMonitoring = useStoryLocale('content.addMonitoring', messages)
-const addMonitoringDesc = useStoryLocale('content.addMonitoringDesc', messages)
 
 // All statuses variant
-const taskOverviewTitle = useStoryLocale('content.taskOverviewTitle', messages)
-const completedTask = useStoryLocale('content.completedTask', messages)
-const inProgressTask = useStoryLocale('content.inProgressTask', messages)
-const pendingTask = useStoryLocale('content.pendingTask', messages)
-const cancelledTask = useStoryLocale('content.cancelledTask', messages)
 
 // All complete variant
-const projectCompleteTitle = useStoryLocale('content.projectCompleteTitle', messages)
-const projectCompleteDesc = useStoryLocale('content.projectCompleteDesc', messages)
-const researchTask = useStoryLocale('content.researchTask', messages)
-const designTask = useStoryLocale('content.designTask', messages)
-const developmentTask = useStoryLocale('content.developmentTask', messages)
-const testingTask = useStoryLocale('content.testingTask', messages)
 
 // Interactive variant
-const interactiveHint = useStoryLocale('content.interactiveHint', messages)
-const interactivePlanTitle = useStoryLocale('content.interactivePlanTitle', messages)
-const interactivePlanDesc = useStoryLocale('content.interactivePlanDesc', messages)
 
 // Progress variant
-const projectMilestonesTitle = useStoryLocale('content.projectMilestonesTitle', messages)
-const projectMilestonesDesc = useStoryLocale('content.projectMilestonesDesc', messages)
-const requirementsGathering = useStoryLocale('content.requirementsGathering', messages)
-const architectureDesign = useStoryLocale('content.architectureDesign', messages)
-const implementation = useStoryLocale('content.implementation', messages)
-const codeReview = useStoryLocale('content.codeReview', messages)
-const deploymentTask = useStoryLocale('content.deploymentTask', messages)
 
 // Minimal variant
-const simplePlanTitle = useStoryLocale('content.simplePlanTitle', messages)
-const taskOne = useStoryLocale('content.taskOne', messages)
-const taskTwo = useStoryLocale('content.taskTwo', messages)
+
 </script>
 
 <template>

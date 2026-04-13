@@ -4,6 +4,16 @@ import { XPost } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const textOnly = useStoryLocale('content.textOnly', messages)
+const withImage = useStoryLocale('content.withImage', messages)
+const withVideo = useStoryLocale('content.withVideo', messages)
+const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
+const quotedPost = useStoryLocale('content.quotedPost', messages)
+const quotedPostWithMedia = useStoryLocale('content.quotedPostWithMedia', messages)
+const longText = useStoryLocale('content.longText', messages)
+const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+
 /**
  * # XPost
  *
@@ -91,15 +101,7 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const textOnly = useStoryLocale('content.textOnly', messages)
-const withImage = useStoryLocale('content.withImage', messages)
-const withVideo = useStoryLocale('content.withVideo', messages)
-const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
-const quotedPost = useStoryLocale('content.quotedPost', messages)
-const quotedPostWithMedia = useStoryLocale('content.quotedPostWithMedia', messages)
-const longText = useStoryLocale('content.longText', messages)
-const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
-const interactive = useStoryLocale('content.interactive', messages)
+
 </script>
 
 <template>

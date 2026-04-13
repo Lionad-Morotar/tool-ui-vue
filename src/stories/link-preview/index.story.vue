@@ -4,6 +4,31 @@ import { LinkPreview } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const withImage = useStoryLocale('variant.withImage', messages)
+const withoutImage = useStoryLocale('variant.withoutImage', messages)
+const compact = useStoryLocale('variant.compact', messages)
+const longDescription = useStoryLocale('variant.longDescription', messages)
+const newsArticle = useStoryLocale('variant.newsArticle', messages)
+const withFavicon = useStoryLocale('variant.withFavicon', messages)
+const squareRatio11 = useStoryLocale('variant.squareRatio11', messages)
+const portraitRatio916 = useStoryLocale('variant.portraitRatio916', messages)
+const interactive = useStoryLocale('variant.interactive', messages)
+const betterUITitle = useStoryLocale('content.betterUITitle', messages)
+const betterUIDesc = useStoryLocale('content.betterUIDesc', messages)
+const apiDocsTitle = useStoryLocale('content.apiDocsTitle', messages)
+const apiDocsDesc = useStoryLocale('content.apiDocsDesc', messages)
+const githubRepoTitle = useStoryLocale('content.githubRepoTitle', messages)
+const jsTitle = useStoryLocale('content.jsTitle', messages)
+const jsDesc = useStoryLocale('content.jsDesc', messages)
+const newsTitle = useStoryLocale('content.newsTitle', messages)
+const newsDesc = useStoryLocale('content.newsDesc', messages)
+const githubFeaturesTitle = useStoryLocale('content.githubFeaturesTitle', messages)
+const githubFeaturesDesc = useStoryLocale('content.githubFeaturesDesc', messages)
+const photoGalleryTitle = useStoryLocale('content.photoGalleryTitle', messages)
+const photoGalleryDesc = useStoryLocale('content.photoGalleryDesc', messages)
+const portraitTitle = useStoryLocale('content.portraitTitle', messages)
+const portraitDesc = useStoryLocale('content.portraitDesc', messages)
+
 const interactiveStateZh = {
   href: 'https://example.com/interactive',
   title: '交互式链接预览',
@@ -61,32 +86,8 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
  * - Favicon has `aria-hidden="true"`
  */
 
-const withImage = useStoryLocale('variant.withImage', messages)
-const withoutImage = useStoryLocale('variant.withoutImage', messages)
-const compact = useStoryLocale('variant.compact', messages)
-const longDescription = useStoryLocale('variant.longDescription', messages)
-const newsArticle = useStoryLocale('variant.newsArticle', messages)
-const withFavicon = useStoryLocale('variant.withFavicon', messages)
-const squareRatio11 = useStoryLocale('variant.squareRatio11', messages)
-const portraitRatio916 = useStoryLocale('variant.portraitRatio916', messages)
-const interactive = useStoryLocale('variant.interactive', messages)
-
 // Link preview texts
-const betterUITitle = useStoryLocale('content.betterUITitle', messages)
-const betterUIDesc = useStoryLocale('content.betterUIDesc', messages)
-const apiDocsTitle = useStoryLocale('content.apiDocsTitle', messages)
-const apiDocsDesc = useStoryLocale('content.apiDocsDesc', messages)
-const githubRepoTitle = useStoryLocale('content.githubRepoTitle', messages)
-const jsTitle = useStoryLocale('content.jsTitle', messages)
-const jsDesc = useStoryLocale('content.jsDesc', messages)
-const newsTitle = useStoryLocale('content.newsTitle', messages)
-const newsDesc = useStoryLocale('content.newsDesc', messages)
-const githubFeaturesTitle = useStoryLocale('content.githubFeaturesTitle', messages)
-const githubFeaturesDesc = useStoryLocale('content.githubFeaturesDesc', messages)
-const photoGalleryTitle = useStoryLocale('content.photoGalleryTitle', messages)
-const photoGalleryDesc = useStoryLocale('content.photoGalleryDesc', messages)
-const portraitTitle = useStoryLocale('content.portraitTitle', messages)
-const portraitDesc = useStoryLocale('content.portraitDesc', messages)
+
 </script>
 
 <template>

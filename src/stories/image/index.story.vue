@@ -6,6 +6,24 @@ import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
+const basic = useStoryLocale('content.basic', messages)
+const withTitle = useStoryLocale('content.withTitle', messages)
+const squareRatio = useStoryLocale('content.squareRatio', messages)
+const videoRatio = useStoryLocale('content.videoRatio', messages)
+const withLink = useStoryLocale('content.withLink', messages)
+const withSource = useStoryLocale('content.withSource', messages)
+const objectFitContain = useStoryLocale('content.objectFitContain', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+const landscapeAlt = useStoryLocale('content.landscapeAlt', messages)
+const mountainAlt = useStoryLocale('content.mountainAlt', messages)
+const mountainTitle = useStoryLocale('content.mountainTitle', messages)
+const squareAlt = useStoryLocale('content.squareAlt', messages)
+const widescreenAlt = useStoryLocale('content.widescreenAlt', messages)
+const clickableAlt = useStoryLocale('content.clickableAlt', messages)
+const sourcedAlt = useStoryLocale('content.sourcedAlt', messages)
+const featuredPhotoTitle = useStoryLocale('data.featuredPhotoTitle', messages)
+const portraitAlt = useStoryLocale('content.portraitAlt', messages)
+const portraitTitle = useStoryLocale('content.portraitTitle', messages)
 
 const interactiveStateZh = {
   id: 'image-interactive',
@@ -30,26 +48,9 @@ const interactiveStateEn = {
 const interactiveState = reactive({ ...interactiveStateZh });
 
 watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value === 'zh-CN' ? interactiveStateZh : interactiveStateEn); });
-const basic = useStoryLocale('content.basic', messages)
-const withTitle = useStoryLocale('content.withTitle', messages)
-const squareRatio = useStoryLocale('content.squareRatio', messages)
-const videoRatio = useStoryLocale('content.videoRatio', messages)
-const withLink = useStoryLocale('content.withLink', messages)
-const withSource = useStoryLocale('content.withSource', messages)
-const objectFitContain = useStoryLocale('content.objectFitContain', messages)
-const interactive = useStoryLocale('content.interactive', messages)
 
 // Image alts and titles
-const landscapeAlt = useStoryLocale('content.landscapeAlt', messages)
-const mountainAlt = useStoryLocale('content.mountainAlt', messages)
-const mountainTitle = useStoryLocale('content.mountainTitle', messages)
-const squareAlt = useStoryLocale('content.squareAlt', messages)
-const widescreenAlt = useStoryLocale('content.widescreenAlt', messages)
-const clickableAlt = useStoryLocale('content.clickableAlt', messages)
-const sourcedAlt = useStoryLocale('content.sourcedAlt', messages)
-const featuredPhotoTitle = useStoryLocale('data.featuredPhotoTitle', messages)
-const portraitAlt = useStoryLocale('content.portraitAlt', messages)
-const portraitTitle = useStoryLocale('content.portraitTitle', messages)
+
 </script>
 
 <template>

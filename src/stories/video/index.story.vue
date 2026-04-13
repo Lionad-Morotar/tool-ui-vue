@@ -4,6 +4,33 @@ import { Video } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const basic = useStoryLocale('content.basic', messages)
+const withPoster = useStoryLocale('content.withPoster', messages)
+const withDescription = useStoryLocale('content.withDescription', messages)
+const withNavigation = useStoryLocale('content.withNavigation', messages)
+const squareFormat = useStoryLocale('content.squareFormat', messages)
+const verticalFormat = useStoryLocale('content.verticalFormat', messages)
+const withEventLogging = useStoryLocale('content.withEventLogging', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+const elephantsDreamTitle = useStoryLocale('content.elephantsDreamTitle', messages)
+const biggerBlazesTitle = useStoryLocale('content.biggerBlazesTitle', messages)
+const biggerBlazesDesc = useStoryLocale('content.biggerBlazesDesc', messages)
+const clickToOpenTitle = useStoryLocale('content.clickToOpenTitle', messages)
+const clickToOpenDesc = useStoryLocale('content.clickToOpenDesc', messages)
+const squareVideoTitle = useStoryLocale('content.squareVideoTitle', messages)
+const verticalVideoTitle = useStoryLocale('content.verticalVideoTitle', messages)
+const eventVideoTitle = useStoryLocale('content.eventVideoTitle', messages)
+const eventVideoDesc = useStoryLocale('content.eventVideoDesc', messages)
+const eventLogHeading = useStoryLocale('content.eventLogHeading', messages)
+const clearButton = useStoryLocale('content.clearButton', messages)
+const noEventsYet = useStoryLocale('content.noEventsYet', messages)
+const controlsHeading = useStoryLocale('content.controlsHeading', messages)
+const formTitle = useStoryLocale('content.formTitle', messages)
+const formDesc = useStoryLocale('content.formDesc', messages)
+const formRatio = useStoryLocale('content.formRatio', messages)
+const formAutoPlay = useStoryLocale('content.formAutoPlay', messages)
+const navLogHeading = useStoryLocale('content.navLogHeading', messages)
+
 const interactiveStateZh = {
   src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
   assetId: 'demo-video-interactive',
@@ -55,34 +82,8 @@ function clearNavigateLog() {
   navigateLog.value = [];
 }
 
-const basic = useStoryLocale('content.basic', messages)
-const withPoster = useStoryLocale('content.withPoster', messages)
-const withDescription = useStoryLocale('content.withDescription', messages)
-const withNavigation = useStoryLocale('content.withNavigation', messages)
-const squareFormat = useStoryLocale('content.squareFormat', messages)
-const verticalFormat = useStoryLocale('content.verticalFormat', messages)
-const withEventLogging = useStoryLocale('content.withEventLogging', messages)
-const interactive = useStoryLocale('content.interactive', messages)
-
 // Video texts
-const elephantsDreamTitle = useStoryLocale('content.elephantsDreamTitle', messages)
-const biggerBlazesTitle = useStoryLocale('content.biggerBlazesTitle', messages)
-const biggerBlazesDesc = useStoryLocale('content.biggerBlazesDesc', messages)
-const clickToOpenTitle = useStoryLocale('content.clickToOpenTitle', messages)
-const clickToOpenDesc = useStoryLocale('content.clickToOpenDesc', messages)
-const squareVideoTitle = useStoryLocale('content.squareVideoTitle', messages)
-const verticalVideoTitle = useStoryLocale('content.verticalVideoTitle', messages)
-const eventVideoTitle = useStoryLocale('content.eventVideoTitle', messages)
-const eventVideoDesc = useStoryLocale('content.eventVideoDesc', messages)
-const eventLogHeading = useStoryLocale('content.eventLogHeading', messages)
-const clearButton = useStoryLocale('content.clearButton', messages)
-const noEventsYet = useStoryLocale('content.noEventsYet', messages)
-const controlsHeading = useStoryLocale('content.controlsHeading', messages)
-const formTitle = useStoryLocale('content.formTitle', messages)
-const formDesc = useStoryLocale('content.formDesc', messages)
-const formRatio = useStoryLocale('content.formRatio', messages)
-const formAutoPlay = useStoryLocale('content.formAutoPlay', messages)
-const navLogHeading = useStoryLocale('content.navLogHeading', messages)
+
 </script>
 
 <template>

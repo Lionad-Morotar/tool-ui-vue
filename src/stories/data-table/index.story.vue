@@ -5,21 +5,6 @@ import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
-
-const sortableState = reactive({
-  sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
-});
-
-function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
-  if (sort.by && sort.direction) {
-    sortableState.sort = { by: sort.by, direction: sort.direction };
-  }
-}
-
-const playgroundState = reactive({
-  layout: 'cards' as 'auto' | 'table' | 'cards',
-});
-
 const basic = useStoryLocale('content.basic', messages)
 const stockDataDeltaCurrencyPercent = useStoryLocale('data.stockDataDeltaCurrencyPercent', messages)
 const withFormatting = useStoryLocale('content.withFormatting', messages)
@@ -30,8 +15,6 @@ const withDefaultSort = useStoryLocale('content.withDefaultSort', messages)
 const controlledSort = useStoryLocale('content.controlledSort', messages)
 const withMaxHeight = useStoryLocale('content.withMaxHeight', messages)
 const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPlayground', messages)
-
-// Column labels
 const colName = useStoryLocale('content.colName', messages)
 const colStatus = useStoryLocale('content.colStatus', messages)
 const colRevenue = useStoryLocale('content.colRevenue', messages)
@@ -58,14 +41,30 @@ const colDeadline = useStoryLocale('content.colDeadline', messages)
 const colNotes = useStoryLocale('content.colNotes', messages)
 const colScore = useStoryLocale('content.colScore', messages)
 const colGrade = useStoryLocale('content.colGrade', messages)
-
-// Status badge labels
 const statusCompleted = useStoryLocale('content.statusCompleted', messages)
 const statusInProgress = useStoryLocale('content.statusInProgress', messages)
 const statusPending = useStoryLocale('content.statusPending', messages)
+const emptyMessage = useStoryLocale('content.emptyMessage', messages)
+
+const sortableState = reactive({
+  sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
+});
+
+function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
+  if (sort.by && sort.direction) {
+    sortableState.sort = { by: sort.by, direction: sort.direction };
+  }
+}
+
+const playgroundState = reactive({
+  layout: 'cards' as 'auto' | 'table' | 'cards',
+});
+
+// Column labels
+
+// Status badge labels
 
 // Empty state
-const emptyMessage = useStoryLocale('content.emptyMessage', messages)
 
 // Basic columns
 const basicColumns = computed(() => [

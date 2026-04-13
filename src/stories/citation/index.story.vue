@@ -5,6 +5,30 @@ import type { SerializableCitation } from '@lionad/vtu-components/citation/schem
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const defaultVariant = useStoryLocale('content.defaultVariant', messages)
+const inline = useStoryLocale('content.inline', messages)
+const stacked = useStoryLocale('content.stacked', messages)
+const webpage = useStoryLocale('content.webpage', messages)
+const codeRepository = useStoryLocale('content.codeRepository', messages)
+const document = useStoryLocale('content.document', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+const citationListDefault = useStoryLocale('data.citationListDefault', messages)
+const citationListInline = useStoryLocale('data.citationListInline', messages)
+const citationListStacked = useStoryLocale('data.citationListStacked', messages)
+const citationListWithOverflow = useStoryLocale('data.citationListWithOverflow', messages)
+const citationListInlineWithOverflow = useStoryLocale('data.citationListInlineWithOverflow', messages)
+const researchPaperTitle = useStoryLocale('content.researchPaperTitle', messages)
+const researchPaperSnippet = useStoryLocale('content.researchPaperSnippet', messages)
+const sourceDocTitle = useStoryLocale('content.sourceDocTitle', messages)
+const docRefTitle = useStoryLocale('content.docRefTitle', messages)
+const docRefSnippet = useStoryLocale('content.docRefSnippet', messages)
+const mdnTitle = useStoryLocale('content.mdnTitle', messages)
+const mdnSnippet = useStoryLocale('content.mdnSnippet', messages)
+const toolUiTitle = useStoryLocale('content.toolUiTitle', messages)
+const toolUiSnippet = useStoryLocale('content.toolUiSnippet', messages)
+const whitepaperTitle = useStoryLocale('content.whitepaperTitle', messages)
+const whitepaperSnippet = useStoryLocale('content.whitepaperSnippet', messages)
+
 const interactiveStateZh = {
   href: 'https://example.com/article',
   title: '交互式引用示例',
@@ -127,37 +151,14 @@ const sampleCitationsEn: SerializableCitation[] = [
 
 const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleCitationsZh : sampleCitationsEn);
 
-const defaultVariant = useStoryLocale('content.defaultVariant', messages)
-const inline = useStoryLocale('content.inline', messages)
-const stacked = useStoryLocale('content.stacked', messages)
-const webpage = useStoryLocale('content.webpage', messages)
-const codeRepository = useStoryLocale('content.codeRepository', messages)
-const document = useStoryLocale('content.document', messages)
-const interactive = useStoryLocale('content.interactive', messages)
-const citationListDefault = useStoryLocale('data.citationListDefault', messages)
-const citationListInline = useStoryLocale('data.citationListInline', messages)
-const citationListStacked = useStoryLocale('data.citationListStacked', messages)
-const citationListWithOverflow = useStoryLocale('data.citationListWithOverflow', messages)
-const citationListInlineWithOverflow = useStoryLocale('data.citationListInlineWithOverflow', messages)
-
 // Individual citation texts for single variants
-const researchPaperTitle = useStoryLocale('content.researchPaperTitle', messages)
-const researchPaperSnippet = useStoryLocale('content.researchPaperSnippet', messages)
-const sourceDocTitle = useStoryLocale('content.sourceDocTitle', messages)
-const docRefTitle = useStoryLocale('content.docRefTitle', messages)
-const docRefSnippet = useStoryLocale('content.docRefSnippet', messages)
 
 // Webpage variant
-const mdnTitle = useStoryLocale('content.mdnTitle', messages)
-const mdnSnippet = useStoryLocale('content.mdnSnippet', messages)
 
 // Code repository variant
-const toolUiTitle = useStoryLocale('content.toolUiTitle', messages)
-const toolUiSnippet = useStoryLocale('content.toolUiSnippet', messages)
 
 // Document variant
-const whitepaperTitle = useStoryLocale('content.whitepaperTitle', messages)
-const whitepaperSnippet = useStoryLocale('content.whitepaperSnippet', messages)
+
 </script>
 
 <template>

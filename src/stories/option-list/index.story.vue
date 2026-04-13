@@ -5,6 +5,15 @@ import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
+const resetLabel = useStoryLocale('content.resetLabel', messages);
+const confirmLabel = useStoryLocale('content.confirmLabel', messages);
+const singleSelect = useStoryLocale('content.singleSelect', messages)
+const multiSelect = useStoryLocale('content.multiSelect', messages)
+const withActions = useStoryLocale('content.withActions', messages)
+const withDisabledOptions = useStoryLocale('data.withDisabledOptions', messages)
+const receiptStateSingle = useStoryLocale('content.receiptStateSingle', messages)
+const receiptStateMulti = useStoryLocale('content.receiptStateMulti', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 
 /**
  * # OptionList
@@ -116,8 +125,6 @@ const optionsFeatureEn = [
 const optionsFeature = computed(() => currentLocale.value === 'zh-CN' ? optionsFeatureZh : optionsFeatureEn);
 
 // Action labels
-const resetLabel = useStoryLocale('content.resetLabel', messages);
-const confirmLabel = useStoryLocale('content.confirmLabel', messages);
 
 const interactiveOptionsZh = [
   { id: 'opt-1', label: '选项 1', description: '第一个交互选项' },
@@ -137,13 +144,7 @@ const interactiveState = reactive({
   minSelections: 0,
   maxSelections: 2,
 });
-const singleSelect = useStoryLocale('content.singleSelect', messages)
-const multiSelect = useStoryLocale('content.multiSelect', messages)
-const withActions = useStoryLocale('content.withActions', messages)
-const withDisabledOptions = useStoryLocale('data.withDisabledOptions', messages)
-const receiptStateSingle = useStoryLocale('content.receiptStateSingle', messages)
-const receiptStateMulti = useStoryLocale('content.receiptStateMulti', messages)
-const interactive = useStoryLocale('content.interactive', messages)
+
 </script>
 
 <template>

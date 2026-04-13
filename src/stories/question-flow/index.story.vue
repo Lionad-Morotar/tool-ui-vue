@@ -4,20 +4,6 @@ import { QuestionFlow } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
-const progressiveState = reactive({
-  step: 1,
-  selectedOptions: [] as string[],
-});
-
-function handleSelect(options: string[]) {
-  progressiveState.selectedOptions = options;
-  alert(`Selected: ${options.join(', ')}`);
-}
-
-function handleComplete(answers: Record<string, string[]>) {
-  alert(`Completed! Answers: ${JSON.stringify(answers)}`);
-}
-
 const progressiveModeStep1 = useStoryLocale('variant.progressiveModeStep1', messages)
 const progressiveModeStep2 = useStoryLocale('variant.progressiveModeStep2', messages)
 const progressiveModeMultiSelect = useStoryLocale('variant.progressiveModeMultiSelect', messages)
@@ -27,22 +13,16 @@ const upfrontModeWithDisabledOptions = useStoryLocale('variant.upfrontModeWithDi
 const receiptMode = useStoryLocale('variant.receiptMode', messages)
 const receiptModeMultipleItems = useStoryLocale('variant.receiptModeMultipleItems', messages)
 const interactiveProgressive = useStoryLocale('content.interactiveProgressive', messages)
-
-// Progressive Step 1
 const projectSetupTitle = useStoryLocale('content.projectSetupTitle', messages)
 const projectSetupDesc = useStoryLocale('content.projectSetupDesc', messages)
 const webAppLabel = useStoryLocale('content.webAppLabel', messages)
 const apiServiceLabel = useStoryLocale('content.apiServiceLabel', messages)
 const mobileAppLabel = useStoryLocale('content.mobileAppLabel', messages)
-
-// Progressive Step 2
 const chooseFrameworkTitle = useStoryLocale('content.chooseFrameworkTitle', messages)
 const chooseFrameworkDesc = useStoryLocale('content.chooseFrameworkDesc', messages)
 const reactDesc = useStoryLocale('content.reactDesc', messages)
 const vueDesc = useStoryLocale('content.vueDesc', messages)
 const svelteDesc = useStoryLocale('content.svelteDesc', messages)
-
-// Multi-select
 const selectFeaturesTitle = useStoryLocale('data.selectFeaturesTitle', messages)
 const selectFeaturesDesc = useStoryLocale('content.selectFeaturesDesc', messages)
 const authLabel = useStoryLocale('content.authLabel', messages)
@@ -53,8 +33,6 @@ const notificationsLabel = useStoryLocale('content.notificationsLabel', messages
 const notificationsDesc = useStoryLocale('content.notificationsDesc', messages)
 const analyticsLabel = useStoryLocale('content.analyticsLabel', messages)
 const analyticsDesc = useStoryLocale('content.analyticsDesc', messages)
-
-// Default value
 const selectPlanTitle = useStoryLocale('content.selectPlanTitle', messages)
 const selectPlanDesc = useStoryLocale('content.selectPlanDesc', messages)
 const freeLabel = useStoryLocale('content.freeLabel', messages)
@@ -63,8 +41,6 @@ const proLabel = useStoryLocale('content.proLabel', messages)
 const proDesc = useStoryLocale('content.proDesc', messages)
 const enterpriseLabel = useStoryLocale('content.enterpriseLabel', messages)
 const enterpriseDesc = useStoryLocale('content.enterpriseDesc', messages)
-
-// Upfront mode
 const choosePlatformTitle = useStoryLocale('content.choosePlatformTitle', messages)
 const platformDesc = useStoryLocale('content.platformDesc', messages)
 const webLabel = useStoryLocale('content.webLabel', messages)
@@ -78,8 +54,6 @@ const pythonLabel = useStoryLocale('content.pythonLabel', messages)
 const whatsNeededTitle = useStoryLocale('content.whatsNeededTitle', messages)
 const databaseLabel = useStoryLocale('content.baseLabel', messages)
 const apiLabel = useStoryLocale('content.apiLabel', messages)
-
-// Receipt mode
 const configCompleteTitle = useStoryLocale('content.configCompleteTitle', messages)
 const projectTypeLabel = useStoryLocale('variant.projectTypeLabel', messages)
 const frameworkLabel = useStoryLocale('content.frameworkLabel', messages)
@@ -94,8 +68,6 @@ const totalLabel = useStoryLocale('content.totalLabel', messages)
 const proAnnualLabel = useStoryLocale('content.proAnnualLabel', messages)
 const teamMembersValue = useStoryLocale('content.teamMembersValue', messages)
 const priorityLabel = useStoryLocale('content.priorityLabel', messages)
-
-// Interactive
 const interactiveDemoTitle = useStoryLocale('content.interactiveDemoTitle', messages)
 const interactiveDemoDesc = useStoryLocale('variant.interactiveDemoDesc', messages)
 const optionALabel = useStoryLocale('content.optionALabel', messages)
@@ -105,9 +77,37 @@ const optionBDesc = useStoryLocale('content.optionBDesc', messages)
 const optionCLabel = useStoryLocale('content.optionCLabel', messages)
 const optionCDesc = useStoryLocale('content.optionCDesc', messages)
 const selectedText = useStoryLocale('content.selectedText', messages)
-
 const someOptionsUnavailable = useStoryLocale('data.someOptionsUnavailable', messages)
 const basicLabel = useStoryLocale('content.basicLabel', messages)
+
+const progressiveState = reactive({
+  step: 1,
+  selectedOptions: [] as string[],
+});
+
+function handleSelect(options: string[]) {
+  progressiveState.selectedOptions = options;
+  alert(`Selected: ${options.join(', ')}`);
+}
+
+function handleComplete(answers: Record<string, string[]>) {
+  alert(`Completed! Answers: ${JSON.stringify(answers)}`);
+}
+
+// Progressive Step 1
+
+// Progressive Step 2
+
+// Multi-select
+
+// Default value
+
+// Upfront mode
+
+// Receipt mode
+
+// Interactive
+
 </script>
 
 <template>

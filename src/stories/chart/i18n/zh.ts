@@ -1,6 +1,6 @@
 export default {
   content: {
-    24MonthFinancial: '24 个月财务趋势',
+    month24Financial: '24 个月财务趋势',
     arrayOfSeries: '系列配置数组',
     barChart: '柱状图',
     cPU: 'CPU %',

@@ -19,14 +19,12 @@ const locDemo = useStoryLocale('content.locDemo', messages)
 const locAccessible = useStoryLocale('content.locAccessible', messages)
 const locRainy = useStoryLocale('content.locRainy', messages)
 const locSnowy = useStoryLocale('content.locSnowy', messages)
-
 const dayTue = useStoryLocale('content.dayTue', messages)
 const dayWed = useStoryLocale('content.dayWed', messages)
 const dayThu = useStoryLocale('content.dayThu', messages)
 const dayFri = useStoryLocale('content.dayFri', messages)
 const daySat = useStoryLocale('content.daySat', messages)
 const dayNow = useStoryLocale('content.dayNow', messages)
-
 const lblSunny = useStoryLocale('content.lblSunny', messages)
 const lblPartlyCloudy = useStoryLocale('content.lblPartlyCloudy', messages)
 const lblCloudy = useStoryLocale('content.lblCloudy', messages)
@@ -35,21 +33,27 @@ const lblHeavyRain = useStoryLocale('content.lblHeavyRain', messages)
 const lblSnowy = useStoryLocale('content.lblSnowy', messages)
 const lblThunderstorm = useStoryLocale('content.lblThunderstorm', messages)
 const lblClear = useStoryLocale('content.lblClear', messages)
-
 const lblToggle = useStoryLocale('content.lblToggle', messages)
 const lblTime = useStoryLocale('content.lblTime', messages)
 const lblCondition = useStoryLocale('content.lblCondition', messages)
 const lblReducedMotion = useStoryLocale('content.lblReducedMotion', messages)
 const lblEnableEffects = useStoryLocale('content.lblEnableEffects', messages)
 const lblQuality = useStoryLocale('content.lblQuality', messages)
-
 const textTimeOfDay = useStoryLocale('content.textTimeOfDay', messages)
-
 const textReducedMotion = useStoryLocale('content.textReducedMotion', messages)
-
 const textPreferredMotion = useStoryLocale('content.textPreferredMotion', messages)
-
 const textQualitySettings = useStoryLocale('content.textQualitySettings', messages)
+const sunny = useStoryLocale('content.sunny', messages)
+const cloudy = useStoryLocale('content.cloudy', messages)
+const rainy = useStoryLocale('content.rainy', messages)
+const snowy = useStoryLocale('content.snowy', messages)
+const thunderstorm = useStoryLocale('content.thunderstorm', messages)
+const celsius = useStoryLocale('content.celsius', messages)
+const interactiveWeatherSimulator = useStoryLocale('content.interactiveWeatherSimulator', messages)
+const allWeatherConditions = useStoryLocale('content.allWeatherConditions', messages)
+const timeOfDayLightingSimulation = useStoryLocale('content.timeOfDayLightingSimulation', messages)
+const accessibilityReducedMotion = useStoryLocale('content.accessibilityReducedMotion', messages)
+const effectQualitySettings = useStoryLocale('content.effectQualitySettings', messages)
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,
@@ -137,17 +141,6 @@ function getTimeOfDayValue(hour: number): number {
   return hour / 24;
 }
 
-const sunny = useStoryLocale('content.sunny', messages)
-const cloudy = useStoryLocale('content.cloudy', messages)
-const rainy = useStoryLocale('content.rainy', messages)
-const snowy = useStoryLocale('content.snowy', messages)
-const thunderstorm = useStoryLocale('content.thunderstorm', messages)
-const celsius = useStoryLocale('content.celsius', messages)
-const interactiveWeatherSimulator = useStoryLocale('content.interactiveWeatherSimulator', messages)
-const allWeatherConditions = useStoryLocale('content.allWeatherConditions', messages)
-const timeOfDayLightingSimulation = useStoryLocale('content.timeOfDayLightingSimulation', messages)
-const accessibilityReducedMotion = useStoryLocale('content.accessibilityReducedMotion', messages)
-const effectQualitySettings = useStoryLocale('content.effectQualitySettings', messages)
 </script>
 
 <template>

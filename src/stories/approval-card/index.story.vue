@@ -4,6 +4,42 @@ import { ApprovalCard } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const defaultVariant = useStoryLocale('content.defaultVariant', messages)
+const destructive = useStoryLocale('content.destructive', messages)
+const withMetadata = useStoryLocale('data.withMeta', messages)
+const minimal = useStoryLocale('content.minimal', messages)
+const receiptStateApproved = useStoryLocale('content.receiptStateApproved', messages)
+const receiptStateDenied = useStoryLocale('content.receiptStateDenied', messages)
+const customLabels = useStoryLocale('content.customLabels', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+const deployTitle = useStoryLocale('content.deployTitle', messages)
+const deployDesc = useStoryLocale('content.deployDesc', messages)
+const deployLabel = useStoryLocale('content.deployLabel', messages)
+const cancelLabel = useStoryLocale('content.cancelLabel', messages)
+const deleteProjectTitle = useStoryLocale('content.deleteProjectTitle', messages)
+const deleteProjectDesc = useStoryLocale('content.deleteProjectDesc', messages)
+const deleteProjectLabel = useStoryLocale('content.deleteProjectLabel', messages)
+const keepProjectLabel = useStoryLocale('content.keepProjectLabel', messages)
+const emailCampaignTitle = useStoryLocale('content.emailCampaignTitle', messages)
+const emailCampaignDesc = useStoryLocale('content.emailCampaignDesc', messages)
+const recipientsLabel = useStoryLocale('content.recipientsLabel', messages)
+const subjectLabel = useStoryLocale('content.subjectLabel', messages)
+const scheduledLabel = useStoryLocale('content.scheduledLabel', messages)
+const sendNowLabel = useStoryLocale('content.sendNowLabel', messages)
+const weeklyDigestLabel = useStoryLocale('content.weeklyDigestLabel', messages)
+const immediatelyLabel = useStoryLocale('content.immediatelyLabel', messages)
+const subscriberCount = useStoryLocale('content.subscriberCount', messages)
+const confirmActionTitle = useStoryLocale('content.confirmActionTitle', messages)
+const backupDbTitle = useStoryLocale('content.backupDbTitle', messages)
+const deleteAllFilesTitle = useStoryLocale('content.deleteAllFilesTitle', messages)
+const approvedLabel = useStoryLocale('content.approvedLabel', messages)
+const deniedLabel = useStoryLocale('content.deniedLabel', messages)
+const submitProposalTitle = useStoryLocale('content.submitProposalTitle', messages)
+const submitProposalDesc = useStoryLocale('content.submitProposalDesc', messages)
+const submitLabel = useStoryLocale('content.submitLabel', messages)
+const saveDraftLabel = useStoryLocale('content.saveDraftLabel', messages)
+const resetLabel = useStoryLocale('content.resetLabel', messages)
+
 const interactiveStateZh = {
   title: '部署到生产环境',
   description: '这会将最新变更推送给所有用户。',
@@ -40,55 +76,20 @@ function resetChoice() {
   interactiveState.choice = undefined;
 }
 
-const defaultVariant = useStoryLocale('content.defaultVariant', messages)
-const destructive = useStoryLocale('content.destructive', messages)
-const withMetadata = useStoryLocale('data.withMeta', messages)
-const minimal = useStoryLocale('content.minimal', messages)
-const receiptStateApproved = useStoryLocale('content.receiptStateApproved', messages)
-const receiptStateDenied = useStoryLocale('content.receiptStateDenied', messages)
-const customLabels = useStoryLocale('content.customLabels', messages)
-const interactive = useStoryLocale('content.interactive', messages)
-
 // Deploy to production
-const deployTitle = useStoryLocale('content.deployTitle', messages)
-const deployDesc = useStoryLocale('content.deployDesc', messages)
-const deployLabel = useStoryLocale('content.deployLabel', messages)
-const cancelLabel = useStoryLocale('content.cancelLabel', messages)
 
 // Delete project
-const deleteProjectTitle = useStoryLocale('content.deleteProjectTitle', messages)
-const deleteProjectDesc = useStoryLocale('content.deleteProjectDesc', messages)
-const deleteProjectLabel = useStoryLocale('content.deleteProjectLabel', messages)
-const keepProjectLabel = useStoryLocale('content.keepProjectLabel', messages)
 
 // Email campaign
-const emailCampaignTitle = useStoryLocale('content.emailCampaignTitle', messages)
-const emailCampaignDesc = useStoryLocale('content.emailCampaignDesc', messages)
-const recipientsLabel = useStoryLocale('content.recipientsLabel', messages)
-const subjectLabel = useStoryLocale('content.subjectLabel', messages)
-const scheduledLabel = useStoryLocale('content.scheduledLabel', messages)
-const sendNowLabel = useStoryLocale('content.sendNowLabel', messages)
-const weeklyDigestLabel = useStoryLocale('content.weeklyDigestLabel', messages)
-const immediatelyLabel = useStoryLocale('content.immediatelyLabel', messages)
-const subscriberCount = useStoryLocale('content.subscriberCount', messages)
 
 // Minimal
-const confirmActionTitle = useStoryLocale('content.confirmActionTitle', messages)
 
 // Receipt
-const backupDbTitle = useStoryLocale('content.backupDbTitle', messages)
-const deleteAllFilesTitle = useStoryLocale('content.deleteAllFilesTitle', messages)
-const approvedLabel = useStoryLocale('content.approvedLabel', messages)
-const deniedLabel = useStoryLocale('content.deniedLabel', messages)
 
 // Custom labels
-const submitProposalTitle = useStoryLocale('content.submitProposalTitle', messages)
-const submitProposalDesc = useStoryLocale('content.submitProposalDesc', messages)
-const submitLabel = useStoryLocale('content.submitLabel', messages)
-const saveDraftLabel = useStoryLocale('content.saveDraftLabel', messages)
 
 // Interactive
-const resetLabel = useStoryLocale('content.resetLabel', messages)
+
 </script>
 
 <template>

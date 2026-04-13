@@ -4,6 +4,16 @@ import { LinkedInPost } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const textOnly = useStoryLocale('content.textOnly', messages)
+const withImage = useStoryLocale('content.withImage', messages)
+const withVideo = useStoryLocale('content.withVideo', messages)
+const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
+const longPostTruncated = useStoryLocale('content.longPostTruncated', messages)
+const celebrationPost = useStoryLocale('content.celebrationPost', messages)
+const withoutHeadline = useStoryLocale('content.withoutHeadline', messages)
+const linkPreviewWithoutImage = useStoryLocale('content.linkPreviewWithoutImage', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+
 /**
  * # LinkedInPost
  *
@@ -96,15 +106,7 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const textOnly = useStoryLocale('content.textOnly', messages)
-const withImage = useStoryLocale('content.withImage', messages)
-const withVideo = useStoryLocale('content.withVideo', messages)
-const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
-const longPostTruncated = useStoryLocale('content.longPostTruncated', messages)
-const celebrationPost = useStoryLocale('content.celebrationPost', messages)
-const withoutHeadline = useStoryLocale('content.withoutHeadline', messages)
-const linkPreviewWithoutImage = useStoryLocale('content.linkPreviewWithoutImage', messages)
-const interactive = useStoryLocale('content.interactive', messages)
+
 </script>
 
 <template>

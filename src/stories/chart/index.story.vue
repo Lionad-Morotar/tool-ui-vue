@@ -5,119 +5,50 @@ import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
-const headerName = Name
-const headerType = Type
-const headerDefault = Default
-const headerDesc = Description
-const headerPayload = Payload
-
-const chartData = reactive({
-  selectedPoint: null as string | null,
-});
-
-function handleDataPointClick(point: ChartDataPoint) {
-  chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
-}
-
-const lineChart = LineChart
-const barChart = BarChart
-const multiSeries = MultiSeries
-const withCustomColors = WithCustomColors
-const interactiveClickDataPoints = InteractiveClickData
-const withoutGrid = WithoutGrid
-const withoutLegend = WithoutLegend
-const minimal = Minimal
-const denseDataset = DenseDataset
-
-// Line chart
-const systemPerfTitle = SystemPerformance
-const systemPerfDesc = CPUAndMemory
-const cpuLabel = CPU
-const memoryLabel = Memory
-
-// Bar chart
-const monthlyRevTitle = MonthlyRevenue
-const monthlyRevDesc = RevenueVsExpenses
-const revenueLabel = Revenue
-const expensesLabel = Expenses
-
-// Multi-series
-const trafficSourcesTitle = TrafficSources
-const organicLabel = Organic
-const paidLabel = Paid
-const socialLabel = Social
-
-// Custom colors
-const perfMetricsTitle = PerformanceMetrics
-const speedLabel = Speed
-const qualityLabel = Quality
-const reliabilityLabel = Reliability
-const usabilityLabel = Usability
-
-// Interactive
-const clickableChartTitle = ClickableChart
-const clickableChartDesc = ClickOnAny
-const clickedText = Clicked
-
-// Without grid
-const noGridTitle = NoGridLines
-const noGridDesc = CleanChartWithout
-const salesLabel = Sales
-
-// Without legend
-const noLegendTitle = NoLegend
-const noLegendDesc = CompactChartWithout
-const visitsLabel = Visits
-
-// Dense dataset
-const financialTrendsTitle = 24MonthFinancial
-const financialTrendsDesc = HighDensityDataset
-const costLabel = Cost
-const valueLabel = Value
-const Name = useStoryLocale('content.name', messages)
-const Type = useStoryLocale('content.type', messages)
-const Default = useStoryLocale('content.default', messages)
-const Description = useStoryLocale('content.description', messages)
-const Payload = useStoryLocale('content.payload', messages)
-const LineChart = useStoryLocale('content.lineChart', messages)
-const BarChart = useStoryLocale('content.barChart', messages)
-const MultiSeries = useStoryLocale('content.multiSeries', messages)
-const WithCustomColors = useStoryLocale('content.withCustomColors', messages)
-const InteractiveClickData = useStoryLocale('content.interactiveClickData', messages)
-const WithoutGrid = useStoryLocale('content.withoutGrid', messages)
-const WithoutLegend = useStoryLocale('content.withoutLegend', messages)
-const Minimal = useStoryLocale('content.minimal', messages)
-const DenseDataset = useStoryLocale('content.denseDataset', messages)
-const SystemPerformance = useStoryLocale('content.systemPerformance', messages)
-const CPUAndMemory = useStoryLocale('content.cPUAndMemory', messages)
-const CPU = useStoryLocale('content.cPU', messages)
-const Memory = useStoryLocale('content.memory', messages)
-const MonthlyRevenue = useStoryLocale('content.monthlyRevenue', messages)
-const RevenueVsExpenses = useStoryLocale('content.revenueVsExpenses', messages)
-const Revenue = useStoryLocale('content.revenue', messages)
-const Expenses = useStoryLocale('content.expenses', messages)
-const TrafficSources = useStoryLocale('content.trafficSources', messages)
-const Organic = useStoryLocale('content.organic', messages)
-const Paid = useStoryLocale('content.paid', messages)
-const Social = useStoryLocale('content.social', messages)
-const PerformanceMetrics = useStoryLocale('content.performanceMetrics', messages)
-const Speed = useStoryLocale('content.speed', messages)
-const Quality = useStoryLocale('content.quality', messages)
-const Reliability = useStoryLocale('content.reliability', messages)
-const Usability = useStoryLocale('content.usability', messages)
-const ClickableChart = useStoryLocale('content.clickableChart', messages)
-const ClickOnAny = useStoryLocale('content.clickOnAny', messages)
-const Clicked = useStoryLocale('content.clicked', messages)
-const NoGridLines = useStoryLocale('content.noGridLines', messages)
-const CleanChartWithout = useStoryLocale('content.cleanChartWithout', messages)
-const Sales = useStoryLocale('content.sales', messages)
-const NoLegend = useStoryLocale('content.noLegend', messages)
-const CompactChartWithout = useStoryLocale('content.compactChartWithout', messages)
-const Visits = useStoryLocale('content.visits', messages)
-const 24MonthFinancial = useStoryLocale('content.24MonthFinancial', messages)
-const HighDensityDataset = useStoryLocale('content.highDensityDataset', messages)
-const Cost = useStoryLocale('content.cost', messages)
-const Value = useStoryLocale('content.value', messages)
+const headerName = useStoryLocale('content.name', messages)
+const headerType = useStoryLocale('content.type', messages)
+const headerDefault = useStoryLocale('content.default', messages)
+const headerDesc = useStoryLocale('content.description', messages)
+const headerPayload = useStoryLocale('content.payload', messages)
+const lineChart = useStoryLocale('content.lineChart', messages)
+const barChart = useStoryLocale('content.barChart', messages)
+const multiSeries = useStoryLocale('content.multiSeries', messages)
+const withCustomColors = useStoryLocale('content.withCustomColors', messages)
+const interactiveClickDataPoints = useStoryLocale('content.interactiveClickData', messages)
+const withoutGrid = useStoryLocale('content.withoutGrid', messages)
+const withoutLegend = useStoryLocale('content.withoutLegend', messages)
+const minimal = useStoryLocale('content.minimal', messages)
+const denseDataset = useStoryLocale('content.denseDataset', messages)
+const systemPerfTitle = useStoryLocale('content.systemPerformance', messages)
+const systemPerfDesc = useStoryLocale('content.cPUAndMemory', messages)
+const cpuLabel = useStoryLocale('content.cPU', messages)
+const memoryLabel = useStoryLocale('content.memory', messages)
+const monthlyRevTitle = useStoryLocale('content.monthlyRevenue', messages)
+const monthlyRevDesc = useStoryLocale('content.revenueVsExpenses', messages)
+const revenueLabel = useStoryLocale('content.revenue', messages)
+const expensesLabel = useStoryLocale('content.expenses', messages)
+const trafficSourcesTitle = useStoryLocale('content.trafficSources', messages)
+const organicLabel = useStoryLocale('content.organic', messages)
+const paidLabel = useStoryLocale('content.paid', messages)
+const socialLabel = useStoryLocale('content.social', messages)
+const perfMetricsTitle = useStoryLocale('content.performanceMetrics', messages)
+const speedLabel = useStoryLocale('content.speed', messages)
+const qualityLabel = useStoryLocale('content.quality', messages)
+const reliabilityLabel = useStoryLocale('content.reliability', messages)
+const usabilityLabel = useStoryLocale('content.usability', messages)
+const clickableChartTitle = useStoryLocale('content.clickableChart', messages)
+const clickableChartDesc = useStoryLocale('content.clickOnAny', messages)
+const clickedText = useStoryLocale('content.clicked', messages)
+const noGridTitle = useStoryLocale('content.noGridLines', messages)
+const noGridDesc = useStoryLocale('content.cleanChartWithout', messages)
+const salesLabel = useStoryLocale('content.sales', messages)
+const noLegendTitle = useStoryLocale('content.noLegend', messages)
+const noLegendDesc = useStoryLocale('content.compactChartWithout', messages)
+const visitsLabel = useStoryLocale('content.visits', messages)
+const financialTrendsTitle = useStoryLocale('content.month24Financial', messages)
+const financialTrendsDesc = useStoryLocale('content.highDensityDataset', messages)
+const costLabel = useStoryLocale('content.cost', messages)
+const valueLabel = useStoryLocale('content.value', messages)
 const ChartComponent = useStoryLocale('content.chartComponent', messages)
 const DataVisualizationComponent = useStoryLocale('content.dataVisualizationComponent', messages)
 const Props = useStoryLocale('content.props', messages)
@@ -139,6 +70,31 @@ const ThisComponentDoes = useStoryLocale('content.thisComponentDoes', messages)
 const ChartSeriesType = useStoryLocale('content.chartSeriesType', messages)
 const CSSVariables = useStoryLocale('content.cSSVariables', messages)
 const TheChartUses = useStoryLocale('content.theChartUses', messages)
+
+const chartData = reactive({
+  selectedPoint: null as string | null,
+});
+
+function handleDataPointClick(point: ChartDataPoint) {
+  chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
+}
+
+// Line chart
+
+// Bar chart
+
+// Multi-series
+
+// Custom colors
+
+// Interactive
+
+// Without grid
+
+// Without legend
+
+// Dense dataset
+
 </script>
 
 <template>

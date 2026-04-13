@@ -5,7 +5,6 @@ import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
-
 const basic = useStoryLocale('content.basic', messages)
 const withTrends = useStoryLocale('content.withTrends', messages)
 const withSparklines = useStoryLocale('content.withSparklines', messages)
@@ -14,8 +13,6 @@ const currencyFormats = useStoryLocale('content.currencyFormats', messages)
 const numberFormats = useStoryLocale('content.numberFormats', messages)
 const percentFormats = useStoryLocale('content.percentFormats', messages)
 const trendIndicators = useStoryLocale('content.trendIndicators', messages)
-
-// Stats labels
 const revenueLabel = useStoryLocale('content.revenueLabel', messages)
 const usersLabel = useStoryLocale('content.usersLabel', messages)
 const churnLabel = useStoryLocale('content.churnLabel', messages)
@@ -23,42 +20,44 @@ const npsLabel = useStoryLocale('content.npsLabel', messages)
 const activeUsersLabel = useStoryLocale('content.activeUsersLabel', messages)
 const churnRateLabel = useStoryLocale('content.churnRateLabel', messages)
 const npsScoreLabel = useStoryLocale('content.npsScoreLabel', messages)
-
-// With trends
 const keyMetricsTitle = useStoryLocale('content.keyMetricsTitle', messages)
 const performanceOverviewDesc = useStoryLocale('content.performanceOverviewDesc', messages)
-
-// With sparklines
 const q4PerformanceTitle = useStoryLocale('content.q4PerformanceTitle', messages)
 const q4Desc = useStoryLocale('content.q4Desc', messages)
-
-// Currency
 const financialOverviewTitle = useStoryLocale('content.financialOverviewTitle', messages)
 const usdLabel = useStoryLocale('content.usdLabel', messages)
 const eurLabel = useStoryLocale('content.eurLabel', messages)
 const gbpLabel = useStoryLocale('content.gbpLabel', messages)
 const jpyLabel = useStoryLocale('content.jpyLabel', messages)
-
-// Number formats
 const usageStatisticsTitle = useStoryLocale('content.usageStatisticsTitle', messages)
 const totalUsersLabel = useStoryLocale('content.totalUsersLabel', messages)
 const dailyActiveLabel = useStoryLocale('content.dailyActiveLabel', messages)
 const avgSessionLabel = useStoryLocale('content.avgSessionLabel', messages)
 const scoreLabel = useStoryLocale('content.scoreLabel', messages)
-
-// Percent formats
 const conversionMetricsTitle = useStoryLocale('content.conversionMetricsTitle', messages)
 const conversionRateLabel = useStoryLocale('content.conversionRateLabel', messages)
 const bounceRateLabel = useStoryLocale('content.bounceRateLabel', messages)
 const retentionLabel = useStoryLocale('content.retentionLabel', messages)
 const engagementLabel = useStoryLocale('content.engagementLabel', messages)
-
-// Trend indicators
 const trendAnalysisTitle = useStoryLocale('content.trendAnalysisTitle', messages)
 const revenueUpIsGoodLabel = useStoryLocale('content.revenueUpIsGoodLabel', messages)
 const costDownIsGoodLabel = useStoryLocale('content.costDownIsGoodLabel', messages)
 const neutralChangeLabel = useStoryLocale('content.neutralChangeLabel', messages)
 const errorsUpIsBadLabel = useStoryLocale('content.errorsUpIsBadLabel', messages)
+
+// Stats labels
+
+// With trends
+
+// With sparklines
+
+// Currency
+
+// Number formats
+
+// Percent formats
+
+// Trend indicators
 
 // Currency format stats
 const currencyStats = computed<any[]>(() => [

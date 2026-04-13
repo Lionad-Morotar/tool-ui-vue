@@ -5,6 +5,37 @@ import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
+const imageN = useStoryLocale('content.imageN', messages)
+const gridLayout = useStoryLocale('content.gridLayout', messages)
+const waterfallLayoutMasonry = useStoryLocale('content.waterfallLayoutMasonry', messages)
+const withTitles = useStoryLocale('content.withTitles', messages)
+const withSourceAttribution = useStoryLocale('content.withSourceAttribution', messages)
+const singleImageTitle = useStoryLocale('content.singleImageTitle', messages)
+const interactiveLightboxDemo = useStoryLocale('content.interactiveLightboxDemo', messages)
+const differentImageCounts2Images = useStoryLocale('content.differentImageCounts2Images', messages)
+const differentImageCounts9Images = useStoryLocale('content.differentImageCounts9Images', messages)
+const lightboxFeatures = useStoryLocale('data.lightboxFeatures', messages)
+const photoCollectionTitle = useStoryLocale('content.photoCollectionTitle', messages)
+const photoCollectionDesc = useStoryLocale('content.photoCollectionDesc', messages)
+const masonryHint = useStoryLocale('content.masonryHint', messages)
+const waterfallGalleryTitle = useStoryLocale('content.waterfallGalleryTitle', messages)
+const waterfallGalleryDesc = useStoryLocale('content.waterfallGalleryDesc', messages)
+const sourceHint = useStoryLocale('content.sourceHint', messages)
+const curatedCollectionTitle = useStoryLocale('content.curatedCollectionTitle', messages)
+const curatedCollectionDesc = useStoryLocale('content.curatedCollectionDesc', messages)
+const clickCountText = useStoryLocale('content.clickCountText', messages)
+const lastClickedText = useStoryLocale('content.lastClickedText', messages)
+const lightboxTitle = useStoryLocale('content.lightboxTitle', messages)
+const lightboxDesc = useStoryLocale('content.lightboxDesc', messages)
+const photoGridTitle = useStoryLocale('content.photoGridTitle', messages)
+const lightboxFeaturesDesc = useStoryLocale('content.lightboxFeaturesDesc', messages)
+const keyboardNav = useStoryLocale('content.keyboardNav', messages)
+const touchGestures = useStoryLocale('content.touchGestures', messages)
+const imageCounter = useStoryLocale('content.imageCounter', messages)
+const metadataDisplay = useStoryLocale('data.metaDisplay', messages)
+const reducedMotion = useStoryLocale('content.reducedMotion', messages)
+const featureDemoTitle = useStoryLocale('data.featureDemoTitle', messages)
+const featureDemoDesc = useStoryLocale('variant.featureDemoDesc', messages)
 
 const galleryState = reactive({
   clickCount: 0,
@@ -112,7 +143,7 @@ const twoImagesEn = [
 const twoImages = computed(() => currentLocale.value === 'zh-CN' ? twoImagesZh : twoImagesEn);
 
 // Nine images (dynamic, with template literal for alt)
-const imageN = useStoryLocale('content.imageN', messages)
+
 const nineImagesZh = computed(() => Array.from({ length: 9 }, (_, i) => ({
   id: String(i + 1),
   src: `https://picsum.photos/300/300?random=${70 + i}`,
@@ -129,38 +160,8 @@ const nineImagesEn = computed(() => Array.from({ length: 9 }, (_, i) => ({
 })));
 const nineImages = computed(() => currentLocale.value === 'zh-CN' ? nineImagesZh.value : nineImagesEn.value);
 
-const gridLayout = useStoryLocale('content.gridLayout', messages)
-const waterfallLayoutMasonry = useStoryLocale('content.waterfallLayoutMasonry', messages)
-const withTitles = useStoryLocale('content.withTitles', messages)
-const withSourceAttribution = useStoryLocale('content.withSourceAttribution', messages)
-const singleImageTitle = useStoryLocale('content.singleImageTitle', messages)
-const interactiveLightboxDemo = useStoryLocale('content.interactiveLightboxDemo', messages)
-const differentImageCounts2Images = useStoryLocale('content.differentImageCounts2Images', messages)
-const differentImageCounts9Images = useStoryLocale('content.differentImageCounts9Images', messages)
-const lightboxFeatures = useStoryLocale('data.lightboxFeatures', messages)
-
 // Gallery texts
-const photoCollectionTitle = useStoryLocale('content.photoCollectionTitle', messages)
-const photoCollectionDesc = useStoryLocale('content.photoCollectionDesc', messages)
-const masonryHint = useStoryLocale('content.masonryHint', messages)
-const waterfallGalleryTitle = useStoryLocale('content.waterfallGalleryTitle', messages)
-const waterfallGalleryDesc = useStoryLocale('content.waterfallGalleryDesc', messages)
-const sourceHint = useStoryLocale('content.sourceHint', messages)
-const curatedCollectionTitle = useStoryLocale('content.curatedCollectionTitle', messages)
-const curatedCollectionDesc = useStoryLocale('content.curatedCollectionDesc', messages)
-const clickCountText = useStoryLocale('content.clickCountText', messages)
-const lastClickedText = useStoryLocale('content.lastClickedText', messages)
-const lightboxTitle = useStoryLocale('content.lightboxTitle', messages)
-const lightboxDesc = useStoryLocale('content.lightboxDesc', messages)
-const photoGridTitle = useStoryLocale('content.photoGridTitle', messages)
-const lightboxFeaturesDesc = useStoryLocale('content.lightboxFeaturesDesc', messages)
-const keyboardNav = useStoryLocale('content.keyboardNav', messages)
-const touchGestures = useStoryLocale('content.touchGestures', messages)
-const imageCounter = useStoryLocale('content.imageCounter', messages)
-const metadataDisplay = useStoryLocale('data.metaDisplay', messages)
-const reducedMotion = useStoryLocale('content.reducedMotion', messages)
-const featureDemoTitle = useStoryLocale('data.featureDemoTitle', messages)
-const featureDemoDesc = useStoryLocale('variant.featureDemoDesc', messages)
+
 </script>
 
 <template>

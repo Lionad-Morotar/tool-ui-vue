@@ -62,20 +62,6 @@ const centerViewportDesc = useStoryLocale('content.centerViewportDesc', messages
 const tokyoLabel = useStoryLocale('content.tokyoLabel', messages)
 const withoutZoomTitle = useStoryLocale('content.withoutZoomTitle', messages)
 const withoutZoomDesc = useStoryLocale('content.withoutZoomDesc', messages)
-
-const mapState = reactive({
-  selectedMarker: null as string | null,
-  selectedRoute: null as string | null,
-});
-
-function handleMarkerClick(marker: GeoMapMarker) {
-  mapState.selectedMarker = marker.id || marker.label || 'Unknown';
-}
-
-function handleRouteClick(route: GeoMapRoute) {
-  mapState.selectedRoute = route.id || route.label || 'Unknown';
-}
-
 const singleMarker = useStoryLocale('content.singleMarker', messages)
 const multipleMarkers = useStoryLocale('content.multipleMarkers', messages)
 const withRoutes = useStoryLocale('content.withRoutes', messages)
@@ -91,6 +77,20 @@ const denseClusteringDemo = useStoryLocale('content.denseClusteringDemo', messag
 const complexRouteWithStyling = useStoryLocale('content.complexRouteWithStyling', messages)
 const centerViewportMode = useStoryLocale('variant.centerViewportMode', messages)
 const withoutZoomControl = useStoryLocale('content.withoutZoomControl', messages)
+
+const mapState = reactive({
+  selectedMarker: null as string | null,
+  selectedRoute: null as string | null,
+});
+
+function handleMarkerClick(marker: GeoMapMarker) {
+  mapState.selectedMarker = marker.id || marker.label || 'Unknown';
+}
+
+function handleRouteClick(route: GeoMapRoute) {
+  mapState.selectedRoute = route.id || route.label || 'Unknown';
+}
+
 </script>
 
 <template>

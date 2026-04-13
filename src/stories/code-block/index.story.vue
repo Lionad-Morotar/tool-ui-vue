@@ -4,6 +4,26 @@ import { CodeBlock } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const TypeScript = useStoryLocale('content.typeScript', messages)
+const JavaScript = useStoryLocale('content.javaScript', messages)
+const Python = useStoryLocale('content.python', messages)
+const CSS = useStoryLocale('content.cSS', messages)
+const WithHighlightedLines = useStoryLocale('content.withHighlightedLines', messages)
+const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
+const CollapsedLongCode = useStoryLocale('content.collapsedLongCode', messages)
+const NoFilename = useStoryLocale('content.noFilename', messages)
+const DarkTheme = useStoryLocale('content.darkTheme', messages)
+const Interactive = useStoryLocale('content.interactive', messages)
+const CodeBlockProps = useStoryLocale('content.codeBlockProps', messages)
+const SupportedLanguages1 = useStoryLocale('content.supportedLanguages1', messages)
+const Language = useStoryLocale('content.language', messages)
+const ShowLineNumbers = useStoryLocale('content.showLineNumbers', messages)
+
 const exampleCode = `interface User {
   id: string;
   name: string;
@@ -92,7 +112,6 @@ const languages = [
   'markdown', 'sql', 'yaml', 'go', 'rust', 'text'
 ];
 const propsTitle = Props
-const supportedLanguages = SupportedLanguages
 const typeScript = TypeScript
 const javaScript = JavaScript
 const python = Python
@@ -103,26 +122,7 @@ const collapsedLongCode = CollapsedLongCode
 const noFilename = NoFilename
 const darkTheme = DarkTheme
 const interactive = Interactive
-const Name = useStoryLocale('content.name', messages)
-const Type = useStoryLocale('content.type', messages)
-const Default = useStoryLocale('content.default', messages)
-const Description = useStoryLocale('content.description', messages)
-const Props = useStoryLocale('content.props', messages)
-const SupportedLanguages = useStoryLocale('content.supportedLanguages', messages)
-const TypeScript = useStoryLocale('content.typeScript', messages)
-const JavaScript = useStoryLocale('content.javaScript', messages)
-const Python = useStoryLocale('content.python', messages)
-const CSS = useStoryLocale('content.cSS', messages)
-const WithHighlightedLines = useStoryLocale('content.withHighlightedLines', messages)
-const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
-const CollapsedLongCode = useStoryLocale('content.collapsedLongCode', messages)
-const NoFilename = useStoryLocale('content.noFilename', messages)
-const DarkTheme = useStoryLocale('content.darkTheme', messages)
-const Interactive = useStoryLocale('content.interactive', messages)
-const CodeBlockProps = useStoryLocale('content.codeBlockProps', messages)
-const SupportedLanguages1 = useStoryLocale('content.supportedLanguages1', messages)
-const Language = useStoryLocale('content.language', messages)
-const ShowLineNumbers = useStoryLocale('content.showLineNumbers', messages)
+
 </script>
 
 <template>

@@ -5,6 +5,44 @@ import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
+const accountLabel = useStoryLocale('content.accountLabel', messages)
+const profileLabel = useStoryLocale('content.profileLabel', messages)
+const billingLabel = useStoryLocale('content.billingLabel', messages)
+const reviewLabel = useStoryLocale('content.reviewLabel', messages)
+const uploadLabel = useStoryLocale('content.uploadLabel', messages)
+const processLabel = useStoryLocale('content.processLabel', messages)
+const exportLabel = useStoryLocale('content.exportLabel', messages)
+const buildLabel = useStoryLocale('content.buildLabel', messages)
+const testLabel = useStoryLocale('content.testLabel', messages)
+const deployLabel = useStoryLocale('content.deployLabel', messages)
+const verifyLabel = useStoryLocale('content.verifyLabel', messages)
+const designLabel = useStoryLocale('content.designLabel', messages)
+const developLabel = useStoryLocale('content.developLabel', messages)
+const launchLabel = useStoryLocale('content.launchLabel', messages)
+const compileLabel = useStoryLocale('content.compileLabel', messages)
+const bundleLabel = useStoryLocale('content.bundleLabel', messages)
+const optimizeLabel = useStoryLocale('content.optimizeLabel', messages)
+const stepALabel = useStoryLocale('content.stepALabel', messages)
+const stepBLabel = useStoryLocale('content.stepBLabel', messages)
+const stepCLabel = useStoryLocale('content.stepCLabel', messages)
+const stepDLabel = useStoryLocale('content.stepDLabel', messages)
+const stepELabel = useStoryLocale('content.stepELabel', messages)
+const processDesc = useStoryLocale('content.processDesc', messages)
+const reviewDesc = useStoryLocale('content.reviewDesc', messages)
+const exportDesc = useStoryLocale('content.exportDesc', messages)
+const addFilesDesc = useStoryLocale('content.addFilesDesc', messages)
+const exportComplete = useStoryLocale('content.exportComplete', messages)
+const testsFailed = useStoryLocale('content.testsFailed', messages)
+const advanceBtn = useStoryLocale('content.advanceBtn', messages)
+const horizontalSteps = useStoryLocale('content.horizontalSteps', messages)
+const withDescriptions = useStoryLocale('content.withDescriptions', messages)
+const withFailedStep = useStoryLocale('content.withFailedStep', messages)
+const allCompleted = useStoryLocale('content.allCompleted', messages)
+const withElapsedTime = useStoryLocale('content.withElapsedTime', messages)
+const receiptSuccess = useStoryLocale('content.receiptSuccess', messages)
+const receiptFailed = useStoryLocale('content.receiptFailed', messages)
+const interactiveClickToAdvance = useStoryLocale('content.interactiveClickToAdvance', messages)
+const nonLinearProgress = useStoryLocale('content.nonLinearProgress', messages)
 
 /**
  * # ProgressTracker
@@ -52,41 +90,12 @@ const subtitle = useStoryLocale('content.subtitle', messages);
  */
 
 // Step labels
-const accountLabel = useStoryLocale('content.accountLabel', messages)
-const profileLabel = useStoryLocale('content.profileLabel', messages)
-const billingLabel = useStoryLocale('content.billingLabel', messages)
-const reviewLabel = useStoryLocale('content.reviewLabel', messages)
-const uploadLabel = useStoryLocale('content.uploadLabel', messages)
-const processLabel = useStoryLocale('content.processLabel', messages)
-const exportLabel = useStoryLocale('content.exportLabel', messages)
-const buildLabel = useStoryLocale('content.buildLabel', messages)
-const testLabel = useStoryLocale('content.testLabel', messages)
-const deployLabel = useStoryLocale('content.deployLabel', messages)
-const verifyLabel = useStoryLocale('content.verifyLabel', messages)
-const designLabel = useStoryLocale('content.designLabel', messages)
-const developLabel = useStoryLocale('content.developLabel', messages)
-const launchLabel = useStoryLocale('content.launchLabel', messages)
-const compileLabel = useStoryLocale('content.compileLabel', messages)
-const bundleLabel = useStoryLocale('content.bundleLabel', messages)
-const optimizeLabel = useStoryLocale('content.optimizeLabel', messages)
-const stepALabel = useStoryLocale('content.stepALabel', messages)
-const stepBLabel = useStoryLocale('content.stepBLabel', messages)
-const stepCLabel = useStoryLocale('content.stepCLabel', messages)
-const stepDLabel = useStoryLocale('content.stepDLabel', messages)
-const stepELabel = useStoryLocale('content.stepELabel', messages)
 
 // Descriptions
-const processDesc = useStoryLocale('content.processDesc', messages)
-const reviewDesc = useStoryLocale('content.reviewDesc', messages)
-const exportDesc = useStoryLocale('content.exportDesc', messages)
-const addFilesDesc = useStoryLocale('content.addFilesDesc', messages)
 
 // Receipt summaries
-const exportComplete = useStoryLocale('content.exportComplete', messages)
-const testsFailed = useStoryLocale('content.testsFailed', messages)
 
 // Button
-const advanceBtn = useStoryLocale('content.advanceBtn', messages)
 
 const interactiveProgressZh = {
   steps: [
@@ -130,16 +139,6 @@ function advanceStep() {
     interactiveProgress.currentStep = 1;
   }
 }
-
-const horizontalSteps = useStoryLocale('content.horizontalSteps', messages)
-const withDescriptions = useStoryLocale('content.withDescriptions', messages)
-const withFailedStep = useStoryLocale('content.withFailedStep', messages)
-const allCompleted = useStoryLocale('content.allCompleted', messages)
-const withElapsedTime = useStoryLocale('content.withElapsedTime', messages)
-const receiptSuccess = useStoryLocale('content.receiptSuccess', messages)
-const receiptFailed = useStoryLocale('content.receiptFailed', messages)
-const interactiveClickToAdvance = useStoryLocale('content.interactiveClickToAdvance', messages)
-const nonLinearProgress = useStoryLocale('content.nonLinearProgress', messages)
 
 // Computed step arrays for static variants
 const horizontalStepsArr = computed<any[]>(() => [

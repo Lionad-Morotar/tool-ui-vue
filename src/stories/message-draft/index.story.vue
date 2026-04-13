@@ -4,6 +4,28 @@ import { MessageDraft } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const lblReset = useStoryLocale('content.lblReset', messages)
+const textCancelledRenders = useStoryLocale('content.textCancelledRenders', messages)
+const subjQ4Planning = useStoryLocale('content.subjQ4Planning', messages)
+const bodyQ4Planning = useStoryLocale('content.bodyQ4Planning', messages)
+const subjProjectUpdate = useStoryLocale('content.subjProjectUpdate', messages)
+const bodyProjectUpdate = useStoryLocale('content.bodyProjectUpdate', messages)
+const subjQuarterlyReview = useStoryLocale('content.subjQuarterlyReview', messages)
+const bodyQuarterlyReview = useStoryLocale('content.bodyQuarterlyReview', messages)
+const bodySlackStandup = useStoryLocale('content.bodySlackStandup', messages)
+const bodySlackDM = useStoryLocale('content.bodySlackDM', messages)
+const subjMeetingConfirm = useStoryLocale('content.subjMeetingConfirm', messages)
+const bodyMeetingConfirm = useStoryLocale('content.bodyMeetingConfirm', messages)
+const subjDraftMessage = useStoryLocale('content.subjDraftMessage', messages)
+const bodyDraftNotSent = useStoryLocale('content.bodyDraftNotSent', messages)
+const emailDraft = useStoryLocale('content.emailDraft', messages)
+const emailWithCCBCC = useStoryLocale('content.emailWithCCBCC', messages)
+const emailWithLongBody = useStoryLocale('content.emailWithLongBody', messages)
+const slackChannel = useStoryLocale('content.slackChannel', messages)
+const slackDM = useStoryLocale('content.slackDM', messages)
+const sentReceipt = useStoryLocale('content.sentReceipt', messages)
+const cancelled = useStoryLocale('content.cancelled', messages)
+
 const emailState = ref({
   outcome: undefined as 'sent' | 'cancelled' | undefined,
 });
@@ -35,28 +57,6 @@ function resetEmail() {
 function resetSlack() {
   slackState.value.outcome = undefined;
 }
-
-const lblReset = useStoryLocale('content.lblReset', messages)
-const textCancelledRenders = useStoryLocale('content.textCancelledRenders', messages)
-
-const subjQ4Planning = useStoryLocale('content.subjQ4Planning', messages)
-const bodyQ4Planning = useStoryLocale('content.bodyQ4Planning', messages)
-
-const subjProjectUpdate = useStoryLocale('content.subjProjectUpdate', messages)
-const bodyProjectUpdate = useStoryLocale('content.bodyProjectUpdate', messages)
-
-const subjQuarterlyReview = useStoryLocale('content.subjQuarterlyReview', messages)
-const bodyQuarterlyReview = useStoryLocale('content.bodyQuarterlyReview', messages)
-
-const bodySlackStandup = useStoryLocale('content.bodySlackStandup', messages)
-
-const bodySlackDM = useStoryLocale('content.bodySlackDM', messages)
-
-const subjMeetingConfirm = useStoryLocale('content.subjMeetingConfirm', messages)
-const bodyMeetingConfirm = useStoryLocale('content.bodyMeetingConfirm', messages)
-
-const subjDraftMessage = useStoryLocale('content.subjDraftMessage', messages)
-const bodyDraftNotSent = useStoryLocale('content.bodyDraftNotSent', messages)
 
 /**
  * ## Props
@@ -132,13 +132,7 @@ const bodyDraftNotSent = useStoryLocale('content.bodyDraftNotSent', messages)
  * ### Cancelled
  * - Renders nothing
  */
-const emailDraft = useStoryLocale('content.emailDraft', messages)
-const emailWithCCBCC = useStoryLocale('content.emailWithCCBCC', messages)
-const emailWithLongBody = useStoryLocale('content.emailWithLongBody', messages)
-const slackChannel = useStoryLocale('content.slackChannel', messages)
-const slackDM = useStoryLocale('content.slackDM', messages)
-const sentReceipt = useStoryLocale('content.sentReceipt', messages)
-const cancelled = useStoryLocale('content.cancelled', messages)
+
 </script>
 
 <template>

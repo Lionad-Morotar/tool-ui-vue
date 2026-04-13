@@ -4,6 +4,38 @@ import { Terminal } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const ANSIColorSupport = useStoryLocale('content.aNSIColorSupport', messages)
+const ExitCodes = useStoryLocale('content.exitCodes', messages)
+const SuccessWithANSI = useStoryLocale('content.successWithANSI', messages)
+const LintOutputWith = useStoryLocale('content.lintOutputWith', messages)
+const DockerBuildOutput = useStoryLocale('content.dockerBuildOutput', messages)
+const WithError = useStoryLocale('content.withError', messages)
+const WithWorkingDirectory = useStoryLocale('content.withWorkingDirectory', messages)
+const LongOutputCollapsed = useStoryLocale('content.longOutputCollapsed', messages)
+const Truncated = useStoryLocale('content.truncated', messages)
+const NoOutput = useStoryLocale('content.noOutput', messages)
+const SimpleCommand = useStoryLocale('content.simpleCommand', messages)
+const DarkThemeSuccess = useStoryLocale('content.darkThemeSuccess', messages)
+const DarkThemeError = useStoryLocale('content.darkThemeError', messages)
+const Interactive = useStoryLocale('content.interactive', messages)
+const TerminalProps = useStoryLocale('content.terminalProps', messages)
+const ANSIColorCodes = useStoryLocale('content.aNSIColorCodes', messages)
+const TerminalSupportsANSI = useStoryLocale('content.terminalSupportsANSI', messages)
+const ExitCodeDisplay = useStoryLocale('content.exitCodeDisplay', messages)
+const ExitCode0 = useStoryLocale('content.exitCode0', messages)
+const DisplayedInMuted = useStoryLocale('content.displayedInMuted', messages)
+const ExitCode01 = useStoryLocale('content.exitCode01', messages)
+const DisplayedInRed = useStoryLocale('content.displayedInRed', messages)
+const Command = useStoryLocale('content.command', messages)
+const ExitCode = useStoryLocale('content.exitCode', messages)
+const DurationMs = useStoryLocale('content.durationMs', messages)
+const CWD = useStoryLocale('content.cWD', messages)
+
 const interactiveState = reactive({
   command: 'npm install',
   stdout: 'added 42 packages in 2s\n\n14 packages are looking for funding\nrun `npm fund` for details',
@@ -55,37 +87,7 @@ const simpleCommand = SimpleCommand
 const darkThemeSuccess = DarkThemeSuccess
 const darkThemeError = DarkThemeError
 const interactive = Interactive
-const Name = useStoryLocale('content.name', messages)
-const Type = useStoryLocale('content.type', messages)
-const Default = useStoryLocale('content.default', messages)
-const Description = useStoryLocale('content.description', messages)
-const Props = useStoryLocale('content.props', messages)
-const ANSIColorSupport = useStoryLocale('content.aNSIColorSupport', messages)
-const ExitCodes = useStoryLocale('content.exitCodes', messages)
-const SuccessWithANSI = useStoryLocale('content.successWithANSI', messages)
-const LintOutputWith = useStoryLocale('content.lintOutputWith', messages)
-const DockerBuildOutput = useStoryLocale('content.dockerBuildOutput', messages)
-const WithError = useStoryLocale('content.withError', messages)
-const WithWorkingDirectory = useStoryLocale('content.withWorkingDirectory', messages)
-const LongOutputCollapsed = useStoryLocale('content.longOutputCollapsed', messages)
-const Truncated = useStoryLocale('content.truncated', messages)
-const NoOutput = useStoryLocale('content.noOutput', messages)
-const SimpleCommand = useStoryLocale('content.simpleCommand', messages)
-const DarkThemeSuccess = useStoryLocale('content.darkThemeSuccess', messages)
-const DarkThemeError = useStoryLocale('content.darkThemeError', messages)
-const Interactive = useStoryLocale('content.interactive', messages)
-const TerminalProps = useStoryLocale('content.terminalProps', messages)
-const ANSIColorCodes = useStoryLocale('content.aNSIColorCodes', messages)
-const TerminalSupportsANSI = useStoryLocale('content.terminalSupportsANSI', messages)
-const ExitCodeDisplay = useStoryLocale('content.exitCodeDisplay', messages)
-const ExitCode0 = useStoryLocale('content.exitCode0', messages)
-const DisplayedInMuted = useStoryLocale('content.displayedInMuted', messages)
-const ExitCode01 = useStoryLocale('content.exitCode01', messages)
-const DisplayedInRed = useStoryLocale('content.displayedInRed', messages)
-const Command = useStoryLocale('content.command', messages)
-const ExitCode = useStoryLocale('content.exitCode', messages)
-const DurationMs = useStoryLocale('content.durationMs', messages)
-const CWD = useStoryLocale('content.cWD', messages)
+
 </script>
 
 <template>

@@ -12,6 +12,11 @@ import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
+const heroTagline = useStoryLocale('content.heroTagline', messages);
+const heroCta = useStoryLocale('content.heroCta', messages);
+const browseByCategory = useStoryLocale('data.browseByCategory', messages);
+const footerText = useStoryLocale('content.footerText', messages);
+const footerViewOn = useStoryLocale('content.footerViewOn', messages);
 
 const categories = [
   {
@@ -58,11 +63,6 @@ const categories = [
   },
 ];
 
-const heroTagline = useStoryLocale('content.heroTagline', messages);
-const heroCta = useStoryLocale('content.heroCta', messages);
-const browseByCategory = useStoryLocale('data.browseByCategory', messages);
-const footerText = useStoryLocale('content.footerText', messages);
-const footerViewOn = useStoryLocale('content.footerViewOn', messages);
 </script>
 
 <template>
