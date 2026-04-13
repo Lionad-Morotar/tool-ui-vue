@@ -19,42 +19,42 @@ const categories = [
     title: { zh: '数据展示', en: 'Data Display' },
     icon: BarChart3,
     components: ['Chart', 'DataTable', 'StatsDisplay', 'WeatherWidget'],
-    href: '#/story/src-stories-chart-story-vue',
+    href: '#/story/src-stories-chart-index-story-vue',
   },
   {
     id: 'code-terminal',
     title: { zh: '代码与终端', en: 'Code & Terminal' },
     icon: Terminal,
     components: ['CodeBlock', 'CodeDiff', 'Terminal'],
-    href: '#/story/src-stories-code-block-story-vue',
+    href: '#/story/src-stories-code-block-index-story-vue',
   },
   {
     id: 'media',
     title: { zh: '媒体', en: 'Media' },
     icon: ImageIcon,
     components: ['Audio', 'Image', 'ImageGallery', 'ItemCarousel', 'Video'],
-    href: '#/story/src-stories-audio-story-vue',
+    href: '#/story/src-stories-audio-index-story-vue',
   },
   {
     id: 'social',
     title: { zh: '社交', en: 'Social' },
     icon: Share2,
     components: ['ApprovalCard', 'Citation', 'InstagramPost', 'LinkedInPost', 'LinkPreview', 'MessageDraft', 'XPost'],
-    href: '#/story/src-stories-approval-card-story-vue',
+    href: '#/story/src-stories-approval-card-index-story-vue',
   },
   {
     id: 'forms-input',
     title: { zh: '表单与输入', en: 'Forms & Input' },
     icon: MousePointerClick,
     components: ['OptionList', 'ParameterSlider', 'PreferencesPanel'],
-    href: '#/story/src-stories-option-list-story-vue',
+    href: '#/story/src-stories-option-list-index-story-vue',
   },
   {
     id: 'workflow',
     title: { zh: '工作流', en: 'Workflow' },
     icon: Layers,
     components: ['GeoMap', 'Plan', 'ProgressTracker', 'QuestionFlow', 'OrderSummary'],
-    href: '#/story/src-stories-geo-map-story-vue',
+    href: '#/story/src-stories-geo-map-index-story-vue',
   },
 ];
 
@@ -89,7 +89,7 @@ const footerViewOn = useStoryLocale('content.footerViewOn', messages);
               pnpm add @lionad/vtu-components
             </code>
             <a
-              href="#/story/src-stories-code-block-story-vue"
+              href="#/story/src-stories-code-block-index-story-vue"
               target="_parent"
               class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
             >
