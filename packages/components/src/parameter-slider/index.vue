@@ -35,7 +35,7 @@ const normalizedActions = computed(() => {
     return {
       items: [
         { id: 'reset', label: t('parameterSlider.reset').value, variant: 'ghost' as const },
-        { id: 'apply', label: t('shared.confirm').value, variant: 'default' as const },
+        { id: 'apply', label: t('parameterSlider.confirm').value, variant: 'default' as const },
       ],
       align: 'right' as const,
     };

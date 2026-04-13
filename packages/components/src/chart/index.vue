@@ -17,10 +17,6 @@ const emit = defineEmits<{
 
 // All business logic delegated to states layer
 const chartState = reactive(useChart(props, emit));
-
-// i18n
-const { t } = useI18n()
-
 </script>
 
 <template>

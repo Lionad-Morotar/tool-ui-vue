@@ -43,6 +43,7 @@ import { setMessages } from './i18n'
 import { zhCN as coreZhCN } from './i18n/locales/zh-CN'
 
 // Component i18n messages (zh-CN defaults)
+// Previously migrated components
 import { zhCN as terminalZhCN } from '../../components/src/terminal/i18n/zh-CN'
 import { zhCN as codeBlockZhCN } from '../../components/src/code-block/i18n/zh-CN'
 import { zhCN as codeDiffZhCN } from '../../components/src/code-diff/i18n/zh-CN'
@@ -55,6 +56,19 @@ import { zhCN as videoZhCN } from '../../components/src/video/i18n/zh-CN'
 import { zhCN as geoMapZhCN } from '../../components/src/geo-map/i18n/zh-CN'
 import { zhCN as itemCarouselZhCN } from '../../components/src/item-carousel/i18n/zh-CN'
 import { zhCN as preferencesPanelZhCN } from '../../components/src/preferences-panel/i18n/zh-CN'
+
+// Newly migrated components
+import { zhCN as approvalCardZhCN } from '../../components/src/approval-card/i18n/zh-CN'
+import { zhCN as chartZhCN } from '../../components/src/chart/i18n/zh-CN'
+import { zhCN as citationZhCN } from '../../components/src/citation/i18n/zh-CN'
+import { zhCN as imageZhCN } from '../../components/src/image/i18n/zh-CN'
+import { zhCN as instagramPostZhCN } from '../../components/src/instagram-post/i18n/zh-CN'
+import { zhCN as linkedinPostZhCN } from '../../components/src/linkedin-post/i18n/zh-CN'
+import { zhCN as optionListZhCN } from '../../components/src/option-list/i18n/zh-CN'
+import { zhCN as parameterSliderZhCN } from '../../components/src/parameter-slider/i18n/zh-CN'
+import { zhCN as planZhCN } from '../../components/src/plan/i18n/zh-CN'
+import { zhCN as statsDisplayZhCN } from '../../components/src/stats-display/i18n/zh-CN'
+import { zhCN as xPostZhCN } from '../../components/src/x-post/i18n/zh-CN'
 
 // Merge multiple message objects (shallow merge at top level, deep merge one
 // level for overlapping component namespaces)
@@ -89,4 +103,15 @@ setMessages(mergeMessages(
   geoMapZhCN as unknown as Record<string, unknown>,
   itemCarouselZhCN as unknown as Record<string, unknown>,
   preferencesPanelZhCN as unknown as Record<string, unknown>,
+  approvalCardZhCN as unknown as Record<string, unknown>,
+  chartZhCN as unknown as Record<string, unknown>,
+  citationZhCN as unknown as Record<string, unknown>,
+  imageZhCN as unknown as Record<string, unknown>,
+  instagramPostZhCN as unknown as Record<string, unknown>,
+  linkedinPostZhCN as unknown as Record<string, unknown>,
+  optionListZhCN as unknown as Record<string, unknown>,
+  parameterSliderZhCN as unknown as Record<string, unknown>,
+  planZhCN as unknown as Record<string, unknown>,
+  statsDisplayZhCN as unknown as Record<string, unknown>,
+  xPostZhCN as unknown as Record<string, unknown>,
 ))
