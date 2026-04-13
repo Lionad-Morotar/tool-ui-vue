@@ -9,6 +9,7 @@ export default {
     cSSVariables: 'CSS 变量',
     chartComponent: 'Chart 组件',
     chartDescriptionDisplayed: '显示的图表描述',
+    chartProps: 'Chart 属性',
     chartSeriesType: 'ChartSeries 类型',
     chartTitleDisplayed: '显示的图表标题',
     chartType: '图表类型',

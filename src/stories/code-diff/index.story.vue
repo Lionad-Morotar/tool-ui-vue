@@ -9,17 +9,11 @@ const Type = useStoryLocale('content.type', messages)
 const Default = useStoryLocale('content.default', messages)
 const Description = useStoryLocale('content.description', messages)
 const Props = useStoryLocale('content.props', messages)
-const UsageModes = useStoryLocale('content.usageModes', messages)
 const WordLevelDiff = useStoryLocale('content.wordLevelDiff', messages)
 const SplitDiff = useStoryLocale('content.splitDiff', messages)
-const SplitDiffNo = useStoryLocale('content.splitDiffNo', messages)
 const InteractiveToggleDiff = useStoryLocale('content.interactiveToggleDiff', messages)
 const UnifiedDiff = useStoryLocale('content.unifiedDiff', messages)
 const PatchMode = useStoryLocale('content.patchMode', messages)
-const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
-const NoFilename = useStoryLocale('content.noFilename', messages)
-const AdditionsOnly = useStoryLocale('content.additionsOnly', messages)
-const DeletionsOnly = useStoryLocale('content.deletionsOnly', messages)
 const Modifications = useStoryLocale('content.modifications', messages)
 const DarkThemeUnified = useStoryLocale('content.darkThemeUnified', messages)
 const DarkThemeSplit = useStoryLocale('content.darkThemeSplit', messages)
@@ -51,32 +45,6 @@ const newFunction = `export async function fetchUser(id: string) {
   if (!res) return null;
   return res;
 }`;
-
-const addExample = {
-  old: `// Initial setup
-const config = {
-  port: 3000,
-};`,
-  new: `// Initial setup
-const config = {
-  port: 3000,
-  host: 'localhost',
-  timeout: 5000,
-}`
-};
-
-const removeExample = {
-  old: `function processData(data: any, options: any, callback: any) {
-  // Complex processing
-  const result = transform(data, options);
-  callback(result);
-  return result;
-}`,
-  new: `function processData(data: any) {
-  // Simplified processing
-  return transform(data);
-}`
-};
 
 const modifyExample = {
   old: `const API_URL = 'http://api.example.com/v1';
@@ -127,17 +95,11 @@ const headerType = Type
 const headerDefault = Default
 const headerDesc = Description
 const propsTitle = Props
-const usageModes = UsageModes
 const wordLevelDiff = WordLevelDiff
 const splitDiff = SplitDiff
-const splitDiffNoLineNumbers = SplitDiffNo
 const interactiveToggleDiffStyle = InteractiveToggleDiff
 const unifiedDiff = UnifiedDiff
 const patchMode = PatchMode
-const withoutLineNumbers = WithoutLineNumbers
-const noFilename = NoFilename
-const additionsOnly = AdditionsOnly
-const deletionsOnly = DeletionsOnly
 const modifications = Modifications
 const darkThemeUnified = DarkThemeUnified
 const darkThemeSplit = DarkThemeSplit
@@ -146,66 +108,6 @@ const darkThemeSplit = DarkThemeSplit
 
 <template>
   <Story title="CodeDiff/All">
-    <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffProps }}</h2>
-        <div class="overflow-x-auto">
-          <table class="story-table">
-            <thead>
-              <tr>
-                <th>{{ headerName }}</th>
-                <th>{{ headerType }}</th>
-                <th>{{ headerDefault }}</th>
-                <th>{{ headerDesc }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="prop in props" :key="prop.name">
-                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
-                <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td>{{ useStoryLocale(prop.description) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="bg-muted mt-6 p-4 rounded-lg">
-          <h3 class="mb-2 font-semibold">{{ UsageModes1 }}</h3>
-          <ul class="space-y-1 text-sm list-disc list-inside">
-            <li><strong>{{ FileDiffMode }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
-            <li><strong>{{ PatchMode1 }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
-            <li><strong>{{ Note }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
-          </ul>
-        </div>
-      </div>
-    </Variant>
-
-    <Variant :title="usageModes">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffFeatures }}</h2>
-        <div class="gap-4 grid grid-cols-2">
-          <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ UnifiedView }}</h3>
-            <p class="text-muted-foreground text-sm">{{ ShowsChangesInline }}</p>
-          </div>
-          <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ SplitView }}</h3>
-            <p class="text-muted-foreground text-sm">{{ SideBySide }}</p>
-          </div>
-          <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ WordLevelDiff1 }}</h3>
-            <p class="text-muted-foreground text-sm">{{ HighlightsSpecificWords }}</p>
-          </div>
-          <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ Statistics }}</h3>
-            <p class="text-muted-foreground text-sm">{{ ShowsNumberOf }}</p>
-          </div>
-        </div>
-      </div>
-    </Variant>
-
     <Variant :title="wordLevelDiff">
       <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
@@ -233,21 +135,6 @@ const darkThemeSplit = DarkThemeSplit
           :old-code="oldFunction"
           :new-code="newFunction"
           diff-style="split"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="splitDiffNoLineNumbers">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl">
-        <code-diff
-          id="diff-split-no-lines"
-          language="typescript"
-          filename="lib/auth.ts"
-          :old-code="oldFunction"
-          :new-code="newFunction"
-          diff-style="split"
-          line-numbers="hidden"
         />
       </div>
     </Variant>
@@ -312,60 +199,6 @@ const darkThemeSplit = DarkThemeSplit
       </div>
     </Variant>
 
-    <Variant :title="withoutLineNumbers">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-3xl">
-        <code-diff
-          id="diff-no-lines"
-          language="typescript"
-          filename="utils.ts"
-          :old-code="oldFunction"
-          :new-code="newFunction"
-          line-numbers="hidden"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="noFilename">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <code-diff
-          id="diff-no-filename"
-          language="javascript"
-          :old-code="'const x = 1;'"
-          :new-code="'const x = 2;'"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="additionsOnly">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-3xl">
-        <code-diff
-          id="diff-add"
-          language="typescript"
-          filename="config.ts"
-          :old-code="addExample.old"
-          :new-code="addExample.new"
-          diff-style="unified"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="deletionsOnly">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-3xl">
-        <code-diff
-          id="diff-remove"
-          language="typescript"
-          filename="utils.ts"
-          :old-code="removeExample.old"
-          :new-code="removeExample.new"
-          diff-style="unified"
-        />
-      </div>
-    </Variant>
-
     <Variant :title="modifications">
       <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
@@ -405,6 +238,63 @@ const darkThemeSplit = DarkThemeSplit
           :new-code="newFunction"
           diff-style="split"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffProps }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="bg-muted mt-6 p-4 rounded-lg">
+          <h3 class="mb-2 font-semibold">{{ UsageModes1 }}</h3>
+          <ul class="space-y-1 text-sm list-disc list-inside">
+            <li><strong>{{ FileDiffMode }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
+            <li><strong>{{ PatchMode1 }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
+            <li><strong>{{ Note }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffFeatures }}</h2>
+        <div class="gap-4 grid grid-cols-2">
+          <div class="p-4 border border-border rounded-lg">
+            <h3 class="mb-2 font-semibold">{{ UnifiedView }}</h3>
+            <p class="text-muted-foreground text-sm">{{ ShowsChangesInline }}</p>
+          </div>
+          <div class="p-4 border border-border rounded-lg">
+            <h3 class="mb-2 font-semibold">{{ SplitView }}</h3>
+            <p class="text-muted-foreground text-sm">{{ SideBySide }}</p>
+          </div>
+          <div class="p-4 border border-border rounded-lg">
+            <h3 class="mb-2 font-semibold">{{ WordLevelDiff1 }}</h3>
+            <p class="text-muted-foreground text-sm">{{ HighlightsSpecificWords }}</p>
+          </div>
+          <div class="p-4 border border-border rounded-lg">
+            <h3 class="mb-2 font-semibold">{{ Statistics }}</h3>
+            <p class="text-muted-foreground text-sm">{{ ShowsNumberOf }}</p>
+          </div>
+        </div>
       </div>
     </Variant>
   </Story>

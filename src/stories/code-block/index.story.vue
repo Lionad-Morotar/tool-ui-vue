@@ -16,7 +16,6 @@ const CSS = useStoryLocale('content.cSS', messages)
 const WithHighlightedLines = useStoryLocale('content.withHighlightedLines', messages)
 const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
 const CollapsedLongCode = useStoryLocale('content.collapsedLongCode', messages)
-const NoFilename = useStoryLocale('content.noFilename', messages)
 const DarkTheme = useStoryLocale('content.darkTheme', messages)
 const Interactive = useStoryLocale('content.interactive', messages)
 const CodeBlockProps = useStoryLocale('content.codeBlockProps', messages)
@@ -119,7 +118,6 @@ const cSS = CSS
 const withHighlightedLines = WithHighlightedLines
 const withoutLineNumbers = WithoutLineNumbers
 const collapsedLongCode = CollapsedLongCode
-const noFilename = NoFilename
 const darkTheme = DarkTheme
 const interactive = Interactive
 
@@ -127,46 +125,6 @@ const interactive = Interactive
 
 <template>
   <Story title="CodeBlock/All">
-    <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ CodeBlockProps }}</h2>
-        <div class="overflow-x-auto">
-          <table class="story-table">
-            <thead>
-              <tr>
-                <th>{{ headerName }}</th>
-                <th>{{ headerType }}</th>
-                <th>{{ headerDefault }}</th>
-                <th>{{ headerDesc }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="prop in props" :key="prop.name">
-                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
-                <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
-                <td>{{ useStoryLocale(prop.description) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ SupportedLanguages1 }}</h2>
-        <div class="flex flex-wrap gap-2">
-          <span
-            v-for="lang in languages"
-            :key="lang"
-            class="rounded-full bg-muted px-3 py-1 font-mono text-sm"
-          >
-            {{ lang }}
-          </span>
-        </div>
-      </div>
-    </Variant>
-
     <Variant :title="typeScript">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
@@ -287,17 +245,6 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="noFilename">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-xl">
-        <code-block
-          id="code-no-filename"
-          language="bash"
-          code="npm install vue@latest
-npm run dev"
-        />
-      </div>
-    </Variant>
 
     <Variant :title="darkTheme">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
@@ -345,6 +292,46 @@ const colors = {
           id="code-interactive"
           v-bind="interactiveState"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ CodeBlockProps }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ SupportedLanguages1 }}</h2>
+        <div class="flex flex-wrap gap-2">
+          <span
+            v-for="lang in languages"
+            :key="lang"
+            class="rounded-full bg-muted px-3 py-1 font-mono text-sm"
+          >
+            {{ lang }}
+          </span>
+        </div>
       </div>
     </Variant>
   </Story>

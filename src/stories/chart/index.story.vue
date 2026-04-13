@@ -5,11 +5,6 @@ import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
-const headerName = useStoryLocale('content.name', messages)
-const headerType = useStoryLocale('content.type', messages)
-const headerDefault = useStoryLocale('content.default', messages)
-const headerDesc = useStoryLocale('content.description', messages)
-const headerPayload = useStoryLocale('content.payload', messages)
 const lineChart = useStoryLocale('content.lineChart', messages)
 const barChart = useStoryLocale('content.barChart', messages)
 const multiSeries = useStoryLocale('content.multiSeries', messages)
@@ -49,27 +44,12 @@ const financialTrendsTitle = useStoryLocale('content.month24Financial', messages
 const financialTrendsDesc = useStoryLocale('content.highDensityDataset', messages)
 const costLabel = useStoryLocale('content.cost', messages)
 const valueLabel = useStoryLocale('content.value', messages)
-const ChartComponent = useStoryLocale('content.chartComponent', messages)
-const DataVisualizationComponent = useStoryLocale('content.dataVisualizationComponent', messages)
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
 const Props = useStoryLocale('content.props', messages)
-const UniqueIdentifierFor = useStoryLocale('content.uniqueIdentifierFor', messages)
-const ChartType = useStoryLocale('content.chartType', messages)
-const ChartTitleDisplayed = useStoryLocale('content.chartTitleDisplayed', messages)
-const ChartDescriptionDisplayed = useStoryLocale('content.chartDescriptionDisplayed', messages)
-const DataArrayFor = useStoryLocale('content.dataArrayFor', messages)
-const KeyForX = useStoryLocale('content.keyForX', messages)
-const ArrayOfSeries = useStoryLocale('content.arrayOfSeries', messages)
-const CustomColorsFor = useStoryLocale('content.customColorsFor', messages)
-const WhetherToShow = useStoryLocale('content.whetherToShow', messages)
-const WhetherToShow1 = useStoryLocale('content.whetherToShow1', messages)
-const CSSClassesFor = useStoryLocale('content.cSSClassesFor', messages)
-const Emits = useStoryLocale('content.emits', messages)
-const EmittedWhenA = useStoryLocale('content.emittedWhenA', messages)
-const Slots = useStoryLocale('content.slots', messages)
-const ThisComponentDoes = useStoryLocale('content.thisComponentDoes', messages)
-const ChartSeriesType = useStoryLocale('content.chartSeriesType', messages)
-const CSSVariables = useStoryLocale('content.cSSVariables', messages)
-const TheChartUses = useStoryLocale('content.theChartUses', messages)
+const ChartProps = useStoryLocale('content.chartProps', messages)
 
 const chartData = reactive({
   selectedPoint: null as string | null,
@@ -79,80 +59,29 @@ function handleDataPointClick(point: ChartDataPoint) {
   chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
 }
 
-// Line chart
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '图表的唯一标识符', en: 'Unique identifier for the chart' } },
+  { name: 'type', type: "'bar' | 'line'", required: true, description: { zh: '图表类型', en: 'Chart type' } },
+  { name: 'title', type: 'string', description: { zh: '显示的图表标题', en: 'Chart title displayed in header' } },
+  { name: 'description', type: 'string', description: { zh: '显示的图表描述', en: 'Chart description displayed in header' } },
+  { name: 'data', type: 'Record<string, unknown>[]', required: true, description: { zh: '图表数据数组', en: 'Data array for the chart' } },
+  { name: 'xKey', type: 'string', required: true, description: { zh: 'x 轴数据的键', en: 'Key for x-axis values in data' } },
+  { name: 'series', type: 'ChartSeries[]', required: true, description: { zh: '系列配置数组', en: 'Array of series configurations' } },
+  { name: 'colors', type: 'string[]', description: { zh: '系列自定义颜色（默认 CSS 变量）', en: 'Custom colors for series (defaults to CSS vars)' } },
+  { name: 'showLegend', type: 'boolean', default: 'false', description: { zh: '是否显示图例', en: 'Whether to show the legend' } },
+  { name: 'showGrid', type: 'boolean', default: 'true', description: { zh: '是否显示网格线', en: 'Whether to show grid lines' } },
+  { name: 'css', type: "{ root?: string, title?: string, legend?: string, canvas?: string }", description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+];
 
-// Bar chart
-
-// Multi-series
-
-// Custom colors
-
-// Interactive
-
-// Without grid
-
-// Without legend
-
-// Dense dataset
-
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
 </script>
 
 <template>
   <Story title="Chart/All Variants">
-    <template #docs>
-      <h2>{{ ChartComponent }}</h2>
-      <p>{{ DataVisualizationComponent }}</p>
-
-      <h3>{{ Props }}</h3>
-      <table class="story-table">
-        <thead>
-          <tr><th>{{ headerName }}</th><th>{{ headerType }}</th><th>{{ headerDefault }}</th><th>{{ headerDesc }}</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>id</td><td>string</td><td>required</td><td>{{ UniqueIdentifierFor }}</td></tr>
-          <tr><td>type</td><td>'bar' | 'line'</td><td>required</td><td>{{ ChartType }}</td></tr>
-          <tr><td>title</td><td>string</td><td>undefined</td><td>{{ ChartTitleDisplayed }}</td></tr>
-          <tr><td>description</td><td>string</td><td>undefined</td><td>{{ ChartDescriptionDisplayed }}</td></tr>
-          <tr><td>data</td><td>Record&lt;string, unknown>[]</td><td>required</td><td>{{ DataArrayFor }}</td></tr>
-          <tr><td>xKey</td><td>string</td><td>required</td><td>{{ KeyForX }}</td></tr>
-          <tr><td>series</td><td>ChartSeries[]</td><td>required</td><td>{{ ArrayOfSeries }}</td></tr>
-          <tr><td>colors</td><td>string[]</td><td>undefined</td><td>{{ CustomColorsFor }}</td></tr>
-          <tr><td>showLegend</td><td>boolean</td><td>false</td><td>{{ WhetherToShow }}</td></tr>
-          <tr><td>showGrid</td><td>boolean</td><td>true</td><td>{{ WhetherToShow1 }}</td></tr>
-          <tr><td>css</td><td>{ root?: string }</td><td>undefined</td><td>{{ CSSClassesFor }}</td></tr>
-        </tbody>
-      </table>
-
-      <h3>{{ Emits }}</h3>
-      <table class="story-table">
-        <thead>
-          <tr><th>{{ headerName }}</th><th>{{ headerPayload }}</th><th>{{ headerDesc }}</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>dataPointClick</td>
-            <td>{ seriesKey, seriesLabel, xValue, yValue, index, payload }</td>
-            <td>{{ EmittedWhenA }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>{{ Slots }}</h3>
-      <p>{{ ThisComponentDoes }}</p>
-
-      <h3>{{ ChartSeriesType }}</h3>
-      <pre><code>{
-  key: string;      // Unique key for the series
-  label: string;    // Display label
-  color?: string;   // Optional custom color
-}</code></pre>
-
-      <h3>{{ CSSVariables }}</h3>
-      <p>{{ TheChartUses }}</p>
-      <ul>
-        <li><code>--chart-1</code> through <code>--chart-5</code> - Default series colors</li>
-      </ul>
-    </template>
     <Variant :title="lineChart">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
@@ -259,7 +188,7 @@ function handleDataPointClick(point: ChartDataPoint) {
 
     <Variant :title="interactiveClickDataPoints">
       <div class="w-full max-w-2xl">
-        <div v-if="chartData.selectedPoint" class="bg-primary/10 mb-4 p-3 rounded-lg text-sm">
+        <div v-if="chartData.selectedPoint" class="mb-4 rounded-lg bg-primary/10 p-3 text-sm">
           <strong>{{ clickedText }}</strong> {{ chartData.selectedPoint }}
         </div>
         <chart
@@ -399,6 +328,33 @@ function handleDataPointClick(point: ChartDataPoint) {
           show-legend
           show-grid
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ ChartProps }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

@@ -9,6 +9,7 @@ export default {
     cSSVariables: 'CSS Variables',
     chartComponent: 'Chart Component',
     chartDescriptionDisplayed: 'Chart description displayed in header',
+    chartProps: 'Chart Props',
     chartSeriesType: 'ChartSeries Type',
     chartTitleDisplayed: 'Chart title displayed in header',
     chartType: 'Chart type',

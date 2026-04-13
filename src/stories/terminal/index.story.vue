@@ -9,16 +9,11 @@ const Type = useStoryLocale('content.type', messages)
 const Default = useStoryLocale('content.default', messages)
 const Description = useStoryLocale('content.description', messages)
 const Props = useStoryLocale('content.props', messages)
-const ANSIColorSupport = useStoryLocale('content.aNSIColorSupport', messages)
-const ExitCodes = useStoryLocale('content.exitCodes', messages)
 const SuccessWithANSI = useStoryLocale('content.successWithANSI', messages)
-const LintOutputWith = useStoryLocale('content.lintOutputWith', messages)
-const DockerBuildOutput = useStoryLocale('content.dockerBuildOutput', messages)
 const WithError = useStoryLocale('content.withError', messages)
 const WithWorkingDirectory = useStoryLocale('content.withWorkingDirectory', messages)
 const LongOutputCollapsed = useStoryLocale('content.longOutputCollapsed', messages)
 const Truncated = useStoryLocale('content.truncated', messages)
-const NoOutput = useStoryLocale('content.noOutput', messages)
 const SimpleCommand = useStoryLocale('content.simpleCommand', messages)
 const DarkThemeSuccess = useStoryLocale('content.darkThemeSuccess', messages)
 const DarkThemeError = useStoryLocale('content.darkThemeError', messages)
@@ -64,25 +59,13 @@ const headerType = Type
 const headerDefault = Default
 const headerDesc = Description
 
-const ansiExamples = {
-  success: '\x1b[32m✓\x1b[0m Build completed successfully',
-  warning: '\x1b[33m⚠\x1b[0m 3 warnings found',
-  error: '\x1b[31m✗\x1b[0m Test failed',
-  info: '\x1b[36mℹ\x1b[0m Starting development server...',
-  bold: '\x1b[1mBold text\x1b[0m and \x1b[2mdim text\x1b[0m',
-  colors: '\x1b[31mRed\x1b[0m \x1b[32mGreen\x1b[0m \x1b[33mYellow\x1b[0m \x1b[34mBlue\x1b[0m \x1b[35mMagenta\x1b[0m \x1b[36mCyan\x1b[0m',
-};
+
 const propsTitle = Props
-const aNSIColorSupport = ANSIColorSupport
-const exitCodes = ExitCodes
 const successWithANSIColors = SuccessWithANSI
-const lintOutputWithANSIColors = LintOutputWith
-const dockerBuildOutput = DockerBuildOutput
 const withError = WithError
 const withWorkingDirectory = WithWorkingDirectory
 const longOutputCollapsed = LongOutputCollapsed
 const truncated = Truncated
-const noOutput = NoOutput
 const simpleCommand = SimpleCommand
 const darkThemeSuccess = DarkThemeSuccess
 const darkThemeError = DarkThemeError
@@ -92,67 +75,7 @@ const interactive = Interactive
 
 <template>
   <Story title="Terminal/All">
-    <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ TerminalProps }}</h2>
-        <div class="overflow-x-auto">
-          <table class="story-table">
-            <thead>
-              <tr>
-                <th>{{ headerName }}</th>
-                <th>{{ headerType }}</th>
-                <th>{{ headerDefault }}</th>
-                <th>{{ headerDesc }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="prop in props" :key="prop.name">
-                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
-                <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ 'default' in prop ? prop.default : '-' }}</td>
-                <td>{{ useStoryLocale(prop.description) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </Variant>
-
-    <Variant :title="aNSIColorSupport">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ ANSIColorCodes }}</h2>
-        <p class="mb-4 text-sm text-muted-foreground">
-          {{ TerminalSupportsANSI }}
-        </p>
-        <div class="space-y-2 font-mono text-sm">
-          <div v-for="(example, name) in ansiExamples" :key="name" class="flex items-center gap-4">
-            <span class="w-20 font-semibold capitalize">{{ name }}:</span>
-            <code class="text-muted-foreground">{{ example }}</code>
-          </div>
-        </div>
-      </div>
-    </Variant>
-
-    <Variant :title="exitCodes">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ ExitCodeDisplay }}</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold text-emerald-600">{{ ExitCode0 }}</h3>
-            <p class="text-sm text-muted-foreground">{{ DisplayedInMuted }}</p>
-          </div>
-          <div class="rounded-lg border-border border p-4">
-            <h3 class="mb-2 font-semibold text-red-600">{{ ExitCode01 }}</h3>
-            <p class="text-sm text-muted-foreground">{{ DisplayedInRed }}</p>
-          </div>
-        </div>
-      </div>
-    </Variant>
-
-    <Variant :title="successWithANSIColors">
+<Variant :title="successWithANSIColors">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -166,33 +89,7 @@ const interactive = Interactive
       </div>
     </Variant>
 
-    <Variant :title="lintOutputWithANSIColors">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <terminal
-          id="terminal-lint-ansi"
-          command="npm run lint"
-          :stdout="`\x1b[32m✔\x1b[0m No ESLint warnings or errors\n\x1b[36minfo\x1b[0m Checking formatting...\n\x1b[33m⚠\x1b[0m 2 files need formatting\n  \x1b[90msrc/utils.ts\x1b[0m\n  \x1b[90msrc/api.ts\x1b[0m\n\x1b[32m✔\x1b[0m TypeScript compilation successful\n\x1b[1m\x1b[32mAll checks passed!\x1b[0m`"
-          :exit-code="0"
-          :duration-ms="2341"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="dockerBuildOutput">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <terminal
-          id="terminal-docker-build"
-          command="docker build -t myapp:latest ."
-          :stdout="`[+] Building 45.2s (12/12) FINISHED\n => [internal] load build definition from Dockerfile\n => [internal] load .dockerignore\n => [internal] load metadata for node:20-alpine\n => [1/7] FROM node:20-alpine@sha256:abc123...\n => [2/7] WORKDIR /app\n => [3/7] COPY package*.json ./\n => [4/7] RUN npm ci --only=production\n => [5/7] COPY . .\n => [6/7] RUN npm run build\n => [7/7] EXPOSE 3000\n => exporting to image\n => => naming to docker.io/library/myapp:latest\n\nSuccessfully built image myapp:latest`"
-          :exit-code="0"
-          :duration-ms="45200"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="withError">
+<Variant :title="withError">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -211,7 +108,7 @@ AssertionError: expected true to be false
       </div>
     </Variant>
 
-    <Variant :title="withWorkingDirectory">
+<Variant :title="withWorkingDirectory">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -232,7 +129,7 @@ no changes added to commit"
       </div>
     </Variant>
 
-    <Variant :title="longOutputCollapsed">
+<Variant :title="longOutputCollapsed">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -258,7 +155,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant :title="truncated">
+<Variant :title="truncated">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -275,19 +172,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant :title="noOutput">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <terminal
-          id="terminal-empty"
-          command="echo -n ''"
-          :exit-code="0"
-          :duration-ms="50"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="simpleCommand">
+<Variant :title="simpleCommand">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <terminal
@@ -300,7 +185,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant :title="darkThemeSuccess">
+<Variant :title="darkThemeSuccess">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -314,7 +199,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant :title="darkThemeError">
+<Variant :title="darkThemeError">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -328,7 +213,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-    <Variant :title="interactive" auto-props-disabled>
+<Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex flex-wrap items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
@@ -370,6 +255,33 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
           id="terminal-interactive"
           v-bind="interactiveState"
         />
+      </div>
+    </Variant>
+
+<Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ TerminalProps }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ 'default' in prop ? prop.default : '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

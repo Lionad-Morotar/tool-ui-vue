@@ -6,7 +6,6 @@ import messages from './i18n';
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basic = useStoryLocale('content.basic', messages)
-const stockDataDeltaCurrencyPercent = useStoryLocale('data.stockDataDeltaCurrencyPercent', messages)
 const withFormatting = useStoryLocale('content.withFormatting', messages)
 const withStatusBadges = useStoryLocale('content.withStatusBadges', messages)
 const withColumnAlignment = useStoryLocale('content.withColumnAlignment', messages)
@@ -18,12 +17,7 @@ const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPla
 const colName = useStoryLocale('content.colName', messages)
 const colStatus = useStoryLocale('content.colStatus', messages)
 const colRevenue = useStoryLocale('content.colRevenue', messages)
-const colSymbol = useStoryLocale('content.colSymbol', messages)
-const colCompany = useStoryLocale('content.colCompany', messages)
 const colPrice = useStoryLocale('content.colPrice', messages)
-const colChange = useStoryLocale('content.colChange', messages)
-const colChangePercent = useStoryLocale('content.colChangePercent', messages)
-const colVolume = useStoryLocale('content.colVolume', messages)
 const colProduct = useStoryLocale('data.colProduct', messages)
 const colSales = useStoryLocale('content.colSales', messages)
 const colGrowth = useStoryLocale('content.colGrowth', messages)
@@ -45,6 +39,12 @@ const statusCompleted = useStoryLocale('content.statusCompleted', messages)
 const statusInProgress = useStoryLocale('content.statusInProgress', messages)
 const statusPending = useStoryLocale('content.statusPending', messages)
 const emptyMessage = useStoryLocale('content.emptyMessage', messages)
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const DataTableProps = useStoryLocale('content.dataTableProps', messages)
 
 const sortableState = reactive({
   sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
@@ -60,27 +60,11 @@ const playgroundState = reactive({
   layout: 'cards' as 'auto' | 'table' | 'cards',
 });
 
-// Column labels
-
-// Status badge labels
-
-// Empty state
-
 // Basic columns
 const basicColumns = computed(() => [
   { key: 'name', label: colName.value, sortable: true },
   { key: 'status', label: colStatus.value, sortable: true },
   { key: 'revenue', label: colRevenue.value, sortable: true },
-])
-
-// Stock columns
-const stockColumns = computed<any[]>(() => [
-  { key: 'symbol', label: colSymbol.value, priority: 'primary' },
-  { key: 'name', label: colCompany.value, priority: 'primary' },
-  { key: 'price', label: colPrice.value, align: 'right', priority: 'primary', format: { kind: 'currency', currency: 'USD', decimals: 2 } },
-  { key: 'change', label: colChange.value, align: 'right', priority: 'secondary', format: { kind: 'delta', decimals: 2, upIsPositive: true, showSign: true } },
-  { key: 'changePercent', label: colChangePercent.value, align: 'right', priority: 'secondary', format: { kind: 'percent', decimals: 2, showSign: true, basis: 'unit' } },
-  { key: 'volume', label: colVolume.value, align: 'right', priority: 'secondary', format: { kind: 'number', compact: true } },
 ])
 
 // Formatting columns
@@ -146,6 +130,27 @@ const playgroundColumns = computed<any[]>(() => [
   { key: 'deadline', label: colDeadline.value, priority: 'tertiary' },
   { key: 'notes', label: colNotes.value, hideOnMobile: true },
 ])
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '表格的唯一标识符', en: 'Unique identifier for the data table' } },
+  { name: 'columns', type: 'DataTableColumn[]', required: true, description: { zh: '列配置数组', en: 'Array of column configurations' } },
+  { name: 'data', type: 'Record<string, unknown>[]', required: true, description: { zh: '表格数据数组', en: 'Array of data rows' } },
+  { name: 'rowIdKey', type: 'string', description: { zh: '行唯一标识的键', en: 'Key to use as unique row identifier' } },
+  { name: 'defaultSort', type: "{ by: string; direction: 'asc' | 'desc' }", description: { zh: '默认排序配置', en: 'Default sort configuration' } },
+  { name: 'sort', type: "{ by: string; direction: 'asc' | 'desc' }", description: { zh: '受控排序状态', en: 'Controlled sort state' } },
+  { name: 'emptyMessage', type: 'string', description: { zh: '空状态提示文本', en: 'Message displayed when data is empty' } },
+  { name: 'maxHeight', type: 'string', description: { zh: '表格最大高度（例如 200px）', en: 'Maximum height of the table (e.g. 200px)' } },
+  { name: 'locale', type: "'en' | 'zh'", description: { zh: '显示语言', en: 'Display locale' } },
+  { name: 'layout', type: "'auto' | 'table' | 'cards'", description: { zh: '响应式布局模式', en: 'Responsive layout mode' } },
+  { name: 'css', type: '{ root?: string, header?: string, body?: string, row?: string, footer?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+];
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
 </script>
 
 <template>
@@ -161,24 +166,6 @@ const playgroundColumns = computed<any[]>(() => [
             { name: 'Product B', status: 'Draft', revenue: '$8,230' },
             { name: 'Product C', status: 'Active', revenue: '$24,100' },
           ]"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="stockDataDeltaCurrencyPercent">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
-      <div class="w-full max-w-3xl">
-        <data-table
-          id="data-table-stocks"
-          :columns="stockColumns"
-          :data="[
-            { symbol: 'IBM', name: 'International Business Machines', price: 170.42, change: 1.12, changePercent: 0.66, volume: 18420000 },
-            { symbol: 'AAPL', name: 'Apple', price: 178.25, change: 2.35, changePercent: 1.34, volume: 52430000 },
-            { symbol: 'MSFT', name: 'Microsoft', price: 380.0, change: 1.24, changePercent: 0.33, volume: 31250000 },
-            { symbol: 'INTC', name: 'Intel Corporation', price: 39.85, change: -0.42, changePercent: -1.04, volume: 29840000 },
-            { symbol: 'ORCL', name: 'Oracle Corporation', price: 110.31, change: 0.78, changePercent: 0.71, volume: 14230000 },
-          ]"
-          row-id-key="symbol"
         />
       </div>
     </Variant>
@@ -313,6 +300,33 @@ const playgroundColumns = computed<any[]>(() => [
           ]"
           row-id-key="project"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ DataTableProps }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>
