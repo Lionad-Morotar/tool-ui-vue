@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import { OrderSummary } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 /**
  * ## Props
@@ -63,45 +64,45 @@ import { useStoryLocale } from './_shared/use-story-locale';
  * ```
  */
 
-const summary = useStoryLocale({ zh: '订单摘要', en: 'Summary' })
-const withDiscount = useStoryLocale({ zh: '含折扣', en: 'With Discount' })
-const receipt = useStoryLocale({ zh: '收据', en: 'Receipt' })
-const receiptWithoutImages = useStoryLocale({ zh: '无图收据', en: 'Receipt Without Images' })
-const singleItem = useStoryLocale({ zh: '单项', en: 'Single Item' })
-const manyItems = useStoryLocale({ zh: '多项', en: 'Many Items' })
-const differentCurrencyEUR = useStoryLocale({ zh: '不同货币（欧元）', en: 'Different Currency (EUR)' })
-const malformedPayloadEmptyItems = useStoryLocale({ zh: '异常数据（空项目）', en: 'Malformed Payload (Empty Items)' })
+const summary = useStoryLocale('content.summary', messages)
+const withDiscount = useStoryLocale('content.withDiscount', messages)
+const receipt = useStoryLocale('content.receipt', messages)
+const receiptWithoutImages = useStoryLocale('content.receiptWithoutImages', messages)
+const singleItem = useStoryLocale('data.singleItem', messages)
+const manyItems = useStoryLocale('data.manyItems', messages)
+const differentCurrencyEUR = useStoryLocale('content.differentCurrencyEUR', messages)
+const malformedPayloadEmptyItems = useStoryLocale('content.malformedPayloadEmptyItems', messages)
 
 // Basic variant
-const orderSummaryTitle = useStoryLocale({ zh: '订单摘要', en: 'Order Summary' })
-const premiumCoffeeName = useStoryLocale({ zh: '精选咖啡豆', en: 'Premium Coffee Beans' })
-const premiumCoffeeDesc = useStoryLocale({ zh: '单一产地，中度烘焙', en: 'Single origin, medium roast' })
-const ceramicSetName = useStoryLocale({ zh: '陶瓷手冲套装', en: 'Ceramic Pour-Over Set' })
-const ceramicSetDesc = useStoryLocale({ zh: '含滤杯和分享壶', en: 'Includes dripper and carafe' })
+const orderSummaryTitle = useStoryLocale('content.orderSummaryTitle', messages)
+const premiumCoffeeName = useStoryLocale('content.premiumCoffeeName', messages)
+const premiumCoffeeDesc = useStoryLocale('content.premiumCoffeeDesc', messages)
+const ceramicSetName = useStoryLocale('content.ceramicSetName', messages)
+const ceramicSetDesc = useStoryLocale('content.ceramicSetDesc', messages)
 
 // Discount variant
-const wirelessHeadphonesName = useStoryLocale({ zh: '无线耳机', en: 'Wireless Headphones' })
-const welcomeCode = useStoryLocale({ zh: 'WELCOME20', en: 'WELCOME20' })
+const wirelessHeadphonesName = useStoryLocale('content.wirelessHeadphonesName', messages)
+const welcomeCode = useStoryLocale('content.welcomeCode', messages)
 
 // Receipt variant
-const orderConfirmedTitle = useStoryLocale({ zh: '订单已确认', en: 'Order Confirmed' })
+const orderConfirmedTitle = useStoryLocale('content.orderConfirmedTitle', messages)
 
 // Receipt without images variant
-const ebookName = useStoryLocale({ zh: '电子书籍下载', en: 'Digital Download - eBook' })
-const courseAccessName = useStoryLocale({ zh: '在线课程访问', en: 'Online Course Access' })
+const ebookName = useStoryLocale('content.ebookName', messages)
+const courseAccessName = useStoryLocale('content.courseAccessName', messages)
 
 // Single item variant
-const yourOrderTitle = useStoryLocale({ zh: '你的订单', en: 'Your Order' })
-const annualSubName = useStoryLocale({ zh: '年度订阅', en: 'Annual Subscription' })
-const annualSubDesc = useStoryLocale({ zh: '专业方案 - 按年计费', en: 'Pro Plan - Billed yearly' })
+const yourOrderTitle = useStoryLocale('content.yourOrderTitle', messages)
+const annualSubName = useStoryLocale('content.annualSubName', messages)
+const annualSubDesc = useStoryLocale('content.annualSubDesc', messages)
 
 // Many items variant
-const shoppingCartTitle = useStoryLocale({ zh: '购物车', en: 'Shopping Cart' })
-const genericItem = useStoryLocale({ zh: '商品', en: 'Item' })
+const shoppingCartTitle = useStoryLocale('content.shoppingCartTitle', messages)
+const genericItem = useStoryLocale('data.genericItem', messages)
 
 // EUR variant
-const eurOrderTitle = useStoryLocale({ zh: '订单概览', en: 'Order Overview' })
-const eurCoffeeName = useStoryLocale({ zh: '优质咖啡豆', en: 'Premium Coffee Beans' })
+const eurOrderTitle = useStoryLocale('content.eurOrderTitle', messages)
+const eurCoffeeName = useStoryLocale('content.eurCoffeeName', messages)
 </script>
 
 <template>

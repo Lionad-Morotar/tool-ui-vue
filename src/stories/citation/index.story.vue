@@ -2,7 +2,8 @@
 import { reactive, computed, watch } from 'vue';
 import { Citation, CitationList } from '@lionad/vtu-components';
 import type { SerializableCitation } from '@lionad/vtu-components/citation/schema';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
 const interactiveStateZh = {
   href: 'https://example.com/article',
@@ -126,37 +127,37 @@ const sampleCitationsEn: SerializableCitation[] = [
 
 const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleCitationsZh : sampleCitationsEn);
 
-const defaultVariant = useStoryLocale({ zh: '默认', en: 'Default' })
-const inline = useStoryLocale({ zh: '行内', en: 'Inline' })
-const stacked = useStoryLocale({ zh: '堆叠', en: 'Stacked' })
-const webpage = useStoryLocale({ zh: '网页', en: 'Webpage' })
-const codeRepository = useStoryLocale({ zh: '代码仓库', en: 'Code Repository' })
-const document = useStoryLocale({ zh: '文档', en: 'Document' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
-const citationListDefault = useStoryLocale({ zh: '引用列表 - 默认', en: 'CitationList - Default' })
-const citationListInline = useStoryLocale({ zh: '引用列表 - 行内', en: 'CitationList - Inline' })
-const citationListStacked = useStoryLocale({ zh: '引用列表 - 堆叠', en: 'CitationList - Stacked' })
-const citationListWithOverflow = useStoryLocale({ zh: '引用列表 - 溢出', en: 'CitationList - With Overflow' })
-const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行内溢出', en: 'CitationList - Inline with Overflow' })
+const defaultVariant = useStoryLocale('content.defaultVariant', messages)
+const inline = useStoryLocale('content.inline', messages)
+const stacked = useStoryLocale('content.stacked', messages)
+const webpage = useStoryLocale('content.webpage', messages)
+const codeRepository = useStoryLocale('content.codeRepository', messages)
+const document = useStoryLocale('content.document', messages)
+const interactive = useStoryLocale('content.interactive', messages)
+const citationListDefault = useStoryLocale('data.citationListDefault', messages)
+const citationListInline = useStoryLocale('data.citationListInline', messages)
+const citationListStacked = useStoryLocale('data.citationListStacked', messages)
+const citationListWithOverflow = useStoryLocale('data.citationListWithOverflow', messages)
+const citationListInlineWithOverflow = useStoryLocale('data.citationListInlineWithOverflow', messages)
 
 // Individual citation texts for single variants
-const researchPaperTitle = useStoryLocale({ zh: '研究论文：高级 UI 模式', en: 'Research Paper: Advanced UI Patterns' })
-const researchPaperSnippet = useStoryLocale({ zh: '本研究探讨了各种 UI 模式在提升用户参与度和任务完成率方面的有效性……', en: 'This study explores the effectiveness of various UI patterns in improving user engagement and task completion rates...' })
-const sourceDocTitle = useStoryLocale({ zh: '来源文档', en: 'Source Document' })
-const docRefTitle = useStoryLocale({ zh: '文档参考', en: 'Documentation Reference' })
-const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升处理多项数据时的性能。', en: 'The API supports batch operations for improved performance when processing multiple items.' })
+const researchPaperTitle = useStoryLocale('content.researchPaperTitle', messages)
+const researchPaperSnippet = useStoryLocale('content.researchPaperSnippet', messages)
+const sourceDocTitle = useStoryLocale('content.sourceDocTitle', messages)
+const docRefTitle = useStoryLocale('content.docRefTitle', messages)
+const docRefSnippet = useStoryLocale('content.docRefSnippet', messages)
 
 // Webpage variant
-const mdnTitle = useStoryLocale({ zh: 'MDN Web 文档', en: 'MDN Web Docs' })
-const mdnSnippet = useStoryLocale({ zh: '开发者资源，由开发者创建。', en: 'Resources for developers, by developers.' })
+const mdnTitle = useStoryLocale('content.mdnTitle', messages)
+const mdnSnippet = useStoryLocale('content.mdnSnippet', messages)
 
 // Code repository variant
-const toolUiTitle = useStoryLocale({ zh: 'tool-ui 组件库', en: 'tool-ui Library' })
-const toolUiSnippet = useStoryLocale({ zh: '一个用于构建 AI 助手界面的综合 Vue 组件库。', en: 'A comprehensive Vue component library for building AI assistant interfaces.' })
+const toolUiTitle = useStoryLocale('content.toolUiTitle', messages)
+const toolUiSnippet = useStoryLocale('content.toolUiSnippet', messages)
 
 // Document variant
-const whitepaperTitle = useStoryLocale({ zh: '技术白皮书', en: 'Technical Whitepaper' })
-const whitepaperSnippet = useStoryLocale({ zh: '对架构和设计决策的深入技术分析。', en: 'An in-depth technical analysis of the architecture and design decisions.' })
+const whitepaperTitle = useStoryLocale('content.whitepaperTitle', messages)
+const whitepaperSnippet = useStoryLocale('content.whitepaperSnippet', messages)
 </script>
 
 <template>

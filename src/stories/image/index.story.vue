@@ -2,9 +2,10 @@
 import { reactive, watch } from 'vue';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <Image> (kebab-case)
 import { Image } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '图片组件，支持比例、自适应、链接和来源 attribution', en: 'Image component with ratio support, object-fit, links, and source attribution.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 const interactiveStateZh = {
   id: 'image-interactive',
@@ -29,26 +30,26 @@ const interactiveStateEn = {
 const interactiveState = reactive({ ...interactiveStateZh });
 
 watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value === 'zh-CN' ? interactiveStateZh : interactiveStateEn); });
-const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
-const withTitle = useStoryLocale({ zh: '含标题', en: 'With Title' })
-const squareRatio = useStoryLocale({ zh: '方形比例', en: 'Square Ratio' })
-const videoRatio = useStoryLocale({ zh: '视频比例', en: 'Video Ratio' })
-const withLink = useStoryLocale({ zh: '含链接', en: 'With Link' })
-const withSource = useStoryLocale({ zh: '含来源', en: 'With Source' })
-const objectFitContain = useStoryLocale({ zh: '缩放模式: 包含', en: 'Object Fit: Contain' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const basic = useStoryLocale('content.basic', messages)
+const withTitle = useStoryLocale('content.withTitle', messages)
+const squareRatio = useStoryLocale('content.squareRatio', messages)
+const videoRatio = useStoryLocale('content.videoRatio', messages)
+const withLink = useStoryLocale('content.withLink', messages)
+const withSource = useStoryLocale('content.withSource', messages)
+const objectFitContain = useStoryLocale('content.objectFitContain', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 
 // Image alts and titles
-const landscapeAlt = useStoryLocale({ zh: '风景照片示例', en: 'Example landscape photo' })
-const mountainAlt = useStoryLocale({ zh: '山脉风景', en: 'Mountain landscape' })
-const mountainTitle = useStoryLocale({ zh: '山脉全景', en: 'Mountain Vista' })
-const squareAlt = useStoryLocale({ zh: '方形格式图片', en: 'Square format image' })
-const widescreenAlt = useStoryLocale({ zh: '宽屏图片', en: 'Widescreen image' })
-const clickableAlt = useStoryLocale({ zh: '可点击的图片', en: 'Clickable image' })
-const sourcedAlt = useStoryLocale({ zh: '带来源标注的图片', en: 'Sourced image' })
-const featuredPhotoTitle = useStoryLocale({ zh: '精选照片', en: 'Featured Photo' })
-const portraitAlt = useStoryLocale({ zh: '竖屏图片，包含模式', en: 'Portrait image with contain fit' })
-const portraitTitle = useStoryLocale({ zh: '人像（包含模式）', en: 'Portrait (Contain)' })
+const landscapeAlt = useStoryLocale('content.landscapeAlt', messages)
+const mountainAlt = useStoryLocale('content.mountainAlt', messages)
+const mountainTitle = useStoryLocale('content.mountainTitle', messages)
+const squareAlt = useStoryLocale('content.squareAlt', messages)
+const widescreenAlt = useStoryLocale('content.widescreenAlt', messages)
+const clickableAlt = useStoryLocale('content.clickableAlt', messages)
+const sourcedAlt = useStoryLocale('content.sourcedAlt', messages)
+const featuredPhotoTitle = useStoryLocale('data.featuredPhotoTitle', messages)
+const portraitAlt = useStoryLocale('content.portraitAlt', messages)
+const portraitTitle = useStoryLocale('content.portraitTitle', messages)
 </script>
 
 <template>

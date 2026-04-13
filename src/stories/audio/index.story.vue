@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { Audio } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 const interactiveStateZh = {
   title: '自定义音频轨道',
@@ -43,29 +44,29 @@ function clearEvents() {
   eventLog.value = [];
 }
 
-const audioBasicTitle = useStoryLocale({ zh: '夏日微风', en: 'Summer Breeze' })
-const audioBasicDescription = useStoryLocale({ zh: '一首放松的轻音乐', en: 'A relaxing instrumental track' })
-const audioCompactTitle = useStoryLocale({ zh: '演示曲目', en: 'Demo Track' })
-const audioCompactDescription = useStoryLocale({ zh: '紧凑播放器布局', en: 'Compact player layout' })
-const audioOnlyTitle = useStoryLocale({ zh: '纯音频', en: 'Audio Only' })
-const audioOnlyDescription = useStoryLocale({ zh: '无封面，紧凑布局', en: 'No artwork, compact layout' })
-const audioEventsTitle = useStoryLocale({ zh: '事件日志演示', en: 'Event Logging Demo' })
-const audioEventsDescription = useStoryLocale({ zh: '播放/暂停查看事件', en: 'Play/pause to see events' })
-const audioEventLogHeading = useStoryLocale({ zh: '事件日志', en: 'Event Log' })
-const audioClearButton = useStoryLocale({ zh: '清除', en: 'Clear' })
-const audioEmptyState = useStoryLocale({ zh: '暂无事件，播放音频可查看事件', en: 'No events yet. Play the audio to see events.' })
-const audioControlsHeading = useStoryLocale({ zh: '控制面板', en: 'Controls' })
-const audioFormTitle = useStoryLocale({ zh: '标题:', en: 'Title:' })
-const audioFormDescription = useStoryLocale({ zh: '描述:', en: 'Description:' })
-const audioFormVariant = useStoryLocale({ zh: '变体:', en: 'Variant:' })
-const audioVariantFull = useStoryLocale({ zh: '完整', en: 'Full' })
-const audioVariantCompact = useStoryLocale({ zh: '紧凑', en: 'Compact' })
-const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
-const withMetadata = useStoryLocale({ zh: '含元数据', en: 'With Metadata' })
-const compactVariant = useStoryLocale({ zh: '紧凑变体', en: 'Compact Variant' })
-const compactWithoutArtwork = useStoryLocale({ zh: '无封面紧凑', en: 'Compact Without Artwork' })
-const withEventLogging = useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const audioBasicTitle = useStoryLocale('content.audioBasicTitle', messages)
+const audioBasicDescription = useStoryLocale('content.audioBasicDescription', messages)
+const audioCompactTitle = useStoryLocale('content.audioCompactTitle', messages)
+const audioCompactDescription = useStoryLocale('content.audioCompactDescription', messages)
+const audioOnlyTitle = useStoryLocale('content.audioOnlyTitle', messages)
+const audioOnlyDescription = useStoryLocale('content.audioOnlyDescription', messages)
+const audioEventsTitle = useStoryLocale('content.audioEventsTitle', messages)
+const audioEventsDescription = useStoryLocale('content.audioEventsDescription', messages)
+const audioEventLogHeading = useStoryLocale('content.audioEventLogHeading', messages)
+const audioClearButton = useStoryLocale('content.audioClearButton', messages)
+const audioEmptyState = useStoryLocale('content.audioEmptyState', messages)
+const audioControlsHeading = useStoryLocale('content.audioControlsHeading', messages)
+const audioFormTitle = useStoryLocale('content.audioFormTitle', messages)
+const audioFormDescription = useStoryLocale('content.audioFormDescription', messages)
+const audioFormVariant = useStoryLocale('content.audioFormVariant', messages)
+const audioVariantFull = useStoryLocale('content.audioVariantFull', messages)
+const audioVariantCompact = useStoryLocale('content.audioVariantCompact', messages)
+const basic = useStoryLocale('content.basic', messages)
+const withMetadata = useStoryLocale('data.withMeta', messages)
+const compactVariant = useStoryLocale('content.compactVariant', messages)
+const compactWithoutArtwork = useStoryLocale('content.compactWithoutArtwork', messages)
+const withEventLogging = useStoryLocale('content.withEventLogging', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>

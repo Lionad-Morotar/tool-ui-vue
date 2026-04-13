@@ -1,0 +1,25 @@
+export default {
+  content: {
+    basic: '\'Basic\' }',
+    clickableAlt: '\'Clickable image\' }',
+    interactive: '\'Interactive\' }',
+    landscapeAlt: '\'Example landscape photo\' }',
+    mountainAlt: '\'Mountain landscape\' }',
+    mountainTitle: '\'Mountain Vista\' }',
+    objectFitContain: '\'Object Fit: Contain\' }',
+    portraitAlt: '\'Portrait image with contain fit\' }',
+    portraitTitle: '\'Portrait (Contain)\' }',
+    sourcedAlt: '\'Sourced image\' }',
+    squareAlt: '\'Square format image\' }',
+    squareRatio: '\'Square Ratio\' }',
+    subtitle: '\'Image component with ratio support',
+    videoRatio: '\'Video Ratio\' }',
+    widescreenAlt: '\'Widescreen image\' }',
+    withLink: '\'With Link\' }',
+    withSource: '\'With Source\' }',
+    withTitle: '\'With Title\' }',
+  },
+  data: {
+    featuredPhotoTitle: '\'Featured Photo\' }',
+  },
+}

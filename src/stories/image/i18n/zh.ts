@@ -1,0 +1,25 @@
+export default {
+  content: {
+    basic: '基础',
+    clickableAlt: '可点击的图片',
+    interactive: '交互模式',
+    landscapeAlt: '风景照片示例',
+    mountainAlt: '山脉风景',
+    mountainTitle: '山脉全景',
+    objectFitContain: '缩放模式: 包含',
+    portraitAlt: '竖屏图片，包含模式',
+    portraitTitle: '人像（包含模式）',
+    sourcedAlt: '带来源标注的图片',
+    squareAlt: '方形格式图片',
+    squareRatio: '方形比例',
+    subtitle: '图片组件，支持比例、自适应、链接和来源 attribution',
+    videoRatio: '视频比例',
+    widescreenAlt: '宽屏图片',
+    withLink: '含链接',
+    withSource: '含来源',
+    withTitle: '含标题',
+  },
+  data: {
+    featuredPhotoTitle: '精选照片',
+  },
+}

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeBlock } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 const exampleCode = `interface User {
   id: string;
@@ -80,28 +81,48 @@ const props = [
   { name: 'css', type: '{ root?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
-const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
-const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
-const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
-const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
 
 const languages = [
   'typescript', 'javascript', 'python', 'tsx', 'jsx',
   'json', 'bash', 'shell', 'css', 'html',
   'markdown', 'sql', 'yaml', 'go', 'rust', 'text'
 ];
-const propsTitle = useStoryLocale({ zh: '属性', en: 'Props' })
-const supportedLanguages = useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' })
-const typeScript = useStoryLocale({ zh: 'TypeScript', en: 'TypeScript' })
-const javaScript = useStoryLocale({ zh: 'JavaScript', en: 'JavaScript' })
-const python = useStoryLocale({ zh: 'Python', en: 'Python' })
-const cSS = useStoryLocale({ zh: 'CSS', en: 'CSS' })
-const withHighlightedLines = useStoryLocale({ zh: '高亮行', en: 'With Highlighted Lines' })
-const withoutLineNumbers = useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })
-const collapsedLongCode = useStoryLocale({ zh: '折叠（长代码）', en: 'Collapsed (Long Code)' })
-const noFilename = useStoryLocale({ zh: '无文件名', en: 'No Filename' })
-const darkTheme = useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const propsTitle = Props
+const supportedLanguages = SupportedLanguages
+const typeScript = TypeScript
+const javaScript = JavaScript
+const python = Python
+const cSS = CSS
+const withHighlightedLines = WithHighlightedLines
+const withoutLineNumbers = WithoutLineNumbers
+const collapsedLongCode = CollapsedLongCode
+const noFilename = NoFilename
+const darkTheme = DarkTheme
+const interactive = Interactive
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const SupportedLanguages = useStoryLocale('content.supportedLanguages', messages)
+const TypeScript = useStoryLocale('content.typeScript', messages)
+const JavaScript = useStoryLocale('content.javaScript', messages)
+const Python = useStoryLocale('content.python', messages)
+const CSS = useStoryLocale('content.cSS', messages)
+const WithHighlightedLines = useStoryLocale('content.withHighlightedLines', messages)
+const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
+const CollapsedLongCode = useStoryLocale('content.collapsedLongCode', messages)
+const NoFilename = useStoryLocale('content.noFilename', messages)
+const DarkTheme = useStoryLocale('content.darkTheme', messages)
+const Interactive = useStoryLocale('content.interactive', messages)
+const CodeBlockProps = useStoryLocale('content.codeBlockProps', messages)
+const SupportedLanguages1 = useStoryLocale('content.supportedLanguages1', messages)
+const Language = useStoryLocale('content.language', messages)
+const ShowLineNumbers = useStoryLocale('content.showLineNumbers', messages)
 </script>
 
 <template>
@@ -109,7 +130,7 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
     <Variant :title="propsTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'CodeBlock 属性', en: 'CodeBlock Props' }) }}</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ CodeBlockProps }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -133,7 +154,7 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       </div>
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' }) }}</h2>
+        <h2 class="mb-4 text-2xl font-bold">{{ SupportedLanguages1 }}</h2>
         <div class="flex flex-wrap gap-2">
           <span
             v-for="lang in languages"
@@ -299,7 +320,7 @@ const colors = {
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium">{{ useStoryLocale({ zh: '语言:', en: 'Language:' }) }}</label>
+            <label class="text-sm font-medium">{{ Language }}</label>
             <select
               v-model="interactiveState.language"
               class="rounded-md border-border border bg-background px-3 py-1 text-sm"
@@ -317,7 +338,7 @@ const colors = {
               false-value="hidden"
               class="rounded border-border border"
             />
-            {{ useStoryLocale({ zh: '显示行号', en: 'Show Line Numbers' }) }}
+            {{ ShowLineNumbers }}
           </label>
         </div>
         <code-block
