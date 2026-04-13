@@ -144,7 +144,7 @@ Plans:
 **Plans**: 12 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Foundation: useStoryLocale key-based API + histoire.config.ts + link-preview reference migration
+- [x] 07-01-PLAN.md — Foundation: useStoryLocale key-based API + histoire.config.ts + link-preview reference migration
 - [ ] 07-02-PLAN.md — item-carousel migration
 - [ ] 07-03-PLAN.md — geo-map migration
 - [ ] 07-04-PLAN.md — question-flow migration
