@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { DataTable } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '数据表格组件，支持排序、格式化（货币、百分比、日期）、状态徽标和响应式列优先级', en: 'Data table with sorting, formatting (currency, percent, date), status badges, and responsive column priority.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 const sortableState = reactive({
   sort: { by: 'score', direction: 'desc' as 'asc' | 'desc' },
@@ -19,52 +20,52 @@ const playgroundState = reactive({
   layout: 'cards' as 'auto' | 'table' | 'cards',
 });
 
-const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
-const stockDataDeltaCurrencyPercent = useStoryLocale({ zh: '股票数据（差值+货币+百分比）', en: 'Stock Data (Delta + Currency + Percent)' })
-const withFormatting = useStoryLocale({ zh: '格式化显示', en: 'With Formatting' })
-const withStatusBadges = useStoryLocale({ zh: '状态徽标', en: 'With Status Badges' })
-const withColumnAlignment = useStoryLocale({ zh: '列对齐', en: 'With Column Alignment' })
-const emptyState = useStoryLocale({ zh: '空状态', en: 'Empty State' })
-const withDefaultSort = useStoryLocale({ zh: '默认排序', en: 'With Default Sort' })
-const controlledSort = useStoryLocale({ zh: '受控排序', en: 'Controlled Sort' })
-const withMaxHeight = useStoryLocale({ zh: '最大高度', en: 'With Max Height' })
-const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', en: 'Interactive Layout Playground' })
+const basic = useStoryLocale('content.basic', messages)
+const stockDataDeltaCurrencyPercent = useStoryLocale('data.stockDataDeltaCurrencyPercent', messages)
+const withFormatting = useStoryLocale('content.withFormatting', messages)
+const withStatusBadges = useStoryLocale('content.withStatusBadges', messages)
+const withColumnAlignment = useStoryLocale('content.withColumnAlignment', messages)
+const emptyState = useStoryLocale('content.emptyState', messages)
+const withDefaultSort = useStoryLocale('content.withDefaultSort', messages)
+const controlledSort = useStoryLocale('content.controlledSort', messages)
+const withMaxHeight = useStoryLocale('content.withMaxHeight', messages)
+const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPlayground', messages)
 
 // Column labels
-const colName = useStoryLocale({ zh: '名称', en: 'Name' })
-const colStatus = useStoryLocale({ zh: '状态', en: 'Status' })
-const colRevenue = useStoryLocale({ zh: '收入', en: 'Revenue' })
-const colSymbol = useStoryLocale({ zh: '代码', en: 'Symbol' })
-const colCompany = useStoryLocale({ zh: '公司', en: 'Company' })
-const colPrice = useStoryLocale({ zh: '价格', en: 'Price' })
-const colChange = useStoryLocale({ zh: '变动', en: 'Change' })
-const colChangePercent = useStoryLocale({ zh: '变动 %', en: 'Change %' })
-const colVolume = useStoryLocale({ zh: '成交量', en: 'Volume' })
-const colProduct = useStoryLocale({ zh: '产品', en: 'Product' })
-const colSales = useStoryLocale({ zh: '销量', en: 'Sales' })
-const colGrowth = useStoryLocale({ zh: '增长', en: 'Growth' })
-const colTask = useStoryLocale({ zh: '任务', en: 'Task' })
-const colPriority = useStoryLocale({ zh: '优先级', en: 'Priority' })
-const colDueDate = useStoryLocale({ zh: '截止日期', en: 'Due Date' })
-const colItem = useStoryLocale({ zh: '商品', en: 'Item' })
-const colQty = useStoryLocale({ zh: '数量', en: 'Qty' })
-const colTotal = useStoryLocale({ zh: '总计', en: 'Total' })
-const colId = useStoryLocale({ zh: 'ID', en: 'ID' })
-const colProject = useStoryLocale({ zh: '项目', en: 'Project' })
-const colOwner = useStoryLocale({ zh: '负责人', en: 'Owner' })
-const colBudget = useStoryLocale({ zh: '预算', en: 'Budget' })
-const colDeadline = useStoryLocale({ zh: '截止日期', en: 'Deadline' })
-const colNotes = useStoryLocale({ zh: '备注', en: 'Notes' })
-const colScore = useStoryLocale({ zh: '分数', en: 'Score' })
-const colGrade = useStoryLocale({ zh: '等级', en: 'Grade' })
+const colName = useStoryLocale('content.colName', messages)
+const colStatus = useStoryLocale('content.colStatus', messages)
+const colRevenue = useStoryLocale('content.colRevenue', messages)
+const colSymbol = useStoryLocale('content.colSymbol', messages)
+const colCompany = useStoryLocale('content.colCompany', messages)
+const colPrice = useStoryLocale('content.colPrice', messages)
+const colChange = useStoryLocale('content.colChange', messages)
+const colChangePercent = useStoryLocale('content.colChangePercent', messages)
+const colVolume = useStoryLocale('content.colVolume', messages)
+const colProduct = useStoryLocale('data.colProduct', messages)
+const colSales = useStoryLocale('content.colSales', messages)
+const colGrowth = useStoryLocale('content.colGrowth', messages)
+const colTask = useStoryLocale('content.colTask', messages)
+const colPriority = useStoryLocale('content.colPriority', messages)
+const colDueDate = useStoryLocale('content.colDueDate', messages)
+const colItem = useStoryLocale('data.colItem', messages)
+const colQty = useStoryLocale('content.colQty', messages)
+const colTotal = useStoryLocale('content.colTotal', messages)
+const colId = useStoryLocale('content.colId', messages)
+const colProject = useStoryLocale('content.colProject', messages)
+const colOwner = useStoryLocale('content.colOwner', messages)
+const colBudget = useStoryLocale('content.colBudget', messages)
+const colDeadline = useStoryLocale('content.colDeadline', messages)
+const colNotes = useStoryLocale('content.colNotes', messages)
+const colScore = useStoryLocale('content.colScore', messages)
+const colGrade = useStoryLocale('content.colGrade', messages)
 
 // Status badge labels
-const statusCompleted = useStoryLocale({ zh: '已完成', en: 'Completed' })
-const statusInProgress = useStoryLocale({ zh: '进行中', en: 'In Progress' })
-const statusPending = useStoryLocale({ zh: '待处理', en: 'Pending' })
+const statusCompleted = useStoryLocale('content.statusCompleted', messages)
+const statusInProgress = useStoryLocale('content.statusInProgress', messages)
+const statusPending = useStoryLocale('content.statusPending', messages)
 
 // Empty state
-const emptyMessage = useStoryLocale({ zh: '未找到记录', en: 'No records found' })
+const emptyMessage = useStoryLocale('content.emptyMessage', messages)
 
 // Basic columns
 const basicColumns = computed(() => [

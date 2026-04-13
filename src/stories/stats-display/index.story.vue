@@ -1,63 +1,64 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { StatsDisplay } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
-const subtitle = useStoryLocale({ zh: '统计展示组件，支持多种数字格式、趋势指示器和迷你图', en: 'Stats display with multiple number formats, trend indicators, and sparklines.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
-const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
-const withTrends = useStoryLocale({ zh: '含趋势', en: 'With Trends' })
-const withSparklines = useStoryLocale({ zh: '含迷你图', en: 'With Sparklines' })
-const singleStat = useStoryLocale({ zh: '单个统计', en: 'Single Stat' })
-const currencyFormats = useStoryLocale({ zh: '货币格式', en: 'Currency Formats' })
-const numberFormats = useStoryLocale({ zh: '数字格式', en: 'Number Formats' })
-const percentFormats = useStoryLocale({ zh: '百分比格式', en: 'Percent Formats' })
-const trendIndicators = useStoryLocale({ zh: '趋势指示器', en: 'Trend Indicators' })
+const basic = useStoryLocale('content.basic', messages)
+const withTrends = useStoryLocale('content.withTrends', messages)
+const withSparklines = useStoryLocale('content.withSparklines', messages)
+const singleStat = useStoryLocale('content.singleStat', messages)
+const currencyFormats = useStoryLocale('content.currencyFormats', messages)
+const numberFormats = useStoryLocale('content.numberFormats', messages)
+const percentFormats = useStoryLocale('content.percentFormats', messages)
+const trendIndicators = useStoryLocale('content.trendIndicators', messages)
 
 // Stats labels
-const revenueLabel = useStoryLocale({ zh: '收入', en: 'Revenue' })
-const usersLabel = useStoryLocale({ zh: '用户', en: 'Users' })
-const churnLabel = useStoryLocale({ zh: '流失率', en: 'Churn' })
-const npsLabel = useStoryLocale({ zh: 'NPS', en: 'NPS' })
-const activeUsersLabel = useStoryLocale({ zh: '活跃用户', en: 'Active Users' })
-const churnRateLabel = useStoryLocale({ zh: '流失率', en: 'Churn Rate' })
-const npsScoreLabel = useStoryLocale({ zh: 'NPS 评分', en: 'NPS Score' })
+const revenueLabel = useStoryLocale('content.revenueLabel', messages)
+const usersLabel = useStoryLocale('content.usersLabel', messages)
+const churnLabel = useStoryLocale('content.churnLabel', messages)
+const npsLabel = useStoryLocale('content.npsLabel', messages)
+const activeUsersLabel = useStoryLocale('content.activeUsersLabel', messages)
+const churnRateLabel = useStoryLocale('content.churnRateLabel', messages)
+const npsScoreLabel = useStoryLocale('content.npsScoreLabel', messages)
 
 // With trends
-const keyMetricsTitle = useStoryLocale({ zh: '关键指标', en: 'Key Metrics' })
-const performanceOverviewDesc = useStoryLocale({ zh: '性能概览', en: 'Performance overview' })
+const keyMetricsTitle = useStoryLocale('content.keyMetricsTitle', messages)
+const performanceOverviewDesc = useStoryLocale('content.performanceOverviewDesc', messages)
 
 // With sparklines
-const q4PerformanceTitle = useStoryLocale({ zh: '第四季度业绩', en: 'Q4 Performance' })
-const q4Desc = useStoryLocale({ zh: '2024 年 10 月至 12月', en: 'October through December 2024' })
+const q4PerformanceTitle = useStoryLocale('content.q4PerformanceTitle', messages)
+const q4Desc = useStoryLocale('content.q4Desc', messages)
 
 // Currency
-const financialOverviewTitle = useStoryLocale({ zh: '财务概览', en: 'Financial Overview' })
-const usdLabel = useStoryLocale({ zh: '美元', en: 'USD' })
-const eurLabel = useStoryLocale({ zh: '欧元', en: 'EUR' })
-const gbpLabel = useStoryLocale({ zh: '英镑', en: 'GBP' })
-const jpyLabel = useStoryLocale({ zh: '日元', en: 'JPY' })
+const financialOverviewTitle = useStoryLocale('content.financialOverviewTitle', messages)
+const usdLabel = useStoryLocale('content.usdLabel', messages)
+const eurLabel = useStoryLocale('content.eurLabel', messages)
+const gbpLabel = useStoryLocale('content.gbpLabel', messages)
+const jpyLabel = useStoryLocale('content.jpyLabel', messages)
 
 // Number formats
-const usageStatisticsTitle = useStoryLocale({ zh: '使用统计', en: 'Usage Statistics' })
-const totalUsersLabel = useStoryLocale({ zh: '总用户数', en: 'Total Users' })
-const dailyActiveLabel = useStoryLocale({ zh: '日活跃', en: 'Daily Active' })
-const avgSessionLabel = useStoryLocale({ zh: '平均会话', en: 'Average Session' })
-const scoreLabel = useStoryLocale({ zh: '评分', en: 'Score' })
+const usageStatisticsTitle = useStoryLocale('content.usageStatisticsTitle', messages)
+const totalUsersLabel = useStoryLocale('content.totalUsersLabel', messages)
+const dailyActiveLabel = useStoryLocale('content.dailyActiveLabel', messages)
+const avgSessionLabel = useStoryLocale('content.avgSessionLabel', messages)
+const scoreLabel = useStoryLocale('content.scoreLabel', messages)
 
 // Percent formats
-const conversionMetricsTitle = useStoryLocale({ zh: '转化指标', en: 'Conversion Metrics' })
-const conversionRateLabel = useStoryLocale({ zh: '转化率', en: 'Conversion Rate' })
-const bounceRateLabel = useStoryLocale({ zh: '跳出率', en: 'Bounce Rate' })
-const retentionLabel = useStoryLocale({ zh: '留存率', en: 'Retention' })
-const engagementLabel = useStoryLocale({ zh: '参与度', en: 'Engagement' })
+const conversionMetricsTitle = useStoryLocale('content.conversionMetricsTitle', messages)
+const conversionRateLabel = useStoryLocale('content.conversionRateLabel', messages)
+const bounceRateLabel = useStoryLocale('content.bounceRateLabel', messages)
+const retentionLabel = useStoryLocale('content.retentionLabel', messages)
+const engagementLabel = useStoryLocale('content.engagementLabel', messages)
 
 // Trend indicators
-const trendAnalysisTitle = useStoryLocale({ zh: '趋势分析', en: 'Trend Analysis' })
-const revenueUpIsGoodLabel = useStoryLocale({ zh: '收入（上升为好）', en: 'Revenue (up is good)' })
-const costDownIsGoodLabel = useStoryLocale({ zh: '成本（下降为好）', en: 'Cost (down is good)' })
-const neutralChangeLabel = useStoryLocale({ zh: '中性变化', en: 'Neutral Change' })
-const errorsUpIsBadLabel = useStoryLocale({ zh: '错误（上升为坏）', en: 'Errors (up is bad)' })
+const trendAnalysisTitle = useStoryLocale('content.trendAnalysisTitle', messages)
+const revenueUpIsGoodLabel = useStoryLocale('content.revenueUpIsGoodLabel', messages)
+const costDownIsGoodLabel = useStoryLocale('content.costDownIsGoodLabel', messages)
+const neutralChangeLabel = useStoryLocale('content.neutralChangeLabel', messages)
+const errorsUpIsBadLabel = useStoryLocale('content.errorsUpIsBadLabel', messages)
 
 // Currency format stats
 const currencyStats = computed<any[]>(() => [

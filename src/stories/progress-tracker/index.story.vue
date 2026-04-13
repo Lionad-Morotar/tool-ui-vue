@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed, watch } from 'vue';
 import { ProgressTracker } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '多步骤进度组件，支持待处理、进行中、完成和失败状态', en: 'Multi-step progress component with pending, in-progress, completed, and failed states.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 /**
  * # ProgressTracker
@@ -51,41 +52,41 @@ const subtitle = useStoryLocale({ zh: '多步骤进度组件，支持待处理�
  */
 
 // Step labels
-const accountLabel = useStoryLocale({ zh: '账户', en: 'Account' })
-const profileLabel = useStoryLocale({ zh: '个人资料', en: 'Profile' })
-const billingLabel = useStoryLocale({ zh: '账单', en: 'Billing' })
-const reviewLabel = useStoryLocale({ zh: '审查', en: 'Review' })
-const uploadLabel = useStoryLocale({ zh: '上传', en: 'Upload' })
-const processLabel = useStoryLocale({ zh: '处理', en: 'Process' })
-const exportLabel = useStoryLocale({ zh: '导出', en: 'Export' })
-const buildLabel = useStoryLocale({ zh: '构建', en: 'Build' })
-const testLabel = useStoryLocale({ zh: '测试', en: 'Test' })
-const deployLabel = useStoryLocale({ zh: '部署', en: 'Deploy' })
-const verifyLabel = useStoryLocale({ zh: '验证', en: 'Verify' })
-const designLabel = useStoryLocale({ zh: '设计', en: 'Design' })
-const developLabel = useStoryLocale({ zh: '开发', en: 'Develop' })
-const launchLabel = useStoryLocale({ zh: '发布', en: 'Launch' })
-const compileLabel = useStoryLocale({ zh: '编译', en: 'Compile' })
-const bundleLabel = useStoryLocale({ zh: '打包', en: 'Bundle' })
-const optimizeLabel = useStoryLocale({ zh: '优化', en: 'Optimize' })
-const stepALabel = useStoryLocale({ zh: '步骤 A', en: 'Step A' })
-const stepBLabel = useStoryLocale({ zh: '步骤 B', en: 'Step B' })
-const stepCLabel = useStoryLocale({ zh: '步骤 C', en: 'Step C' })
-const stepDLabel = useStoryLocale({ zh: '步骤 D', en: 'Step D' })
-const stepELabel = useStoryLocale({ zh: '步骤 E', en: 'Step E' })
+const accountLabel = useStoryLocale('content.accountLabel', messages)
+const profileLabel = useStoryLocale('content.profileLabel', messages)
+const billingLabel = useStoryLocale('content.billingLabel', messages)
+const reviewLabel = useStoryLocale('content.reviewLabel', messages)
+const uploadLabel = useStoryLocale('content.uploadLabel', messages)
+const processLabel = useStoryLocale('content.processLabel', messages)
+const exportLabel = useStoryLocale('content.exportLabel', messages)
+const buildLabel = useStoryLocale('content.buildLabel', messages)
+const testLabel = useStoryLocale('content.testLabel', messages)
+const deployLabel = useStoryLocale('content.deployLabel', messages)
+const verifyLabel = useStoryLocale('content.verifyLabel', messages)
+const designLabel = useStoryLocale('content.designLabel', messages)
+const developLabel = useStoryLocale('content.developLabel', messages)
+const launchLabel = useStoryLocale('content.launchLabel', messages)
+const compileLabel = useStoryLocale('content.compileLabel', messages)
+const bundleLabel = useStoryLocale('content.bundleLabel', messages)
+const optimizeLabel = useStoryLocale('content.optimizeLabel', messages)
+const stepALabel = useStoryLocale('content.stepALabel', messages)
+const stepBLabel = useStoryLocale('content.stepBLabel', messages)
+const stepCLabel = useStoryLocale('content.stepCLabel', messages)
+const stepDLabel = useStoryLocale('content.stepDLabel', messages)
+const stepELabel = useStoryLocale('content.stepELabel', messages)
 
 // Descriptions
-const processDesc = useStoryLocale({ zh: '正在分析数据', en: 'Analyzing data' })
-const reviewDesc = useStoryLocale({ zh: '检查结果', en: 'Check results' })
-const exportDesc = useStoryLocale({ zh: '下载输出', en: 'Download output' })
-const addFilesDesc = useStoryLocale({ zh: '添加你的文件', en: 'Add your files' })
+const processDesc = useStoryLocale('content.processDesc', messages)
+const reviewDesc = useStoryLocale('content.reviewDesc', messages)
+const exportDesc = useStoryLocale('content.exportDesc', messages)
+const addFilesDesc = useStoryLocale('content.addFilesDesc', messages)
 
 // Receipt summaries
-const exportComplete = useStoryLocale({ zh: '导出完成', en: 'Export complete' })
-const testsFailed = useStoryLocale({ zh: '测试失败', en: 'Tests failed' })
+const exportComplete = useStoryLocale('content.exportComplete', messages)
+const testsFailed = useStoryLocale('content.testsFailed', messages)
 
 // Button
-const advanceBtn = useStoryLocale({ zh: '推进步骤', en: 'Advance Step' })
+const advanceBtn = useStoryLocale('content.advanceBtn', messages)
 
 const interactiveProgressZh = {
   steps: [
@@ -130,15 +131,15 @@ function advanceStep() {
   }
 }
 
-const horizontalSteps = useStoryLocale({ zh: '水平步骤', en: 'Horizontal Steps' })
-const withDescriptions = useStoryLocale({ zh: '含描述', en: 'With Descriptions' })
-const withFailedStep = useStoryLocale({ zh: '含失败步骤', en: 'With Failed Step' })
-const allCompleted = useStoryLocale({ zh: '全部完成', en: 'All Completed' })
-const withElapsedTime = useStoryLocale({ zh: '含耗时', en: 'With Elapsed Time' })
-const receiptSuccess = useStoryLocale({ zh: '回执 - 成功', en: 'Receipt - Success' })
-const receiptFailed = useStoryLocale({ zh: '回执 - 失败', en: 'Receipt - Failed' })
-const interactiveClickToAdvance = useStoryLocale({ zh: '交互 - 点击推进', en: 'Interactive - Click to Advance' })
-const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linear Progress' })
+const horizontalSteps = useStoryLocale('content.horizontalSteps', messages)
+const withDescriptions = useStoryLocale('content.withDescriptions', messages)
+const withFailedStep = useStoryLocale('content.withFailedStep', messages)
+const allCompleted = useStoryLocale('content.allCompleted', messages)
+const withElapsedTime = useStoryLocale('content.withElapsedTime', messages)
+const receiptSuccess = useStoryLocale('content.receiptSuccess', messages)
+const receiptFailed = useStoryLocale('content.receiptFailed', messages)
+const interactiveClickToAdvance = useStoryLocale('content.interactiveClickToAdvance', messages)
+const nonLinearProgress = useStoryLocale('content.nonLinearProgress', messages)
 
 // Computed step arrays for static variants
 const horizontalStepsArr = computed<any[]>(() => [
