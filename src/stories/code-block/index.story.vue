@@ -16,6 +16,7 @@ const CSS = useStoryLocale('content.cSS', messages)
 const WithHighlightedLines = useStoryLocale('content.withHighlightedLines', messages)
 const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
 const CollapsedLongCode = useStoryLocale('content.collapsedLongCode', messages)
+const NoFilename = useStoryLocale('content.noFilename', messages)
 const DarkTheme = useStoryLocale('content.darkTheme', messages)
 const Interactive = useStoryLocale('content.interactive', messages)
 const CodeBlockProps = useStoryLocale('content.codeBlockProps', messages)
@@ -118,6 +119,7 @@ const cSS = CSS
 const withHighlightedLines = WithHighlightedLines
 const withoutLineNumbers = WithoutLineNumbers
 const collapsedLongCode = CollapsedLongCode
+const noFilename = NoFilename
 const darkTheme = DarkTheme
 const interactive = Interactive
 
@@ -245,6 +247,18 @@ for i in range(10):
       </div>
     </Variant>
 
+
+    <Variant :title="noFilename">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-xl">
+        <code-block
+          id="code-no-filename"
+          language="bash"
+          code="npm install vue@latest
+npm run dev"
+        />
+      </div>
+    </Variant>
 
     <Variant :title="darkTheme">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
