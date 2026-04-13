@@ -170,4 +170,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 4. Quality + Compat | 1/1 | Complete    | 2026-04-11 |
 | 5. Documentation + Histoire | 2/2 | Complete    | 2026-04-11 |
 | 6. Histoire 站点数据 i18n | 4/4 | Complete    | 2026-04-11 |
-| 7. Story 结构重构与 i18n 解耦 | 0/0 | Not started | — |
+| 7. Story 结构重构与 i18n 解耦 | 12/12 | Complete    | 2026-04-13 |
