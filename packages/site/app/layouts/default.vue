@@ -1,0 +1,6 @@
+<template>
+  <div class="min-h-screen bg-background text-foreground">
+    <AppHeader />
+    <slot />
+  </div>
+</template>
