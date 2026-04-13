@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
 import { OptionList } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '提供单选 / 多选、键盘导航和回执状态的选项列表组件', en: 'A selection component for choosing one or more options from a list with keyboard navigation and receipt states.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 /**
  * # OptionList
@@ -115,8 +116,8 @@ const optionsFeatureEn = [
 const optionsFeature = computed(() => currentLocale.value === 'zh-CN' ? optionsFeatureZh : optionsFeatureEn);
 
 // Action labels
-const resetLabel = useStoryLocale({ zh: '重置', en: 'Reset' });
-const confirmLabel = useStoryLocale({ zh: '确认', en: 'Confirm' });
+const resetLabel = useStoryLocale('content.resetLabel', messages);
+const confirmLabel = useStoryLocale('content.confirmLabel', messages);
 
 const interactiveOptionsZh = [
   { id: 'opt-1', label: '选项 1', description: '第一个交互选项' },
@@ -136,13 +137,13 @@ const interactiveState = reactive({
   minSelections: 0,
   maxSelections: 2,
 });
-const singleSelect = useStoryLocale({ zh: '单选', en: 'Single Select' })
-const multiSelect = useStoryLocale({ zh: '多选', en: 'Multi Select' })
-const withActions = useStoryLocale({ zh: '含操作', en: 'With Actions' })
-const withDisabledOptions = useStoryLocale({ zh: '含禁用选项', en: 'With Disabled Options' })
-const receiptStateSingle = useStoryLocale({ zh: '回执状态（单项）', en: 'Receipt State (Single)' })
-const receiptStateMulti = useStoryLocale({ zh: '回执状态（多项）', en: 'Receipt State (Multi)' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const singleSelect = useStoryLocale('content.singleSelect', messages)
+const multiSelect = useStoryLocale('content.multiSelect', messages)
+const withActions = useStoryLocale('content.withActions', messages)
+const withDisabledOptions = useStoryLocale('data.withDisabledOptions', messages)
+const receiptStateSingle = useStoryLocale('content.receiptStateSingle', messages)
+const receiptStateMulti = useStoryLocale('content.receiptStateMulti', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>

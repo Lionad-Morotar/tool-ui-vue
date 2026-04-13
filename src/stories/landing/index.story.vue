@@ -8,9 +8,10 @@ import {
   Terminal,
   Zap,
 } from 'lucide-vue-next';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: 'tool-ui-vue — 为 AI 工具调用设计的 Vue 3 组件库，按类别浏览所有组件', en: 'tool-ui-vue — A Vue 3 component library for AI tool calls, browse all components by category.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 const categories = [
   {
@@ -57,11 +58,11 @@ const categories = [
   },
 ];
 
-const heroTagline = useStoryLocale({ zh: '为 AI 工具调用设计的 Vue 3 组件', en: 'Vue 3 components for AI tool calls' });
-const heroCta = useStoryLocale({ zh: '开始使用', en: 'Get Started' });
-const browseByCategory = useStoryLocale({ zh: '按类别浏览', en: 'Browse by category' });
-const footerText = useStoryLocale({ zh: '由', en: 'Built by' });
-const footerViewOn = useStoryLocale({ zh: '在', en: 'View on' });
+const heroTagline = useStoryLocale('content.heroTagline', messages);
+const heroCta = useStoryLocale('content.heroCta', messages);
+const browseByCategory = useStoryLocale('data.browseByCategory', messages);
+const footerText = useStoryLocale('content.footerText', messages);
+const footerViewOn = useStoryLocale('content.footerViewOn', messages);
 </script>
 
 <template>

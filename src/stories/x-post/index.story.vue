@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { XPost } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
 /**
  * # XPost
@@ -90,15 +91,15 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const textOnly = useStoryLocale({ zh: '纯文本', en: 'Text Only' })
-const withImage = useStoryLocale({ zh: '含图片', en: 'With Image' })
-const withVideo = useStoryLocale({ zh: '含视频', en: 'With Video' })
-const withLinkPreview = useStoryLocale({ zh: '含链接预览', en: 'With Link Preview' })
-const quotedPost = useStoryLocale({ zh: '引用帖子', en: 'Quoted Post' })
-const quotedPostWithMedia = useStoryLocale({ zh: '含媒体的引用', en: 'Quoted Post with Media' })
-const longText = useStoryLocale({ zh: '长文本', en: 'Long Text' })
-const unverifiedAuthor = useStoryLocale({ zh: '未验证作者', en: 'Unverified Author' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const textOnly = useStoryLocale('content.textOnly', messages)
+const withImage = useStoryLocale('content.withImage', messages)
+const withVideo = useStoryLocale('content.withVideo', messages)
+const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
+const quotedPost = useStoryLocale('content.quotedPost', messages)
+const quotedPostWithMedia = useStoryLocale('content.quotedPostWithMedia', messages)
+const longText = useStoryLocale('content.longText', messages)
+const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>

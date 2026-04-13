@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { LinkedInPost } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
 /**
  * # LinkedInPost
@@ -95,15 +96,15 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const textOnly = useStoryLocale({ zh: '纯文本', en: 'Text Only' })
-const withImage = useStoryLocale({ zh: '含图片', en: 'With Image' })
-const withVideo = useStoryLocale({ zh: '含视频', en: 'With Video' })
-const withLinkPreview = useStoryLocale({ zh: '含链接预览', en: 'With Link Preview' })
-const longPostTruncated = useStoryLocale({ zh: '长帖子（截断）', en: 'Long Post (Truncated)' })
-const celebrationPost = useStoryLocale({ zh: '庆祝帖子', en: 'Celebration Post' })
-const withoutHeadline = useStoryLocale({ zh: '无标题', en: 'Without Headline' })
-const linkPreviewWithoutImage = useStoryLocale({ zh: '无图链接预览', en: 'Link Preview without Image' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const textOnly = useStoryLocale('content.textOnly', messages)
+const withImage = useStoryLocale('content.withImage', messages)
+const withVideo = useStoryLocale('content.withVideo', messages)
+const withLinkPreview = useStoryLocale('content.withLinkPreview', messages)
+const longPostTruncated = useStoryLocale('content.longPostTruncated', messages)
+const celebrationPost = useStoryLocale('content.celebrationPost', messages)
+const withoutHeadline = useStoryLocale('content.withoutHeadline', messages)
+const linkPreviewWithoutImage = useStoryLocale('content.linkPreviewWithoutImage', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>

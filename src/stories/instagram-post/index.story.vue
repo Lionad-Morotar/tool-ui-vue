@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { InstagramPost } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
 /**
  * # InstagramPost
@@ -91,15 +92,15 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-const singleImage = useStoryLocale({ zh: '单图', en: 'Single Image' })
-const multipleImages2 = useStoryLocale({ zh: '多图 (2)', en: 'Multiple Images (2)' })
-const multipleImages3 = useStoryLocale({ zh: '多图 (3)', en: 'Multiple Images (3)' })
-const multipleImages4 = useStoryLocale({ zh: '多图 (4+)', en: 'Multiple Images (4+)' })
-const videoPost = useStoryLocale({ zh: '视频帖子', en: 'Video Post' })
-const captionOnly = useStoryLocale({ zh: '仅说明', en: 'Caption Only' })
-const longCaption = useStoryLocale({ zh: '长说明', en: 'Long Caption' })
-const unverifiedAuthor = useStoryLocale({ zh: '未验证作者', en: 'Unverified Author' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const singleImage = useStoryLocale('content.singleImage', messages)
+const multipleImages2 = useStoryLocale('content.multipleImages2', messages)
+const multipleImages3 = useStoryLocale('content.multipleImages3', messages)
+const multipleImages4 = useStoryLocale('content.multipleImages4', messages)
+const videoPost = useStoryLocale('content.videoPost', messages)
+const captionOnly = useStoryLocale('content.captionOnly', messages)
+const longCaption = useStoryLocale('content.longCaption', messages)
+const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 </script>
 
 <template>
