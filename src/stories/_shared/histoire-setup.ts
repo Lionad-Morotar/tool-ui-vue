@@ -13,7 +13,7 @@ console.log('[Histoire Setup] Tailwind CSS loaded');
 if (typeof window !== 'undefined' && window.self === window.top) {
   const hash = window.location.hash;
   if (hash === '' || hash === '#' || hash === '#/') {
-    window.location.replace('#/story/src-stories-landing-story-vue');
+    window.location.replace('#/story/src-stories-landing-index-story-vue');
   }
 
   // Mount locale toggle button

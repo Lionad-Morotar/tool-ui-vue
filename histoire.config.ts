@@ -34,7 +34,11 @@ export default defineConfig({
     groups: storyGroups.map(g => ({
       title: g.title,
       include: (file: { path: string }) =>
-        g.stories.some(story => file.path.includes(`${story}.story.vue`)),
+        g.stories.some(
+          story =>
+            file.path.includes(`/${story}/index.story.vue`) ||
+            file.path.includes(`${story}.story.vue`)
+        ),
     })),
   },
   vite: {
