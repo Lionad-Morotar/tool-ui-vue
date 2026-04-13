@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
 import { Plan } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
 
-const subtitle = useStoryLocale({ zh: '任务计划列表组件，支持进度追踪、可展开描述和状态切换', en: 'Task plan list component with progress tracking, expandable descriptions, and status cycling.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 /**
  * # Plan
@@ -91,68 +92,68 @@ function cycleStatus(index: number) {
   interactivePlan.todos[index].status = statusOrder[nextIndex];
 }
 
-const basicTodoList = useStoryLocale({ zh: '基础待办列表', en: 'Basic Todo List' })
-const withDescriptions = useStoryLocale({ zh: '含描述', en: 'With Descriptions' })
-const allStatuses = useStoryLocale({ zh: '全部状态', en: 'All Statuses' })
-const allComplete = useStoryLocale({ zh: '全部完成', en: 'All Complete' })
-const interactiveClickToCycleStatus = useStoryLocale({ zh: '交互 - 点击切换状态', en: 'Interactive - Click to Cycle Status' })
-const withProgress = useStoryLocale({ zh: '含进度', en: 'With Progress' })
-const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
+const basicTodoList = useStoryLocale('data.basicTodoList', messages)
+const withDescriptions = useStoryLocale('content.withDescriptions', messages)
+const allStatuses = useStoryLocale('content.allStatuses', messages)
+const allComplete = useStoryLocale('content.allComplete', messages)
+const interactiveClickToCycleStatus = useStoryLocale('content.interactiveClickToCycleStatus', messages)
+const withProgress = useStoryLocale('content.withProgress', messages)
+const minimal = useStoryLocale('content.minimal', messages)
 
 // Basic variant
-const deploymentPlanTitle = useStoryLocale({ zh: '部署计划', en: 'Deployment Plan' })
-const deploymentPlanDesc = useStoryLocale({ zh: '部署新功能的步骤', en: 'Steps to deploy the new feature' })
-const runMigrations = useStoryLocale({ zh: '运行数据库迁移', en: 'Run database migrations' })
-const updateEnvVars = useStoryLocale({ zh: '更新环境变量', en: 'Update environment variables' })
-const deployStaging = useStoryLocale({ zh: '部署到预发布环境', en: 'Deploy to staging' })
-const runSmokeTests = useStoryLocale({ zh: '运行冒烟测试', en: 'Run smoke tests' })
-const deployProd = useStoryLocale({ zh: '部署到生产环境', en: 'Deploy to production' })
+const deploymentPlanTitle = useStoryLocale('content.deploymentPlanTitle', messages)
+const deploymentPlanDesc = useStoryLocale('content.deploymentPlanDesc', messages)
+const runMigrations = useStoryLocale('content.runMigrations', messages)
+const updateEnvVars = useStoryLocale('content.updateEnvVars', messages)
+const deployStaging = useStoryLocale('content.deployStaging', messages)
+const runSmokeTests = useStoryLocale('content.runSmokeTests', messages)
+const deployProd = useStoryLocale('content.deployProd', messages)
 
 // Descriptions variant
-const projectSetupTitle = useStoryLocale({ zh: '项目初始化', en: 'Project Setup' })
-const projectSetupDesc = useStoryLocale({ zh: '初始配置任务', en: 'Initial configuration tasks' })
-const initRepo = useStoryLocale({ zh: '初始化仓库', en: 'Initialize repository' })
-const initRepoDesc = useStoryLocale({ zh: '创建 Git 仓库并推送到远程', en: 'Create Git repo and push to remote' })
-const setupCI = useStoryLocale({ zh: '配置 CI/CD', en: 'Setup CI/CD' })
-const setupCIDesc = useStoryLocale({ zh: '配置 GitHub Actions', en: 'Configure GitHub Actions' })
-const configEnv = useStoryLocale({ zh: '配置环境', en: 'Configure environment' })
-const configEnvDesc = useStoryLocale({ zh: '设置开发、预发布、生产环境', en: 'Setup dev, staging, prod environments' })
-const addMonitoring = useStoryLocale({ zh: '添加监控', en: 'Add monitoring' })
-const addMonitoringDesc = useStoryLocale({ zh: '设置错误追踪和分析', en: 'Setup error tracking and analytics' })
+const projectSetupTitle = useStoryLocale('content.projectSetupTitle', messages)
+const projectSetupDesc = useStoryLocale('content.projectSetupDesc', messages)
+const initRepo = useStoryLocale('content.initRepo', messages)
+const initRepoDesc = useStoryLocale('content.initRepoDesc', messages)
+const setupCI = useStoryLocale('content.setupCI', messages)
+const setupCIDesc = useStoryLocale('content.setupCIDesc', messages)
+const configEnv = useStoryLocale('content.configEnv', messages)
+const configEnvDesc = useStoryLocale('content.configEnvDesc', messages)
+const addMonitoring = useStoryLocale('content.addMonitoring', messages)
+const addMonitoringDesc = useStoryLocale('content.addMonitoringDesc', messages)
 
 // All statuses variant
-const taskOverviewTitle = useStoryLocale({ zh: '任务概览', en: 'Task Overview' })
-const completedTask = useStoryLocale({ zh: '已完成任务', en: 'Completed task' })
-const inProgressTask = useStoryLocale({ zh: '进行中任务', en: 'In progress task' })
-const pendingTask = useStoryLocale({ zh: '待处理任务', en: 'Pending task' })
-const cancelledTask = useStoryLocale({ zh: '已取消任务', en: 'Cancelled task' })
+const taskOverviewTitle = useStoryLocale('content.taskOverviewTitle', messages)
+const completedTask = useStoryLocale('content.completedTask', messages)
+const inProgressTask = useStoryLocale('content.inProgressTask', messages)
+const pendingTask = useStoryLocale('content.pendingTask', messages)
+const cancelledTask = useStoryLocale('content.cancelledTask', messages)
 
 // All complete variant
-const projectCompleteTitle = useStoryLocale({ zh: '项目完成', en: 'Project Complete' })
-const projectCompleteDesc = useStoryLocale({ zh: '所有任务已成功完成', en: 'All tasks finished successfully' })
-const researchTask = useStoryLocale({ zh: '调研', en: 'Research' })
-const designTask = useStoryLocale({ zh: '设计', en: 'Design' })
-const developmentTask = useStoryLocale({ zh: '开发', en: 'Development' })
-const testingTask = useStoryLocale({ zh: '测试', en: 'Testing' })
+const projectCompleteTitle = useStoryLocale('content.projectCompleteTitle', messages)
+const projectCompleteDesc = useStoryLocale('content.projectCompleteDesc', messages)
+const researchTask = useStoryLocale('content.researchTask', messages)
+const designTask = useStoryLocale('content.designTask', messages)
+const developmentTask = useStoryLocale('content.developmentTask', messages)
+const testingTask = useStoryLocale('content.testingTask', messages)
 
 // Interactive variant
-const interactiveHint = useStoryLocale({ zh: '点击任意待办项以循环切换状态', en: 'Click on any todo item to cycle through statuses' })
-const interactivePlanTitle = useStoryLocale({ zh: '交互式计划', en: 'Interactive Plan' })
-const interactivePlanDesc = useStoryLocale({ zh: '点击项目更改状态', en: 'Click items to change status' })
+const interactiveHint = useStoryLocale('content.interactiveHint', messages)
+const interactivePlanTitle = useStoryLocale('content.interactivePlanTitle', messages)
+const interactivePlanDesc = useStoryLocale('content.interactivePlanDesc', messages)
 
 // Progress variant
-const projectMilestonesTitle = useStoryLocale({ zh: '项目里程碑', en: 'Project Milestones' })
-const projectMilestonesDesc = useStoryLocale({ zh: '追踪项目整体完成情况', en: 'Track overall project completion' })
-const requirementsGathering = useStoryLocale({ zh: '需求收集', en: 'Requirements gathering' })
-const architectureDesign = useStoryLocale({ zh: '架构设计', en: 'Architecture design' })
-const implementation = useStoryLocale({ zh: '实现', en: 'Implementation' })
-const codeReview = useStoryLocale({ zh: '代码审查', en: 'Code review' })
-const deploymentTask = useStoryLocale({ zh: '部署', en: 'Deployment' })
+const projectMilestonesTitle = useStoryLocale('content.projectMilestonesTitle', messages)
+const projectMilestonesDesc = useStoryLocale('content.projectMilestonesDesc', messages)
+const requirementsGathering = useStoryLocale('content.requirementsGathering', messages)
+const architectureDesign = useStoryLocale('content.architectureDesign', messages)
+const implementation = useStoryLocale('content.implementation', messages)
+const codeReview = useStoryLocale('content.codeReview', messages)
+const deploymentTask = useStoryLocale('content.deploymentTask', messages)
 
 // Minimal variant
-const simplePlanTitle = useStoryLocale({ zh: '简单计划', en: 'Simple Plan' })
-const taskOne = useStoryLocale({ zh: '任务一', en: 'Task one' })
-const taskTwo = useStoryLocale({ zh: '任务二', en: 'Task two' })
+const simplePlanTitle = useStoryLocale('content.simplePlanTitle', messages)
+const taskOne = useStoryLocale('content.taskOne', messages)
+const taskTwo = useStoryLocale('content.taskTwo', messages)
 </script>
 
 <template>

@@ -2,65 +2,54 @@
 import { reactive, computed, type ComputedRef } from 'vue';
 import { WeatherWidget } from '@lionad/vtu-components';
 import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n'
 
-const locLA = useStoryLocale({ zh: '洛杉矶，加利福尼亚州', en: 'Los Angeles, CA' })
-const locSeattle = useStoryLocale({ zh: '西雅图，华盛顿州', en: 'Seattle, WA' })
-const locLondon = useStoryLocale({ zh: '伦敦，英国', en: 'London, UK' })
-const locDenver = useStoryLocale({ zh: '丹佛，科罗拉多州', en: 'Denver, CO' })
-const locMiami = useStoryLocale({ zh: '迈阿密，佛罗里达州', en: 'Miami, FL' })
-const locTokyo = useStoryLocale({ zh: '东京，日本', en: 'Tokyo, Japan' })
-const locPhoenix = useStoryLocale({ zh: '凤凰城，亚利桑那州', en: 'Phoenix, AZ' })
-const locSF = useStoryLocale({ zh: '旧金山，加利福尼亚州', en: 'San Francisco, CA' })
-const locChicago = useStoryLocale({ zh: '芝加哥，伊利诺伊州', en: 'Chicago, IL' })
-const locBoston = useStoryLocale({ zh: '波士顿，马萨诸塞州', en: 'Boston, MA' })
-const locDemo = useStoryLocale({ zh: '演示城市', en: 'Demo City' })
-const locAccessible = useStoryLocale({ zh: '无障碍城市', en: 'Accessible City' })
-const locRainy = useStoryLocale({ zh: '多雨之城', en: 'Rainy City' })
-const locSnowy = useStoryLocale({ zh: '雪落小镇', en: 'Snowy Town' })
+const locLA = useStoryLocale('content.locLA', messages)
+const locSeattle = useStoryLocale('content.locSeattle', messages)
+const locLondon = useStoryLocale('content.locLondon', messages)
+const locDenver = useStoryLocale('content.locDenver', messages)
+const locMiami = useStoryLocale('content.locMiami', messages)
+const locTokyo = useStoryLocale('content.locTokyo', messages)
+const locPhoenix = useStoryLocale('content.locPhoenix', messages)
+const locSF = useStoryLocale('content.locSF', messages)
+const locChicago = useStoryLocale('content.locChicago', messages)
+const locBoston = useStoryLocale('content.locBoston', messages)
+const locDemo = useStoryLocale('content.locDemo', messages)
+const locAccessible = useStoryLocale('content.locAccessible', messages)
+const locRainy = useStoryLocale('content.locRainy', messages)
+const locSnowy = useStoryLocale('content.locSnowy', messages)
 
-const dayTue = useStoryLocale({ zh: '周二', en: 'Tue' })
-const dayWed = useStoryLocale({ zh: '周三', en: 'Wed' })
-const dayThu = useStoryLocale({ zh: '周四', en: 'Thu' })
-const dayFri = useStoryLocale({ zh: '周五', en: 'Fri' })
-const daySat = useStoryLocale({ zh: '周六', en: 'Sat' })
-const dayNow = useStoryLocale({ zh: '现在', en: 'Now' })
+const dayTue = useStoryLocale('content.dayTue', messages)
+const dayWed = useStoryLocale('content.dayWed', messages)
+const dayThu = useStoryLocale('content.dayThu', messages)
+const dayFri = useStoryLocale('content.dayFri', messages)
+const daySat = useStoryLocale('content.daySat', messages)
+const dayNow = useStoryLocale('content.dayNow', messages)
 
-const lblSunny = useStoryLocale({ zh: '晴天', en: 'Sunny' })
-const lblPartlyCloudy = useStoryLocale({ zh: '局部多云', en: 'Partly Cloudy' })
-const lblCloudy = useStoryLocale({ zh: '多云', en: 'Cloudy' })
-const lblRainy = useStoryLocale({ zh: '雨天', en: 'Rainy' })
-const lblHeavyRain = useStoryLocale({ zh: '大雨', en: 'Heavy Rain' })
-const lblSnowy = useStoryLocale({ zh: '雪天', en: 'Snowy' })
-const lblThunderstorm = useStoryLocale({ zh: '雷暴', en: 'Thunderstorm' })
-const lblClear = useStoryLocale({ zh: '晴朗', en: 'Clear' })
+const lblSunny = useStoryLocale('content.lblSunny', messages)
+const lblPartlyCloudy = useStoryLocale('content.lblPartlyCloudy', messages)
+const lblCloudy = useStoryLocale('content.lblCloudy', messages)
+const lblRainy = useStoryLocale('content.lblRainy', messages)
+const lblHeavyRain = useStoryLocale('content.lblHeavyRain', messages)
+const lblSnowy = useStoryLocale('content.lblSnowy', messages)
+const lblThunderstorm = useStoryLocale('content.lblThunderstorm', messages)
+const lblClear = useStoryLocale('content.lblClear', messages)
 
-const lblToggle = useStoryLocale({ zh: '切换', en: 'Toggle' })
-const lblTime = useStoryLocale({ zh: '时间', en: 'Time' })
-const lblCondition = useStoryLocale({ zh: '天气状况', en: 'Condition' })
-const lblReducedMotion = useStoryLocale({ zh: '启用减少动画', en: 'Enable Reduced Motion' })
-const lblEnableEffects = useStoryLocale({ zh: '启用特效', en: 'Enable Effects' })
-const lblQuality = useStoryLocale({ zh: '质量', en: 'Quality' })
+const lblToggle = useStoryLocale('content.lblToggle', messages)
+const lblTime = useStoryLocale('content.lblTime', messages)
+const lblCondition = useStoryLocale('content.lblCondition', messages)
+const lblReducedMotion = useStoryLocale('content.lblReducedMotion', messages)
+const lblEnableEffects = useStoryLocale('content.lblEnableEffects', messages)
+const lblQuality = useStoryLocale('content.lblQuality', messages)
 
-const textTimeOfDay = useStoryLocale({
-  zh: '演示一天中不同时间的光照模拟。黎明（早上6点）、正午（中午12点）、黄昏（下午6点）和午夜（凌晨12点）根据太阳的位置显示不同的背景渐变和亮度级别。',
-  en: 'Demonstrates time-of-day lighting simulation. Dawn (6 AM), Noon (12 PM), Dusk (6 PM), and Midnight (12 AM) show different background gradients and brightness levels based on the sun\'s position.'
-})
+const textTimeOfDay = useStoryLocale('content.textTimeOfDay', messages)
 
-const textReducedMotion = useStoryLocale({
-  zh: '减少运动：启用后，WebGL 特效将被禁用，鼠标驱动的光晕效果也会被抑制。这通过 prefers-reduced-motion 媒体查询尊重用户的系统减少运动偏好。',
-  en: 'Reduced Motion: When enabled, WebGL effects are disabled and mouse-driven glow effects are suppressed. This respects the user\'s system preference for reduced motion via the prefers-reduced-motion media query.'
-})
+const textReducedMotion = useStoryLocale('content.textReducedMotion', messages)
 
-const textPreferredMotion = useStoryLocale({
-  zh: '组件使用 VueUse 的 usePreferredReducedMotion 组合式函数自动检测系统偏好。',
-  en: 'The component uses VueUse\'s usePreferredReducedMotion composable to detect system preferences automatically.'
-})
+const textPreferredMotion = useStoryLocale('content.textPreferredMotion', messages)
 
-const textQualitySettings = useStoryLocale({
-  zh: '质量设置影响 WebGL 画布使用的 DPR（设备像素比）。低 = 0.5x，中 = 1x，高 = 2x，自动 = 基于设备性能。',
-  en: 'Quality settings affect the DPR (Device Pixel Ratio) used for the WebGL canvas. Low = 0.5x, Medium = 1x, High = 2x, Auto = based on device capabilities.'
-})
+const textQualitySettings = useStoryLocale('content.textQualitySettings', messages)
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,
@@ -148,17 +137,17 @@ function getTimeOfDayValue(hour: number): number {
   return hour / 24;
 }
 
-const sunny = useStoryLocale({ zh: '晴天', en: 'Sunny' })
-const cloudy = useStoryLocale({ zh: '多云', en: 'Cloudy' })
-const rainy = useStoryLocale({ zh: '雨天', en: 'Rainy' })
-const snowy = useStoryLocale({ zh: '雪天', en: 'Snowy' })
-const thunderstorm = useStoryLocale({ zh: '雷暴', en: 'Thunderstorm' })
-const celsius = useStoryLocale({ zh: '摄氏度', en: 'Celsius' })
-const interactiveWeatherSimulator = useStoryLocale({ zh: '交互 - 天气模拟器', en: 'Interactive - Weather Simulator' })
-const allWeatherConditions = useStoryLocale({ zh: '所有天气状况', en: 'All Weather Conditions' })
-const timeOfDayLightingSimulation = useStoryLocale({ zh: '一天中的时间 - 光照模拟', en: 'Time of Day - Lighting Simulation' })
-const accessibilityReducedMotion = useStoryLocale({ zh: '无障碍 - 减少动画', en: 'Accessibility - Reduced Motion' })
-const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Effect Quality Settings' })
+const sunny = useStoryLocale('content.sunny', messages)
+const cloudy = useStoryLocale('content.cloudy', messages)
+const rainy = useStoryLocale('content.rainy', messages)
+const snowy = useStoryLocale('content.snowy', messages)
+const thunderstorm = useStoryLocale('content.thunderstorm', messages)
+const celsius = useStoryLocale('content.celsius', messages)
+const interactiveWeatherSimulator = useStoryLocale('content.interactiveWeatherSimulator', messages)
+const allWeatherConditions = useStoryLocale('content.allWeatherConditions', messages)
+const timeOfDayLightingSimulation = useStoryLocale('content.timeOfDayLightingSimulation', messages)
+const accessibilityReducedMotion = useStoryLocale('content.accessibilityReducedMotion', messages)
+const effectQualitySettings = useStoryLocale('content.effectQualitySettings', messages)
 </script>
 
 <template>
