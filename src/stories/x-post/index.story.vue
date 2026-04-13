@@ -14,81 +14,24 @@ const longText = useStoryLocale('content.longText', messages)
 const unverifiedAuthor = useStoryLocale('content.unverifiedAuthor', messages)
 const interactive = useStoryLocale('content.interactive', messages)
 
-/**
- * # XPost
- *
- * A component for displaying X (formerly Twitter) posts with support for text,
- * media, link previews, quoted posts, and engagement metrics.
- *
- * ## Props
- *
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | post | XPostData | required | The post data object |
- * | post.id | string | required | Unique identifier for the post |
- * | post.author | XPostAuthor | required | Author information |
- * | post.author.name | string | required | Display name of the author |
- * | post.author.handle | string | required | X handle (without @) |
- * | post.author.avatarUrl | string | required | URL to the author's avatar |
- * | post.author.verified | boolean | undefined | Whether the author is verified |
- * | post.text | string | undefined | Post content text |
- * | post.media | XPostMedia | undefined | Media attachment (image or video) |
- * | post.media.type | 'image' \| 'video' | required | Type of media |
- * | post.media.url | string | required | URL to the media file |
- * | post.media.alt | string | required | Alt text for accessibility |
- * | post.media.aspectRatio | '1:1' \| '4:3' \| '16:9' \| '9:16' | undefined | Aspect ratio of media |
- * | post.linkPreview | XPostLinkPreview | undefined | Link preview card |
- * | post.linkPreview.url | string | required | URL to link |
- * | post.linkPreview.title | string | undefined | Title of the link |
- * | post.linkPreview.description | string | undefined | Description text |
- * | post.linkPreview.imageUrl | string | undefined | Preview image URL |
- * | post.linkPreview.domain | string | undefined | Domain name (auto-extracted if not provided) |
- * | post.quotedPost | XPostData | undefined | Nested quoted post |
- * | post.stats | XPostStats | undefined | Engagement statistics |
- * | post.stats.likes | number | undefined | Number of likes |
- * | post.stats.isLiked | boolean | undefined | Whether the current user liked the post |
- * | post.stats.isReposted | boolean | undefined | Whether the current user reposted |
- * | post.stats.isBookmarked | boolean | undefined | Whether the current user bookmarked |
- * | post.createdAt | string | undefined | ISO timestamp of post creation |
- * | css | { root?: string } | undefined | CSS classes for component elements |
- *
- * ## Emits
- *
- * | Event | Payload | Description |
- * |-------|---------|-------------|
- * | action | [action: string, post: XPostData] | Emitted when user interacts with post actions |
- *
- * ## Action Types
- *
- * | Action | Description |
- * |--------|-------------|
- * | like | User clicked the like button |
- * | share | User clicked the share button |
- *
- * ## Slots
- *
- * This component does not use slots. All content is passed through the `post` prop.
- *
- * ## Usage
- *
- * ```vue
- * <XPost
- *   :post="{
- *     id: 'post-1',
- *     author: {
- *       name: 'John Doe',
- *       handle: 'johndoe',
- *       avatarUrl: 'https://example.com/avatar.jpg',
- *       verified: true
- *     },
- *     text: 'Hello world!',
- *     createdAt: '2024-01-01T00:00:00Z',
- *     stats: { likes: 42, isLiked: false }
- *   }"
- *   @action="handleAction"
- * />
- * ```
- */
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const XPostProps = useStoryLocale('content.xPostProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = XPostProps
+
+const props = [
+  { name: 'post', type: 'XPostData', required: true, description: { zh: '帖子数据对象', en: 'The post data object' } },
+  { name: 'css', type: '{ root?: string; header?: string; content?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 
 const interactiveState = reactive({
   isLiked: false,
@@ -101,7 +44,6 @@ function handleAction(action: string) {
     interactiveState.likes += interactiveState.isLiked ? 1 : -1;
   }
 }
-
 </script>
 
 <template>
@@ -349,6 +291,33 @@ function handleAction(action: string) {
           }"
           @action="handleAction"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

@@ -5,18 +5,29 @@ import type { SerializableCitation } from '@lionad/vtu-components/citation/schem
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const CitationProps = useStoryLocale('content.citationProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = CitationProps
+
 const defaultVariant = useStoryLocale('content.defaultVariant', messages)
 const inline = useStoryLocale('content.inline', messages)
 const stacked = useStoryLocale('content.stacked', messages)
 const webpage = useStoryLocale('content.webpage', messages)
-const codeRepository = useStoryLocale('content.codeRepository', messages)
 const document = useStoryLocale('content.document', messages)
 const interactive = useStoryLocale('content.interactive', messages)
 const citationListDefault = useStoryLocale('data.citationListDefault', messages)
-const citationListInline = useStoryLocale('data.citationListInline', messages)
 const citationListStacked = useStoryLocale('data.citationListStacked', messages)
 const citationListWithOverflow = useStoryLocale('data.citationListWithOverflow', messages)
-const citationListInlineWithOverflow = useStoryLocale('data.citationListInlineWithOverflow', messages)
 const researchPaperTitle = useStoryLocale('content.researchPaperTitle', messages)
 const researchPaperSnippet = useStoryLocale('content.researchPaperSnippet', messages)
 const sourceDocTitle = useStoryLocale('content.sourceDocTitle', messages)
@@ -24,8 +35,6 @@ const docRefTitle = useStoryLocale('content.docRefTitle', messages)
 const docRefSnippet = useStoryLocale('content.docRefSnippet', messages)
 const mdnTitle = useStoryLocale('content.mdnTitle', messages)
 const mdnSnippet = useStoryLocale('content.mdnSnippet', messages)
-const toolUiTitle = useStoryLocale('content.toolUiTitle', messages)
-const toolUiSnippet = useStoryLocale('content.toolUiSnippet', messages)
 const whitepaperTitle = useStoryLocale('content.whitepaperTitle', messages)
 const whitepaperSnippet = useStoryLocale('content.whitepaperSnippet', messages)
 
@@ -151,13 +160,19 @@ const sampleCitationsEn: SerializableCitation[] = [
 
 const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleCitationsZh : sampleCitationsEn);
 
-// Individual citation texts for single variants
-
-// Webpage variant
-
-// Code repository variant
-
-// Document variant
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', description: { zh: '引用的唯一标识符', en: 'Unique identifier for the citation' } },
+  { name: 'href', type: 'string', description: { zh: '引用来源的 URL', en: 'URL of the citation source' } },
+  { name: 'title', type: 'string', description: { zh: '引用的标题', en: 'Title of the citation' } },
+  { name: 'snippet', type: 'string', description: { zh: '引用的摘要或片段', en: 'Snippet or excerpt from the citation' } },
+  { name: 'domain', type: 'string', description: { zh: '来源网站域名', en: 'Domain of the source website' } },
+  { name: 'author', type: 'string', description: { zh: '作者名称', en: 'Name of the author' } },
+  { name: 'publishedAt', type: 'string', description: { zh: '发布日期时间（ISO 8601）', en: 'Publication date and time (ISO 8601)' } },
+  { name: 'type', type: 'string', description: { zh: '引用类型（article, webpage, code, document, api, other）', en: 'Citation type (article, webpage, code, document, api, other)' } },
+  { name: 'variant', type: "'default' | 'inline' | 'stacked'", default: 'default', description: { zh: '显示变体', en: 'Display variant' } },
+  { name: 'css', type: '{ root?: string; header?: string; body?: string; footer?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 
 </script>
 
@@ -221,20 +236,6 @@ const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleC
       </div>
     </Variant>
 
-    <Variant :title="codeRepository">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <citation
-          id="citation-code"
-          href="https://github.com/example/lib"
-          :title="toolUiTitle"
-          :snippet="toolUiSnippet"
-          domain="github.com"
-          type="code"
-        />
-      </div>
-    </Variant>
-
     <Variant :title="document">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
@@ -271,17 +272,6 @@ const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleC
       </div>
     </Variant>
 
-    <Variant :title="citationListInline">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <citation-list
-          id="citation-list-inline"
-          :citations="sampleCitations"
-          variant="inline"
-        />
-      </div>
-    </Variant>
-
     <Variant :title="citationListStacked">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
@@ -305,15 +295,30 @@ const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleC
       </div>
     </Variant>
 
-    <Variant :title="citationListInlineWithOverflow">
+    <Variant :title="propsTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-2xl">
-        <citation-list
-          id="citation-list-inline-overflow"
-          :citations="sampleCitations"
-          variant="inline"
-          :max-visible="2"
-        />
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

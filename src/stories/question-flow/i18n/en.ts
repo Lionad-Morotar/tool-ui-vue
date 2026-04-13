@@ -74,6 +74,12 @@ export default {
     webAppLabel: '\'Web Application\' }',
     webLabel: '\'Web\' }',
     whatsNeededTitle: '\'What do you need?\' }',
+    name: 'Name',
+    type: 'Type',
+    default: 'Default',
+    description: 'Description',
+    props: 'Props',
+    questionFlowProps: 'QuestionFlow Props',
   },
   data: {
     receiptFeaturesValue: '\'Auth',

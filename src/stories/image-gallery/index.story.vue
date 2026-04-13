@@ -37,6 +37,30 @@ const reducedMotion = useStoryLocale('content.reducedMotion', messages)
 const featureDemoTitle = useStoryLocale('data.featureDemoTitle', messages)
 const featureDemoDesc = useStoryLocale('variant.featureDemoDesc', messages)
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const ImageGalleryProps = useStoryLocale('content.imageGalleryProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = ImageGalleryProps
+
+const props = [
+  { name: 'id', type: 'string', default: '-', description: { zh: '图片画廊组件的唯一标识符', en: 'Unique identifier for the image gallery component' } },
+  { name: 'role', type: 'string', default: '-', description: { zh: '组件角色（information | decision | control | state | composite）', en: 'Component role' } },
+  { name: 'receipt', type: 'object', default: '-', description: { zh: '操作回执信息', en: 'Operation receipt information' } },
+  { name: 'images', type: 'ImageGalleryItem[]', default: '-', description: { zh: '图片数组', en: 'Array of gallery images' } },
+  { name: 'title', type: 'string', default: '-', description: { zh: '画廊标题', en: 'Gallery title' } },
+  { name: 'description', type: 'string', default: '-', description: { zh: '画廊描述', en: 'Gallery description' } },
+  { name: 'css', type: 'object', default: '-', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
 const galleryState = reactive({
   clickCount: 0,
   lastClickedImage: null as string | null
@@ -47,7 +71,6 @@ function handleImageClick(imageId: string) {
   galleryState.lastClickedImage = imageId;
 }
 
-// Landscape images
 const landscapeImagesZh = [
   { id: '1', src: 'https://picsum.photos/400/300?random=10', alt: '林间小径', width: 400, height: 300, caption: '林间小径' },
   { id: '2', src: 'https://picsum.photos/400/300?random=11', alt: '海浪', width: 400, height: 300, caption: '海浪' },
@@ -62,7 +85,6 @@ const landscapeImagesEn = [
 ];
 const landscapeImages = computed(() => currentLocale.value === 'zh-CN' ? landscapeImagesZh : landscapeImagesEn);
 
-// Waterfall images
 const waterfallImagesZh = [
   { id: '1', src: 'https://picsum.photos/400/300?random=80', alt: '风景', width: 400, height: 300, caption: '风景' },
   { id: '2', src: 'https://picsum.photos/300/500?random=81', alt: '瀑布（竖屏）', width: 300, height: 500, caption: '瀑布（竖屏）' },
@@ -81,7 +103,6 @@ const waterfallImagesEn = [
 ];
 const waterfallImages = computed(() => currentLocale.value === 'zh-CN' ? waterfallImagesZh : waterfallImagesEn);
 
-// Titled images
 const titledImagesZh = [
   { id: '1', src: 'https://picsum.photos/400/300?random=20', alt: '城市风景', width: 400, height: 300, title: '城市风景', caption: '黄昏市中心' },
   { id: '2', src: 'https://picsum.photos/400/300?random=21', alt: '街头生活', width: 400, height: 300, title: '街头生活', caption: '繁忙十字路口' },
@@ -94,7 +115,6 @@ const titledImagesEn = [
 ];
 const titledImages = computed(() => currentLocale.value === 'zh-CN' ? titledImagesZh : titledImagesEn);
 
-// Sourced images
 const sourcedImagesZh = [
   { id: '1', src: 'https://picsum.photos/400/300?random=90', alt: '晨雾', width: 400, height: 300, title: '晨雾', caption: '清晨薄雾', source: { label: 'Unsplash', url: 'https://unsplash.com' } },
   { id: '2', src: 'https://picsum.photos/400/300?random=91', alt: '黄金时刻', width: 400, height: 300, title: '黄金时刻', caption: '日落摄影', source: { label: 'Pexels', url: 'https://pexels.com' } },
@@ -107,7 +127,6 @@ const sourcedImagesEn = [
 ];
 const sourcedImages = computed(() => currentLocale.value === 'zh-CN' ? sourcedImagesZh : sourcedImagesEn);
 
-// Single image
 const singleImageZh = [
   { id: '1', src: 'https://picsum.photos/600/400?random=30', alt: '精选照片', width: 600, height: 400, caption: '精选摄影作品' },
 ];
@@ -116,7 +135,6 @@ const singleImageEn = [
 ];
 const singleImage = computed(() => currentLocale.value === 'zh-CN' ? singleImageZh : singleImageEn);
 
-// Interactive images
 const interactiveImagesZh = [
   { id: '1', src: 'https://picsum.photos/600/400?random=50', alt: '山景', width: 600, height: 400, title: '山景', caption: '美丽山景' },
   { id: '2', src: 'https://picsum.photos/600/400?random=51', alt: '海洋日落', width: 600, height: 400, title: '海洋日落', caption: '海滩黄金时刻' },
@@ -131,7 +149,6 @@ const interactiveImagesEn = [
 ];
 const interactiveImages = computed(() => currentLocale.value === 'zh-CN' ? interactiveImagesZh : interactiveImagesEn);
 
-// Two images
 const twoImagesZh = [
   { id: '1', src: 'https://picsum.photos/400/300?random=60', alt: '之前', width: 400, height: 300, title: '之前' },
   { id: '2', src: 'https://picsum.photos/400/300?random=61', alt: '之后', width: 400, height: 300, title: '之后' },
@@ -141,8 +158,6 @@ const twoImagesEn = [
   { id: '2', src: 'https://picsum.photos/400/300?random=61', alt: 'After', width: 400, height: 300, title: 'After' },
 ];
 const twoImages = computed(() => currentLocale.value === 'zh-CN' ? twoImagesZh : twoImagesEn);
-
-// Nine images (dynamic, with template literal for alt)
 
 const nineImagesZh = computed(() => Array.from({ length: 9 }, (_, i) => ({
   id: String(i + 1),
@@ -159,8 +174,6 @@ const nineImagesEn = computed(() => Array.from({ length: 9 }, (_, i) => ({
   height: 300,
 })));
 const nineImages = computed(() => currentLocale.value === 'zh-CN' ? nineImagesZh.value : nineImagesEn.value);
-
-// Gallery texts
 
 </script>
 
@@ -279,6 +292,33 @@ const nineImages = computed(() => currentLocale.value === 'zh-CN' ? nineImagesZh
           :description="featureDemoDesc"
           :images="interactiveImages"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

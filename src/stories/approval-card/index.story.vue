@@ -30,7 +30,7 @@ const props = [
   { name: 'cancelLabel', type: 'string', description: { zh: '取消按钮标签', en: 'Label for the cancel button' } },
   { name: 'choice', type: "'approved' | 'denied'", description: { zh: '回执状态选择', en: 'Receipt state selection' } },
   { name: 'css', type: '{ root?: string; header?: string; content?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
-];
+]
 
 const defaultVariant = useStoryLocale('content.defaultVariant', messages)
 const destructive = useStoryLocale('content.destructive', messages)
@@ -240,7 +240,7 @@ function resetChoice() {
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ prop.default || (prop.required ? 'required' : '-') }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

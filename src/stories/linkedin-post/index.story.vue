@@ -14,86 +14,24 @@ const withoutHeadline = useStoryLocale('content.withoutHeadline', messages)
 const linkPreviewWithoutImage = useStoryLocale('content.linkPreviewWithoutImage', messages)
 const interactive = useStoryLocale('content.interactive', messages)
 
-/**
- * # LinkedInPost
- *
- * A component for displaying LinkedIn posts with support for text, media,
- * link previews, text truncation with "see more", and professional engagement actions.
- *
- * ## Props
- *
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | post | LinkedInPostData | required | The post data object |
- * | post.id | string | required | Unique identifier for the post |
- * | post.author | LinkedInPostAuthor | required | Author information |
- * | post.author.name | string | required | Display name of the author |
- * | post.author.handle | string | undefined | LinkedIn handle |
- * | post.author.avatarUrl | string | required | URL to the author's avatar |
- * | post.author.headline | string | undefined | Professional headline (e.g., "Engineer at Company") |
- * | post.text | string | undefined | Post content text |
- * | post.media | LinkedInPostMedia | undefined | Media attachment (image or video) |
- * | post.media.type | 'image' \| 'video' | required | Type of media |
- * | post.media.url | string | required | URL to the media file |
- * | post.media.alt | string | required | Alt text for accessibility |
- * | post.linkPreview | LinkedInPostLinkPreview | undefined | Link preview card |
- * | post.linkPreview.url | string | required | URL to link |
- * | post.linkPreview.title | string | undefined | Title of the link |
- * | post.linkPreview.description | string | undefined | Description text |
- * | post.linkPreview.imageUrl | string | undefined | Preview image URL |
- * | post.linkPreview.domain | string | undefined | Domain name (auto-extracted if not provided) |
- * | post.stats | LinkedInPostStats | undefined | Engagement statistics |
- * | post.stats.likes | number | undefined | Number of likes |
- * | post.stats.isLiked | boolean | undefined | Whether the current user liked the post |
- * | post.createdAt | string | undefined | ISO timestamp of post creation |
- * | css | { root?: string } | undefined | CSS classes for component elements |
- *
- * ## Emits
- *
- * | Event | Payload | Description |
- * |-------|---------|-------------|
- * | action | [action: string, post: LinkedInPostData] | Emitted when user interacts with post actions |
- *
- * ## Action Types
- *
- * | Action | Description |
- * |--------|-------------|
- * | like | User clicked the like button |
- * | share | User clicked the share button |
- *
- * ## Text Truncation
- *
- * Posts with text longer than 280 characters are automatically truncated with a
- * "see more" button to expand the full content.
- *
- * ## Security
- *
- * Link previews automatically sanitize URLs to prevent XSS attacks. Only safe
- * http:// and https:// URLs are allowed. JavaScript and data URLs are filtered out.
- *
- * ## Slots
- *
- * This component does not use slots. All content is passed through the `post` prop.
- *
- * ## Usage
- *
- * ```vue
- * <LinkedInPost
- *   :post="{
- *     id: 'li-1',
- *     author: {
- *       name: 'Jane Doe',
- *       avatarUrl: 'https://example.com/avatar.jpg',
- *       headline: 'Software Engineer at TechCorp'
- *     },
- *     text: 'Excited to share our latest product update!',
- *     createdAt: '2024-01-01T00:00:00Z',
- *     stats: { likes: 156, isLiked: false }
- *   }"
- *   @action="handleAction"
- * />
- * ```
- */
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const LinkedInPostProps = useStoryLocale('content.linkedInPostProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = LinkedInPostProps
+
+const props = [
+  { name: 'post', type: 'LinkedInPostData', required: true, description: { zh: '帖子数据对象', en: 'The post data object' } },
+  { name: 'css', type: '{ root?: string; header?: string; content?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 
 const interactiveState = reactive({
   isLiked: false,
@@ -334,6 +272,33 @@ function handleAction(action: string) {
           }"
           @action="handleAction"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

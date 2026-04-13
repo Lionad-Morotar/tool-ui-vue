@@ -25,7 +25,7 @@ const props = [
   { name: 'todos', type: 'PlanTodo[]', required: true, description: { zh: '待办事项数组', en: 'Array of todo items' } },
   { name: 'maxVisibleTodos', type: 'number', default: '4', description: { zh: '折叠前最多显示的待办数量', en: 'Maximum todos to show before "show more"' } },
   { name: 'css', type: '{ root?: string; header?: string; todo?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
-];
+]
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basicTodoList = useStoryLocale('data.basicTodoList', messages)
 const withDescriptions = useStoryLocale('content.withDescriptions', messages)
@@ -306,7 +306,7 @@ function cycleStatus(index: number) {
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ prop.default || (prop.required ? 'required' : '-') }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

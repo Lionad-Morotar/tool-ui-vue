@@ -37,5 +37,11 @@ export default {
     subtitle: '\'Multi-slider component with units',
     videoExportSettings: '\'Video Export Settings\' }',
     withDisabledSlider: '\'With Disabled Slider\' }',
+    name: 'Name',
+    type: 'Type',
+    default: 'Default',
+    description: 'Description',
+    props: 'Props',
+    parameterSliderProps: 'ParameterSlider Props',
   },
 }

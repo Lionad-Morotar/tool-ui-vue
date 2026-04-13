@@ -37,5 +37,11 @@ export default {
     subtitle: '多滑块调节组件，支持单位、精度、禁用状态和自定义样式',
     videoExportSettings: '视频导出设置',
     withDisabledSlider: '含禁用滑块',
+    name: '名称',
+    type: '类型',
+    default: '默认值',
+    description: '说明',
+    props: '属性',
+    parameterSliderProps: 'ParameterSlider 属性',
   },
 }

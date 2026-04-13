@@ -31,6 +31,41 @@ const formRatio = useStoryLocale('content.formRatio', messages)
 const formAutoPlay = useStoryLocale('content.formAutoPlay', messages)
 const navLogHeading = useStoryLocale('content.navLogHeading', messages)
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const VideoProps = useStoryLocale('content.videoProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = VideoProps
+
+const props = [
+  { name: 'id', type: 'string', default: '-', description: { zh: '视频组件的唯一标识符', en: 'Unique identifier for the video component' } },
+  { name: 'role', type: 'string', default: '-', description: { zh: '组件角色（information | decision | control | state | composite）', en: 'Component role' } },
+  { name: 'receipt', type: 'object', default: '-', description: { zh: '操作回执信息', en: 'Operation receipt information' } },
+  { name: 'assetId', type: 'string', default: '-', description: { zh: '视频资源 ID', en: 'Video asset ID' } },
+  { name: 'src', type: 'string', default: '-', description: { zh: '视频文件 URL', en: 'Video file URL' } },
+  { name: 'poster', type: 'string', default: '-', description: { zh: '封面图片 URL', en: 'Poster image URL' } },
+  { name: 'title', type: 'string', default: '-', description: { zh: '视频标题', en: 'Video title' } },
+  { name: 'description', type: 'string', default: '-', description: { zh: '视频描述', en: 'Video description' } },
+  { name: 'href', type: 'string', default: '-', description: { zh: '外部链接 URL', en: 'External link URL' } },
+  { name: 'domain', type: 'string', default: '-', description: { zh: '显示的来源域名', en: 'Displayed source domain' } },
+  { name: 'durationMs', type: 'number', default: '-', description: { zh: '视频时长（毫秒）', en: 'Video duration in milliseconds' } },
+  { name: 'ratio', type: "'auto' | '1:1' | '4:3' | '16:9' | '9:16'", default: 'auto', description: { zh: '宽高比', en: 'Aspect ratio' } },
+  { name: 'fit', type: "'cover' | 'contain'", default: 'cover', description: { zh: '视频填充模式', en: 'Video fit mode' } },
+  { name: 'createdAt', type: 'string', default: '-', description: { zh: '创建时间（ISO 日期时间）', en: 'Creation time (ISO datetime)' } },
+  { name: 'locale', type: 'string', default: '-', description: { zh: '区域设置', en: 'Locale' } },
+  { name: 'source', type: 'Source', default: '-', description: { zh: '视频来源信息', en: 'Video source information' } },
+  { name: 'css', type: 'object', default: '-', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+  { name: 'autoPlay', type: 'boolean', default: 'false', description: { zh: '是否自动播放', en: 'Whether to autoplay' } },
+]
+
 const interactiveStateZh = {
   src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
   assetId: 'demo-video-interactive',
@@ -81,8 +116,6 @@ function clearEvents() {
 function clearNavigateLog() {
   navigateLog.value = [];
 }
-
-// Video texts
 
 </script>
 
@@ -277,6 +310,33 @@ function clearNavigateLog() {
               {{ log }}
             </div>
           </div>
+        </div>
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </Variant>

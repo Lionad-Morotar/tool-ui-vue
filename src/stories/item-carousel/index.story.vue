@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue';
 import { ItemCarousel, ItemCard } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.key', messages);
 const productCards = useStoryLocale('data.key', messages)
 const withoutImages = useStoryLocale('variant.key', messages)
 const minimal = useStoryLocale('variant.key', messages)
 const interactiveClickItems = useStoryLocale('data.key', messages)
-const withActions = useStoryLocale('variant.key', messages)
 const withMultipleActionVariants = useStoryLocale('variant.key', messages)
 const keyboardNavigationDemo = useStoryLocale('variant.key', messages)
-const touchSwipeDemo = useStoryLocale('variant.key', messages)
 const programmaticControl = useStoryLocale('variant.key', messages)
 const emptyState = useStoryLocale('content.key', messages)
 const itemCardStandalone = useStoryLocale('data.itemCard', messages)
@@ -22,14 +20,7 @@ const categoriesTitle = useStoryLocale('variant.key', messages)
 const clickableProductsTitle = useStoryLocale('data.key', messages)
 const clickableProductsDesc = useStoryLocale('content.key', messages)
 const selectedText = useStoryLocale('content.key', messages)
-const productsWithActionsTitle = useStoryLocale('data.key', messages)
-const actionLogText = useStoryLocale('content.key', messages)
 const actionVariantsTitle = useStoryLocale('variant.key', messages)
-const basicPlan = useStoryLocale('variant.key', messages)
-const proPlan = useStoryLocale('variant.key', messages)
-const enterprise = useStoryLocale('variant.key', messages)
-const selectAction = useStoryLocale('variant.key', messages)
-const contactAction = useStoryLocale('variant.key', messages)
 const primaryAction = useStoryLocale('variant.key', messages)
 const secondaryAction = useStoryLocale('variant.key', messages)
 const outlineAction = useStoryLocale('variant.key', messages)
@@ -54,12 +45,6 @@ const keyboardHeading = useStoryLocale('content.key', messages)
 const navigateItems = useStoryLocale('data.key', messages)
 const jumpFirst = useStoryLocale('variant.key', messages)
 const jumpLast = useStoryLocale('variant.key', messages)
-const touchSwipeTitle = useStoryLocale('variant.key', messages)
-const touchSwipeDesc = useStoryLocale('content.key', messages)
-const touchHeading = useStoryLocale('content.key', messages)
-const swipeNavigate = useStoryLocale('variant.key', messages)
-const fastSwipes = useStoryLocale('variant.key', messages)
-const verticalScrolling = useStoryLocale('variant.key', messages)
 const programmaticTitle = useStoryLocale('variant.key', messages)
 const programmaticDesc = useStoryLocale('content.key', messages)
 const currentSlideLabel = useStoryLocale('content.key', messages)
@@ -77,6 +62,28 @@ const withActionsCardName = useStoryLocale('variant.key', messages)
 const withActionsCardSubtitle = useStoryLocale('content.key', messages)
 const viewAction = useStoryLocale('variant.key', messages)
 const buyAction = useStoryLocale('variant.key', messages)
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const ItemCarouselProps = useStoryLocale('content.itemCarouselProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = ItemCarouselProps
+
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'title', type: 'string', description: { zh: '轮播的标题', en: 'Title of the carousel' } },
+  { name: 'description', type: 'string', description: { zh: '轮播的描述', en: 'Description of the carousel' } },
+  { name: 'items', type: 'Item[]', required: true, description: { zh: '要展示的轮播项数组', en: 'Array of items to display in the carousel' } },
+  { name: 'css', type: '{ root?: string; title?: string; card?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
 const optionAName = useStoryLocale('data.A', messages)
 const optionBName = useStoryLocale('data.B', messages)
 const optionCName = useStoryLocale('data.C', messages)
@@ -212,28 +219,6 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="withActions">
-      <div class="w-full max-w-2xl space-y-4">
-        <div v-if="carouselState.actionLog.length > 0" class="rounded-md bg-muted p-3">
-          <p class="mb-1 text-xs font-medium text-muted-foreground">{{ actionLogText }}</p>
-          <ul class="space-y-1 text-sm">
-            <li v-for="(log, i) in carouselState.actionLog.slice(-5)" :key="i" class="text-foreground">
-              {{ log }}
-            </li>
-          </ul>
-        </div>
-        <item-carousel
-          id="carousel-actions"
-          :title="productsWithActionsTitle"
-          :items="[
-            { id: '1', name: basicPlan, subtitle: '$9/月', color: '#6366f1', actions: [{ id: 'select', label: selectAction }] },
-            { id: '2', name: proPlan, subtitle: '$29/月', color: '#ec4899', actions: [{ id: 'select', label: selectAction }] },
-            { id: '3', name: enterprise, subtitle: '$99/月', color: '#14b8a6', actions: [{ id: 'contact', label: contactAction }] },
-          ]"
-          @item-action="handleItemAction"
-        />
-      </div>
-    </Variant>
 
     <Variant :title="withMultipleActionVariants">
       <div class="w-full max-w-2xl">
@@ -267,27 +252,6 @@ function scroll(direction: 'left' | 'right') {
           :title="keyboardNavTitle"
           :description="keyboardNavDesc"
           :items="productItems.slice(0, 5)"
-          interactive
-          @item-click="handleItemClick"
-        />
-      </div>
-    </Variant>
-
-    <Variant :title="touchSwipeDemo">
-      <div class="w-full max-w-2xl space-y-4">
-        <div class="rounded-md bg-green-50 p-3 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
-          <p class="font-medium">{{ touchHeading }}</p>
-          <ul class="mt-1 list-inside list-disc">
-            <li>{{ swipeNavigate }}</li>
-            <li>{{ fastSwipes }}</li>
-            <li>{{ verticalScrolling }}</li>
-          </ul>
-        </div>
-        <item-carousel
-          id="carousel-touch"
-          :title="touchSwipeTitle"
-          :description="touchSwipeDesc"
-          :items="productItems"
           interactive
           @item-click="handleItemClick"
         />
@@ -375,6 +339,32 @@ function scroll(direction: 'left' | 'right') {
             :interactive="false"
             @item-action="handleItemAction"
           />
+        </div>
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </Variant>

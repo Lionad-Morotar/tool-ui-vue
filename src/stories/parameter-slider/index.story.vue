@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ParameterSlider } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const lblCurrentValues = useStoryLocale('content.lblCurrentValues', messages)
@@ -41,6 +41,29 @@ const videoExportSettings = useStoryLocale('content.videoExportSettings', messag
 const singleSlider = useStoryLocale('content.singleSlider', messages)
 const withDisabledSlider = useStoryLocale('content.withDisabledSlider', messages)
 const customStyling = useStoryLocale('content.customStyling', messages)
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const ParameterSliderProps = useStoryLocale('content.parameterSliderProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = ParameterSliderProps
+
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'sliders', type: 'SliderConfig[]', required: true, description: { zh: '滑块配置数组', en: 'Array of slider configurations' } },
+  { name: 'values', type: 'SliderValue[]', description: { zh: '滑块的受控值', en: 'Controlled values for sliders' } },
+  { name: 'actions', type: 'Action[] | SerializableActionsConfig', description: { zh: '操作按钮配置', en: 'Action buttons config' } },
+  { name: 'css', type: '{ root?: string; slider?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
+
 
 const imageAdjustments = reactive({
   exposure: 0.3,
@@ -311,6 +334,32 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
             { id: 'random', label: lblRandom, variant: 'default' },
           ]"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

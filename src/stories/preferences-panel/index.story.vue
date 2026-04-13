@@ -26,7 +26,7 @@ const props = [
   { name: 'value', type: 'PreferencesValue', description: { zh: '受控值（用于 v-model）', en: 'Controlled values (for v-model)' } },
   { name: 'actions', type: 'Action[] | ActionsConfig', description: { zh: '操作按钮配置', en: 'Action buttons configuration' } },
   { name: 'css', type: '{ root?: string; section?: string; item?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
-];
+]
 
 const notificationSettings = useStoryLocale('content.notificationSettings', messages)
 const appearanceSettings = useStoryLocale('content.appearanceSettings', messages)
@@ -528,7 +528,7 @@ const prefs = ref({
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default || ((prop as any).required ? 'required' : '-') }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

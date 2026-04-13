@@ -28,6 +28,38 @@ const compactWithoutArtwork = useStoryLocale('content.compactWithoutArtwork', me
 const withEventLogging = useStoryLocale('content.withEventLogging', messages)
 const interactive = useStoryLocale('content.interactive', messages)
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const AudioProps = useStoryLocale('content.audioProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = AudioProps
+
+const props = [
+  { name: 'id', type: 'string', default: '-', description: { zh: '音频组件的唯一标识符', en: 'Unique identifier for the audio component' } },
+  { name: 'role', type: 'string', default: '-', description: { zh: '组件角色（information | decision | control | state | composite）', en: 'Component role' } },
+  { name: 'receipt', type: 'object', default: '-', description: { zh: '操作回执信息', en: 'Operation receipt information' } },
+  { name: 'assetId', type: 'string', default: '-', description: { zh: '音频资源 ID', en: 'Audio asset ID' } },
+  { name: 'src', type: 'string', default: '-', description: { zh: '音频文件 URL', en: 'Audio file URL' } },
+  { name: 'title', type: 'string', default: '-', description: { zh: '音频标题', en: 'Audio title' } },
+  { name: 'description', type: 'string', default: '-', description: { zh: '音频描述', en: 'Audio description' } },
+  { name: 'artwork', type: 'string', default: '-', description: { zh: '封面图片 URL', en: 'Artwork image URL' } },
+  { name: 'durationMs', type: 'number', default: '-', description: { zh: '音频时长（毫秒）', en: 'Audio duration in milliseconds' } },
+  { name: 'fileSizeBytes', type: 'number', default: '-', description: { zh: '文件大小（字节）', en: 'File size in bytes' } },
+  { name: 'createdAt', type: 'string', default: '-', description: { zh: '创建时间（ISO 日期时间）', en: 'Creation time (ISO datetime)' } },
+  { name: 'locale', type: 'string', default: '-', description: { zh: '区域设置', en: 'Locale' } },
+  { name: 'source', type: 'Source', default: '-', description: { zh: '音频来源信息', en: 'Audio source information' } },
+  { name: 'css', type: 'object', default: '-', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+  { name: 'variant', type: "'full' | 'compact'", default: 'full', description: { zh: '播放器变体', en: 'Player variant' } },
+]
+
 const interactiveStateZh = {
   title: '自定义音频轨道',
   description: '调整下方属性查看不同状态',
@@ -58,7 +90,6 @@ const eventLog = ref<string[]>([]);
 function handleMediaEvent(type: string) {
   const timestamp = new Date().toLocaleTimeString();
   eventLog.value.unshift(`[${timestamp}] ${type}`);
-  // Keep only last 10 events
   if (eventLog.value.length > 10) {
     eventLog.value.pop();
   }
@@ -205,6 +236,33 @@ function clearEvents() {
               </select>
             </label>
           </div>
+        </div>
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </Variant>

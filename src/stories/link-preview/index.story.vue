@@ -29,6 +29,33 @@ const photoGalleryDesc = useStoryLocale('content.photoGalleryDesc', messages)
 const portraitTitle = useStoryLocale('content.portraitTitle', messages)
 const portraitDesc = useStoryLocale('content.portraitDesc', messages)
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const LinkPreviewProps = useStoryLocale('content.linkPreviewProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = LinkPreviewProps
+
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'href', type: 'string', required: true, description: { zh: '点击时跳转的 URL', en: 'URL to navigate to when clicked' } },
+  { name: 'title', type: 'string', description: { zh: '显示的标题文本', en: 'Title text to display' } },
+  { name: 'description', type: 'string', description: { zh: '显示的描述文本', en: 'Description text to display' } },
+  { name: 'image', type: 'string', description: { zh: '预览图片的 URL', en: 'URL of the preview image' } },
+  { name: 'domain', type: 'string', description: { zh: '显示的域名（未提供时自动从 href 提取）', en: 'Domain to display (auto-extracted from href if not provided)' } },
+  { name: 'favicon', type: 'string', description: { zh: '网站图标的 URL', en: 'URL of the favicon to display' } },
+  { name: 'ratio', type: "'auto' | '1:1' | '4:3' | '16:9' | '9:16'", default: 'auto', description: { zh: '预览图片的宽高比', en: 'Aspect ratio of the preview image' } },
+  { name: 'fit', type: "'cover' | 'contain'", default: 'cover', description: { zh: '图片的 object-fit 样式', en: 'Object-fit style for the image' } },
+  { name: 'css', type: '{ root?: string; image?: string; content?: string; footer?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
 const interactiveStateZh = {
   href: 'https://example.com/interactive',
   title: '交互式链接预览',
@@ -50,43 +77,6 @@ const interactiveStateEn = {
 const interactiveState = reactive({ ...interactiveStateZh });
 
 watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value === 'zh-CN' ? interactiveStateZh : interactiveStateEn); });
-
-/**
- * ## Props
- *
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | id | string | required | Unique identifier for the component |
- * | href | string | required | URL to navigate to when clicked |
- * | title | string | undefined | Title text to display |
- * | description | string | undefined | Description text to display |
- * | image | string | undefined | URL of the preview image |
- * | domain | string | undefined | Domain to display (auto-extracted from href if not provided) |
- * | favicon | string | undefined | URL of the favicon to display |
- * | ratio | 'auto' \| '1:1' \| '4:3' \| '16:9' \| '9:16' | 'auto' | Aspect ratio of the preview image |
- * | fit | 'cover' \| 'contain' | 'cover' | Object-fit style for the image |
- * | css | { root?: string } | undefined | CSS classes for component elements |
- *
- * ## Emits
- *
- * | Event | Payload | Description |
- * |-------|---------|-------------|
- * | navigate | href: string | Emitted when the link preview is clicked |
- *
- * ## Slots
- *
- * This component does not use slots. All content is passed via props.
- *
- * ## Accessibility
- *
- * - Has `role="link"` when href is provided
- * - Has `tabindex="0"` for keyboard navigation
- * - Supports Enter and Space keys for activation
- * - Images have `loading="lazy"` and `decoding="async"`
- * - Favicon has `aria-hidden="true"`
- */
-
-// Link preview texts
 
 </script>
 
@@ -210,6 +200,33 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
           id="link-preview-interactive"
           v-bind="interactiveState"
         />
+      </div>
+    </Variant>
+
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

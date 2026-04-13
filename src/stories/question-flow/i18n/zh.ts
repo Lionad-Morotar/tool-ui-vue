@@ -74,6 +74,12 @@ export default {
     webAppLabel: 'Web 应用',
     webLabel: '网页',
     whatsNeededTitle: '你需要的功能',
+    name: '名称',
+    type: '类型',
+    default: '默认值',
+    description: '说明',
+    props: '属性',
+    questionFlowProps: 'QuestionFlow 属性',
   },
   data: {
     receiptFeaturesValue: '\'认证',

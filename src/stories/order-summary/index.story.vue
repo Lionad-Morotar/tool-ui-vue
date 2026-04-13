@@ -27,7 +27,7 @@ const props = [
   { name: 'pricing', type: 'Pricing', required: true, description: { zh: '价格明细对象', en: 'Pricing breakdown object' } },
   { name: 'choice', type: 'OrderDecision', description: { zh: '回执状态数据', en: 'Receipt state data' } },
   { name: 'css', type: '{ root?: string; header?: string; items?: string; pricing?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
-];
+]
 
 const summary = useStoryLocale('content.summary', messages)
 const withDiscount = useStoryLocale('content.withDiscount', messages)
@@ -372,7 +372,7 @@ const eurCoffeeName = useStoryLocale('content.eurCoffeeName', messages)
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default || ((prop as any).required ? 'required' : '-') }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

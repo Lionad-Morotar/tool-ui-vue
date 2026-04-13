@@ -32,7 +32,7 @@ const props = [
   { name: 'target', type: 'SlackTarget', description: { zh: 'Slack 目标频道或私聊（slack 渠道必填）', en: 'Slack target channel or DM (required for slack channel)' } },
   { name: 'undoGracePeriod', type: 'number', default: '5000', description: { zh: '发送最终确认前的宽限时间（毫秒）', en: 'Grace period before send is final (ms)' } },
   { name: 'css', type: '{ root?: string; header?: string; body?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
-];
+]
 
 const lblReset = useStoryLocale('content.lblReset', messages)
 const textCancelledRenders = useStoryLocale('content.textCancelledRenders', messages)
@@ -303,7 +303,7 @@ function resetSlack() {
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ prop.default || (prop.required ? 'required' : '-') }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>
