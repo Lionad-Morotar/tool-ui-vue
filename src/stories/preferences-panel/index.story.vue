@@ -4,6 +4,30 @@ import { PreferencesPanel } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const PreferencesPanelProps = useStoryLocale('content.preferencesPanelProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = PreferencesPanelProps
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'title', type: 'string', description: { zh: '面板顶部标题', en: 'Title displayed at the top of the panel' } },
+  { name: 'sections', type: 'PreferenceSection[]', required: true, description: { zh: '偏好设置分区数组', en: 'Array of preference sections' } },
+  { name: 'value', type: 'PreferencesValue', description: { zh: '受控值（用于 v-model）', en: 'Controlled values (for v-model)' } },
+  { name: 'actions', type: 'Action[] | ActionsConfig', description: { zh: '操作按钮配置', en: 'Action buttons configuration' } },
+  { name: 'css', type: '{ root?: string; section?: string; item?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
 const notificationSettings = useStoryLocale('content.notificationSettings', messages)
 const appearanceSettings = useStoryLocale('content.appearanceSettings', messages)
 const withCustomActions = useStoryLocale('content.withCustomActions', messages)
@@ -484,6 +508,32 @@ const prefs = ref({
             },
           ]"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default || ((prop as any).required ? 'required' : '-') }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

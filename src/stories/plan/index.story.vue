@@ -3,6 +3,29 @@ import { reactive, watch } from 'vue';
 import { Plan } from '@lionad/vtu-components';
 import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const PlanProps = useStoryLocale('content.planProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = PlanProps
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'title', type: 'string', required: true, description: { zh: '计划标题', en: 'Plan title' } },
+  { name: 'description', type: 'string', description: { zh: '可选计划描述', en: 'Optional plan description' } },
+  { name: 'todos', type: 'PlanTodo[]', required: true, description: { zh: '待办事项数组', en: 'Array of todo items' } },
+  { name: 'maxVisibleTodos', type: 'number', default: '4', description: { zh: '折叠前最多显示的待办数量', en: 'Maximum todos to show before "show more"' } },
+  { name: 'css', type: '{ root?: string; header?: string; todo?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basicTodoList = useStoryLocale('data.basicTodoList', messages)
 const withDescriptions = useStoryLocale('content.withDescriptions', messages)
@@ -263,6 +286,32 @@ function cycleStatus(index: number) {
             { id: '2', label: taskTwo, status: 'pending' },
           ]"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || (prop.required ? 'required' : '-') }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

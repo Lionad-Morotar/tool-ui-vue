@@ -4,6 +4,31 @@ import { OrderSummary } from '@lionad/vtu-components';
 import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
 
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const OrderSummaryProps = useStoryLocale('content.orderSummaryProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = OrderSummaryProps
+
+// Props documentation
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'title', type: 'string', description: { zh: '面板标题', en: 'Title displayed at the top' } },
+  { name: 'variant', type: "'summary' | 'receipt'", description: { zh: '显示变体（提供 choice 时自动为 receipt）', en: 'Display variant (auto-resolves to receipt when choice is provided)' } },
+  { name: 'items', type: 'OrderItem[]', required: true, description: { zh: '订单项目数组', en: 'Array of order line items' } },
+  { name: 'pricing', type: 'Pricing', required: true, description: { zh: '价格明细对象', en: 'Pricing breakdown object' } },
+  { name: 'choice', type: 'OrderDecision', description: { zh: '回执状态数据', en: 'Receipt state data' } },
+  { name: 'css', type: '{ root?: string; header?: string; items?: string; pricing?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
+
 const summary = useStoryLocale('content.summary', messages)
 const withDiscount = useStoryLocale('content.withDiscount', messages)
 const receipt = useStoryLocale('content.receipt', messages)
@@ -327,6 +352,32 @@ const eurCoffeeName = useStoryLocale('content.eurCoffeeName', messages)
           :items="[]"
           :pricing="{ subtotal: 0, total: 0 }"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ (prop as any).default || ((prop as any).required ? 'required' : '-') }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>
