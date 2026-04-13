@@ -141,7 +141,21 @@ Plans:
   3. Story 内不再直接内联 `useStoryLocale({ zh: '...', en: '...' })` 调用数十次，而改为导入翻译对象
   4. Histoire 站点能正确识别迁移后的 story 路径，语言切换正常工作
 **UI hint**: no
-**Plans**: TBD
+**Plans**: 12 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Foundation: useStoryLocale key-based API + histoire.config.ts + link-preview reference migration
+- [ ] 07-02-PLAN.md — item-carousel migration
+- [ ] 07-03-PLAN.md — geo-map migration
+- [ ] 07-04-PLAN.md — question-flow migration
+- [ ] 07-05-PLAN.md — preferences-panel migration
+- [ ] 07-06-PLAN.md — chart migration
+- [ ] 07-07-PLAN.md — weather-widget + plan migration
+- [ ] 07-08-PLAN.md — data-table + stats-display + progress-tracker migration
+- [ ] 07-09-PLAN.md — parameter-slider + code-diff + approval-card migration
+- [ ] 07-10-PLAN.md — terminal + image-gallery + video migration
+- [ ] 07-11-PLAN.md — order-summary + citation + audio + message-draft + code-block + image migration
+- [ ] 07-12-PLAN.md — option-list + social posts + landing + final verification
 
 ## Progress
 
