@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { PreferencesPanel } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 const prefs = ref({
   email: true,
@@ -82,89 +83,89 @@ const prefs = ref({
  * confirmed preferences with "Saved" status. Use `error` prop to show error states.
  */
 
-const notificationSettings = useStoryLocale({ zh: '通知设置', en: 'Notification Settings' })
-const appearanceSettings = useStoryLocale({ zh: '外观设置', en: 'Appearance Settings' })
-const withCustomActions = useStoryLocale({ zh: '自定义操作', en: 'With Custom Actions' })
-const allControlTypes = useStoryLocale({ zh: '所有控件类型', en: 'All Control Types' })
-const receiptModeSuccess = useStoryLocale({ zh: '回执模式 - 成功', en: 'Receipt Mode - Success' })
-const receiptModeWithErrors = useStoryLocale({ zh: '回执模式 - 含错误', en: 'Receipt Mode - With Errors' })
-const withoutTitle = useStoryLocale({ zh: '无标题', en: 'Without Title' })
-const withoutSectionHeadings = useStoryLocale({ zh: '无分区标题', en: 'Without Section Headings' })
+const notificationSettings = useStoryLocale('content.notificationSettings', messages)
+const appearanceSettings = useStoryLocale('content.appearanceSettings', messages)
+const withCustomActions = useStoryLocale('content.withCustomActions', messages)
+const allControlTypes = useStoryLocale('variant.allControlTypes', messages)
+const receiptModeSuccess = useStoryLocale('variant.receiptModeSuccess', messages)
+const receiptModeWithErrors = useStoryLocale('variant.receiptModeWithErrors', messages)
+const withoutTitle = useStoryLocale('content.withoutTitle', messages)
+const withoutSectionHeadings = useStoryLocale('content.withoutSectionHeadings', messages)
 
 // Notification settings variant
-const emailNotificationsHeading = useStoryLocale({ zh: '邮件通知', en: 'Email Notifications' })
-const enableEmailLabel = useStoryLocale({ zh: '启用邮件通知', en: 'Enable Email Notifications' })
-const enableEmailDesc = useStoryLocale({ zh: '通过邮件接收更新', en: 'Receive updates via email' })
-const emailFreqLabel = useStoryLocale({ zh: '邮件频率', en: 'Email Frequency' })
-const immediateOpt = useStoryLocale({ zh: '即时', en: 'Immediate' })
-const dailyOpt = useStoryLocale({ zh: '每日摘要', en: 'Daily Digest' })
-const weeklyOpt = useStoryLocale({ zh: '每周汇总', en: 'Weekly Summary' })
+const emailNotificationsHeading = useStoryLocale('content.emailNotificationsHeading', messages)
+const enableEmailLabel = useStoryLocale('content.enableEmailLabel', messages)
+const enableEmailDesc = useStoryLocale('content.enableEmailDesc', messages)
+const emailFreqLabel = useStoryLocale('content.emailFreqLabel', messages)
+const immediateOpt = useStoryLocale('content.immediateOpt', messages)
+const dailyOpt = useStoryLocale('content.dailyOpt', messages)
+const weeklyOpt = useStoryLocale('content.weeklyOpt', messages)
 
 // Appearance variant
-const appearanceTitle = useStoryLocale({ zh: '外观', en: 'Appearance' })
-const themeHeading = useStoryLocale({ zh: '主题', en: 'Theme' })
-const colorThemeLabel = useStoryLocale({ zh: '颜色主题', en: 'Color Theme' })
-const lightOpt = useStoryLocale({ zh: '浅色', en: 'Light' })
-const darkOpt = useStoryLocale({ zh: '深色', en: 'Dark' })
-const systemOpt = useStoryLocale({ zh: '跟随系统', en: 'System' })
-const displayHeading = useStoryLocale({ zh: '显示', en: 'Display' })
-const compactModeLabel = useStoryLocale({ zh: '紧凑模式', en: 'Compact Mode' })
-const compactModeDesc = useStoryLocale({ zh: '以更紧凑的间距显示更多内容', en: 'Show more content with less spacing' })
-const enableAnimationsLabel = useStoryLocale({ zh: '启用动画', en: 'Enable Animations' })
-const enableAnimationsDesc = useStoryLocale({ zh: '显示过渡动画', en: 'Show transition animations' })
+const appearanceTitle = useStoryLocale('content.appearanceTitle', messages)
+const themeHeading = useStoryLocale('content.themeHeading', messages)
+const colorThemeLabel = useStoryLocale('content.colorThemeLabel', messages)
+const lightOpt = useStoryLocale('content.lightOpt', messages)
+const darkOpt = useStoryLocale('content.darkOpt', messages)
+const systemOpt = useStoryLocale('content.systemOpt', messages)
+const displayHeading = useStoryLocale('content.displayHeading', messages)
+const compactModeLabel = useStoryLocale('variant.compactModeLabel', messages)
+const compactModeDesc = useStoryLocale('variant.compactModeDesc', messages)
+const enableAnimationsLabel = useStoryLocale('content.enableAnimationsLabel', messages)
+const enableAnimationsDesc = useStoryLocale('content.enableAnimationsDesc', messages)
 
 // Custom actions variant
-const privacySettingsTitle = useStoryLocale({ zh: '隐私设置', en: 'Privacy Settings' })
-const allowAnalyticsLabel = useStoryLocale({ zh: '允许分析', en: 'Allow Analytics' })
-const allowAnalyticsDesc = useStoryLocale({ zh: '通过分享使用数据帮助我们改进', en: 'Help us improve by sharing usage data' })
-const marketingEmailsLabel = useStoryLocale({ zh: '营销邮件', en: 'Marketing Emails' })
-const marketingEmailsDesc = useStoryLocale({ zh: '接收产品更新和优惠', en: 'Receive product updates and offers' })
-const resetDefaults = useStoryLocale({ zh: '恢复默认', en: 'Reset to Defaults' })
-const saveChanges = useStoryLocale({ zh: '保存更改', en: 'Save Changes' })
+const privacySettingsTitle = useStoryLocale('content.privacySettingsTitle', messages)
+const allowAnalyticsLabel = useStoryLocale('content.allowAnalyticsLabel', messages)
+const allowAnalyticsDesc = useStoryLocale('content.allowAnalyticsDesc', messages)
+const marketingEmailsLabel = useStoryLocale('content.marketingEmailsLabel', messages)
+const marketingEmailsDesc = useStoryLocale('content.marketingEmailsDesc', messages)
+const resetDefaults = useStoryLocale('content.resetDefaults', messages)
+const saveChanges = useStoryLocale('content.saveChanges', messages)
 
 // All control types variant
-const allTypesTitle = useStoryLocale({ zh: '所有偏好类型', en: 'All Preference Types' })
-const switchesHeading = useStoryLocale({ zh: '开关', en: 'Switches' })
-const featureOneLabel = useStoryLocale({ zh: '功能一', en: 'Feature One' })
-const featureOneDesc = useStoryLocale({ zh: '简单的开/关偏好', en: 'A simple on/off preference' })
-const featureTwoLabel = useStoryLocale({ zh: '功能二', en: 'Feature Two' })
-const togglesHeading = useStoryLocale({ zh: '切换', en: 'Toggles' })
-const itemSizeLabel = useStoryLocale({ zh: '项目大小', en: 'Item Size' })
-const smallOpt = useStoryLocale({ zh: '小', en: 'Small' })
-const mediumOpt = useStoryLocale({ zh: '中', en: 'Medium' })
-const largeOpt = useStoryLocale({ zh: '大', en: 'Large' })
-const selectHeading = useStoryLocale({ zh: '选择下拉', en: 'Select Dropdowns' })
-const timezoneLabel = useStoryLocale({ zh: '时区', en: 'Timezone' })
-const utcOpt = useStoryLocale({ zh: '协调世界时', en: 'UTC' })
-const estOpt = useStoryLocale({ zh: '东部时间', en: 'Eastern Time' })
-const cstOpt = useStoryLocale({ zh: '中部时间', en: 'Central Time' })
-const mstOpt = useStoryLocale({ zh: '山地时间', en: 'Mountain Time' })
-const pstOpt = useStoryLocale({ zh: '太平洋时间', en: 'Pacific Time' })
-const gmtOpt = useStoryLocale({ zh: '格林威治标准时间', en: 'GMT' })
+const allTypesTitle = useStoryLocale('variant.allTypesTitle', messages)
+const switchesHeading = useStoryLocale('content.switchesHeading', messages)
+const featureOneLabel = useStoryLocale('content.featureOneLabel', messages)
+const featureOneDesc = useStoryLocale('content.featureOneDesc', messages)
+const featureTwoLabel = useStoryLocale('content.featureTwoLabel', messages)
+const togglesHeading = useStoryLocale('content.togglesHeading', messages)
+const itemSizeLabel = useStoryLocale('content.itemSizeLabel', messages)
+const smallOpt = useStoryLocale('content.smallOpt', messages)
+const mediumOpt = useStoryLocale('content.mediumOpt', messages)
+const largeOpt = useStoryLocale('content.largeOpt', messages)
+const selectHeading = useStoryLocale('content.selectHeading', messages)
+const timezoneLabel = useStoryLocale('content.timezoneLabel', messages)
+const utcOpt = useStoryLocale('content.utcOpt', messages)
+const estOpt = useStoryLocale('content.estOpt', messages)
+const cstOpt = useStoryLocale('content.cstOpt', messages)
+const mstOpt = useStoryLocale('content.mstOpt', messages)
+const pstOpt = useStoryLocale('content.pstOpt', messages)
+const gmtOpt = useStoryLocale('content.gmtOpt', messages)
 
 // Receipt mode variant
-const settingsSavedTitle = useStoryLocale({ zh: '设置已保存', en: 'Settings Saved' })
-const notificationsHeading2 = useStoryLocale({ zh: '通知', en: 'Notifications' })
-const emailNotifLabel = useStoryLocale({ zh: '邮件通知', en: 'Email Notifications' })
-const pushNotifLabel = useStoryLocale({ zh: '推送通知', en: 'Push Notifications' })
-const themeLabel2 = useStoryLocale({ zh: '主题', en: 'Theme' })
+const settingsSavedTitle = useStoryLocale('content.settingsSavedTitle', messages)
+const notificationsHeading2 = useStoryLocale('content.notificationsHeading2', messages)
+const emailNotifLabel = useStoryLocale('content.emailNotifLabel', messages)
+const pushNotifLabel = useStoryLocale('content.pushNotifLabel', messages)
+const themeLabel2 = useStoryLocale('content.themeLabel2', messages)
 
 // Error variant
-const settingsTitle2 = useStoryLocale({ zh: '设置', en: 'Settings' })
-const usernameLabel = useStoryLocale({ zh: '用户名', en: 'Username' })
-const emailLabel2 = useStoryLocale({ zh: '邮件', en: 'Email' })
-const usernameTakenError = useStoryLocale({ zh: '用户名已被占用', en: 'Username is already taken' })
+const settingsTitle2 = useStoryLocale('content.settingsTitle2', messages)
+const usernameLabel = useStoryLocale('content.usernameLabel', messages)
+const emailLabel2 = useStoryLocale('content.emailLabel2', messages)
+const usernameTakenError = useStoryLocale('content.usernameTakenError', messages)
 
 // Without title variant
-const optionOneLabel = useStoryLocale({ zh: '选项一', en: 'Option One' })
-const optionTwoLabel = useStoryLocale({ zh: '选项二', en: 'Option Two' })
+const optionOneLabel = useStoryLocale('content.optionOneLabel', messages)
+const optionTwoLabel = useStoryLocale('content.optionTwoLabel', messages)
 
 // Without section headings variant
-const quickSettingsTitle = useStoryLocale({ zh: '快速设置', en: 'Quick Settings' })
-const soundFxLabel = useStoryLocale({ zh: '音效', en: 'Sound Effects' })
-const soundFxDesc = useStoryLocale({ zh: '播放通知声音', en: 'Play sounds for notifications' })
-const autoSaveLabel = useStoryLocale({ zh: '自动保存', en: 'Auto-save' })
-const autoSaveDesc = useStoryLocale({ zh: '自动保存你的工作', en: 'Automatically save your work' })
+const quickSettingsTitle = useStoryLocale('content.quickSettingsTitle', messages)
+const soundFxLabel = useStoryLocale('content.soundFxLabel', messages)
+const soundFxDesc = useStoryLocale('content.soundFxDesc', messages)
+const autoSaveLabel = useStoryLocale('content.autoSaveLabel', messages)
+const autoSaveDesc = useStoryLocale('content.autoSaveDesc', messages)
 </script>
 
 <template>
