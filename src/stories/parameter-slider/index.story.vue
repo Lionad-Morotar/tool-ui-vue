@@ -1,41 +1,42 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { ParameterSlider } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '多滑块调节组件，支持单位、精度、禁用状态和自定义样式', en: 'Multi-slider component with units, precision, disabled states, and custom styling.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
-const lblCurrentValues = useStoryLocale({ zh: '当前值', en: 'Current Values' })
-const lblColorSettings = useStoryLocale({ zh: '颜色设置', en: 'Color Settings' })
-const lblEQSettings = useStoryLocale({ zh: '均衡器设置', en: 'EQ Settings' })
-const lblExportSettings = useStoryLocale({ zh: '导出设置', en: 'Export Settings' })
+const lblCurrentValues = useStoryLocale('content.lblCurrentValues', messages)
+const lblColorSettings = useStoryLocale('content.lblColorSettings', messages)
+const lblEQSettings = useStoryLocale('content.lblEQSettings', messages)
+const lblExportSettings = useStoryLocale('content.lblExportSettings', messages)
 
-const lblReset = useStoryLocale({ zh: '重置', en: 'Reset' })
-const lblApply = useStoryLocale({ zh: '应用', en: 'Apply' })
-const lblFlat = useStoryLocale({ zh: '平坦', en: 'Flat' })
-const lblDefaults = useStoryLocale({ zh: '默认值', en: 'Defaults' })
-const lblExport = useStoryLocale({ zh: '导出', en: 'Export' })
-const lblRandom = useStoryLocale({ zh: '随机', en: 'Random' })
+const lblReset = useStoryLocale('content.lblReset', messages)
+const lblApply = useStoryLocale('content.lblApply', messages)
+const lblFlat = useStoryLocale('content.lblFlat', messages)
+const lblDefaults = useStoryLocale('content.lblDefaults', messages)
+const lblExport = useStoryLocale('content.lblExport', messages)
+const lblRandom = useStoryLocale('content.lblRandom', messages)
 
-const lblExposure = useStoryLocale({ zh: '曝光', en: 'Exposure' })
-const lblContrast = useStoryLocale({ zh: '对比度', en: 'Contrast' })
-const lblHighlights = useStoryLocale({ zh: '高光', en: 'Highlights' })
-const lblShadows = useStoryLocale({ zh: '阴影', en: 'Shadows' })
-const lblTemperature = useStoryLocale({ zh: '色温', en: 'Temperature' })
-const lblTint = useStoryLocale({ zh: '色调', en: 'Tint' })
-const lblSaturation = useStoryLocale({ zh: '饱和度', en: 'Saturation' })
-const lblBass = useStoryLocale({ zh: '低音', en: 'Bass' })
-const lblMid = useStoryLocale({ zh: '中音', en: 'Mid' })
-const lblTreble = useStoryLocale({ zh: '高音', en: 'Treble' })
-const lblBitrate = useStoryLocale({ zh: '比特率', en: 'Bitrate' })
-const lblKeyframeInterval = useStoryLocale({ zh: '关键帧间隔', en: 'Keyframe Interval' })
-const lblCRFQuality = useStoryLocale({ zh: 'CRF 质量', en: 'CRF Quality' })
-const lblBgBlur = useStoryLocale({ zh: '背景模糊', en: 'Background Blur' })
-const lblVolume = useStoryLocale({ zh: '音量', en: 'Volume' })
-const lblMuteLevel = useStoryLocale({ zh: '静音级别', en: 'Mute Level' })
-const lblRed = useStoryLocale({ zh: '红色', en: 'Red' })
-const lblGreen = useStoryLocale({ zh: '绿色', en: 'Green' })
-const lblBlue = useStoryLocale({ zh: '蓝色', en: 'Blue' })
+const lblExposure = useStoryLocale('content.lblExposure', messages)
+const lblContrast = useStoryLocale('content.lblContrast', messages)
+const lblHighlights = useStoryLocale('content.lblHighlights', messages)
+const lblShadows = useStoryLocale('content.lblShadows', messages)
+const lblTemperature = useStoryLocale('content.lblTemperature', messages)
+const lblTint = useStoryLocale('content.lblTint', messages)
+const lblSaturation = useStoryLocale('content.lblSaturation', messages)
+const lblBass = useStoryLocale('content.lblBass', messages)
+const lblMid = useStoryLocale('content.lblMid', messages)
+const lblTreble = useStoryLocale('content.lblTreble', messages)
+const lblBitrate = useStoryLocale('content.lblBitrate', messages)
+const lblKeyframeInterval = useStoryLocale('content.lblKeyframeInterval', messages)
+const lblCRFQuality = useStoryLocale('content.lblCRFQuality', messages)
+const lblBgBlur = useStoryLocale('content.lblBgBlur', messages)
+const lblVolume = useStoryLocale('content.lblVolume', messages)
+const lblMuteLevel = useStoryLocale('content.lblMuteLevel', messages)
+const lblRed = useStoryLocale('content.lblRed', messages)
+const lblGreen = useStoryLocale('content.lblGreen', messages)
+const lblBlue = useStoryLocale('content.lblBlue', messages)
 
 const imageAdjustments = reactive({
   exposure: 0.3,
@@ -157,13 +158,13 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
  * - Cross-zero sliders show signed values (+/-)
  * - Text labels avoid collision with handle
  */
-const photoAdjustmentsGallery = useStoryLocale({ zh: '照片调整（画廊）', en: 'Photo Adjustments (Gallery)' })
-const colorGradingTitle = useStoryLocale({ zh: '调色', en: 'Color Grading' })
-const audioEqualizerDB = useStoryLocale({ zh: '音频均衡器（dB）', en: 'Audio Equalizer (dB)' })
-const videoExportSettings = useStoryLocale({ zh: '视频导出设置', en: 'Video Export Settings' })
-const singleSlider = useStoryLocale({ zh: '单个滑块', en: 'Single Slider' })
-const withDisabledSlider = useStoryLocale({ zh: '含禁用滑块', en: 'With Disabled Slider' })
-const customStyling = useStoryLocale({ zh: '自定义样式', en: 'Custom Styling' })
+const photoAdjustmentsGallery = useStoryLocale('content.photoAdjustmentsGallery', messages)
+const colorGradingTitle = useStoryLocale('content.colorGradingTitle', messages)
+const audioEqualizerDB = useStoryLocale('content.audioEqualizerDB', messages)
+const videoExportSettings = useStoryLocale('content.videoExportSettings', messages)
+const singleSlider = useStoryLocale('content.singleSlider', messages)
+const withDisabledSlider = useStoryLocale('content.withDisabledSlider', messages)
+const customStyling = useStoryLocale('content.customStyling', messages)
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeDiff } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 const oldFunction = `export async function fetchUser(id: string) {
   const res = await db.users.findUnique({ where: { id } });
@@ -85,25 +86,60 @@ const props = [
   { name: 'css', type: '{ root?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
-const headerName = useStoryLocale({ zh: '属性名', en: 'Name' })
-const headerType = useStoryLocale({ zh: '类型', en: 'Type' })
-const headerDefault = useStoryLocale({ zh: '默认值', en: 'Default' })
-const headerDesc = useStoryLocale({ zh: '描述', en: 'Description' })
-const propsTitle = useStoryLocale({ zh: '属性', en: 'Props' })
-const usageModes = useStoryLocale({ zh: '使用模式', en: 'Usage Modes' })
-const wordLevelDiff = useStoryLocale({ zh: '单词级差异', en: 'Word-Level Diff' })
-const splitDiff = useStoryLocale({ zh: '分栏视图', en: 'Split Diff' })
-const splitDiffNoLineNumbers = useStoryLocale({ zh: '分栏视图（无行号）', en: 'Split Diff (No Line Numbers)' })
-const interactiveToggleDiffStyle = useStoryLocale({ zh: '交互 - 切换分栏样式', en: 'Interactive - Toggle Diff Style' })
-const unifiedDiff = useStoryLocale({ zh: '统一视图', en: 'Unified Diff' })
-const patchMode = useStoryLocale({ zh: '补丁模式', en: 'Patch Mode' })
-const withoutLineNumbers = useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })
-const noFilename = useStoryLocale({ zh: '无文件名', en: 'No Filename' })
-const additionsOnly = useStoryLocale({ zh: '仅新增', en: 'Additions Only' })
-const deletionsOnly = useStoryLocale({ zh: '仅删除', en: 'Deletions Only' })
-const modifications = useStoryLocale({ zh: '修改', en: 'Modifications' })
-const darkThemeUnified = useStoryLocale({ zh: '暗色主题 - 统一', en: 'Dark Theme - Unified' })
-const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark Theme - Split' })
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const usageModes = UsageModes
+const wordLevelDiff = WordLevelDiff
+const splitDiff = SplitDiff
+const splitDiffNoLineNumbers = SplitDiffNo
+const interactiveToggleDiffStyle = InteractiveToggleDiff
+const unifiedDiff = UnifiedDiff
+const patchMode = PatchMode
+const withoutLineNumbers = WithoutLineNumbers
+const noFilename = NoFilename
+const additionsOnly = AdditionsOnly
+const deletionsOnly = DeletionsOnly
+const modifications = Modifications
+const darkThemeUnified = DarkThemeUnified
+const darkThemeSplit = DarkThemeSplit
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const UsageModes = useStoryLocale('content.usageModes', messages)
+const WordLevelDiff = useStoryLocale('content.wordLevelDiff', messages)
+const SplitDiff = useStoryLocale('content.splitDiff', messages)
+const SplitDiffNo = useStoryLocale('content.splitDiffNo', messages)
+const InteractiveToggleDiff = useStoryLocale('content.interactiveToggleDiff', messages)
+const UnifiedDiff = useStoryLocale('content.unifiedDiff', messages)
+const PatchMode = useStoryLocale('content.patchMode', messages)
+const WithoutLineNumbers = useStoryLocale('content.withoutLineNumbers', messages)
+const NoFilename = useStoryLocale('content.noFilename', messages)
+const AdditionsOnly = useStoryLocale('content.additionsOnly', messages)
+const DeletionsOnly = useStoryLocale('content.deletionsOnly', messages)
+const Modifications = useStoryLocale('content.modifications', messages)
+const DarkThemeUnified = useStoryLocale('content.darkThemeUnified', messages)
+const DarkThemeSplit = useStoryLocale('content.darkThemeSplit', messages)
+const CodeDiffProps = useStoryLocale('content.codeDiffProps', messages)
+const UsageModes1 = useStoryLocale('content.usageModes1', messages)
+const FileDiffMode = useStoryLocale('content.fileDiffMode', messages)
+const PatchMode1 = useStoryLocale('content.patchMode1', messages)
+const Note = useStoryLocale('content.note', messages)
+const CodeDiffFeatures = useStoryLocale('content.codeDiffFeatures', messages)
+const UnifiedView = useStoryLocale('content.unifiedView', messages)
+const ShowsChangesInline = useStoryLocale('content.showsChangesInline', messages)
+const SplitView = useStoryLocale('content.splitView', messages)
+const SideBySide = useStoryLocale('content.sideBySide', messages)
+const WordLevelDiff1 = useStoryLocale('content.wordLevelDiff1', messages)
+const HighlightsSpecificWords = useStoryLocale('content.highlightsSpecificWords', messages)
+const Statistics = useStoryLocale('content.statistics', messages)
+const ShowsNumberOf = useStoryLocale('content.showsNumberOf', messages)
+const DiffStyle = useStoryLocale('content.diffStyle', messages)
+const ShowLineNumbers = useStoryLocale('content.showLineNumbers', messages)
 </script>
 
 <template>
@@ -111,7 +147,7 @@ const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark T
     <Variant :title="propsTitle">
       <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ useStoryLocale({ zh: 'CodeDiff 属性', en: 'CodeDiff Props' }) }}</h2>
+        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffProps }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -133,11 +169,11 @@ const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark T
           </table>
         </div>
         <div class="bg-muted mt-6 p-4 rounded-lg">
-          <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '使用模式', en: 'Usage Modes' }) }}</h3>
+          <h3 class="mb-2 font-semibold">{{ UsageModes1 }}</h3>
           <ul class="space-y-1 text-sm list-disc list-inside">
-            <li><strong>{{ useStoryLocale({ zh: '文件差异模式:', en: 'File Diff Mode:' }) }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
-            <li><strong>{{ useStoryLocale({ zh: '补丁模式:', en: 'Patch Mode:' }) }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
-            <li><strong>{{ useStoryLocale({ zh: '注意:', en: 'Note:' }) }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
+            <li><strong>{{ FileDiffMode }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
+            <li><strong>{{ PatchMode1 }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
+            <li><strong>{{ Note }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
           </ul>
         </div>
       </div>
@@ -146,23 +182,23 @@ const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark T
     <Variant :title="usageModes">
       <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ useStoryLocale({ zh: 'CodeDiff 功能', en: 'CodeDiff Features' }) }}</h2>
+        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffFeatures }}</h2>
         <div class="gap-4 grid grid-cols-2">
           <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '统一视图', en: 'Unified View' }) }}</h3>
-            <p class="text-muted-foreground text-sm">{{ useStoryLocale({ zh: '在单行内使用 +/- 标记显示变更', en: 'Shows changes inline with +/- indicators' }) }}</p>
+            <h3 class="mb-2 font-semibold">{{ UnifiedView }}</h3>
+            <p class="text-muted-foreground text-sm">{{ ShowsChangesInline }}</p>
           </div>
           <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '分栏视图', en: 'Split View' }) }}</h3>
-            <p class="text-muted-foreground text-sm">{{ useStoryLocale({ zh: '新旧代码并排比较', en: 'Side-by-side comparison of old and new' }) }}</p>
+            <h3 class="mb-2 font-semibold">{{ SplitView }}</h3>
+            <p class="text-muted-foreground text-sm">{{ SideBySide }}</p>
           </div>
           <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '单词级差异', en: 'Word-Level Diff' }) }}</h3>
-            <p class="text-muted-foreground text-sm">{{ useStoryLocale({ zh: '高亮行内已更改的特定单词', en: 'Highlights specific words that changed within lines' }) }}</p>
+            <h3 class="mb-2 font-semibold">{{ WordLevelDiff1 }}</h3>
+            <p class="text-muted-foreground text-sm">{{ HighlightsSpecificWords }}</p>
           </div>
           <div class="p-4 border border-border rounded-lg">
-            <h3 class="mb-2 font-semibold">{{ useStoryLocale({ zh: '统计信息', en: 'Statistics' }) }}</h3>
-            <p class="text-muted-foreground text-sm">{{ useStoryLocale({ zh: '显示新增和删除的行数', en: 'Shows number of additions and deletions' }) }}</p>
+            <h3 class="mb-2 font-semibold">{{ Statistics }}</h3>
+            <p class="text-muted-foreground text-sm">{{ ShowsNumberOf }}</p>
           </div>
         </div>
       </div>
@@ -225,7 +261,7 @@ const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark T
               <option value="unified">Unified</option>
               <option value="split">Split</option>
             </select>
-            {{ useStoryLocale({ zh: '差异样式', en: 'Diff Style' }) }}
+            {{ DiffStyle }}
           </label>
           <label class="flex items-center gap-2 text-sm">
             <input
@@ -233,7 +269,7 @@ const darkThemeSplit = useStoryLocale({ zh: '暗色主题 - 分栏', en: 'Dark T
               type="checkbox"
               class="border border-border rounded"
             />
-            {{ useStoryLocale({ zh: '显示行号', en: 'Show Line Numbers' }) }}
+            {{ ShowLineNumbers }}
           </label>
         </div>
         <code-diff
