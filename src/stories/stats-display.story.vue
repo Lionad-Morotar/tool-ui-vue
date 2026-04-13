@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { StatsDisplay } from '@lionad/vtu-components';
 import { useStoryLocale } from './_shared/use-story-locale'
+const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
+const withTrends = useStoryLocale({ zh: '含趋势', en: 'With Trends' })
+const withSparklines = useStoryLocale({ zh: '含迷你图', en: 'With Sparklines' })
+const singleStat = useStoryLocale({ zh: '单个统计', en: 'Single Stat' })
+const currencyFormats = useStoryLocale({ zh: '货币格式', en: 'Currency Formats' })
+const numberFormats = useStoryLocale({ zh: '数字格式', en: 'Number Formats' })
+const percentFormats = useStoryLocale({ zh: '百分比格式', en: 'Percent Formats' })
+const trendIndicators = useStoryLocale({ zh: '趋势指示器', en: 'Trend Indicators' })
 </script>
 
 <template>
   <Story title="StatsDisplay/All Variants">
-    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
+    <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -20,7 +28,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含趋势', en: 'With Trends' })">
+    <Variant :title="withTrends">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -37,7 +45,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含迷你图', en: 'With Sparklines' })">
+    <Variant :title="withSparklines">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -94,7 +102,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '单个统计', en: 'Single Stat' })">
+    <Variant :title="singleStat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <stats-display
@@ -116,7 +124,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '货币格式', en: 'Currency Formats' })">
+    <Variant :title="currencyFormats">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -132,7 +140,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '数字格式', en: 'Number Formats' })">
+    <Variant :title="numberFormats">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -148,7 +156,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '百分比格式', en: 'Percent Formats' })">
+    <Variant :title="percentFormats">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display
@@ -164,7 +172,7 @@ import { useStoryLocale } from './_shared/use-story-locale'
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '趋势指示器', en: 'Trend Indicators' })">
+    <Variant :title="trendIndicators">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <stats-display

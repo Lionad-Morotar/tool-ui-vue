@@ -67,11 +67,20 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
   width: 300,
   height: 300,
 }));
+const gridLayout = useStoryLocale({ zh: '网格布局', en: 'Grid Layout' })
+const waterfallLayoutMasonry = useStoryLocale({ zh: '瀑布流布局（Masonry）', en: 'Waterfall Layout (Masonry)' })
+const withTitles = useStoryLocale({ zh: '含标题', en: 'With Titles' })
+const withSourceAttribution = useStoryLocale({ zh: '含来源标注', en: 'With Source Attribution' })
+const singleImageTitle = useStoryLocale({ zh: '单图', en: 'Single Image' })
+const interactiveLightboxDemo = useStoryLocale({ zh: '交互 - 灯箱演示', en: 'Interactive - Lightbox Demo' })
+const differentImageCounts2Images = useStoryLocale({ zh: '不同图片数量 - 2 张', en: 'Different Image Counts - 2 Images' })
+const differentImageCounts9Images = useStoryLocale({ zh: '不同图片数量 - 9 张', en: 'Different Image Counts - 9 Images' })
+const lightboxFeatures = useStoryLocale({ zh: '灯箱功能', en: 'Lightbox Features' })
 </script>
 
 <template>
   <Story title="ImageGallery/All Variants">
-    <Variant :title="useStoryLocale({ zh: '网格布局', en: 'Grid Layout' })">
+    <Variant :title="gridLayout">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <image-gallery
@@ -83,7 +92,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '瀑布流布局（Masonry）', en: 'Waterfall Layout (Masonry)' })">
+    <Variant :title="waterfallLayoutMasonry">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Portrait images (height > width) automatically span 2 rows
@@ -97,7 +106,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含标题', en: 'With Titles' })">
+    <Variant :title="withTitles">
       <div class="w-full max-w-2xl">
         <image-gallery
           id="image-gallery-titles"
@@ -106,7 +115,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含来源标注', en: 'With Source Attribution' })">
+    <Variant :title="withSourceAttribution">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Images can include source information with optional links
@@ -120,7 +129,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '单图', en: 'Single Image' })">
+    <Variant :title="singleImageTitle">
       <div class="w-full max-w-md">
         <image-gallery
           id="image-gallery-single"
@@ -129,7 +138,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 灯箱演示', en: 'Interactive - Lightbox Demo' })">
+    <Variant :title="interactiveLightboxDemo">
       <div class="w-full max-w-2xl">
         <p class="mb-4 text-sm text-muted-foreground">
           Click count: {{ galleryState.clickCount }}
@@ -147,7 +156,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '不同图片数量 - 2 张', en: 'Different Image Counts - 2 Images' })">
+    <Variant :title="differentImageCounts2Images">
       <div class="w-full max-w-md">
         <image-gallery
           id="image-gallery-2"
@@ -156,7 +165,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '不同图片数量 - 9 张', en: 'Different Image Counts - 9 Images' })">
+    <Variant :title="differentImageCounts9Images">
       <div class="w-full max-w-2xl">
         <image-gallery
           id="image-gallery-9"
@@ -166,7 +175,7 @@ const nineImages = Array.from({ length: 9 }, (_, i) => ({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '灯箱功能', en: 'Lightbox Features' })">
+    <Variant :title="lightboxFeatures">
       <div class="w-full max-w-2xl space-y-4">
         <div class="space-y-2 text-sm text-muted-foreground">
           <p>The lightbox supports:</p>

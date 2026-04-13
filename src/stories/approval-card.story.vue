@@ -68,11 +68,19 @@ function handleCancel() {
 function resetChoice() {
   interactiveState.choice = undefined;
 }
+const defaultVariant = useStoryLocale({ zh: '默认', en: 'Default' })
+const destructive = useStoryLocale({ zh: '破坏性操作', en: 'Destructive' })
+const withMetadata = useStoryLocale({ zh: '含元数据', en: 'With Metadata' })
+const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
+const receiptStateApproved = useStoryLocale({ zh: '回执状态（已批准）', en: 'Receipt State (Approved)' })
+const receiptStateDenied = useStoryLocale({ zh: '回执状态（已拒绝）', en: 'Receipt State (Denied)' })
+const customLabels = useStoryLocale({ zh: '自定义标签', en: 'Custom Labels' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="ApprovalCard/Basic">
-    <Variant :title="useStoryLocale({ zh: '默认', en: 'Default' })">
+    <Variant :title="defaultVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-basic"
@@ -84,7 +92,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '破坏性操作', en: 'Destructive' })">
+    <Variant :title="destructive">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-destructive"
@@ -97,7 +105,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含元数据', en: 'With Metadata' })">
+    <Variant :title="withMetadata">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-metadata"
@@ -114,7 +122,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
+    <Variant :title="minimal">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-minimal"
@@ -122,7 +130,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执状态（已批准）', en: 'Receipt State (Approved)' })">
+    <Variant :title="receiptStateApproved">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-approved"
@@ -132,7 +140,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执状态（已拒绝）', en: 'Receipt State (Denied)' })">
+    <Variant :title="receiptStateDenied">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-denied"
@@ -142,7 +150,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义标签', en: 'Custom Labels' })">
+    <Variant :title="customLabels">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-custom"
@@ -154,7 +162,7 @@ function resetChoice() {
       />
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <approval-card
           id="approval-card-interactive"

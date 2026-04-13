@@ -76,11 +76,23 @@ const stackedCitations: SerializableCitation[] = [
   { id: 'stack-4', href: 'https://github.com/angular/angular', title: 'Angular', domain: 'github.com', type: 'code' },
   { id: 'stack-5', href: 'https://github.com/solidjs/solid', title: 'Solid', domain: 'github.com', type: 'code' },
 ];
+const defaultVariant = useStoryLocale({ zh: '默认', en: 'Default' })
+const inline = useStoryLocale({ zh: '行内', en: 'Inline' })
+const stacked = useStoryLocale({ zh: '堆叠', en: 'Stacked' })
+const webpage = useStoryLocale({ zh: '网页', en: 'Webpage' })
+const codeRepository = useStoryLocale({ zh: '代码仓库', en: 'Code Repository' })
+const document = useStoryLocale({ zh: '文档', en: 'Document' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const citationListDefault = useStoryLocale({ zh: '引用列表 - 默认', en: 'CitationList - Default' })
+const citationListInline = useStoryLocale({ zh: '引用列表 - 行内', en: 'CitationList - Inline' })
+const citationListStacked = useStoryLocale({ zh: '引用列表 - 堆叠', en: 'CitationList - Stacked' })
+const citationListWithOverflow = useStoryLocale({ zh: '引用列表 - 溢出', en: 'CitationList - With Overflow' })
+const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行内溢出', en: 'CitationList - Inline with Overflow' })
 </script>
 
 <template>
   <Story title="Citation/All Variants">
-    <Variant :title="useStoryLocale({ zh: '默认', en: 'Default' })">
+    <Variant :title="defaultVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -96,7 +108,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '行内', en: 'Inline' })">
+    <Variant :title="inline">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -109,7 +121,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '堆叠', en: 'Stacked' })">
+    <Variant :title="stacked">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -124,7 +136,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '网页', en: 'Webpage' })">
+    <Variant :title="webpage">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -138,7 +150,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '代码仓库', en: 'Code Repository' })">
+    <Variant :title="codeRepository">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -152,7 +164,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '文档', en: 'Document' })">
+    <Variant :title="document">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation
@@ -168,7 +180,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-2xl">
         <citation
           id="citation-interactive"
@@ -177,7 +189,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '引用列表 - 默认', en: 'CitationList - Default' })">
+    <Variant :title="citationListDefault">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
@@ -188,7 +200,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '引用列表 - 行内', en: 'CitationList - Inline' })">
+    <Variant :title="citationListInline">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
@@ -199,7 +211,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '引用列表 - 堆叠', en: 'CitationList - Stacked' })">
+    <Variant :title="citationListStacked">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
@@ -210,7 +222,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '引用列表 - 溢出', en: 'CitationList - With Overflow' })">
+    <Variant :title="citationListWithOverflow">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list
@@ -222,7 +234,7 @@ const stackedCitations: SerializableCitation[] = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '引用列表 - 行内溢出', en: 'CitationList - Inline with Overflow' })">
+    <Variant :title="citationListInlineWithOverflow">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <citation-list

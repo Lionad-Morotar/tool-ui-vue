@@ -125,11 +125,18 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
  * - Cross-zero sliders show signed values (+/-)
  * - Text labels avoid collision with handle
  */
+const photoAdjustmentsGallery = useStoryLocale({ zh: '照片调整（画廊）', en: 'Photo Adjustments (Gallery)' })
+const colorGradingTitle = useStoryLocale({ zh: '调色', en: 'Color Grading' })
+const audioEqualizerDB = useStoryLocale({ zh: '音频均衡器（dB）', en: 'Audio Equalizer (dB)' })
+const videoExportSettings = useStoryLocale({ zh: '视频导出设置', en: 'Video Export Settings' })
+const singleSlider = useStoryLocale({ zh: '单个滑块', en: 'Single Slider' })
+const withDisabledSlider = useStoryLocale({ zh: '含禁用滑块', en: 'With Disabled Slider' })
+const customStyling = useStoryLocale({ zh: '自定义样式', en: 'Custom Styling' })
 </script>
 
 <template>
   <Story title="ParameterSlider/All Variants">
-    <Variant :title="useStoryLocale({ zh: '照片调整（画廊）', en: 'Photo Adjustments (Gallery)' })">
+    <Variant :title="photoAdjustmentsGallery">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
@@ -158,7 +165,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '调色', en: 'Color Grading' })">
+    <Variant :title="colorGradingTitle">
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Color Settings:</p>
@@ -182,7 +189,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '音频均衡器（dB）', en: 'Audio Equalizer (dB)' })">
+    <Variant :title="audioEqualizerDB">
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">EQ Settings:</p>
@@ -208,7 +215,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '视频导出设置', en: 'Video Export Settings' })">
+    <Variant :title="videoExportSettings">
       <div class="w-full max-w-md">
         <div class="mb-4 rounded-lg bg-muted p-4 text-center">
           <p class="text-sm font-medium">Export Settings:</p>
@@ -232,7 +239,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '单个滑块', en: 'Single Slider' })">
+    <Variant :title="singleSlider">
       <div class="w-full max-w-sm">
         <parameter-slider
           id="parameter-slider-single"
@@ -247,7 +254,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含禁用滑块', en: 'With Disabled Slider' })">
+    <Variant :title="withDisabledSlider">
       <div class="w-full max-w-md">
         <parameter-slider
           id="parameter-slider-disabled"
@@ -259,7 +266,7 @@ function updateVideoValues(values: Array<{ id: string; value: number }>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义样式', en: 'Custom Styling' })">
+    <Variant :title="customStyling">
       <div class="w-full max-w-md">
         <parameter-slider
           id="parameter-slider-custom"

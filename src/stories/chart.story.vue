@@ -17,6 +17,15 @@ const chartData = reactive({
 function handleDataPointClick(point: ChartDataPoint) {
   chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
 }
+const lineChart = useStoryLocale({ zh: '折线图', en: 'Line Chart' })
+const barChart = useStoryLocale({ zh: '柱状图', en: 'Bar Chart' })
+const multiSeries = useStoryLocale({ zh: '多系列', en: 'Multi-Series' })
+const withCustomColors = useStoryLocale({ zh: '自定义颜色', en: 'With Custom Colors' })
+const interactiveClickDataPoints = useStoryLocale({ zh: '交互 - 点击数据点', en: 'Interactive - Click Data Points' })
+const withoutGrid = useStoryLocale({ zh: '无网格', en: 'Without Grid' })
+const withoutLegend = useStoryLocale({ zh: '无图例', en: 'Without Legend' })
+const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
+const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset' })
 </script>
 
 <template>
@@ -75,7 +84,7 @@ function handleDataPointClick(point: ChartDataPoint) {
         <li><code>--chart-1</code> through <code>--chart-5</code> - Default series colors</li>
       </ul>
     </template>
-    <Variant :title="useStoryLocale({ zh: '折线图', en: 'Line Chart' })">
+    <Variant :title="lineChart">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -102,7 +111,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '柱状图', en: 'Bar Chart' })">
+    <Variant :title="barChart">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -130,7 +139,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '多系列', en: 'Multi-Series' })">
+    <Variant :title="multiSeries">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -155,7 +164,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义颜色', en: 'With Custom Colors' })">
+    <Variant :title="withCustomColors">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -179,7 +188,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击数据点', en: 'Interactive - Click Data Points' })">
+    <Variant :title="interactiveClickDataPoints">
       <div class="w-full max-w-2xl">
         <div v-if="chartData.selectedPoint" class="bg-primary/10 mb-4 p-3 rounded-lg text-sm">
           <strong>Clicked:</strong> {{ chartData.selectedPoint }}
@@ -210,7 +219,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无网格', en: 'Without Grid' })">
+    <Variant :title="withoutGrid">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -233,7 +242,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无图例', en: 'Without Legend' })">
+    <Variant :title="withoutLegend">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -258,7 +267,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
+    <Variant :title="minimal">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart
@@ -279,7 +288,7 @@ function handleDataPointClick(point: ChartDataPoint) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset' })">
+    <Variant :title="denseDataset">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <chart

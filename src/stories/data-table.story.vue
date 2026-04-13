@@ -18,11 +18,21 @@ function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
 const playgroundState = reactive({
   layout: 'cards' as 'auto' | 'table' | 'cards',
 });
+const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
+const stockDataDeltaCurrencyPercent = useStoryLocale({ zh: '股票数据（差值+货币+百分比）', en: 'Stock Data (Delta + Currency + Percent)' })
+const withFormatting = useStoryLocale({ zh: '格式化显示', en: 'With Formatting' })
+const withStatusBadges = useStoryLocale({ zh: '状态徽标', en: 'With Status Badges' })
+const withColumnAlignment = useStoryLocale({ zh: '列对齐', en: 'With Column Alignment' })
+const emptyState = useStoryLocale({ zh: '空状态', en: 'Empty State' })
+const withDefaultSort = useStoryLocale({ zh: '默认排序', en: 'With Default Sort' })
+const controlledSort = useStoryLocale({ zh: '受控排序', en: 'Controlled Sort' })
+const withMaxHeight = useStoryLocale({ zh: '最大高度', en: 'With Max Height' })
+const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', en: 'Interactive Layout Playground' })
 </script>
 
 <template>
   <Story title="DataTable/All Variants">
-    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
+    <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -41,7 +51,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '股票数据（差值+货币+百分比）', en: 'Stock Data (Delta + Currency + Percent)' })">
+    <Variant :title="stockDataDeltaCurrencyPercent">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-3xl">
         <data-table
@@ -66,7 +76,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '格式化显示', en: 'With Formatting' })">
+    <Variant :title="withFormatting">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -86,7 +96,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '状态徽标', en: 'With Status Badges' })">
+    <Variant :title="withStatusBadges">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -110,7 +120,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '列对齐', en: 'With Column Alignment' })">
+    <Variant :title="withColumnAlignment">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -130,7 +140,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '空状态', en: 'Empty State' })">
+    <Variant :title="emptyState">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -145,7 +155,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '默认排序', en: 'With Default Sort' })">
+    <Variant :title="withDefaultSort">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -164,7 +174,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '受控排序', en: 'Controlled Sort' })" auto-props-disabled>
+    <Variant :title="controlledSort" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="text-sm text-muted-foreground">
           Current sort: {{ sortableState.sort.by }} {{ sortableState.sort.direction }}
@@ -187,7 +197,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '最大高度', en: 'With Max Height' })">
+    <Variant :title="withMaxHeight">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
@@ -212,7 +222,7 @@ const playgroundState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互布局面板', en: 'Interactive Layout Playground' })" auto-props-disabled>
+    <Variant :title="interactiveLayoutPlayground" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <p class="text-sm text-muted-foreground">
           Use the right panel to change <code>layout</code>. Default is <code>cards</code> (accordion view).

@@ -90,11 +90,23 @@ const languages = [
   'json', 'bash', 'shell', 'css', 'html',
   'markdown', 'sql', 'yaml', 'go', 'rust', 'text'
 ];
+const propsTitle = useStoryLocale({ zh: '属性', en: 'Props' })
+const supportedLanguages = useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' })
+const typeScript = useStoryLocale({ zh: 'TypeScript', en: 'TypeScript' })
+const javaScript = useStoryLocale({ zh: 'JavaScript', en: 'JavaScript' })
+const python = useStoryLocale({ zh: 'Python', en: 'Python' })
+const cSS = useStoryLocale({ zh: 'CSS', en: 'CSS' })
+const withHighlightedLines = useStoryLocale({ zh: '高亮行', en: 'With Highlighted Lines' })
+const withoutLineNumbers = useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })
+const collapsedLongCode = useStoryLocale({ zh: '折叠（长代码）', en: 'Collapsed (Long Code)' })
+const noFilename = useStoryLocale({ zh: '无文件名', en: 'No Filename' })
+const darkTheme = useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="CodeBlock/All">
-    <Variant :title="useStoryLocale({ zh: '属性', en: 'Props' })">
+    <Variant :title="propsTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: 'CodeBlock 属性', en: 'CodeBlock Props' }) }}</h2>
@@ -121,7 +133,7 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' })">
+    <Variant :title="supportedLanguages">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">{{ useStoryLocale({ zh: '支持的语言', en: 'Supported Languages' }) }}</h2>
@@ -137,7 +149,7 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'TypeScript', en: 'TypeScript' })">
+    <Variant :title="typeScript">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
@@ -149,7 +161,7 @@ const languages = [
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'JavaScript', en: 'JavaScript' })">
+    <Variant :title="javaScript">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -166,7 +178,7 @@ console.log(result); // 8"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'Python', en: 'Python' })">
+    <Variant :title="python">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -184,7 +196,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'CSS', en: 'CSS' })">
+    <Variant :title="cSS">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -202,7 +214,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '高亮行', en: 'With Highlighted Lines' })">
+    <Variant :title="withHighlightedLines">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -226,7 +238,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无行号', en: 'Without Line Numbers' })">
+    <Variant :title="withoutLineNumbers">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -244,7 +256,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '折叠（长代码）', en: 'Collapsed (Long Code)' })">
+    <Variant :title="collapsedLongCode">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <code-block
@@ -257,7 +269,7 @@ for i in range(10):
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无文件名', en: 'No Filename' })">
+    <Variant :title="noFilename">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <code-block
@@ -269,7 +281,7 @@ npm run dev"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })">
+    <Variant :title="darkTheme">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-xl">
         <code-block
@@ -286,7 +298,7 @@ const colors = {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">

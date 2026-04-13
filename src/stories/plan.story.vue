@@ -68,11 +68,18 @@ function cycleStatus(index: number) {
   const nextIndex = (statusOrder.indexOf(currentStatus) + 1) % statusOrder.length;
   interactivePlan.todos[index].status = statusOrder[nextIndex];
 }
+const basicTodoList = useStoryLocale({ zh: '基础待办列表', en: 'Basic Todo List' })
+const withDescriptions = useStoryLocale({ zh: '含描述', en: 'With Descriptions' })
+const allStatuses = useStoryLocale({ zh: '全部状态', en: 'All Statuses' })
+const allComplete = useStoryLocale({ zh: '全部完成', en: 'All Complete' })
+const interactiveClickToCycleStatus = useStoryLocale({ zh: '交互 - 点击切换状态', en: 'Interactive - Click to Cycle Status' })
+const withProgress = useStoryLocale({ zh: '含进度', en: 'With Progress' })
+const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
 </script>
 
 <template>
   <Story title="Plan/All Variants">
-    <Variant :title="useStoryLocale({ zh: '基础待办列表', en: 'Basic Todo List' })">
+    <Variant :title="basicTodoList">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
         <plan
@@ -90,7 +97,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含描述', en: 'With Descriptions' })">
+    <Variant :title="withDescriptions">
       <div class="w-full max-w-md">
         <plan
           id="plan-descriptions"
@@ -106,7 +113,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '全部状态', en: 'All Statuses' })">
+    <Variant :title="allStatuses">
       <div class="w-full max-w-md">
         <plan
           id="plan-all-statuses"
@@ -121,7 +128,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '全部完成', en: 'All Complete' })">
+    <Variant :title="allComplete">
       <div class="w-full max-w-md">
         <plan
           id="plan-complete"
@@ -137,7 +144,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击切换状态', en: 'Interactive - Click to Cycle Status' })">
+    <Variant :title="interactiveClickToCycleStatus">
       <div class="w-full max-w-md">
         <p class="mb-4 text-sm text-muted-foreground">Click on any todo item to cycle through statuses</p>
         <plan
@@ -150,7 +157,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含进度', en: 'With Progress' })">
+    <Variant :title="withProgress">
       <div class="w-full max-w-md">
         <plan
           id="plan-progress"
@@ -167,7 +174,7 @@ function cycleStatus(index: number) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
+    <Variant :title="minimal">
       <div class="w-full max-w-md">
         <plan
           id="plan-minimal"

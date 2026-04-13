@@ -90,11 +90,20 @@ function handleComplete(answers: Record<string, string[]>) {
  * - Shows completed state with summary
  * - No interaction, display only
  */
+const progressiveModeStep1 = useStoryLocale({ zh: '渐进模式 - 步骤 1', en: 'Progressive Mode - Step 1' })
+const progressiveModeStep2 = useStoryLocale({ zh: '渐进模式 - 步骤 2', en: 'Progressive Mode - Step 2' })
+const progressiveModeMultiSelect = useStoryLocale({ zh: '渐进模式 - 多选', en: 'Progressive Mode - Multi Select' })
+const progressiveModeWithDefaultValue = useStoryLocale({ zh: '渐进模式 - 含默认值', en: 'Progressive Mode - With Default Value' })
+const upfrontModeMultiStep = useStoryLocale({ zh: '前置模式 - 多步骤', en: 'Upfront Mode - Multi Step' })
+const upfrontModeWithDisabledOptions = useStoryLocale({ zh: '前置模式 - 含禁用选项', en: 'Upfront Mode - With Disabled Options' })
+const receiptMode = useStoryLocale({ zh: '回执模式', en: 'Receipt Mode' })
+const receiptModeMultipleItems = useStoryLocale({ zh: '回执模式 - 多项', en: 'Receipt Mode - Multiple Items' })
+const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'Interactive Progressive' })
 </script>
 
 <template>
   <Story title="QuestionFlow/All Variants">
-    <Variant :title="useStoryLocale({ zh: '渐进模式 - 步骤 1', en: 'Progressive Mode - Step 1' })">
+    <Variant :title="progressiveModeStep1">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -112,7 +121,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '渐进模式 - 步骤 2', en: 'Progressive Mode - Step 2' })">
+    <Variant :title="progressiveModeStep2">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -130,7 +139,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '渐进模式 - 多选', en: 'Progressive Mode - Multi Select' })">
+    <Variant :title="progressiveModeMultiSelect">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -149,7 +158,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '渐进模式 - 含默认值', en: 'Progressive Mode - With Default Value' })">
+    <Variant :title="progressiveModeWithDefaultValue">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -168,7 +177,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '前置模式 - 多步骤', en: 'Upfront Mode - Multi Step' })">
+    <Variant :title="upfrontModeMultiStep">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -211,7 +220,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '前置模式 - 含禁用选项', en: 'Upfront Mode - With Disabled Options' })">
+    <Variant :title="upfrontModeWithDisabledOptions">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -232,7 +241,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执模式', en: 'Receipt Mode' })">
+    <Variant :title="receiptMode">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -249,7 +258,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执模式 - 多项', en: 'Receipt Mode - Multiple Items' })">
+    <Variant :title="receiptModeMultipleItems">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <question-flow
@@ -268,7 +277,7 @@ function handleComplete(answers: Record<string, string[]>) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互渐进模式', en: 'Interactive Progressive' })" auto-props-disabled>
+    <Variant :title="interactiveProgressive" auto-props-disabled>
       <div class="w-full max-w-md space-y-4">
         <div v-if="progressiveState.selectedOptions.length > 0" class="rounded-lg bg-muted p-3 text-sm">
           <strong>Selected:</strong> {{ progressiveState.selectedOptions.join(", ") }}

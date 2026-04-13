@@ -16,11 +16,26 @@ function handleMarkerClick(marker: GeoMapMarker) {
 function handleRouteClick(route: GeoMapRoute) {
   mapState.selectedRoute = route.id || route.label || 'Unknown';
 }
+const singleMarker = useStoryLocale({ zh: '单个标记', en: 'Single Marker' })
+const multipleMarkers = useStoryLocale({ zh: '多个标记', en: 'Multiple Markers' })
+const withRoutes = useStoryLocale({ zh: '含路径', en: 'With Routes' })
+const withCustomIcons = useStoryLocale({ zh: '自定义图标', en: 'With Custom Icons' })
+const darkTheme = useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })
+const interactiveClickMarkers = useStoryLocale({ zh: '交互 - 点击标记', en: 'Interactive - Click Markers' })
+const interactiveClickRoutes = useStoryLocale({ zh: '交互 - 点击路径', en: 'Interactive - Click Routes' })
+const withClustering = useStoryLocale({ zh: '聚合显示', en: 'With Clustering' })
+const withoutTitle = useStoryLocale({ zh: '无标题', en: 'Without Title' })
+const withImageIcons = useStoryLocale({ zh: '图片图标', en: 'With Image Icons' })
+const withCustomDotIcons = useStoryLocale({ zh: '自定义点图标', en: 'With Custom Dot Icons' })
+const denseClusteringDemo = useStoryLocale({ zh: '密集聚合演示', en: 'Dense Clustering Demo' })
+const complexRouteWithStyling = useStoryLocale({ zh: '复杂路径（带样式）', en: 'Complex Route with Styling' })
+const centerViewportMode = useStoryLocale({ zh: '居中视口模式', en: 'Center Viewport Mode' })
+const withoutZoomControl = useStoryLocale({ zh: '无缩放控件', en: 'Without Zoom Control' })
 </script>
 
 <template>
   <Story title="GeoMap/All Variants">
-    <Variant :title="useStoryLocale({ zh: '单个标记', en: 'Single Marker' })">
+    <Variant :title="singleMarker">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -35,7 +50,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '多个标记', en: 'Multiple Markers' })">
+    <Variant :title="multipleMarkers">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -52,7 +67,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含路径', en: 'With Routes' })">
+    <Variant :title="withRoutes">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -83,7 +98,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义图标', en: 'With Custom Icons' })">
+    <Variant :title="withCustomIcons">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -99,7 +114,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '暗色主题', en: 'Dark Theme' })">
+    <Variant :title="darkTheme">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -115,7 +130,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击标记', en: 'Interactive - Click Markers' })">
+    <Variant :title="interactiveClickMarkers">
       <div class="w-full max-w-2xl">
         <div v-if="mapState.selectedMarker" class="mb-4 rounded-lg bg-primary/10 p-3 text-sm">
           Selected marker: <strong>{{ mapState.selectedMarker }}</strong>
@@ -141,7 +156,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击路径', en: 'Interactive - Click Routes' })">
+    <Variant :title="interactiveClickRoutes">
       <div class="w-full max-w-2xl">
         <div v-if="mapState.selectedRoute" class="mb-4 rounded-lg bg-primary/10 p-3 text-sm">
           Selected route: <strong>{{ mapState.selectedRoute }}</strong>
@@ -189,7 +204,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '聚合显示', en: 'With Clustering' })">
+    <Variant :title="withClustering">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -212,7 +227,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无标题', en: 'Without Title' })">
+    <Variant :title="withoutTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -227,7 +242,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '图片图标', en: 'With Image Icons' })">
+    <Variant :title="withImageIcons">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -242,7 +257,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义点图标', en: 'With Custom Dot Icons' })">
+    <Variant :title="withCustomDotIcons">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -258,7 +273,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '密集聚合演示', en: 'Dense Clustering Demo' })">
+    <Variant :title="denseClusteringDemo">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -285,7 +300,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '复杂路径（带样式）', en: 'Complex Route with Styling' })">
+    <Variant :title="complexRouteWithStyling">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -321,7 +336,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '居中视口模式', en: 'Center Viewport Mode' })">
+    <Variant :title="centerViewportMode">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map
@@ -336,7 +351,7 @@ function handleRouteClick(route: GeoMapRoute) {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无缩放控件', en: 'Without Zoom Control' })">
+    <Variant :title="withoutZoomControl">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <geo-map

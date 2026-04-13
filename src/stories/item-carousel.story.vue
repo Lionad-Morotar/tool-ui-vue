@@ -44,11 +44,22 @@ function scrollToSlide(index: number) {
 function scroll(direction: 'left' | 'right') {
   carouselRef.value?.scroll(direction);
 }
+const productCards = useStoryLocale({ zh: '商品卡片', en: 'Product Cards' })
+const withoutImages = useStoryLocale({ zh: '无图片', en: 'Without Images' })
+const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
+const interactiveClickItems = useStoryLocale({ zh: '交互 - 点击项目', en: 'Interactive - Click Items' })
+const withActions = useStoryLocale({ zh: '含操作', en: 'With Actions' })
+const withMultipleActionVariants = useStoryLocale({ zh: '含多种操作变体', en: 'With Multiple Action Variants' })
+const keyboardNavigationDemo = useStoryLocale({ zh: '键盘导航演示', en: 'Keyboard Navigation Demo' })
+const touchSwipeDemo = useStoryLocale({ zh: '触摸/滑动演示', en: 'Touch/Swipe Demo' })
+const programmaticControl = useStoryLocale({ zh: '编程控制', en: 'Programmatic Control' })
+const emptyState = useStoryLocale({ zh: '空状态', en: 'Empty State' })
+const itemCardStandalone = useStoryLocale({ zh: 'ItemCard - 独立', en: 'ItemCard - Standalone' })
 </script>
 
 <template>
   <Story title="ItemCarousel/All Variants">
-    <Variant :title="useStoryLocale({ zh: '商品卡片', en: 'Product Cards' })">
+    <Variant :title="productCards">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <item-carousel
@@ -67,7 +78,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无图片', en: 'Without Images' })">
+    <Variant :title="withoutImages">
       <div class="w-full max-w-xl">
         <item-carousel
           id="carousel-no-images"
@@ -82,7 +93,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '极简', en: 'Minimal' })">
+    <Variant :title="minimal">
       <div class="w-full max-w-md">
         <item-carousel
           id="carousel-minimal"
@@ -95,7 +106,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击项目', en: 'Interactive - Click Items' })">
+    <Variant :title="interactiveClickItems">
       <div class="w-full max-w-2xl space-y-4">
         <p v-if="carouselState.selectedItem" class="rounded-md bg-primary/10 px-4 py-2 text-sm text-primary">
           Selected: {{ carouselState.items.find(i => i.id === carouselState.selectedItem)?.name }}
@@ -111,7 +122,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含操作', en: 'With Actions' })">
+    <Variant :title="withActions">
       <div class="w-full max-w-2xl space-y-4">
         <div v-if="carouselState.actionLog.length > 0" class="rounded-md bg-muted p-3">
           <p class="mb-1 text-xs font-medium text-muted-foreground">Action Log:</p>
@@ -134,7 +145,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含多种操作变体', en: 'With Multiple Action Variants' })">
+    <Variant :title="withMultipleActionVariants">
       <div class="w-full max-w-2xl">
         <item-carousel
           id="carousel-action-variants"
@@ -151,7 +162,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '键盘导航演示', en: 'Keyboard Navigation Demo' })">
+    <Variant :title="keyboardNavigationDemo">
       <div class="w-full max-w-2xl space-y-4">
         <div class="rounded-md bg-blue-50 p-3 text-sm text-blue-800 dark:bg-blue-950 dark:text-blue-200">
           <p class="font-medium">Keyboard Navigation:</p>
@@ -172,7 +183,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '触摸/滑动演示', en: 'Touch/Swipe Demo' })">
+    <Variant :title="touchSwipeDemo">
       <div class="w-full max-w-2xl space-y-4">
         <div class="rounded-md bg-green-50 p-3 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
           <p class="font-medium">Touch Gestures:</p>
@@ -193,7 +204,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '编程控制', en: 'Programmatic Control' })">
+    <Variant :title="programmaticControl">
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex items-center gap-2">
           <span class="text-sm font-medium">Current Slide: {{ carouselState.currentSlide + 1 }} / {{ carouselState.items.length }}</span>
@@ -236,7 +247,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '空状态', en: 'Empty State' })">
+    <Variant :title="emptyState">
       <div class="w-full max-w-2xl">
         <item-carousel
           id="carousel-empty"
@@ -247,7 +258,7 @@ function scroll(direction: 'left' | 'right') {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'ItemCard - 独立', en: 'ItemCard - Standalone' })">
+    <Variant :title="itemCardStandalone">
       <div class="flex flex-wrap gap-4 p-4">
         <div class="w-52">
           <item-card

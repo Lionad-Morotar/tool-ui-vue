@@ -38,17 +38,19 @@ onMounted(() => {
     document.head.appendChild(script);
   }
 });
+const withTailwind = useStoryLocale({ zh: '含 Tailwind', en: 'With Tailwind' })
+const component = useStoryLocale({ zh: '组件', en: 'Component' })
 </script>
 
 <template>
   <Story title="TailwindTest/Test">
-    <Variant :title="useStoryLocale({ zh: '含 Tailwind', en: 'With Tailwind' })">
+    <Variant :title="withTailwind">
       <div class="rounded-lg bg-gray-100 p-6">
         <h2 class="text-xl font-bold text-blue-600">Tailwind Test</h2>
         <p class="mt-2 text-gray-700">If you see styled text, Tailwind is working!</p>
       </div>
     </Variant>
-    <Variant :title="useStoryLocale({ zh: '组件', en: 'Component' })">
+    <Variant :title="component">
       <approval-card
         id="test-approval"
         title="Test Card"

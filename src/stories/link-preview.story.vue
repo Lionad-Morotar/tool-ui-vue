@@ -46,11 +46,20 @@ const interactiveState = reactive({
  * - Images have `loading="lazy"` and `decoding="async"`
  * - Favicon has `aria-hidden="true"`
  */
+const withImage = useStoryLocale({ zh: '含图片', en: 'With Image' })
+const withoutImage = useStoryLocale({ zh: '无图片', en: 'Without Image' })
+const compact = useStoryLocale({ zh: '紧凑模式', en: 'Compact' })
+const longDescription = useStoryLocale({ zh: '长描述', en: 'Long Description' })
+const newsArticle = useStoryLocale({ zh: '新闻文章', en: 'News Article' })
+const withFavicon = useStoryLocale({ zh: '含网站图标', en: 'With Favicon' })
+const squareRatio11 = useStoryLocale({ zh: '方形比例 (1:1)', en: 'Square Ratio (1:1)' })
+const portraitRatio916 = useStoryLocale({ zh: '竖屏比例 (9:16)', en: 'Portrait Ratio (9:16)' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="LinkPreview/All Variants">
-    <Variant :title="useStoryLocale({ zh: '含图片', en: 'With Image' })">
+    <Variant :title="withImage">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -64,7 +73,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无图片', en: 'Without Image' })">
+    <Variant :title="withoutImage">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -77,7 +86,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '紧凑模式', en: 'Compact' })">
+    <Variant :title="compact">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <link-preview
@@ -89,7 +98,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '长描述', en: 'Long Description' })">
+    <Variant :title="longDescription">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -103,7 +112,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '新闻文章', en: 'News Article' })">
+    <Variant :title="newsArticle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -117,7 +126,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含网站图标', en: 'With Favicon' })">
+    <Variant :title="withFavicon">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -132,7 +141,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '方形比例 (1:1)', en: 'Square Ratio (1:1)' })">
+    <Variant :title="squareRatio11">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <link-preview
@@ -147,7 +156,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '竖屏比例 (9:16)', en: 'Portrait Ratio (9:16)' })">
+    <Variant :title="portraitRatio916">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <link-preview
@@ -162,7 +171,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-md">
         <link-preview
           id="link-preview-interactive"

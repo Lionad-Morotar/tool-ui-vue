@@ -26,11 +26,17 @@ function handleMediaEvent(type: string) {
 function clearEvents() {
   eventLog.value = [];
 }
+const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
+const withMetadata = useStoryLocale({ zh: '含元数据', en: 'With Metadata' })
+const compactVariant = useStoryLocale({ zh: '紧凑变体', en: 'Compact Variant' })
+const compactWithoutArtwork = useStoryLocale({ zh: '无封面紧凑', en: 'Compact Without Artwork' })
+const withEventLogging = useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="Audio/All Variants">
-    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
+    <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -41,7 +47,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含元数据', en: 'With Metadata' })">
+    <Variant :title="withMetadata">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -56,7 +62,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '紧凑变体', en: 'Compact Variant' })">
+    <Variant :title="compactVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -71,7 +77,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无封面紧凑', en: 'Compact Without Artwork' })">
+    <Variant :title="compactWithoutArtwork">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <Audio
@@ -85,7 +91,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })" auto-props-disabled>
+    <Variant :title="withEventLogging" auto-props-disabled>
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
@@ -123,7 +129,7 @@ function clearEvents() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
           <Audio

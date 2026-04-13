@@ -39,11 +39,19 @@ function clearEvents() {
 function clearNavigateLog() {
   navigateLog.value = [];
 }
+const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
+const withPoster = useStoryLocale({ zh: '含封面', en: 'With Poster' })
+const withDescription = useStoryLocale({ zh: '含描述', en: 'With Description' })
+const withNavigation = useStoryLocale({ zh: '含导航', en: 'With Navigation' })
+const squareFormat = useStoryLocale({ zh: '方形格式', en: 'Square Format' })
+const verticalFormat = useStoryLocale({ zh: '竖屏格式', en: 'Vertical Format' })
+const withEventLogging = useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="Video/All Variants">
-    <Variant :title="useStoryLocale({ zh: '基础', en: 'Basic' })">
+    <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
@@ -54,7 +62,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含封面', en: 'With Poster' })">
+    <Variant :title="withPoster">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
@@ -67,7 +75,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含描述', en: 'With Description' })">
+    <Variant :title="withDescription">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
@@ -82,7 +90,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含导航', en: 'With Navigation' })">
+    <Variant :title="withNavigation">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
         <Video
@@ -99,7 +107,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '方形格式', en: 'Square Format' })">
+    <Variant :title="squareFormat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
         <Video
@@ -112,7 +120,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '竖屏格式', en: 'Vertical Format' })">
+    <Variant :title="verticalFormat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xs">
         <Video
@@ -125,7 +133,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })" auto-props-disabled>
+    <Variant :title="withEventLogging" auto-props-disabled>
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
@@ -164,7 +172,7 @@ function clearNavigateLog() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
           <Video

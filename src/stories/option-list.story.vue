@@ -64,11 +64,18 @@ const interactiveState = reactive({
   minSelections: 0,
   maxSelections: 2,
 });
+const singleSelect = useStoryLocale({ zh: '单选', en: 'Single Select' })
+const multiSelect = useStoryLocale({ zh: '多选', en: 'Multi Select' })
+const withActions = useStoryLocale({ zh: '含操作', en: 'With Actions' })
+const withDisabledOptions = useStoryLocale({ zh: '含禁用选项', en: 'With Disabled Options' })
+const receiptStateSingle = useStoryLocale({ zh: '回执状态（单项）', en: 'Receipt State (Single)' })
+const receiptStateMulti = useStoryLocale({ zh: '回执状态（多项）', en: 'Receipt State (Multi)' })
+const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
 </script>
 
 <template>
   <Story title="OptionList/All Variants">
-    <Variant :title="useStoryLocale({ zh: '单选', en: 'Single Select' })">
+    <Variant :title="singleSelect">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-sm">
         <option-list
@@ -84,7 +91,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '多选', en: 'Multi Select' })">
+    <Variant :title="multiSelect">
       <div class="w-full max-w-sm">
         <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
         <option-list
@@ -102,7 +109,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含操作', en: 'With Actions' })">
+    <Variant :title="withActions">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-actions"
@@ -120,7 +127,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含禁用选项', en: 'With Disabled Options' })">
+    <Variant :title="withDisabledOptions">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-disabled"
@@ -134,7 +141,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执状态（单项）', en: 'Receipt State (Single)' })">
+    <Variant :title="receiptStateSingle">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-receipt-single"
@@ -149,7 +156,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执状态（多项）', en: 'Receipt State (Multi)' })">
+    <Variant :title="receiptStateMulti">
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-receipt-multi"
@@ -164,7 +171,7 @@ const interactiveState = reactive({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互模式', en: 'Interactive' })" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-sm">
         <option-list
           id="option-list-interactive"

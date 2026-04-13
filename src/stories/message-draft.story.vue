@@ -109,11 +109,18 @@ function resetSlack() {
  * ### Cancelled
  * - Renders nothing
  */
+const emailDraft = useStoryLocale({ zh: '邮件草稿', en: 'Email Draft' })
+const emailWithCCBCC = useStoryLocale({ zh: '含抄送/密送邮件', en: 'Email with CC/BCC' })
+const emailWithLongBody = useStoryLocale({ zh: '含长正文邮件', en: 'Email with Long Body' })
+const slackChannel = useStoryLocale({ zh: 'Slack 频道', en: 'Slack Channel' })
+const slackDM = useStoryLocale({ zh: 'Slack 私聊', en: 'Slack DM' })
+const sentReceipt = useStoryLocale({ zh: '已发送回执', en: 'Sent Receipt' })
+const cancelled = useStoryLocale({ zh: '已取消', en: 'Cancelled' })
 </script>
 
 <template>
   <Story title="MessageDraft/All Variants">
-    <Variant :title="useStoryLocale({ zh: '邮件草稿', en: 'Email Draft' })">
+    <Variant :title="emailDraft">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <button
@@ -140,7 +147,7 @@ Thanks!"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含抄送/密送邮件', en: 'Email with CC/BCC' })">
+    <Variant :title="emailWithCCBCC">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -160,7 +167,7 @@ Best regards"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含长正文邮件', en: 'Email with Long Body' })">
+    <Variant :title="emailWithLongBody">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -201,7 +208,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'Slack 频道', en: 'Slack Channel' })">
+    <Variant :title="slackChannel">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <button
@@ -223,7 +230,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: 'Slack 私聊', en: 'Slack DM' })">
+    <Variant :title="slackDM">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xl">
         <message-draft
@@ -235,7 +242,7 @@ The CEO"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '已发送回执', en: 'Sent Receipt' })">
+    <Variant :title="sentReceipt">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <message-draft
@@ -253,7 +260,7 @@ Best regards"
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '已取消', en: 'Cancelled' })">
+    <Variant :title="cancelled">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <p class="mb-2 text-sm text-muted-foreground">

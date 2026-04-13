@@ -75,11 +75,20 @@ function advanceStep() {
     interactiveProgress.currentStep = 1;
   }
 }
+const horizontalSteps = useStoryLocale({ zh: '水平步骤', en: 'Horizontal Steps' })
+const withDescriptions = useStoryLocale({ zh: '含描述', en: 'With Descriptions' })
+const withFailedStep = useStoryLocale({ zh: '含失败步骤', en: 'With Failed Step' })
+const allCompleted = useStoryLocale({ zh: '全部完成', en: 'All Completed' })
+const withElapsedTime = useStoryLocale({ zh: '含耗时', en: 'With Elapsed Time' })
+const receiptSuccess = useStoryLocale({ zh: '回执 - 成功', en: 'Receipt - Success' })
+const receiptFailed = useStoryLocale({ zh: '回执 - 失败', en: 'Receipt - Failed' })
+const interactiveClickToAdvance = useStoryLocale({ zh: '交互 - 点击推进', en: 'Interactive - Click to Advance' })
+const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linear Progress' })
 </script>
 
 <template>
   <Story title="ProgressTracker/All Variants">
-    <Variant :title="useStoryLocale({ zh: '水平步骤', en: 'Horizontal Steps' })">
+    <Variant :title="horizontalSteps">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-3xl">
         <progress-tracker
@@ -94,7 +103,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含描述', en: 'With Descriptions' })">
+    <Variant :title="withDescriptions">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-descriptions"
@@ -108,7 +117,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含失败步骤', en: 'With Failed Step' })">
+    <Variant :title="withFailedStep">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-failed"
@@ -122,7 +131,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '全部完成', en: 'All Completed' })">
+    <Variant :title="allCompleted">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-complete"
@@ -136,7 +145,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '含耗时', en: 'With Elapsed Time' })">
+    <Variant :title="withElapsedTime">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-time"
@@ -150,7 +159,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执 - 成功', en: 'Receipt - Success' })">
+    <Variant :title="receiptSuccess">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-receipt-success"
@@ -165,7 +174,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执 - 失败', en: 'Receipt - Failed' })">
+    <Variant :title="receiptFailed">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-receipt-failed"
@@ -180,7 +189,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '交互 - 点击推进', en: 'Interactive - Click to Advance' })">
+    <Variant :title="interactiveClickToAdvance">
       <div class="w-full max-w-3xl">
         <button
           class="mb-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
@@ -195,7 +204,7 @@ function advanceStep() {
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '非线性进度', en: 'Non-linear Progress' })">
+    <Variant :title="nonLinearProgress">
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-nonlinear"

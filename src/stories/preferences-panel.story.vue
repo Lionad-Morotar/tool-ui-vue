@@ -81,11 +81,19 @@ const prefs = ref({
  * When `choice` prop is provided, the component renders in receipt mode showing
  * confirmed preferences with "Saved" status. Use `error` prop to show error states.
  */
+const notificationSettings = useStoryLocale({ zh: '通知设置', en: 'Notification Settings' })
+const appearanceSettings = useStoryLocale({ zh: '外观设置', en: 'Appearance Settings' })
+const withCustomActions = useStoryLocale({ zh: '自定义操作', en: 'With Custom Actions' })
+const allControlTypes = useStoryLocale({ zh: '所有控件类型', en: 'All Control Types' })
+const receiptModeSuccess = useStoryLocale({ zh: '回执模式 - 成功', en: 'Receipt Mode - Success' })
+const receiptModeWithErrors = useStoryLocale({ zh: '回执模式 - 含错误', en: 'Receipt Mode - With Errors' })
+const withoutTitle = useStoryLocale({ zh: '无标题', en: 'Without Title' })
+const withoutSectionHeadings = useStoryLocale({ zh: '无分区标题', en: 'Without Section Headings' })
 </script>
 
 <template>
   <Story title="PreferencesPanel/All Variants">
-    <Variant :title="useStoryLocale({ zh: '通知设置', en: 'Notification Settings' })">
+    <Variant :title="notificationSettings">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -121,7 +129,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '外观设置', en: 'Appearance Settings' })">
+    <Variant :title="appearanceSettings">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -168,7 +176,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '自定义操作', en: 'With Custom Actions' })">
+    <Variant :title="withCustomActions">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -202,7 +210,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '所有控件类型', en: 'All Control Types' })">
+    <Variant :title="allControlTypes">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
@@ -267,7 +275,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执模式 - 成功', en: 'Receipt Mode - Success' })">
+    <Variant :title="receiptModeSuccess">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-receipt-success"
@@ -314,7 +322,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '回执模式 - 含错误', en: 'Receipt Mode - With Errors' })">
+    <Variant :title="receiptModeWithErrors">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-receipt-error"
@@ -346,7 +354,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无标题', en: 'Without Title' })">
+    <Variant :title="withoutTitle">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-no-title"
@@ -372,7 +380,7 @@ const prefs = ref({
       </div>
     </Variant>
 
-    <Variant :title="useStoryLocale({ zh: '无分区标题', en: 'Without Section Headings' })">
+    <Variant :title="withoutSectionHeadings">
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-no-headings"
