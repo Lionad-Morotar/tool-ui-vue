@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { Video } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
 const interactiveStateZh = {
   src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
@@ -54,34 +55,34 @@ function clearNavigateLog() {
   navigateLog.value = [];
 }
 
-const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
-const withPoster = useStoryLocale({ zh: '含封面', en: 'With Poster' })
-const withDescription = useStoryLocale({ zh: '含描述', en: 'With Description' })
-const withNavigation = useStoryLocale({ zh: '含导航', en: 'With Navigation' })
-const squareFormat = useStoryLocale({ zh: '方形格式', en: 'Square Format' })
-const verticalFormat = useStoryLocale({ zh: '竖屏格式', en: 'Vertical Format' })
-const withEventLogging = useStoryLocale({ zh: '含事件日志', en: 'With Event Logging' })
-const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+const basic = useStoryLocale('content.basic', messages)
+const withPoster = useStoryLocale('content.withPoster', messages)
+const withDescription = useStoryLocale('content.withDescription', messages)
+const withNavigation = useStoryLocale('content.withNavigation', messages)
+const squareFormat = useStoryLocale('content.squareFormat', messages)
+const verticalFormat = useStoryLocale('content.verticalFormat', messages)
+const withEventLogging = useStoryLocale('content.withEventLogging', messages)
+const interactive = useStoryLocale('content.interactive', messages)
 
 // Video texts
-const elephantsDreamTitle = useStoryLocale({ zh: '大象之梦', en: 'Elephants Dream' })
-const biggerBlazesTitle = useStoryLocale({ zh: '更大火焰', en: 'For Bigger Blazes' })
-const biggerBlazesDesc = useStoryLocale({ zh: '展示高质量视频播放的示例视频', en: 'A sample video demonstrating high-quality video playback' })
-const clickToOpenTitle = useStoryLocale({ zh: '点击打开', en: 'Click to Open' })
-const clickToOpenDesc = useStoryLocale({ zh: '这个视频包含外部链接', en: 'This video has an external link' })
-const squareVideoTitle = useStoryLocale({ zh: '方形视频', en: 'Square Video' })
-const verticalVideoTitle = useStoryLocale({ zh: '竖屏视频', en: 'Vertical Video' })
-const eventVideoTitle = useStoryLocale({ zh: '事件日志演示', en: 'Event Logging Demo' })
-const eventVideoDesc = useStoryLocale({ zh: '播放/暂停/静音查看事件', en: 'Play/pause/mute to see events' })
-const eventLogHeading = useStoryLocale({ zh: '事件日志', en: 'Event Log' })
-const clearButton = useStoryLocale({ zh: '清除', en: 'Clear' })
-const noEventsYet = useStoryLocale({ zh: '暂无事件，与视频交互可查看事件', en: 'No events yet. Interact with the video to see events.' })
-const controlsHeading = useStoryLocale({ zh: '控制面板', en: 'Controls' })
-const formTitle = useStoryLocale({ zh: '标题:', en: 'Title:' })
-const formDesc = useStoryLocale({ zh: '描述:', en: 'Description:' })
-const formRatio = useStoryLocale({ zh: '比例:', en: 'Ratio:' })
-const formAutoPlay = useStoryLocale({ zh: '自动播放:', en: 'Auto Play:' })
-const navLogHeading = useStoryLocale({ zh: '导航日志', en: 'Navigation Log' })
+const elephantsDreamTitle = useStoryLocale('content.elephantsDreamTitle', messages)
+const biggerBlazesTitle = useStoryLocale('content.biggerBlazesTitle', messages)
+const biggerBlazesDesc = useStoryLocale('content.biggerBlazesDesc', messages)
+const clickToOpenTitle = useStoryLocale('content.clickToOpenTitle', messages)
+const clickToOpenDesc = useStoryLocale('content.clickToOpenDesc', messages)
+const squareVideoTitle = useStoryLocale('content.squareVideoTitle', messages)
+const verticalVideoTitle = useStoryLocale('content.verticalVideoTitle', messages)
+const eventVideoTitle = useStoryLocale('content.eventVideoTitle', messages)
+const eventVideoDesc = useStoryLocale('content.eventVideoDesc', messages)
+const eventLogHeading = useStoryLocale('content.eventLogHeading', messages)
+const clearButton = useStoryLocale('content.clearButton', messages)
+const noEventsYet = useStoryLocale('content.noEventsYet', messages)
+const controlsHeading = useStoryLocale('content.controlsHeading', messages)
+const formTitle = useStoryLocale('content.formTitle', messages)
+const formDesc = useStoryLocale('content.formDesc', messages)
+const formRatio = useStoryLocale('content.formRatio', messages)
+const formAutoPlay = useStoryLocale('content.formAutoPlay', messages)
+const navLogHeading = useStoryLocale('content.navLogHeading', messages)
 </script>
 
 <template>

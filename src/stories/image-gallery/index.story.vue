@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { ImageGallery } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import messages from './i18n';
 
-const subtitle = useStoryLocale({ zh: '图片画廊组件，支持网格 / 瀑布流布局、Lightbox 全屏预览和来源标注', en: 'Image gallery with grid/masonry layout, fullscreen lightbox, and source attribution.' });
+const subtitle = useStoryLocale('content.subtitle', messages);
 
 const galleryState = reactive({
   clickCount: 0,
@@ -111,7 +112,7 @@ const twoImagesEn = [
 const twoImages = computed(() => currentLocale.value === 'zh-CN' ? twoImagesZh : twoImagesEn);
 
 // Nine images (dynamic, with template literal for alt)
-const imageN = useStoryLocale({ zh: '图片', en: 'Image' })
+const imageN = useStoryLocale('content.imageN', messages)
 const nineImagesZh = computed(() => Array.from({ length: 9 }, (_, i) => ({
   id: String(i + 1),
   src: `https://picsum.photos/300/300?random=${70 + i}`,
@@ -128,38 +129,38 @@ const nineImagesEn = computed(() => Array.from({ length: 9 }, (_, i) => ({
 })));
 const nineImages = computed(() => currentLocale.value === 'zh-CN' ? nineImagesZh.value : nineImagesEn.value);
 
-const gridLayout = useStoryLocale({ zh: '网格布局', en: 'Grid Layout' })
-const waterfallLayoutMasonry = useStoryLocale({ zh: '瀑布流布局（Masonry）', en: 'Waterfall Layout (Masonry)' })
-const withTitles = useStoryLocale({ zh: '含标题', en: 'With Titles' })
-const withSourceAttribution = useStoryLocale({ zh: '含来源标注', en: 'With Source Attribution' })
-const singleImageTitle = useStoryLocale({ zh: '单图', en: 'Single Image' })
-const interactiveLightboxDemo = useStoryLocale({ zh: '交互 - 灯箱演示', en: 'Interactive - Lightbox Demo' })
-const differentImageCounts2Images = useStoryLocale({ zh: '不同图片数量 - 2 张', en: 'Different Image Counts - 2 Images' })
-const differentImageCounts9Images = useStoryLocale({ zh: '不同图片数量 - 9 张', en: 'Different Image Counts - 9 Images' })
-const lightboxFeatures = useStoryLocale({ zh: '灯箱功能', en: 'Lightbox Features' })
+const gridLayout = useStoryLocale('content.gridLayout', messages)
+const waterfallLayoutMasonry = useStoryLocale('content.waterfallLayoutMasonry', messages)
+const withTitles = useStoryLocale('content.withTitles', messages)
+const withSourceAttribution = useStoryLocale('content.withSourceAttribution', messages)
+const singleImageTitle = useStoryLocale('content.singleImageTitle', messages)
+const interactiveLightboxDemo = useStoryLocale('content.interactiveLightboxDemo', messages)
+const differentImageCounts2Images = useStoryLocale('content.differentImageCounts2Images', messages)
+const differentImageCounts9Images = useStoryLocale('content.differentImageCounts9Images', messages)
+const lightboxFeatures = useStoryLocale('data.lightboxFeatures', messages)
 
 // Gallery texts
-const photoCollectionTitle = useStoryLocale({ zh: '照片集', en: 'Photo Collection' })
-const photoCollectionDesc = useStoryLocale({ zh: '精选自然摄影', en: 'A selection of nature photography' })
-const masonryHint = useStoryLocale({ zh: '竖屏图片（高度 > 宽度）会自动跨 2 行显示', en: 'Portrait images (height > width) automatically span 2 rows' })
-const waterfallGalleryTitle = useStoryLocale({ zh: '瀑布流画廊', en: 'Waterfall Gallery' })
-const waterfallGalleryDesc = useStoryLocale({ zh: '混合方向图片演示瀑布流布局', en: 'Mixed orientation images demonstrating masonry layout' })
-const sourceHint = useStoryLocale({ zh: '图片可包含来源信息（可选链接）', en: 'Images can include source information with optional links' })
-const curatedCollectionTitle = useStoryLocale({ zh: '精选合集', en: 'Curated Collection' })
-const curatedCollectionDesc = useStoryLocale({ zh: '带来源标注的图片', en: 'Images with source attribution' })
-const clickCountText = useStoryLocale({ zh: '点击次数:', en: 'Click count:' })
-const lastClickedText = useStoryLocale({ zh: '上一次: 图片', en: 'Last: Image' })
-const lightboxTitle = useStoryLocale({ zh: '点击打开灯箱', en: 'Click to Open Lightbox' })
-const lightboxDesc = useStoryLocale({ zh: '图片以全屏灯箱展示，支持键盘导航（方向键、Esc）', en: 'Images open in fullscreen lightbox with keyboard navigation (Arrow keys, Escape)' })
-const photoGridTitle = useStoryLocale({ zh: '照片网格', en: 'Photo Grid' })
-const lightboxFeaturesDesc = useStoryLocale({ zh: '灯箱支持的功能', en: 'The lightbox supports:' })
-const keyboardNav = useStoryLocale({ zh: '键盘导航：方向键浏览，Esc 关闭', en: 'Keyboard navigation: Arrow keys to navigate, Escape to close' })
-const touchGestures = useStoryLocale({ zh: '触控手势：左右滑动导航（触控设备）', en: 'Touch gestures: Swipe left/right to navigate (on touch devices)' })
-const imageCounter = useStoryLocale({ zh: '图片计数：显示当前位置（如 "2 / 4"）', en: 'Image counter: Shows current position (e.g., "2 / 4")' })
-const metadataDisplay = useStoryLocale({ zh: '元数据显示：标题、描述和来源信息', en: 'Metadata display: Title, caption, and source information' })
-const reducedMotion = useStoryLocale({ zh: '减少动效：尊重用户的动效偏好', en: 'Reduced motion: Respects user\'s motion preferences' })
-const featureDemoTitle = useStoryLocale({ zh: '功能演示', en: 'Feature Demo' })
-const featureDemoDesc = useStoryLocale({ zh: '尝试键盘导航并探索灯箱功能', en: 'Try the keyboard navigation and explore the lightbox' })
+const photoCollectionTitle = useStoryLocale('content.photoCollectionTitle', messages)
+const photoCollectionDesc = useStoryLocale('content.photoCollectionDesc', messages)
+const masonryHint = useStoryLocale('content.masonryHint', messages)
+const waterfallGalleryTitle = useStoryLocale('content.waterfallGalleryTitle', messages)
+const waterfallGalleryDesc = useStoryLocale('content.waterfallGalleryDesc', messages)
+const sourceHint = useStoryLocale('content.sourceHint', messages)
+const curatedCollectionTitle = useStoryLocale('content.curatedCollectionTitle', messages)
+const curatedCollectionDesc = useStoryLocale('content.curatedCollectionDesc', messages)
+const clickCountText = useStoryLocale('content.clickCountText', messages)
+const lastClickedText = useStoryLocale('content.lastClickedText', messages)
+const lightboxTitle = useStoryLocale('content.lightboxTitle', messages)
+const lightboxDesc = useStoryLocale('content.lightboxDesc', messages)
+const photoGridTitle = useStoryLocale('content.photoGridTitle', messages)
+const lightboxFeaturesDesc = useStoryLocale('content.lightboxFeaturesDesc', messages)
+const keyboardNav = useStoryLocale('content.keyboardNav', messages)
+const touchGestures = useStoryLocale('content.touchGestures', messages)
+const imageCounter = useStoryLocale('content.imageCounter', messages)
+const metadataDisplay = useStoryLocale('data.metaDisplay', messages)
+const reducedMotion = useStoryLocale('content.reducedMotion', messages)
+const featureDemoTitle = useStoryLocale('data.featureDemoTitle', messages)
+const featureDemoDesc = useStoryLocale('variant.featureDemoDesc', messages)
 </script>
 
 <template>
