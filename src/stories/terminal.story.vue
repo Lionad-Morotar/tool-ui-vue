@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { Terminal } from '@lionad/vtu-components';
-import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
+import { useStoryLocale } from './_shared/use-story-locale';
 
 const interactiveState = reactive({
   command: 'npm install',
@@ -76,7 +76,7 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
               <tr v-for="prop in props" :key="prop.name">
                 <td class="font-mono text-emerald-600">{{ prop.name }}</td>
                 <td class="font-mono text-blue-600">{{ prop.type }}</td>
-                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td class="text-muted-foreground">{{ 'default' in prop ? prop.default : '-' }}</td>
                 <td>{{ useStoryLocale(prop.description) }}</td>
               </tr>
             </tbody>

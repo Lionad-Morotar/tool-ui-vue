@@ -40,24 +40,30 @@ onMounted(() => {
 });
 const withTailwind = useStoryLocale({ zh: '含 Tailwind', en: 'With Tailwind' })
 const component = useStoryLocale({ zh: '组件', en: 'Component' })
+const tailwindTestTitle = useStoryLocale({ zh: 'Tailwind 测试', en: 'Tailwind Test' })
+const tailwindTestDesc = useStoryLocale({ zh: '如果看到样式文本，Tailwind 正常工作！', en: 'If you see styled text, Tailwind is working!' })
+const testCardTitle = useStoryLocale({ zh: '测试卡片', en: 'Test Card' })
+const testCardDesc = useStoryLocale({ zh: '测试 Tailwind CSS', en: 'Testing Tailwind CSS' })
+const okLabel = useStoryLocale({ zh: '好的', en: 'OK' })
+const cancelLabel = useStoryLocale({ zh: '取消', en: 'Cancel' })
 </script>
 
 <template>
   <Story title="TailwindTest/Test">
     <Variant :title="withTailwind">
       <div class="rounded-lg bg-gray-100 p-6">
-        <h2 class="text-xl font-bold text-blue-600">Tailwind Test</h2>
-        <p class="mt-2 text-gray-700">If you see styled text, Tailwind is working!</p>
+        <h2 class="text-xl font-bold text-blue-600">{{ tailwindTestTitle }}</h2>
+        <p class="mt-2 text-gray-700">{{ tailwindTestDesc }}</p>
       </div>
     </Variant>
     <Variant :title="component">
       <approval-card
         id="test-approval"
-        title="Test Card"
-        description="Testing Tailwind CSS"
+        :title="testCardTitle"
+        :description="testCardDesc"
         icon="check"
-        confirm-label="OK"
-        cancel-label="Cancel"
+        :confirm-label="okLabel"
+        :cancel-label="cancelLabel"
       />
     </Variant>
   </Story>

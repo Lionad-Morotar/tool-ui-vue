@@ -1,8 +1,66 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
+import { reactive, computed, type ComputedRef } from 'vue';
 import { WeatherWidget } from '@lionad/vtu-components';
 import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale, currentLocale } from './_shared/use-story-locale'
+
+const locLA = useStoryLocale({ zh: '洛杉矶，加利福尼亚州', en: 'Los Angeles, CA' })
+const locSeattle = useStoryLocale({ zh: '西雅图，华盛顿州', en: 'Seattle, WA' })
+const locLondon = useStoryLocale({ zh: '伦敦，英国', en: 'London, UK' })
+const locDenver = useStoryLocale({ zh: '丹佛，科罗拉多州', en: 'Denver, CO' })
+const locMiami = useStoryLocale({ zh: '迈阿密，佛罗里达州', en: 'Miami, FL' })
+const locTokyo = useStoryLocale({ zh: '东京，日本', en: 'Tokyo, Japan' })
+const locPhoenix = useStoryLocale({ zh: '凤凰城，亚利桑那州', en: 'Phoenix, AZ' })
+const locSF = useStoryLocale({ zh: '旧金山，加利福尼亚州', en: 'San Francisco, CA' })
+const locChicago = useStoryLocale({ zh: '芝加哥，伊利诺伊州', en: 'Chicago, IL' })
+const locBoston = useStoryLocale({ zh: '波士顿，马萨诸塞州', en: 'Boston, MA' })
+const locDemo = useStoryLocale({ zh: '演示城市', en: 'Demo City' })
+const locAccessible = useStoryLocale({ zh: '无障碍城市', en: 'Accessible City' })
+const locRainy = useStoryLocale({ zh: '多雨之城', en: 'Rainy City' })
+const locSnowy = useStoryLocale({ zh: '雪落小镇', en: 'Snowy Town' })
+
+const dayTue = useStoryLocale({ zh: '周二', en: 'Tue' })
+const dayWed = useStoryLocale({ zh: '周三', en: 'Wed' })
+const dayThu = useStoryLocale({ zh: '周四', en: 'Thu' })
+const dayFri = useStoryLocale({ zh: '周五', en: 'Fri' })
+const daySat = useStoryLocale({ zh: '周六', en: 'Sat' })
+const dayNow = useStoryLocale({ zh: '现在', en: 'Now' })
+
+const lblSunny = useStoryLocale({ zh: '晴天', en: 'Sunny' })
+const lblPartlyCloudy = useStoryLocale({ zh: '局部多云', en: 'Partly Cloudy' })
+const lblCloudy = useStoryLocale({ zh: '多云', en: 'Cloudy' })
+const lblRainy = useStoryLocale({ zh: '雨天', en: 'Rainy' })
+const lblHeavyRain = useStoryLocale({ zh: '大雨', en: 'Heavy Rain' })
+const lblSnowy = useStoryLocale({ zh: '雪天', en: 'Snowy' })
+const lblThunderstorm = useStoryLocale({ zh: '雷暴', en: 'Thunderstorm' })
+const lblClear = useStoryLocale({ zh: '晴朗', en: 'Clear' })
+
+const lblToggle = useStoryLocale({ zh: '切换', en: 'Toggle' })
+const lblTime = useStoryLocale({ zh: '时间', en: 'Time' })
+const lblCondition = useStoryLocale({ zh: '天气状况', en: 'Condition' })
+const lblReducedMotion = useStoryLocale({ zh: '启用减少动画', en: 'Enable Reduced Motion' })
+const lblEnableEffects = useStoryLocale({ zh: '启用特效', en: 'Enable Effects' })
+const lblQuality = useStoryLocale({ zh: '质量', en: 'Quality' })
+
+const textTimeOfDay = useStoryLocale({
+  zh: '演示一天中不同时间的光照模拟。黎明（早上6点）、正午（中午12点）、黄昏（下午6点）和午夜（凌晨12点）根据太阳的位置显示不同的背景渐变和亮度级别。',
+  en: 'Demonstrates time-of-day lighting simulation. Dawn (6 AM), Noon (12 PM), Dusk (6 PM), and Midnight (12 AM) show different background gradients and brightness levels based on the sun\'s position.'
+})
+
+const textReducedMotion = useStoryLocale({
+  zh: '减少运动：启用后，WebGL 特效将被禁用，鼠标驱动的光晕效果也会被抑制。这通过 prefers-reduced-motion 媒体查询尊重用户的系统减少运动偏好。',
+  en: 'Reduced Motion: When enabled, WebGL effects are disabled and mouse-driven glow effects are suppressed. This respects the user\'s system preference for reduced motion via the prefers-reduced-motion media query.'
+})
+
+const textPreferredMotion = useStoryLocale({
+  zh: '组件使用 VueUse 的 usePreferredReducedMotion 组合式函数自动检测系统偏好。',
+  en: 'The component uses VueUse\'s usePreferredReducedMotion composable to detect system preferences automatically.'
+})
+
+const textQualitySettings = useStoryLocale({
+  zh: '质量设置影响 WebGL 画布使用的 DPR（设备像素比）。低 = 0.5x，中 = 1x，高 = 2x，自动 = 基于设备性能。',
+  en: 'Quality settings affect the DPR (Device Pixel Ratio) used for the WebGL canvas. Low = 0.5x, Medium = 1x, High = 2x, Auto = based on device capabilities.'
+})
 
 const weatherState = reactive({
   condition: 'clear' as WeatherConditionCode,
@@ -22,20 +80,20 @@ const effectsState = reactive<EffectSettings>({
   reducedMotion: false,
 });
 
-const conditions: { code: WeatherConditionCode; label: string; temp: number }[] = [
-  { code: 'clear', label: 'Sunny', temp: 78 },
-  { code: 'partly-cloudy', label: 'Partly Cloudy', temp: 68 },
-  { code: 'cloudy', label: 'Cloudy', temp: 58 },
-  { code: 'rain', label: 'Rainy', temp: 55 },
-  { code: 'heavy-rain', label: 'Heavy Rain', temp: 52 },
-  { code: 'snow', label: 'Snowy', temp: 28 },
-  { code: 'thunderstorm', label: 'Thunderstorm', temp: 72 },
+const conditions: { code: WeatherConditionCode; label: ComputedRef<string>; temp: number }[] = [
+  { code: 'clear', label: lblSunny, temp: 78 },
+  { code: 'partly-cloudy', label: lblPartlyCloudy, temp: 68 },
+  { code: 'cloudy', label: lblCloudy, temp: 58 },
+  { code: 'rain', label: lblRainy, temp: 55 },
+  { code: 'heavy-rain', label: lblHeavyRain, temp: 52 },
+  { code: 'snow', label: lblSnowy, temp: 28 },
+  { code: 'thunderstorm', label: lblThunderstorm, temp: 72 },
 ];
 
-const timeOfDayConditions: { code: WeatherConditionCode; label: string }[] = [
-  { code: 'clear', label: 'Clear' },
-  { code: 'partly-cloudy', label: 'Partly Cloudy' },
-  { code: 'cloudy', label: 'Cloudy' },
+const timeOfDayConditions: { code: WeatherConditionCode; label: ComputedRef<string> }[] = [
+  { code: 'clear', label: lblClear },
+  { code: 'partly-cloudy', label: lblPartlyCloudy },
+  { code: 'cloudy', label: lblCloudy },
 ];
 
 const currentWeather = computed(() => ({
@@ -46,11 +104,11 @@ const currentWeather = computed(() => ({
 }));
 
 const forecast = computed<ForecastDay[]>(() => [
-  { label: 'Tue', conditionCode: weatherState.condition, tempMin: weatherState.temperature - 8, tempMax: weatherState.temperature + 3 },
-  { label: 'Wed', conditionCode: 'partly-cloudy', tempMin: weatherState.temperature - 10, tempMax: weatherState.temperature + 2 },
-  { label: 'Thu', conditionCode: 'cloudy', tempMin: weatherState.temperature - 12, tempMax: weatherState.temperature },
-  { label: 'Fri', conditionCode: 'rain', tempMin: weatherState.temperature - 15, tempMax: weatherState.temperature - 3 },
-  { label: 'Sat', conditionCode: 'clear', tempMin: weatherState.temperature - 8, tempMax: weatherState.temperature + 5 },
+  { label: dayTue.value, conditionCode: weatherState.condition, tempMin: weatherState.temperature - 8, tempMax: weatherState.temperature + 3 },
+  { label: dayWed.value, conditionCode: 'partly-cloudy', tempMin: weatherState.temperature - 10, tempMax: weatherState.temperature + 2 },
+  { label: dayThu.value, conditionCode: 'cloudy', tempMin: weatherState.temperature - 12, tempMax: weatherState.temperature },
+  { label: dayFri.value, conditionCode: 'rain', tempMin: weatherState.temperature - 15, tempMax: weatherState.temperature - 3 },
+  { label: daySat.value, conditionCode: 'clear', tempMin: weatherState.temperature - 8, tempMax: weatherState.temperature + 5 },
 ]);
 
 function setCondition(code: WeatherConditionCode, temp: number) {
@@ -76,14 +134,20 @@ function setTimeOfDayCondition(code: WeatherConditionCode) {
 }
 
 function formatTime(hour: number): string {
-  const period = hour >= 12 ? 'PM' : 'AM';
+  const isZh = currentLocale.value === 'zh-CN';
+  if (hour === 6) return isZh ? '早上6点' : '6 AM';
+  if (hour === 12) return isZh ? '中午12点' : '12 PM';
+  if (hour === 18) return isZh ? '晚上6点' : '6 PM';
+  if (hour === 0) return isZh ? '凌晨12点' : '12 AM';
   const displayHour = hour % 12 || 12;
+  const period = hour >= 12 ? 'PM' : 'AM';
   return `${displayHour} ${period}`;
 }
 
 function getTimeOfDayValue(hour: number): number {
   return hour / 24;
 }
+
 const sunny = useStoryLocale({ zh: '晴天', en: 'Sunny' })
 const cloudy = useStoryLocale({ zh: '多云', en: 'Cloudy' })
 const rainy = useStoryLocale({ zh: '雨天', en: 'Rainy' })
@@ -104,7 +168,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-sunny"
-          :location="{ name: 'Los Angeles, CA' }"
+          :location="{ name: locLA }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{
             conditionCode: 'clear',
@@ -113,11 +177,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 82,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'clear', tempMin: 64, tempMax: 80 },
-            { label: 'Wed', conditionCode: 'partly-cloudy', tempMin: 62, tempMax: 78 },
-            { label: 'Thu', conditionCode: 'clear', tempMin: 65, tempMax: 83 },
-            { label: 'Fri', conditionCode: 'clear', tempMin: 66, tempMax: 85 },
-            { label: 'Sat', conditionCode: 'partly-cloudy', tempMin: 63, tempMax: 79 },
+            { label: dayTue, conditionCode: 'clear', tempMin: 64, tempMax: 80 },
+            { label: dayWed, conditionCode: 'partly-cloudy', tempMin: 62, tempMax: 78 },
+            { label: dayThu, conditionCode: 'clear', tempMin: 65, tempMax: 83 },
+            { label: dayFri, conditionCode: 'clear', tempMin: 66, tempMax: 85 },
+            { label: daySat, conditionCode: 'partly-cloudy', tempMin: 63, tempMax: 79 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -129,7 +193,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-cloudy"
-          :location="{ name: 'Seattle, WA' }"
+          :location="{ name: locSeattle }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{
             conditionCode: 'cloudy',
@@ -138,11 +202,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 62,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'rain', tempMin: 50, tempMax: 58 },
-            { label: 'Wed', conditionCode: 'cloudy', tempMin: 51, tempMax: 60 },
-            { label: 'Thu', conditionCode: 'partly-cloudy', tempMin: 52, tempMax: 63 },
-            { label: 'Fri', conditionCode: 'cloudy', tempMin: 50, tempMax: 59 },
-            { label: 'Sat', conditionCode: 'rain', tempMin: 49, tempMax: 57 },
+            { label: dayTue, conditionCode: 'rain', tempMin: 50, tempMax: 58 },
+            { label: dayWed, conditionCode: 'cloudy', tempMin: 51, tempMax: 60 },
+            { label: dayThu, conditionCode: 'partly-cloudy', tempMin: 52, tempMax: 63 },
+            { label: dayFri, conditionCode: 'cloudy', tempMin: 50, tempMax: 59 },
+            { label: daySat, conditionCode: 'rain', tempMin: 49, tempMax: 57 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -154,7 +218,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-rainy"
-          :location="{ name: 'London, UK' }"
+          :location="{ name: locLondon }"
           :units="{ temperature: 'celsius' }"
           :current="{
             conditionCode: 'rain',
@@ -163,11 +227,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 14,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'heavy-rain', tempMin: 8, tempMax: 13 },
-            { label: 'Wed', conditionCode: 'rain', tempMin: 9, tempMax: 14 },
-            { label: 'Thu', conditionCode: 'cloudy', tempMin: 10, tempMax: 15 },
-            { label: 'Fri', conditionCode: 'drizzle', tempMin: 9, tempMax: 13 },
-            { label: 'Sat', conditionCode: 'rain', tempMin: 8, tempMax: 12 },
+            { label: dayTue, conditionCode: 'heavy-rain', tempMin: 8, tempMax: 13 },
+            { label: dayWed, conditionCode: 'rain', tempMin: 9, tempMax: 14 },
+            { label: dayThu, conditionCode: 'cloudy', tempMin: 10, tempMax: 15 },
+            { label: dayFri, conditionCode: 'drizzle', tempMin: 9, tempMax: 13 },
+            { label: daySat, conditionCode: 'rain', tempMin: 8, tempMax: 12 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -179,7 +243,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-snowy"
-          :location="{ name: 'Denver, CO' }"
+          :location="{ name: locDenver }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{
             conditionCode: 'snow',
@@ -188,11 +252,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 32,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'snow', tempMin: 12, tempMax: 28 },
-            { label: 'Wed', conditionCode: 'sleet', tempMin: 14, tempMax: 30 },
-            { label: 'Thu', conditionCode: 'partly-cloudy', tempMin: 16, tempMax: 33 },
-            { label: 'Fri', conditionCode: 'clear', tempMin: 18, tempMax: 35 },
-            { label: 'Sat', conditionCode: 'snow', tempMin: 15, tempMax: 29 },
+            { label: dayTue, conditionCode: 'snow', tempMin: 12, tempMax: 28 },
+            { label: dayWed, conditionCode: 'sleet', tempMin: 14, tempMax: 30 },
+            { label: dayThu, conditionCode: 'partly-cloudy', tempMin: 16, tempMax: 33 },
+            { label: dayFri, conditionCode: 'clear', tempMin: 18, tempMax: 35 },
+            { label: daySat, conditionCode: 'snow', tempMin: 15, tempMax: 29 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -204,7 +268,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-storm"
-          :location="{ name: 'Miami, FL' }"
+          :location="{ name: locMiami }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{
             conditionCode: 'thunderstorm',
@@ -213,11 +277,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 90,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'thunderstorm', tempMin: 76, tempMax: 88 },
-            { label: 'Wed', conditionCode: 'heavy-rain', tempMin: 75, tempMax: 86 },
-            { label: 'Thu', conditionCode: 'rain', tempMin: 77, tempMax: 87 },
-            { label: 'Fri', conditionCode: 'partly-cloudy', tempMin: 78, tempMax: 89 },
-            { label: 'Sat', conditionCode: 'clear', tempMin: 79, tempMax: 91 },
+            { label: dayTue, conditionCode: 'thunderstorm', tempMin: 76, tempMax: 88 },
+            { label: dayWed, conditionCode: 'heavy-rain', tempMin: 75, tempMax: 86 },
+            { label: dayThu, conditionCode: 'rain', tempMin: 77, tempMax: 87 },
+            { label: dayFri, conditionCode: 'partly-cloudy', tempMin: 78, tempMax: 89 },
+            { label: daySat, conditionCode: 'clear', tempMin: 79, tempMax: 91 },
           ]"
           :updated-at="new Date().toISOString()"
           :effects="{ enabled: true }"
@@ -230,7 +294,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="w-full max-w-sm">
         <weather-widget
           id="weather-celsius"
-          :location="{ name: 'Tokyo, Japan' }"
+          :location="{ name: locTokyo }"
           :units="{ temperature: 'celsius' }"
           :current="{
             conditionCode: 'partly-cloudy',
@@ -239,11 +303,11 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             tempMax: 25,
           }"
           :forecast="[
-            { label: 'Tue', conditionCode: 'clear', tempMin: 17, tempMax: 26 },
-            { label: 'Wed', conditionCode: 'clear', tempMin: 18, tempMax: 27 },
-            { label: 'Thu', conditionCode: 'partly-cloudy', tempMin: 19, tempMax: 25 },
-            { label: 'Fri', conditionCode: 'cloudy', tempMin: 18, tempMax: 24 },
-            { label: 'Sat', conditionCode: 'rain', tempMin: 17, tempMax: 22 },
+            { label: dayTue, conditionCode: 'clear', tempMin: 17, tempMax: 26 },
+            { label: dayWed, conditionCode: 'clear', tempMin: 18, tempMax: 27 },
+            { label: dayThu, conditionCode: 'partly-cloudy', tempMin: 19, tempMax: 25 },
+            { label: dayFri, conditionCode: 'cloudy', tempMin: 18, tempMax: 24 },
+            { label: daySat, conditionCode: 'rain', tempMin: 17, tempMax: 22 },
           ]"
           :updated-at="new Date().toISOString()"
         />
@@ -273,7 +337,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               class="rounded-md bg-muted px-3 py-1 text-sm font-medium hover:bg-muted/80"
               @click="toggleUnit"
             >
-              Toggle °{{ weatherState.unit === 'fahrenheit' ? 'F' : 'C' }}
+              {{ lblToggle }} °{{ weatherState.unit === 'fahrenheit' ? 'F' : 'C' }}
             </button>
             <input
               v-model.number="weatherState.temperature"
@@ -303,34 +367,34 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="grid grid-cols-2 gap-4">
         <weather-widget
           id="weather-all-sunny"
-          :location="{ name: 'Phoenix, AZ' }"
+          :location="{ name: locPhoenix }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{ conditionCode: 'clear', temperature: 95, tempMin: 80, tempMax: 98 }"
-          :forecast="[{ label: 'Tue', conditionCode: 'clear', tempMin: 78, tempMax: 96 }]"
+          :forecast="[{ label: dayTue, conditionCode: 'clear', tempMin: 78, tempMax: 96 }]"
           :updated-at="new Date().toISOString()"
         />
         <weather-widget
           id="weather-all-foggy"
-          :location="{ name: 'San Francisco, CA' }"
+          :location="{ name: locSF }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{ conditionCode: 'fog', temperature: 58, tempMin: 54, tempMax: 62 }"
-          :forecast="[{ label: 'Tue', conditionCode: 'fog', tempMin: 52, tempMax: 60 }]"
+          :forecast="[{ label: dayTue, conditionCode: 'fog', tempMin: 52, tempMax: 60 }]"
           :updated-at="new Date().toISOString()"
         />
         <weather-widget
           id="weather-all-windy"
-          :location="{ name: 'Chicago, IL' }"
+          :location="{ name: locChicago }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{ conditionCode: 'windy', temperature: 45, tempMin: 38, tempMax: 50 }"
-          :forecast="[{ label: 'Tue', conditionCode: 'windy', tempMin: 36, tempMax: 48 }]"
+          :forecast="[{ label: dayTue, conditionCode: 'windy', tempMin: 36, tempMax: 48 }]"
           :updated-at="new Date().toISOString()"
         />
         <weather-widget
           id="weather-all-sleet"
-          :location="{ name: 'Boston, MA' }"
+          :location="{ name: locBoston }"
           :units="{ temperature: 'fahrenheit' }"
           :current="{ conditionCode: 'sleet', temperature: 32, tempMin: 28, tempMax: 36 }"
-          :forecast="[{ label: 'Tue', conditionCode: 'sleet', tempMin: 26, tempMax: 34 }]"
+          :forecast="[{ label: dayTue, conditionCode: 'sleet', tempMin: 26, tempMax: 34 }]"
           :updated-at="new Date().toISOString()"
         />
       </div>
@@ -340,7 +404,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
       <div class="space-y-4">
         <div class="flex flex-wrap items-center gap-4">
           <div class="flex items-center gap-2">
-            <span class="text-sm font-medium">Time:</span>
+            <span class="text-sm font-medium">{{ lblTime }}:</span>
             <div class="flex gap-1">
               <button
                 v-for="hour in [6, 12, 18, 0]"
@@ -358,7 +422,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm font-medium">Condition:</span>
+            <span class="text-sm font-medium">{{ lblCondition }}:</span>
             <div class="flex gap-1">
               <button
                 v-for="cond in timeOfDayConditions"
@@ -379,7 +443,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
         <div class="w-full max-w-sm">
           <weather-widget
             id="weather-time-of-day"
-            :location="{ name: 'Demo City' }"
+            :location="{ name: locDemo }"
             :units="{ temperature: 'fahrenheit' }"
             :current="{
               conditionCode: timeOfDayState.condition,
@@ -388,15 +452,14 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               tempMax: 78,
             }"
             :forecast="[
-              { label: 'Now', conditionCode: timeOfDayState.condition, tempMin: 65, tempMax: 78 },
+              { label: dayNow, conditionCode: timeOfDayState.condition, tempMin: 65, tempMax: 78 },
             ]"
             :time="{ localTimeOfDay: getTimeOfDayValue(timeOfDayState.hour) }"
             :updated-at="new Date().toISOString()"
           />
         </div>
         <p class="text-xs text-muted-foreground">
-          Demonstrates time-of-day lighting simulation. Dawn (6AM), Noon (12PM), Dusk (6PM), and Midnight (12AM)
-          show different background gradients and brightness levels based on the sun's position.
+          {{ textTimeOfDay }}
         </p>
       </div>
     </Variant>
@@ -410,7 +473,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               type="checkbox"
               class="rounded border-gray-300"
             />
-            <span>Enable Reduced Motion</span>
+            <span>{{ lblReducedMotion }}</span>
           </label>
           <label class="flex items-center gap-2 text-sm">
             <input
@@ -418,13 +481,13 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               type="checkbox"
               class="rounded border-gray-300"
             />
-            <span>Enable Effects</span>
+            <span>{{ lblEnableEffects }}</span>
           </label>
         </div>
         <div class="w-full max-w-sm">
           <weather-widget
             id="weather-reduced-motion"
-            :location="{ name: 'Accessible City' }"
+            :location="{ name: locAccessible }"
             :units="{ temperature: 'fahrenheit' }"
             :current="{
               conditionCode: 'thunderstorm',
@@ -436,8 +499,8 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               visibility: 5,
             }"
             :forecast="[
-              { label: 'Tue', conditionCode: 'thunderstorm', tempMin: 58, tempMax: 70 },
-              { label: 'Wed', conditionCode: 'rain', tempMin: 60, tempMax: 72 },
+              { label: dayTue, conditionCode: 'thunderstorm', tempMin: 58, tempMax: 70 },
+              { label: dayWed, conditionCode: 'rain', tempMin: 60, tempMax: 72 },
             ]"
             :updated-at="new Date().toISOString()"
             :effects="effectsState"
@@ -445,13 +508,10 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
         </div>
         <div class="space-y-1 text-xs text-muted-foreground">
           <p>
-            <strong>Reduced Motion:</strong> When enabled, WebGL effects are disabled and mouse-driven
-            glow effects are suppressed. This respects the user's system preference for reduced motion
-            via the <code>prefers-reduced-motion</code> media query.
+            <strong>{{ lblReducedMotion }}:</strong> {{ textReducedMotion }}
           </p>
           <p>
-            The component uses VueUse's <code>usePreferredReducedMotion</code> composable to detect
-            system preferences automatically.
+            {{ textPreferredMotion }}
           </p>
         </div>
       </div>
@@ -460,7 +520,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
     <Variant :title="effectQualitySettings">
       <div class="space-y-4">
         <div class="flex items-center gap-2">
-          <span class="text-sm font-medium">Quality:</span>
+          <span class="text-sm font-medium">{{ lblQuality }}:</span>
           <div class="flex gap-1">
             <button
               v-for="quality in ['low', 'medium', 'high', 'auto']"
@@ -480,7 +540,7 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
         <div class="grid grid-cols-2 gap-4">
           <weather-widget
             id="weather-quality-rain"
-            :location="{ name: 'Rainy City' }"
+            :location="{ name: locRainy }"
             :units="{ temperature: 'fahrenheit' }"
             :current="{
               conditionCode: 'heavy-rain',
@@ -491,13 +551,13 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               precipitationLevel: 'heavy',
               visibility: 3,
             }"
-            :forecast="[{ label: 'Tue', conditionCode: 'rain', tempMin: 48, tempMax: 58 }]"
+            :forecast="[{ label: dayTue, conditionCode: 'rain', tempMin: 48, tempMax: 58 }]"
             :updated-at="new Date().toISOString()"
             :effects="{ enabled: true, quality: effectsState.quality }"
           />
           <weather-widget
             id="weather-quality-snow"
-            :location="{ name: 'Snowy Town' }"
+            :location="{ name: locSnowy }"
             :units="{ temperature: 'fahrenheit' }"
             :current="{
               conditionCode: 'snow',
@@ -508,14 +568,13 @@ const effectQualitySettings = useStoryLocale({ zh: '特效质量设置', en: 'Ef
               precipitationLevel: 'moderate',
               visibility: 2,
             }"
-            :forecast="[{ label: 'Tue', conditionCode: 'snow', tempMin: 18, tempMax: 30 }]"
+            :forecast="[{ label: dayTue, conditionCode: 'snow', tempMin: 18, tempMax: 30 }]"
             :updated-at="new Date().toISOString()"
             :effects="{ enabled: true, quality: effectsState.quality }"
           />
         </div>
         <p class="text-xs text-muted-foreground">
-          Quality settings affect the DPR (Device Pixel Ratio) used for the WebGL canvas.
-          Low = 0.5x, Medium = 1x, High = 2x, Auto = based on device capabilities.
+          {{ textQualitySettings }}
         </p>
       </div>
     </Variant>

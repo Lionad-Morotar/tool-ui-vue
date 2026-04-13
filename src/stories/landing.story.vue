@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   BarChart3,
-  Code2,
   ImageIcon,
   Layers,
   MousePointerClick,

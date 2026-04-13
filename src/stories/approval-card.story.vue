@@ -3,50 +3,6 @@ import { reactive } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
 import { useStoryLocale } from './_shared/use-story-locale'
 
-/**
- * # ApprovalCard
- *
- * A decision-making component that presents users with a binary choice (approve/deny).
- * Supports destructive actions, metadata display, and receipt states.
- *
- * ## Props
- *
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | id | string | required | Unique identifier for the component |
- * | title | string | required | The main question or title |
- * | description | string | undefined | Optional descriptive text |
- * | icon | string | undefined | Lucide icon name (e.g., 'rocket', 'mail', 'trash-2', 'check') |
- * | metadata | MetadataItem[] | undefined | Array of key-value pairs to display |
- * | variant | 'default' \| 'destructive' | 'default' | Visual style variant |
- * | confirmLabel | string | 'Approve' | Label for confirm button |
- * | cancelLabel | string | 'Deny' | Label for cancel button |
- * | choice | 'approved' \| 'denied' | undefined | Receipt state - shows result view |
- * | css | { root?: string } | undefined | CSS classes for component elements |
- *
- * ## Emits
- *
- * | Event | Description |
- * |-------|-------------|
- * | confirm | Emitted when user clicks confirm button |
- * | cancel | Emitted when user clicks cancel button or presses Escape |
- *
- * ## Usage
- *
- * ```vue
- * <ApprovalCard
- *   id="deploy-approval"
- *   title="Deploy to production?"
- *   description="This will trigger the deployment pipeline"
- *   icon="rocket"
- *   confirmLabel="Deploy"
- *   cancelLabel="Cancel"
- *   @confirm="handleDeploy"
- *   @cancel="handleCancel"
- * />
- * ```
- */
-
 const interactiveState = reactive({
   title: 'Deploy to Production',
   description: 'This will push the latest changes to all users.',
@@ -68,6 +24,7 @@ function handleCancel() {
 function resetChoice() {
   interactiveState.choice = undefined;
 }
+
 const defaultVariant = useStoryLocale({ zh: '默认', en: 'Default' })
 const destructive = useStoryLocale({ zh: '破坏性操作', en: 'Destructive' })
 const withMetadata = useStoryLocale({ zh: '含元数据', en: 'With Metadata' })
@@ -76,6 +33,47 @@ const receiptStateApproved = useStoryLocale({ zh: '回执状态（已批准）',
 const receiptStateDenied = useStoryLocale({ zh: '回执状态（已拒绝）', en: 'Receipt State (Denied)' })
 const customLabels = useStoryLocale({ zh: '自定义标签', en: 'Custom Labels' })
 const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
+
+// Deploy to production
+const deployTitle = useStoryLocale({ zh: '部署到生产环境', en: 'Deploy to Production' })
+const deployDesc = useStoryLocale({ zh: '这会将最新变更推送给所有用户', en: 'This will push the latest changes to all users.' })
+const deployLabel = useStoryLocale({ zh: '部署', en: 'Deploy' })
+const cancelLabel = useStoryLocale({ zh: '取消', en: 'Cancel' })
+
+// Delete project
+const deleteProjectTitle = useStoryLocale({ zh: '删除项目', en: 'Delete Project' })
+const deleteProjectDesc = useStoryLocale({ zh: '此操作无法撤销。所有文件、设置和历史记录将被永久删除。', en: 'This action cannot be undone. All files, settings, and history will be permanently removed.' })
+const deleteProjectLabel = useStoryLocale({ zh: '删除项目', en: 'Delete Project' })
+const keepProjectLabel = useStoryLocale({ zh: '保留项目', en: 'Keep Project' })
+
+// Email campaign
+const emailCampaignTitle = useStoryLocale({ zh: '发送邮件活动', en: 'Send Email Campaign' })
+const emailCampaignDesc = useStoryLocale({ zh: '发送前请审查详细信息', en: 'Review the details before sending to your subscribers.' })
+const recipientsLabel = useStoryLocale({ zh: '收件人', en: 'Recipients' })
+const subjectLabel = useStoryLocale({ zh: '主题', en: 'Subject' })
+const scheduledLabel = useStoryLocale({ zh: '计划时间', en: 'Scheduled' })
+const sendNowLabel = useStoryLocale({ zh: '立即发送', en: 'Send Now' })
+const weeklyDigestLabel = useStoryLocale({ zh: '你的每周摘要', en: 'Your Weekly Digest' })
+const immediatelyLabel = useStoryLocale({ zh: '立即', en: 'Immediately' })
+const subscriberCount = useStoryLocale({ zh: '12,847 名订阅者', en: '12,847 subscribers' })
+
+// Minimal
+const confirmActionTitle = useStoryLocale({ zh: '确认操作？', en: 'Confirm action?' })
+
+// Receipt
+const backupDbTitle = useStoryLocale({ zh: '备份数据库', en: 'Back up database' })
+const deleteAllFilesTitle = useStoryLocale({ zh: '删除所有项目文件', en: 'Delete all project files' })
+const approvedLabel = useStoryLocale({ zh: '已批准', en: 'Approved' })
+const deniedLabel = useStoryLocale({ zh: '已拒绝', en: 'Denied' })
+
+// Custom labels
+const submitProposalTitle = useStoryLocale({ zh: '提交提案？', en: 'Submit proposal?' })
+const submitProposalDesc = useStoryLocale({ zh: '这会将提案发送给客户', en: 'This will send the proposal to the client' })
+const submitLabel = useStoryLocale({ zh: '提交', en: 'Submit' })
+const saveDraftLabel = useStoryLocale({ zh: '保存草稿', en: 'Save Draft' })
+
+// Interactive
+const resetLabel = useStoryLocale({ zh: '重置', en: 'Reset' })
 </script>
 
 <template>
@@ -84,11 +82,11 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-basic"
-        title="Deploy to Production"
-        description="This will push the latest changes to all users."
+        :title="deployTitle"
+        :description="deployDesc"
         icon="rocket"
-        confirm-label="Deploy"
-        cancel-label="Cancel"
+        :confirm-label="deployLabel"
+        :cancel-label="cancelLabel"
       />
     </Variant>
 
@@ -96,12 +94,12 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-destructive"
-        title="Delete Project"
-        description="This action cannot be undone. All files, settings, and history will be permanently removed."
+        :title="deleteProjectTitle"
+        :description="deleteProjectDesc"
         variant="destructive"
         icon="trash-2"
-        confirm-label="Delete Project"
-        cancel-label="Keep Project"
+        :confirm-label="deleteProjectLabel"
+        :cancel-label="keepProjectLabel"
       />
     </Variant>
 
@@ -109,16 +107,16 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-metadata"
-        title="Send Email Campaign"
-        description="Review the details before sending to your subscribers."
+        :title="emailCampaignTitle"
+        :description="emailCampaignDesc"
         icon="mail"
         :metadata="[
-          { key: 'Recipients', value: '12,847 subscribers' },
-          { key: 'Subject', value: 'Your Weekly Digest' },
-          { key: 'Scheduled', value: 'Immediately' },
+          { key: recipientsLabel, value: subscriberCount },
+          { key: subjectLabel, value: weeklyDigestLabel },
+          { key: scheduledLabel, value: immediatelyLabel },
         ]"
-        confirm-label="Send Now"
-        cancel-label="Cancel"
+        :confirm-label="sendNowLabel"
+        :cancel-label="cancelLabel"
       />
     </Variant>
 
@@ -126,7 +124,7 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-minimal"
-        title="Confirm action?"
+        :title="confirmActionTitle"
       />
     </Variant>
 
@@ -134,9 +132,9 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-approved"
-        title="Back up database"
+        :title="backupDbTitle"
         choice="approved"
-        confirm-label="Approved"
+        :confirm-label="approvedLabel"
       />
     </Variant>
 
@@ -144,9 +142,9 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-receipt-denied"
-        title="Delete all project files"
+        :title="deleteAllFilesTitle"
         choice="denied"
-        cancel-label="Denied"
+        :cancel-label="deniedLabel"
       />
     </Variant>
 
@@ -154,11 +152,11 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <approval-card
         id="approval-card-custom"
-        title="Submit proposal?"
-        description="This will send the proposal to the client"
+        :title="submitProposalTitle"
+        :description="submitProposalDesc"
         icon="file-text"
-        confirm-label="Submit"
-        cancel-label="Save Draft"
+        :confirm-label="submitLabel"
+        :cancel-label="saveDraftLabel"
       />
     </Variant>
 
@@ -176,7 +174,7 @@ const interactive = useStoryLocale({ zh: '交互模式', en: 'Interactive' })
           class="self-center rounded-md bg-muted px-3 py-1 text-sm hover:bg-muted/80"
           @click="resetChoice"
         >
-          Reset
+          {{ resetLabel }}
         </button>
       </div>
     </Variant>

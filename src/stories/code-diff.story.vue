@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeDiff } from '@lionad/vtu-components';
-import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
+import { useStoryLocale } from './_shared/use-story-locale';
 
 const oldFunction = `export async function fetchUser(id: string) {
   const res = await db.users.findUnique({ where: { id } });

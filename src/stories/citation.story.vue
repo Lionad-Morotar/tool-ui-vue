@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed, watch } from 'vue';
 import { Citation, CitationList } from '@lionad/vtu-components';
 import type { SerializableCitation } from '@lionad/vtu-components/citation/schema';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale, currentLocale } from './_shared/use-story-locale'
 
-const interactiveState = reactive({
+const interactiveStateZh = {
+  href: 'https://example.com/article',
+  title: '交互式引用示例',
+  snippet: '这是一个可自定义的多引用组件，支持多种变体和类型。',
+  domain: 'example.com',
+  author: '张三',
+  publishedAt: '2024-03-15T00:00:00Z',
+  type: 'article' as const,
+  variant: 'default' as const,
+};
+
+const interactiveStateEn = {
   href: 'https://example.com/article',
   title: 'Interactive Citation Example',
   snippet: 'This is a customizable citation component that supports multiple variants and types.',
@@ -13,9 +24,60 @@ const interactiveState = reactive({
   publishedAt: '2024-03-15T00:00:00Z',
   type: 'article' as const,
   variant: 'default' as const,
-});
+};
 
-const sampleCitations: SerializableCitation[] = [
+const interactiveState = reactive({ ...interactiveStateZh });
+
+watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value === 'zh-CN' ? interactiveStateZh : interactiveStateEn); });
+// Sample citations - zh/en pairs
+const sampleCitationsZh: SerializableCitation[] = [
+  {
+    id: 'citation-1',
+    href: 'https://example.com/article-1',
+    title: '研究论文：高级 UI 模式',
+    snippet: '本研究探讨了各种 UI 模式在提升用户参与度方面的有效性……',
+    domain: 'example.com',
+    author: 'Smith 博士',
+    publishedAt: '2024-01-10T00:00:00Z',
+    type: 'article',
+  },
+  {
+    id: 'citation-2',
+    href: 'https://developer.mozilla.org',
+    title: 'MDN Web 文档',
+    snippet: '开发者资源，由开发者创建。',
+    domain: 'developer.mozilla.org',
+    type: 'webpage',
+  },
+  {
+    id: 'citation-3',
+    href: 'https://github.com/example/lib',
+    title: 'tool-ui 组件库',
+    snippet: '一个用于构建 AI 助手界面的综合 Vue 组件库。',
+    domain: 'github.com',
+    type: 'code',
+  },
+  {
+    id: 'citation-4',
+    href: 'https://example.com/whitepaper.pdf',
+    title: '技术白皮书',
+    snippet: '对架构和设计决策的深入技术分析。',
+    domain: 'example.com',
+    author: '工程团队',
+    publishedAt: '2024-01-01T00:00:00Z',
+    type: 'document',
+  },
+  {
+    id: 'citation-5',
+    href: 'https://api.example.com/docs',
+    title: 'API 文档',
+    snippet: '开发者的完整 API 参考。',
+    domain: 'api.example.com',
+    type: 'api',
+  },
+];
+
+const sampleCitationsEn: SerializableCitation[] = [
   {
     id: 'citation-1',
     href: 'https://example.com/article-1',
@@ -62,20 +124,8 @@ const sampleCitations: SerializableCitation[] = [
   },
 ];
 
-const inlineCitations: SerializableCitation[] = [
-  { id: 'inline-1', href: 'https://vuejs.org', title: 'Vue.js', domain: 'vuejs.org', type: 'webpage' },
-  { id: 'inline-2', href: 'https://react.dev', title: 'React', domain: 'react.dev', type: 'webpage' },
-  { id: 'inline-3', href: 'https://svelte.dev', title: 'Svelte', domain: 'svelte.dev', type: 'webpage' },
-  { id: 'inline-4', href: 'https://angular.io', title: 'Angular', domain: 'angular.io', type: 'webpage' },
-];
+const sampleCitations = computed(() => currentLocale.value === 'zh-CN' ? sampleCitationsZh : sampleCitationsEn);
 
-const stackedCitations: SerializableCitation[] = [
-  { id: 'stack-1', href: 'https://github.com/vuejs/vue', title: 'Vue', domain: 'github.com', type: 'code' },
-  { id: 'stack-2', href: 'https://github.com/facebook/react', title: 'React', domain: 'github.com', type: 'code' },
-  { id: 'stack-3', href: 'https://github.com/sveltejs/svelte', title: 'Svelte', domain: 'github.com', type: 'code' },
-  { id: 'stack-4', href: 'https://github.com/angular/angular', title: 'Angular', domain: 'github.com', type: 'code' },
-  { id: 'stack-5', href: 'https://github.com/solidjs/solid', title: 'Solid', domain: 'github.com', type: 'code' },
-];
 const defaultVariant = useStoryLocale({ zh: '默认', en: 'Default' })
 const inline = useStoryLocale({ zh: '行内', en: 'Inline' })
 const stacked = useStoryLocale({ zh: '堆叠', en: 'Stacked' })
@@ -88,6 +138,13 @@ const citationListInline = useStoryLocale({ zh: '引用列表 - 行内', en: 'Ci
 const citationListStacked = useStoryLocale({ zh: '引用列表 - 堆叠', en: 'CitationList - Stacked' })
 const citationListWithOverflow = useStoryLocale({ zh: '引用列表 - 溢出', en: 'CitationList - With Overflow' })
 const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行内溢出', en: 'CitationList - Inline with Overflow' })
+
+// Individual citation texts for single variants
+const researchPaperTitle = useStoryLocale({ zh: '研究论文：高级 UI 模式', en: 'Research Paper: Advanced UI Patterns' })
+const researchPaperSnippet = useStoryLocale({ zh: '本研究探讨了各种 UI 模式在提升用户参与度和任务完成率方面的有效性……', en: 'This study explores the effectiveness of various UI patterns in improving user engagement and task completion rates...' })
+const sourceDocTitle = useStoryLocale({ zh: '来源文档', en: 'Source Document' })
+const docRefTitle = useStoryLocale({ zh: '文档参考', en: 'Documentation Reference' })
+const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升处理多项数据时的性能。', en: 'The API supports batch operations for improved performance when processing multiple items.' })
 </script>
 
 <template>
@@ -98,8 +155,8 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
         <citation
           id="citation-default"
           href="https://example.com/research"
-          title="Research Paper: Advanced UI Patterns"
-          snippet="This study explores the effectiveness of various UI patterns in improving user engagement and task completion rates..."
+          :title="researchPaperTitle"
+          :snippet="researchPaperSnippet"
           domain="example.com"
           author="Dr. Jane Smith"
           published-at="2024-01-10T00:00:00Z"
@@ -115,7 +172,7 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
           id="citation-inline"
           variant="inline"
           href="https://example.com/source"
-          title="Source Document"
+          :title="sourceDocTitle"
           domain="example.com"
         />
       </div>
@@ -128,8 +185,8 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
           id="citation-stacked"
           variant="stacked"
           href="https://example.com/doc"
-          title="Documentation Reference"
-          snippet="The API supports batch operations for improved performance when processing multiple items."
+          :title="docRefTitle"
+          :snippet="docRefSnippet"
           domain="docs.example.com"
           type="api"
         />
@@ -205,7 +262,7 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-inline"
-          :citations="inlineCitations"
+          :citations="sampleCitations"
           variant="inline"
         />
       </div>
@@ -216,7 +273,7 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-stacked"
-          :citations="stackedCitations"
+          :citations="sampleCitations"
           variant="stacked"
         />
       </div>
@@ -239,7 +296,7 @@ const citationListInlineWithOverflow = useStoryLocale({ zh: '引用列表 - 行�
       <div class="w-full max-w-2xl">
         <citation-list
           id="citation-list-inline-overflow"
-          :citations="inlineCitations"
+          :citations="sampleCitations"
           variant="inline"
           :max-visible="2"
         />

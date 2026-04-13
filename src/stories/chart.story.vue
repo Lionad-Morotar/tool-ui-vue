@@ -17,6 +17,7 @@ const chartData = reactive({
 function handleDataPointClick(point: ChartDataPoint) {
   chartData.selectedPoint = `${point.seriesLabel}: ${String(point.xValue)} = ${String(point.yValue)}`;
 }
+
 const lineChart = useStoryLocale({ zh: '折线图', en: 'Line Chart' })
 const barChart = useStoryLocale({ zh: '柱状图', en: 'Bar Chart' })
 const multiSeries = useStoryLocale({ zh: '多系列', en: 'Multi-Series' })
@@ -26,6 +27,52 @@ const withoutGrid = useStoryLocale({ zh: '无网格', en: 'Without Grid' })
 const withoutLegend = useStoryLocale({ zh: '无图例', en: 'Without Legend' })
 const minimal = useStoryLocale({ zh: '极简', en: 'Minimal' })
 const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset' })
+
+// Line chart
+const systemPerfTitle = useStoryLocale({ zh: '系统性能', en: 'System Performance' })
+const systemPerfDesc = useStoryLocale({ zh: 'CPU 和内存使用率随时间变化', en: 'CPU and Memory usage over time' })
+const cpuLabel = useStoryLocale({ zh: 'CPU %', en: 'CPU %' })
+const memoryLabel = useStoryLocale({ zh: '内存 %', en: 'Memory %' })
+
+// Bar chart
+const monthlyRevTitle = useStoryLocale({ zh: '月度收入', en: 'Monthly Revenue' })
+const monthlyRevDesc = useStoryLocale({ zh: '收入 vs 支出 (2024)', en: 'Revenue vs Expenses (2024)' })
+const revenueLabel = useStoryLocale({ zh: '收入', en: 'Revenue' })
+const expensesLabel = useStoryLocale({ zh: '支出', en: 'Expenses' })
+
+// Multi-series
+const trafficSourcesTitle = useStoryLocale({ zh: '流量来源', en: 'Traffic Sources' })
+const organicLabel = useStoryLocale({ zh: '自然流量', en: 'Organic' })
+const paidLabel = useStoryLocale({ zh: '付费流量', en: 'Paid' })
+const socialLabel = useStoryLocale({ zh: '社交媒体', en: 'Social' })
+
+// Custom colors
+const perfMetricsTitle = useStoryLocale({ zh: '性能指标', en: 'Performance Metrics' })
+const speedLabel = useStoryLocale({ zh: '速度', en: 'Speed' })
+const qualityLabel = useStoryLocale({ zh: '质量', en: 'Quality' })
+const reliabilityLabel = useStoryLocale({ zh: '可靠性', en: 'Reliability' })
+const usabilityLabel = useStoryLocale({ zh: '可用性', en: 'Usability' })
+
+// Interactive
+const clickableChartTitle = useStoryLocale({ zh: '可点击图表', en: 'Clickable Chart' })
+const clickableChartDesc = useStoryLocale({ zh: '点击任意数据点', en: 'Click on any data point' })
+const clickedText = useStoryLocale({ zh: '已点击:', en: 'Clicked:' })
+
+// Without grid
+const noGridTitle = useStoryLocale({ zh: '无网格线', en: 'No Grid Lines' })
+const noGridDesc = useStoryLocale({ zh: '干净无网格的图表', en: 'Clean chart without grid' })
+const salesLabel = useStoryLocale({ zh: '销售额', en: 'Sales' })
+
+// Without legend
+const noLegendTitle = useStoryLocale({ zh: '无图例', en: 'No Legend' })
+const noLegendDesc = useStoryLocale({ zh: '紧凑无图例图表', en: 'Compact chart without legend' })
+const visitsLabel = useStoryLocale({ zh: '访问量', en: 'Visits' })
+
+// Dense dataset
+const financialTrendsTitle = useStoryLocale({ zh: '24 个月财务趋势', en: '24-Month Financial Trends' })
+const financialTrendsDesc = useStoryLocale({ zh: '24 个数据点的高密度数据集', en: 'High-density dataset with 24 points' })
+const costLabel = useStoryLocale({ zh: '成本', en: 'Cost' })
+const valueLabel = useStoryLocale({ zh: '值', en: 'Value' })
 </script>
 
 <template>
@@ -90,12 +137,12 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-line"
           type="line"
-          title="System Performance"
-          description="CPU and Memory usage over time"
+          :title="systemPerfTitle"
+          :description="systemPerfDesc"
           x-key="time"
           :series="[
-            { key: 'cpu', label: 'CPU %' },
-            { key: 'memory', label: 'Memory %' },
+            { key: 'cpu', label: cpuLabel },
+            { key: 'memory', label: memoryLabel },
           ]"
           :data="[
             { time: '00:00', cpu: 45, memory: 62 },
@@ -117,12 +164,12 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-bar"
           type="bar"
-          title="Monthly Revenue"
-          description="Revenue vs Expenses (2024)"
+          :title="monthlyRevTitle"
+          :description="monthlyRevDesc"
           x-key="month"
           :series="[
-            { key: 'revenue', label: 'Revenue' },
-            { key: 'expenses', label: 'Expenses' },
+            { key: 'revenue', label: revenueLabel },
+            { key: 'expenses', label: expensesLabel },
           ]"
           :data="[
             { month: 'Jan', revenue: 4000, expenses: 2400 },
@@ -145,12 +192,12 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-multi"
           type="line"
-          title="Traffic Sources"
+          :title="trafficSourcesTitle"
           x-key="month"
           :series="[
-            { key: 'organic', label: 'Organic' },
-            { key: 'paid', label: 'Paid' },
-            { key: 'social', label: 'Social' },
+            { key: 'organic', label: organicLabel },
+            { key: 'paid', label: paidLabel },
+            { key: 'social', label: socialLabel },
           ]"
           :data="[
             { month: 'Jan', organic: 5000, paid: 3000, social: 2000 },
@@ -170,13 +217,13 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-colors"
           type="bar"
-          title="Performance Metrics"
+          :title="perfMetricsTitle"
           x-key="metric"
           :series="[
-            { key: 'speed', label: 'Speed' },
-            { key: 'quality', label: 'Quality' },
-            { key: 'reliability', label: 'Reliability' },
-            { key: 'usability', label: 'Usability' },
+            { key: 'speed', label: speedLabel },
+            { key: 'quality', label: qualityLabel },
+            { key: 'reliability', label: reliabilityLabel },
+            { key: 'usability', label: usabilityLabel },
           ]"
           :data="[
             { metric: 'Overview', speed: 95, quality: 88, reliability: 92, usability: 85 },
@@ -191,17 +238,17 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
     <Variant :title="interactiveClickDataPoints">
       <div class="w-full max-w-2xl">
         <div v-if="chartData.selectedPoint" class="bg-primary/10 mb-4 p-3 rounded-lg text-sm">
-          <strong>Clicked:</strong> {{ chartData.selectedPoint }}
+          <strong>{{ clickedText }}</strong> {{ chartData.selectedPoint }}
         </div>
         <chart
           id="chart-interactive"
           type="bar"
-          title="Clickable Chart"
-          description="Click on any data point"
+          :title="clickableChartTitle"
+          :description="clickableChartDesc"
           x-key="month"
           :series="[
-            { key: 'revenue', label: 'Revenue' },
-            { key: 'expenses', label: 'Expenses' },
+            { key: 'revenue', label: revenueLabel },
+            { key: 'expenses', label: expensesLabel },
           ]"
           :data="[
             { month: 'Jan', revenue: 4000, expenses: 2400 },
@@ -225,11 +272,11 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-no-grid"
           type="bar"
-          title="No Grid Lines"
-          description="Clean chart without grid"
+          :title="noGridTitle"
+          :description="noGridDesc"
           x-key="month"
           :series="[
-            { key: 'sales', label: 'Sales' },
+            { key: 'sales', label: salesLabel },
           ]"
           :data="[
             { month: 'Jan', sales: 100 },
@@ -248,11 +295,11 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-no-legend"
           type="line"
-          title="No Legend"
-          description="Compact chart without legend"
+          :title="noLegendTitle"
+          :description="noLegendDesc"
           x-key="day"
           :series="[
-            { key: 'visits', label: 'Visits' },
+            { key: 'visits', label: visitsLabel },
           ]"
           :data="[
             { day: 'Mon', visits: 120 },
@@ -275,7 +322,7 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
           type="bar"
           x-key="item"
           :series="[
-            { key: 'value', label: 'Value' },
+            { key: 'value', label: valueLabel },
           ]"
           :data="[
             { item: 'A', value: 30 },
@@ -294,12 +341,12 @@ const denseDataset = useStoryLocale({ zh: '密集数据集', en: 'Dense Dataset'
         <chart
           id="chart-dense"
           type="line"
-          title="24-Month Financial Trends"
-          description="High-density dataset with 24 points"
+          :title="financialTrendsTitle"
+          :description="financialTrendsDesc"
           x-key="month"
           :series="[
-            { key: 'revenue', label: 'Revenue' },
-            { key: 'cost', label: 'Cost' },
+            { key: 'revenue', label: revenueLabel },
+            { key: 'cost', label: costLabel },
           ]"
           :data="[
             { month: '2023-01', revenue: 4200, cost: 2500 },

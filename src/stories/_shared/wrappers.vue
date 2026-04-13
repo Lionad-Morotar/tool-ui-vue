@@ -71,7 +71,7 @@ export const StoryWrapper = {
       default: true,
     },
   },
-  setup(props: { padded?: boolean; centered?: boolean }, { slots }: { slots: Record<string, () => unknown> }) {
+  setup(props: { padded?: boolean; centered?: boolean }, { slots }: { slots: { default?: () => unknown } }) {
     return () =>
       h(
         'div',

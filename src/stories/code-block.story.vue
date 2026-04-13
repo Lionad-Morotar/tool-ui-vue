@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeBlock } from '@lionad/vtu-components';
-import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
+import { useStoryLocale } from './_shared/use-story-locale';
 
 const exampleCode = `interface User {
   id: string;

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { reactive } from 'vue';
 import { QuestionFlow } from '@lionad/vtu-components';
-import { useStoryLocale, type StoryLocaleLabels } from './_shared/use-story-locale';
+import { useStoryLocale } from './_shared/use-story-locale';
 
 const progressiveState = reactive({
   step: 1,
   selectedOptions: [] as string[],
 });
-
-const upfrontAnswers = ref<Record<string, string[]>>({});
 
 function handleSelect(options: string[]) {
   progressiveState.selectedOptions = options;
@@ -16,80 +14,9 @@ function handleSelect(options: string[]) {
 }
 
 function handleComplete(answers: Record<string, string[]>) {
-  upfrontAnswers.value = answers;
   alert(`Completed! Answers: ${JSON.stringify(answers)}`);
 }
 
-/**
- * ## Props
- *
- * ### Progressive Mode (step + options)
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | id | string | required | Unique identifier for the component |
- * | step | number | required | Current step number (1-based) |
- * | title | string | required | Question title |
- * | description | string | undefined | Question description |
- * | options | QuestionFlowOption[] | required | Array of options to select from |
- * | selectionMode | 'single' \| 'multi' | 'single' | Selection mode |
- * | defaultValue | string[] | undefined | Initially selected option IDs |
- * | onSelect | (optionIds: string[]) => void | undefined | Callback when selection is confirmed |
- * | onBack | () => void | undefined | Callback when back button is clicked |
- *
- * ### Upfront Mode (steps)
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | id | string | required | Unique identifier |
- * | steps | QuestionFlowStepDefinition[] | required | Array of step definitions |
- * | onStepChange | (stepId: string) => void | undefined | Callback when step changes |
- * | onComplete | (answers: Record<string, string[]>) => void | undefined | Callback when flow completes |
- *
- * ### Receipt Mode (choice)
- * | Prop | Type | Default | Description |
- * |------|------|---------|-------------|
- * | id | string | required | Unique identifier |
- * | choice | QuestionFlowChoice | required | Completed choice data |
- *
- * ## Emits
- *
- * | Event | Payload | Description |
- * |-------|---------|-------------|
- * | select | optionIds: string[] | Emitted in progressive mode when selection is confirmed |
- * | back | - | Emitted when back button is clicked |
- * | stepChange | stepId: string | Emitted when step changes in upfront mode |
- * | complete | answers: Record<string, string[]> | Emitted when flow completes |
- *
- * ## Slots
- *
- * This component does not use slots. All content is passed via props.
- *
- * ## Accessibility
- *
- * - Has `role="form"` in interactive mode
- * - Has `role="status"` in receipt mode
- * - Has `aria-labelledby` pointing to title
- * - Has `aria-describedby` pointing to description
- * - Options have `role="option"` with `aria-selected`
- * - Progress bar has `role="progressbar"` with aria values
- * - Full keyboard navigation support (Arrow keys, Enter, Space, Home, End)
- *
- * ## Interaction Patterns
- *
- * ### Progressive Mode
- * - Shows a single question at a time
- * - User selects option(s) and clicks "Complete"
- * - Emits `select` event with selected option IDs
- *
- * ### Upfront Mode
- * - Shows multiple steps with navigation
- * - User progresses through questions with "Next"
- * - Can go back with "Back" button
- * - Emits `complete` event with all answers
- *
- * ### Receipt Mode
- * - Shows completed state with summary
- * - No interaction, display only
- */
 const progressiveModeStep1 = useStoryLocale({ zh: '渐进模式 - 步骤 1', en: 'Progressive Mode - Step 1' })
 const progressiveModeStep2 = useStoryLocale({ zh: '渐进模式 - 步骤 2', en: 'Progressive Mode - Step 2' })
 const progressiveModeMultiSelect = useStoryLocale({ zh: '渐进模式 - 多选', en: 'Progressive Mode - Multi Select' })
@@ -99,6 +26,76 @@ const upfrontModeWithDisabledOptions = useStoryLocale({ zh: '前置模式 - 含�
 const receiptMode = useStoryLocale({ zh: '回执模式', en: 'Receipt Mode' })
 const receiptModeMultipleItems = useStoryLocale({ zh: '回执模式 - 多项', en: 'Receipt Mode - Multiple Items' })
 const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'Interactive Progressive' })
+
+// Progressive Step 1
+const projectSetupTitle = useStoryLocale({ zh: '项目设置', en: 'Project Setup' })
+const projectSetupDesc = useStoryLocale({ zh: '让我们来配置你的新项目', en: "Let's configure your new project" })
+const webAppLabel = useStoryLocale({ zh: 'Web 应用', en: 'Web Application' })
+const apiServiceLabel = useStoryLocale({ zh: 'API 服务', en: 'API Service' })
+const mobileAppLabel = useStoryLocale({ zh: '移动应用', en: 'Mobile App' })
+
+// Progressive Step 2
+const chooseFrameworkTitle = useStoryLocale({ zh: '选择框架', en: 'Choose Framework' })
+const chooseFrameworkDesc = useStoryLocale({ zh: '选择你偏好的框架', en: 'Select your preferred framework' })
+const reactDesc = useStoryLocale({ zh: '流行且灵活', en: 'Popular and flexible' })
+const vueDesc = useStoryLocale({ zh: '渐进式且易上手', en: 'Progressive and approachable' })
+const svelteDesc = useStoryLocale({ zh: '基于编译，最小运行时', en: 'Compiler-based, minimal runtime' })
+
+// Multi-select
+const selectFeaturesTitle = useStoryLocale({ zh: '选择功能', en: 'Select Features' })
+const selectFeaturesDesc = useStoryLocale({ zh: '选择你需要的功能', en: 'Choose the features you need' })
+const authLabel = useStoryLocale({ zh: '身份认证', en: 'Authentication' })
+const authDesc = useStoryLocale({ zh: '用户登录和注册', en: 'User login and registration' })
+const paymentsLabel = useStoryLocale({ zh: '支付', en: 'Payments' })
+const paymentsDesc = useStoryLocale({ zh: 'Stripe 集成', en: 'Stripe integration' })
+const notificationsLabel = useStoryLocale({ zh: '通知', en: 'Notifications' })
+const notificationsDesc = useStoryLocale({ zh: '邮件和推送通知', en: 'Email and push notifications' })
+const analyticsLabel = useStoryLocale({ zh: '数据分析', en: 'Analytics' })
+const analyticsDesc = useStoryLocale({ zh: '使用追踪和报告', en: 'Usage tracking and reporting' })
+
+// Default value
+const selectPlanTitle = useStoryLocale({ zh: '选择方案', en: 'Select Plan' })
+const selectPlanDesc = useStoryLocale({ zh: '选择你的订阅方案', en: 'Choose your subscription plan' })
+const freeLabel = useStoryLocale({ zh: '免费', en: 'Free' })
+const freeDesc = useStoryLocale({ zh: '基础功能', en: 'Basic features' })
+const proLabel = useStoryLocale({ zh: '专业版', en: 'Pro' })
+const proDesc = useStoryLocale({ zh: '高级功能', en: 'Advanced features' })
+const enterpriseLabel = useStoryLocale({ zh: '企业版', en: 'Enterprise' })
+const enterpriseDesc = useStoryLocale({ zh: '定制方案', en: 'Custom solutions' })
+
+// Upfront mode
+const choosePlatformTitle = useStoryLocale({ zh: '选择平台', en: 'Choose Platform' })
+const platformDesc = useStoryLocale({ zh: '你的应用在哪里运行？', en: 'Where will your app run?' })
+const webLabel = useStoryLocale({ zh: '网页', en: 'Web' })
+const mobileLabel = useStoryLocale({ zh: '移动端', en: 'Mobile' })
+const desktopLabel = useStoryLocale({ zh: '桌面端', en: 'Desktop' })
+const chooseLanguageTitle = useStoryLocale({ zh: '选择语言', en: 'Choose Language' })
+const languageDesc = useStoryLocale({ zh: '你偏好的语言？', en: 'What language do you prefer?' })
+const whatsNeededTitle = useStoryLocale({ zh: '你需要的功能', en: 'What do you need?' })
+const databaseLabel = useStoryLocale({ zh: '数据库', en: 'Database' })
+
+// Receipt mode
+const configCompleteTitle = useStoryLocale({ zh: '项目配置已完成', en: 'Project Configuration Complete' })
+const projectTypeLabel = useStoryLocale({ zh: '项目类型', en: 'Project Type' })
+const frameworkLabel = useStoryLocale({ zh: '框架', en: 'Framework' })
+const featuresLabel = useStoryLocale({ zh: '功能', en: 'Features' })
+const orderSummaryTitle = useStoryLocale({ zh: '订单摘要', en: 'Order Summary' })
+const planLabel = useStoryLocale({ zh: '方案', en: 'Plan' })
+const usersLabel = useStoryLocale({ zh: '用户', en: 'Users' })
+const storageLabel = useStoryLocale({ zh: '存储空间', en: 'Storage' })
+const supportLabel = useStoryLocale({ zh: '技术支持', en: 'Support' })
+const totalLabel = useStoryLocale({ zh: '总计', en: 'Total' })
+
+// Interactive
+const interactiveDemoTitle = useStoryLocale({ zh: '交互演示', en: 'Interactive Demo' })
+const interactiveDemoDesc = useStoryLocale({ zh: '做出选择以查看事件', en: 'Make a selection to see the event' })
+const optionALabel = useStoryLocale({ zh: '选项 A', en: 'Option A' })
+const optionADesc = useStoryLocale({ zh: '第一个选项', en: 'First option' })
+const optionBLabel = useStoryLocale({ zh: '选项 B', en: 'Option B' })
+const optionBDesc = useStoryLocale({ zh: '第二个选项', en: 'Second option' })
+const optionCLabel = useStoryLocale({ zh: '选项 C', en: 'Option C' })
+const optionCDesc = useStoryLocale({ zh: '第三个选项', en: 'Third option' })
+const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
 </script>
 
 <template>
@@ -109,12 +106,12 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-progressive-1"
           :step="1"
-          title="Project Setup"
-          description="Let's configure your new project"
+          :title="projectSetupTitle"
+          :description="projectSetupDesc"
           :options="[
-            { id: 'web', label: 'Web Application' },
-            { id: 'api', label: 'API Service' },
-            { id: 'mobile', label: 'Mobile App' },
+            { id: 'web', label: webAppLabel },
+            { id: 'api', label: apiServiceLabel },
+            { id: 'mobile', label: mobileAppLabel },
           ]"
           selection-mode="single"
         />
@@ -127,12 +124,12 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-progressive-2"
           :step="2"
-          title="Choose Framework"
-          description="Select your preferred framework"
+          :title="chooseFrameworkTitle"
+          :description="chooseFrameworkDesc"
           :options="[
-            { id: 'react', label: 'React', description: 'Popular and flexible' },
-            { id: 'vue', label: 'Vue', description: 'Progressive and approachable' },
-            { id: 'svelte', label: 'Svelte', description: 'Compiler-based, minimal runtime' },
+            { id: 'react', label: 'React', description: reactDesc },
+            { id: 'vue', label: 'Vue', description: vueDesc },
+            { id: 'svelte', label: 'Svelte', description: svelteDesc },
           ]"
           selection-mode="single"
         />
@@ -145,13 +142,13 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-multi"
           :step="1"
-          title="Select Features"
-          description="Choose the features you need"
+          :title="selectFeaturesTitle"
+          :description="selectFeaturesDesc"
           :options="[
-            { id: 'auth', label: 'Authentication', description: 'User login and registration' },
-            { id: 'payments', label: 'Payments', description: 'Stripe integration' },
-            { id: 'notifications', label: 'Notifications', description: 'Email and push notifications' },
-            { id: 'analytics', label: 'Analytics', description: 'Usage tracking and reporting' },
+            { id: 'auth', label: authLabel, description: authDesc },
+            { id: 'payments', label: paymentsLabel, description: paymentsDesc },
+            { id: 'notifications', label: notificationsLabel, description: notificationsDesc },
+            { id: 'analytics', label: analyticsLabel, description: analyticsDesc },
           ]"
           selection-mode="multi"
         />
@@ -164,12 +161,12 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-default"
           :step="1"
-          title="Select Plan"
-          description="Choose your subscription plan"
+          :title="selectPlanTitle"
+          :description="selectPlanDesc"
           :options="[
-            { id: 'free', label: 'Free', description: 'Basic features' },
-            { id: 'pro', label: 'Pro', description: 'Advanced features' },
-            { id: 'enterprise', label: 'Enterprise', description: 'Custom solutions' },
+            { id: 'free', label: freeLabel, description: freeDesc },
+            { id: 'pro', label: proLabel, description: proDesc },
+            { id: 'enterprise', label: enterpriseLabel, description: enterpriseDesc },
           ]"
           selection-mode="single"
           :default-value="['pro']"
@@ -185,18 +182,18 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
           :steps="[
             {
               id: 'platform',
-              title: 'Choose Platform',
-              description: 'Where will your app run?',
+              title: choosePlatformTitle,
+              description: platformDesc,
               options: [
-                { id: 'web', label: 'Web' },
-                { id: 'mobile', label: 'Mobile' },
-                { id: 'desktop', label: 'Desktop' },
+                { id: 'web', label: webLabel },
+                { id: 'mobile', label: mobileLabel },
+                { id: 'desktop', label: desktopLabel },
               ],
             },
             {
               id: 'language',
-              title: 'Choose Language',
-              description: 'What language do you prefer?',
+              title: chooseLanguageTitle,
+              description: languageDesc,
               options: [
                 { id: 'ts', label: 'TypeScript' },
                 { id: 'js', label: 'JavaScript' },
@@ -205,11 +202,10 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
             },
             {
               id: 'features',
-              title: 'Select Features',
-              description: 'What do you need?',
+              title: whatsNeededTitle,
               options: [
-                { id: 'auth', label: 'Authentication' },
-                { id: 'db', label: 'Database' },
+                { id: 'auth', label: authLabel },
+                { id: 'db', label: databaseLabel },
                 { id: 'api', label: 'API' },
               ],
               selectionMode: 'multi',
@@ -228,12 +224,12 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
           :steps="[
             {
               id: 'tier',
-              title: 'Select Tier',
-              description: 'Some options are unavailable',
+              title: selectPlanTitle,
+              description: useStoryLocale({ zh: '部分选项不可用', en: 'Some options are unavailable' }),
               options: [
-                { id: 'basic', label: 'Basic' },
-                { id: 'pro', label: 'Pro', disabled: true },
-                { id: 'enterprise', label: 'Enterprise', disabled: true },
+                { id: 'basic', label: useStoryLocale({ zh: '基础版', en: 'Basic' }) },
+                { id: 'pro', label: proLabel, disabled: true },
+                { id: 'enterprise', label: enterpriseLabel, disabled: true },
               ],
             },
           ]"
@@ -247,11 +243,11 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-receipt"
           :choice="{
-            title: 'Project Configuration Complete',
+            title: configCompleteTitle,
             summary: [
-              { label: 'Project Type', value: 'Web Application' },
-              { label: 'Framework', value: 'Vue' },
-              { label: 'Features', value: 'Auth, Payments, Analytics' },
+              { label: projectTypeLabel, value: webAppLabel },
+              { label: frameworkLabel, value: 'Vue' },
+              { label: featuresLabel, value: useStoryLocale({ zh: '认证, 支付, 数据分析', en: 'Auth, Payments, Analytics' }) },
             ],
           }"
         />
@@ -264,13 +260,13 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
         <question-flow
           id="question-flow-receipt-multi"
           :choice="{
-            title: 'Order Summary',
+            title: orderSummaryTitle,
             summary: [
-              { label: 'Plan', value: 'Pro Annual' },
-              { label: 'Users', value: '25 team members' },
-              { label: 'Storage', value: '500 GB' },
-              { label: 'Support', value: 'Priority' },
-              { label: 'Total', value: '$299/year' },
+              { label: planLabel, value: useStoryLocale({ zh: '专业版 - 按年', en: 'Pro Annual' }) },
+              { label: usersLabel, value: useStoryLocale({ zh: '25 名团队成员', en: '25 team members' }) },
+              { label: storageLabel, value: '500 GB' },
+              { label: supportLabel, value: useStoryLocale({ zh: '优先', en: 'Priority' }) },
+              { label: totalLabel, value: '$299/year' },
             ],
           }"
         />
@@ -280,17 +276,17 @@ const interactiveProgressive = useStoryLocale({ zh: '交互渐进模式', en: 'I
     <Variant :title="interactiveProgressive" auto-props-disabled>
       <div class="w-full max-w-md space-y-4">
         <div v-if="progressiveState.selectedOptions.length > 0" class="rounded-lg bg-muted p-3 text-sm">
-          <strong>Selected:</strong> {{ progressiveState.selectedOptions.join(", ") }}
+          <strong>{{ selectedText }}</strong> {{ progressiveState.selectedOptions.join(", ") }}
         </div>
         <question-flow
           id="question-flow-interactive"
           :step="progressiveState.step"
-          title="Interactive Demo"
-          description="Make a selection to see the event"
+          :title="interactiveDemoTitle"
+          :description="interactiveDemoDesc"
           :options="[
-            { id: 'option-a', label: 'Option A', description: 'First option' },
-            { id: 'option-b', label: 'Option B', description: 'Second option' },
-            { id: 'option-c', label: 'Option C', description: 'Third option' },
+            { id: 'option-a', label: optionALabel, description: optionADesc },
+            { id: 'option-b', label: optionBLabel, description: optionBDesc },
+            { id: 'option-c', label: optionCLabel, description: optionCDesc },
           ]"
           selection-mode="single"
           @select="handleSelect"
