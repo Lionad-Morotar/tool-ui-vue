@@ -9,7 +9,7 @@ export interface StoryLocaleMessages {
   [key: string]: string | StoryLocaleMessages
 }
 
-function getPath(obj: StoryLocaleMessages | undefined, path: string): string {
+export function getPath(obj: StoryLocaleMessages | undefined, path: string): string {
   const result = path.split('.').reduce<unknown>((o, key) => {
     if (o && typeof o === 'object') return (o as Record<string, unknown>)[key]
     return undefined
