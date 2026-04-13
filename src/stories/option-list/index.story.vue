@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
 import { OptionList } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const resetLabel = useStoryLocale('content.resetLabel', messages);
@@ -55,6 +55,33 @@ const interactive = useStoryLocale('content.interactive', messages)
  * />
  * ```
  */
+
+const Name = useStoryLocale('content.name', messages)
+const Type = useStoryLocale('content.type', messages)
+const Default = useStoryLocale('content.default', messages)
+const Description = useStoryLocale('content.description', messages)
+const Props = useStoryLocale('content.props', messages)
+const OptionListProps = useStoryLocale('content.optionListProps', messages)
+
+const headerName = Name
+const headerType = Type
+const headerDefault = Default
+const headerDesc = Description
+const propsTitle = Props
+const componentPropsTitle = OptionListProps
+
+const props = [
+  { name: 'id', type: 'string', required: true, description: { zh: '组件的唯一标识符', en: 'Unique identifier for the component' } },
+  { name: 'options', type: 'OptionListOption[]', required: true, description: { zh: '要显示的选项数组', en: 'Array of options to display' } },
+  { name: 'selectionMode', type: "'single' | 'multi'", default: 'single', description: { zh: '选择模式', en: 'Selection mode' } },
+  { name: 'value', type: 'string | string[] | null', description: { zh: '受控值', en: 'Controlled value' } },
+  { name: 'defaultValue', type: 'string | string[] | null', description: { zh: '默认值（非受控）', en: 'Default value (uncontrolled)' } },
+  { name: 'choice', type: 'string | string[] | null', description: { zh: '回执状态的值', en: 'Receipt state value' } },
+  { name: 'minSelections', type: 'number', default: '1', description: { zh: '最少选择数', en: 'Minimum selections required' } },
+  { name: 'maxSelections', type: 'number', description: { zh: '最多选择数', en: 'Maximum selections allowed' } },
+  { name: 'actions', type: 'Action[] | ActionsConfig', description: { zh: '自定义操作按钮', en: 'Custom action buttons' } },
+  { name: 'css', type: '{ root?: string; item?: string; actions?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+]
 
 const singleSelection = ref<string | null>(null);
 const multiSelection = ref<string[]>([]);
@@ -227,6 +254,32 @@ const interactiveState = reactive({
           id="option-list-interactive"
           v-bind="interactiveState"
         />
+      </div>
+    </Variant>
+    <Variant :title="propsTitle">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+        <div class="overflow-x-auto">
+          <table class="story-table">
+            <thead>
+              <tr>
+                <th>{{ headerName }}</th>
+                <th>{{ headerType }}</th>
+                <th>{{ headerDefault }}</th>
+                <th>{{ headerDesc }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prop in props" :key="prop.name">
+                <td class="font-mono text-emerald-600">{{ prop.name }}</td>
+                <td class="font-mono text-blue-600">{{ prop.type }}</td>
+                <td class="text-muted-foreground">{{ prop.default || '-' }}</td>
+                <td>{{ useStoryLocale(prop.description) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Variant>
   </Story>

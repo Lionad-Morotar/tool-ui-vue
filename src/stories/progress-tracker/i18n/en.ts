@@ -39,5 +39,11 @@ export default {
     withDescriptions: '\'With Descriptions\' }',
     withElapsedTime: '\'With Elapsed Time\' }',
     withFailedStep: '\'With Failed Step\' }',
+    name: 'Name',
+    type: 'Type',
+    default: 'Default',
+    description: 'Description',
+    props: 'Props',
+    progressTrackerProps: 'ProgressTracker Props',
   },
 }

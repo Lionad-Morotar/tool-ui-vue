@@ -39,5 +39,11 @@ export default {
     withDescriptions: '含描述',
     withElapsedTime: '含耗时',
     withFailedStep: '含失败步骤',
+    name: '名称',
+    type: '类型',
+    default: '默认值',
+    description: '说明',
+    props: '属性',
+    progressTrackerProps: 'ProgressTracker 属性',
   },
 }

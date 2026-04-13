@@ -9,6 +9,12 @@ export default {
     singleSelect: '单选',
     subtitle: '提供单选 / 多选、键盘导航和回执状态的选项列表组件',
     withActions: '含操作',
+    name: '名称',
+    type: '类型',
+    default: '默认值',
+    description: '说明',
+    props: '属性',
+    optionListProps: 'OptionList 属性',
   },
   data: {
     withDisabledOptions: '含禁用选项',
