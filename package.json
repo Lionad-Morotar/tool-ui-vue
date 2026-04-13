@@ -19,6 +19,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint . --fix",
+    "site:dev": "pnpm --filter @lionad/vtu-site dev",
+    "site:build": "pnpm --filter @lionad/vtu-site generate",
     "check": "pnpm lint && pnpm typecheck:all"
   },
   "peerDependencies": {
