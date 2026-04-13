@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import { DataTable } from '@lionad/vtu-components';
 import { useStoryLocale } from './_shared/use-story-locale';
 
@@ -18,6 +18,7 @@ function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
 const playgroundState = reactive({
   layout: 'cards' as 'auto' | 'table' | 'cards',
 });
+
 const basic = useStoryLocale({ zh: '基础', en: 'Basic' })
 const stockDataDeltaCurrencyPercent = useStoryLocale({ zh: '股票数据（差值+货币+百分比）', en: 'Stock Data (Delta + Currency + Percent)' })
 const withFormatting = useStoryLocale({ zh: '格式化显示', en: 'With Formatting' })
@@ -28,6 +29,123 @@ const withDefaultSort = useStoryLocale({ zh: '默认排序', en: 'With Default S
 const controlledSort = useStoryLocale({ zh: '受控排序', en: 'Controlled Sort' })
 const withMaxHeight = useStoryLocale({ zh: '最大高度', en: 'With Max Height' })
 const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', en: 'Interactive Layout Playground' })
+
+// Column labels
+const colName = useStoryLocale({ zh: '名称', en: 'Name' })
+const colStatus = useStoryLocale({ zh: '状态', en: 'Status' })
+const colRevenue = useStoryLocale({ zh: '收入', en: 'Revenue' })
+const colSymbol = useStoryLocale({ zh: '代码', en: 'Symbol' })
+const colCompany = useStoryLocale({ zh: '公司', en: 'Company' })
+const colPrice = useStoryLocale({ zh: '价格', en: 'Price' })
+const colChange = useStoryLocale({ zh: '变动', en: 'Change' })
+const colChangePercent = useStoryLocale({ zh: '变动 %', en: 'Change %' })
+const colVolume = useStoryLocale({ zh: '成交量', en: 'Volume' })
+const colProduct = useStoryLocale({ zh: '产品', en: 'Product' })
+const colSales = useStoryLocale({ zh: '销量', en: 'Sales' })
+const colGrowth = useStoryLocale({ zh: '增长', en: 'Growth' })
+const colTask = useStoryLocale({ zh: '任务', en: 'Task' })
+const colPriority = useStoryLocale({ zh: '优先级', en: 'Priority' })
+const colDueDate = useStoryLocale({ zh: '截止日期', en: 'Due Date' })
+const colItem = useStoryLocale({ zh: '商品', en: 'Item' })
+const colQty = useStoryLocale({ zh: '数量', en: 'Qty' })
+const colTotal = useStoryLocale({ zh: '总计', en: 'Total' })
+const colId = useStoryLocale({ zh: 'ID', en: 'ID' })
+const colProject = useStoryLocale({ zh: '项目', en: 'Project' })
+const colOwner = useStoryLocale({ zh: '负责人', en: 'Owner' })
+const colBudget = useStoryLocale({ zh: '预算', en: 'Budget' })
+const colDeadline = useStoryLocale({ zh: '截止日期', en: 'Deadline' })
+const colNotes = useStoryLocale({ zh: '备注', en: 'Notes' })
+const colScore = useStoryLocale({ zh: '分数', en: 'Score' })
+const colGrade = useStoryLocale({ zh: '等级', en: 'Grade' })
+
+// Status badge labels
+const statusCompleted = useStoryLocale({ zh: '已完成', en: 'Completed' })
+const statusInProgress = useStoryLocale({ zh: '进行中', en: 'In Progress' })
+const statusPending = useStoryLocale({ zh: '待处理', en: 'Pending' })
+
+// Empty state
+const emptyMessage = useStoryLocale({ zh: '未找到记录', en: 'No records found' })
+
+// Basic columns
+const basicColumns = computed(() => [
+  { key: 'name', label: colName.value, sortable: true },
+  { key: 'status', label: colStatus.value, sortable: true },
+  { key: 'revenue', label: colRevenue.value, sortable: true },
+])
+
+// Stock columns
+const stockColumns = computed<any[]>(() => [
+  { key: 'symbol', label: colSymbol.value, priority: 'primary' },
+  { key: 'name', label: colCompany.value, priority: 'primary' },
+  { key: 'price', label: colPrice.value, align: 'right', priority: 'primary', format: { kind: 'currency', currency: 'USD', decimals: 2 } },
+  { key: 'change', label: colChange.value, align: 'right', priority: 'secondary', format: { kind: 'delta', decimals: 2, upIsPositive: true, showSign: true } },
+  { key: 'changePercent', label: colChangePercent.value, align: 'right', priority: 'secondary', format: { kind: 'percent', decimals: 2, showSign: true, basis: 'unit' } },
+  { key: 'volume', label: colVolume.value, align: 'right', priority: 'secondary', format: { kind: 'number', compact: true } },
+])
+
+// Formatting columns
+const formatColumns = computed<any[]>(() => [
+  { key: 'product', label: colProduct.value },
+  { key: 'sales', label: colSales.value, format: { kind: 'number', compact: true } },
+  { key: 'revenue', label: colRevenue.value, format: { kind: 'currency', currency: 'USD' } },
+  { key: 'growth', label: colGrowth.value, format: { kind: 'percent', decimals: 1 } },
+])
+
+// Status badge columns
+const statusColumns = computed<any[]>(() => [
+  { key: 'task', label: colTask.value },
+  { key: 'priority', label: colPriority.value, format: { kind: 'badge', colorMap: { high: 'danger', medium: 'warning', low: 'info' } } },
+  { key: 'status', label: colStatus.value, format: { kind: 'status', statusMap: {
+    done: { tone: 'success', label: statusCompleted.value },
+    progress: { tone: 'info', label: statusInProgress.value },
+    pending: { tone: 'warning', label: statusPending.value },
+  }}},
+  { key: 'due', label: colDueDate.value, format: { kind: 'date', dateFormat: 'short' } },
+])
+
+// Alignment columns
+const alignColumns = computed<any[]>(() => [
+  { key: 'item', label: colItem.value },
+  { key: 'quantity', label: colQty.value, align: 'center' },
+  { key: 'price', label: colPrice.value, align: 'right', format: { kind: 'currency', currency: 'USD' } },
+  { key: 'total', label: colTotal.value, align: 'right', format: { kind: 'currency', currency: 'USD' } },
+])
+
+// Empty columns
+const emptyColumns = computed<any[]>(() => [
+  { key: 'name', label: colName.value },
+  { key: 'status', label: colStatus.value },
+])
+
+// Default sort columns
+const defaultSortColumns = computed<any[]>(() => [
+  { key: 'name', label: colName.value, sortable: true },
+  { key: 'score', label: colScore.value, sortable: true },
+])
+
+// Controlled sort columns
+const controlledSortColumns = computed<any[]>(() => [
+  { key: 'name', label: colName.value, sortable: true },
+  { key: 'score', label: colScore.value, sortable: true },
+  { key: 'grade', label: colGrade.value, sortable: false },
+])
+
+// Max height columns
+const maxHeightColumns = computed<any[]>(() => [
+  { key: 'id', label: colId.value },
+  { key: 'name', label: colName.value },
+  { key: 'status', label: colStatus.value },
+])
+
+// Playground columns
+const playgroundColumns = computed<any[]>(() => [
+  { key: 'project', label: colProject.value, priority: 'primary' },
+  { key: 'owner', label: colOwner.value, priority: 'primary' },
+  { key: 'status', label: colStatus.value, priority: 'secondary' },
+  { key: 'budget', label: colBudget.value, priority: 'secondary', format: { kind: 'currency', currency: 'USD' } },
+  { key: 'deadline', label: colDeadline.value, priority: 'tertiary' },
+  { key: 'notes', label: colNotes.value, hideOnMobile: true },
+])
 </script>
 
 <template>
@@ -37,11 +155,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-basic"
-          :columns="[
-            { key: 'name', label: 'Name', sortable: true },
-            { key: 'status', label: 'Status', sortable: true },
-            { key: 'revenue', label: 'Revenue', sortable: true },
-          ]"
+          :columns="basicColumns"
           :data="[
             { name: 'Product A', status: 'Active', revenue: '$12,450' },
             { name: 'Product B', status: 'Draft', revenue: '$8,230' },
@@ -56,14 +170,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-3xl">
         <data-table
           id="data-table-stocks"
-          :columns="[
-            { key: 'symbol', label: 'Symbol', priority: 'primary' },
-            { key: 'name', label: 'Company', priority: 'primary' },
-            { key: 'price', label: 'Price', align: 'right', priority: 'primary', format: { kind: 'currency', currency: 'USD', decimals: 2 } },
-            { key: 'change', label: 'Change', align: 'right', priority: 'secondary', format: { kind: 'delta', decimals: 2, upIsPositive: true, showSign: true } },
-            { key: 'changePercent', label: 'Change %', align: 'right', priority: 'secondary', format: { kind: 'percent', decimals: 2, showSign: true, basis: 'unit' } },
-            { key: 'volume', label: 'Volume', align: 'right', priority: 'secondary', format: { kind: 'number', compact: true } },
-          ]"
+          :columns="stockColumns"
           :data="[
             { symbol: 'IBM', name: 'International Business Machines', price: 170.42, change: 1.12, changePercent: 0.66, volume: 18420000 },
             { symbol: 'AAPL', name: 'Apple', price: 178.25, change: 2.35, changePercent: 1.34, volume: 52430000 },
@@ -81,12 +188,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-formatted"
-          :columns="[
-            { key: 'product', label: 'Product' },
-            { key: 'sales', label: 'Sales', format: { kind: 'number', compact: true } },
-            { key: 'revenue', label: 'Revenue', format: { kind: 'currency', currency: 'USD' } },
-            { key: 'growth', label: 'Growth', format: { kind: 'percent', decimals: 1 } },
-          ]"
+          :columns="formatColumns"
           :data="[
             { product: 'Widget A', sales: 15420, revenue: 125000, growth: 0.125 },
             { product: 'Widget B', sales: 8930, revenue: 78000, growth: -0.03 },
@@ -101,16 +203,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-badges"
-          :columns="[
-            { key: 'task', label: 'Task' },
-            { key: 'priority', label: 'Priority', format: { kind: 'badge', colorMap: { high: 'danger', medium: 'warning', low: 'info' } } },
-            { key: 'status', label: 'Status', format: { kind: 'status', statusMap: {
-              done: { tone: 'success', label: 'Completed' },
-              progress: { tone: 'info', label: 'In Progress' },
-              pending: { tone: 'warning', label: 'Pending' },
-            }}},
-            { key: 'due', label: 'Due Date', format: { kind: 'date', dateFormat: 'short' } },
-          ]"
+          :columns="statusColumns"
           :data="[
             { task: 'Design Review', priority: 'high', status: 'done', due: '2024-01-15' },
             { task: 'API Integration', priority: 'medium', status: 'progress', due: '2024-01-20' },
@@ -125,12 +218,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-align"
-          :columns="[
-            { key: 'item', label: 'Item' },
-            { key: 'quantity', label: 'Qty', align: 'center' },
-            { key: 'price', label: 'Price', align: 'right', format: { kind: 'currency', currency: 'USD' } },
-            { key: 'total', label: 'Total', align: 'right', format: { kind: 'currency', currency: 'USD' } },
-          ]"
+          :columns="alignColumns"
           :data="[
             { item: 'Coffee Beans', quantity: 2, price: 24.00, total: 48.00 },
             { item: 'Pour-Over Set', quantity: 1, price: 45.00, total: 45.00 },
@@ -145,12 +233,9 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-empty"
-          :columns="[
-            { key: 'name', label: 'Name' },
-            { key: 'status', label: 'Status' },
-          ]"
+          :columns="emptyColumns"
           :data="[]"
-          empty-message="No records found"
+          :empty-message="emptyMessage"
         />
       </div>
     </Variant>
@@ -160,10 +245,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-sorted"
-          :columns="[
-            { key: 'name', label: 'Name', sortable: true },
-            { key: 'score', label: 'Score', sortable: true },
-          ]"
+          :columns="defaultSortColumns"
           :data="[
             { name: 'Alice', score: 85 },
             { name: 'Bob', score: 92 },
@@ -181,11 +263,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
         </div>
         <data-table
           id="data-table-controlled"
-          :columns="[
-            { key: 'name', label: 'Name', sortable: true },
-            { key: 'score', label: 'Score', sortable: true },
-            { key: 'grade', label: 'Grade', sortable: false },
-          ]"
+          :columns="controlledSortColumns"
           :data="[
             { name: 'Alice', score: 85, grade: 'B' },
             { name: 'Bob', score: 92, grade: 'A' },
@@ -202,11 +280,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-scroll"
-          :columns="[
-            { key: 'id', label: 'ID' },
-            { key: 'name', label: 'Name' },
-            { key: 'status', label: 'Status' },
-          ]"
+          :columns="maxHeightColumns"
           :data="[
             { id: 1, name: 'Item 1', status: 'Active' },
             { id: 2, name: 'Item 2', status: 'Pending' },
@@ -231,14 +305,7 @@ const interactiveLayoutPlayground = useStoryLocale({ zh: '交互布局面板', e
         <data-table
           id="data-table-playground"
           v-bind="playgroundState"
-          :columns="[
-            { key: 'project', label: 'Project', priority: 'primary' },
-            { key: 'owner', label: 'Owner', priority: 'primary' },
-            { key: 'status', label: 'Status', priority: 'secondary' },
-            { key: 'budget', label: 'Budget', priority: 'secondary', format: { kind: 'currency', currency: 'USD' } },
-            { key: 'deadline', label: 'Deadline', priority: 'tertiary' },
-            { key: 'notes', label: 'Notes', hideOnMobile: true },
-          ]"
+          :columns="playgroundColumns"
           :data="[
             { project: 'Website Redesign', owner: 'Alice', status: 'In Progress', budget: 45000, deadline: '2024-03-15', notes: 'Needs brand assets' },
             { project: 'Mobile App', owner: 'Bob', status: 'Planning', budget: 120000, deadline: '2024-06-30', notes: 'iOS-first approach' },

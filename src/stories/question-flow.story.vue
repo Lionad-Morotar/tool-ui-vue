@@ -71,20 +71,28 @@ const mobileLabel = useStoryLocale({ zh: '移动端', en: 'Mobile' })
 const desktopLabel = useStoryLocale({ zh: '桌面端', en: 'Desktop' })
 const chooseLanguageTitle = useStoryLocale({ zh: '选择语言', en: 'Choose Language' })
 const languageDesc = useStoryLocale({ zh: '你偏好的语言？', en: 'What language do you prefer?' })
+const tsLabel = useStoryLocale({ zh: 'TypeScript', en: 'TypeScript' })
+const jsLabel = useStoryLocale({ zh: 'JavaScript', en: 'JavaScript' })
+const pythonLabel = useStoryLocale({ zh: 'Python', en: 'Python' })
 const whatsNeededTitle = useStoryLocale({ zh: '你需要的功能', en: 'What do you need?' })
 const databaseLabel = useStoryLocale({ zh: '数据库', en: 'Database' })
+const apiLabel = useStoryLocale({ zh: 'API', en: 'API' })
 
 // Receipt mode
 const configCompleteTitle = useStoryLocale({ zh: '项目配置已完成', en: 'Project Configuration Complete' })
 const projectTypeLabel = useStoryLocale({ zh: '项目类型', en: 'Project Type' })
 const frameworkLabel = useStoryLocale({ zh: '框架', en: 'Framework' })
 const featuresLabel = useStoryLocale({ zh: '功能', en: 'Features' })
+const receiptFeaturesValue = useStoryLocale({ zh: '认证, 支付, 数据分析', en: 'Auth, Payments, Analytics' })
 const orderSummaryTitle = useStoryLocale({ zh: '订单摘要', en: 'Order Summary' })
 const planLabel = useStoryLocale({ zh: '方案', en: 'Plan' })
 const usersLabel = useStoryLocale({ zh: '用户', en: 'Users' })
 const storageLabel = useStoryLocale({ zh: '存储空间', en: 'Storage' })
 const supportLabel = useStoryLocale({ zh: '技术支持', en: 'Support' })
 const totalLabel = useStoryLocale({ zh: '总计', en: 'Total' })
+const proAnnualLabel = useStoryLocale({ zh: '专业版 - 按年', en: 'Pro Annual' })
+const teamMembersValue = useStoryLocale({ zh: '25 名团队成员', en: '25 team members' })
+const priorityLabel = useStoryLocale({ zh: '优先', en: 'Priority' })
 
 // Interactive
 const interactiveDemoTitle = useStoryLocale({ zh: '交互演示', en: 'Interactive Demo' })
@@ -96,6 +104,9 @@ const optionBDesc = useStoryLocale({ zh: '第二个选项', en: 'Second option' 
 const optionCLabel = useStoryLocale({ zh: '选项 C', en: 'Option C' })
 const optionCDesc = useStoryLocale({ zh: '第三个选项', en: 'Third option' })
 const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
+
+const someOptionsUnavailable = useStoryLocale({ zh: '部分选项不可用', en: 'Some options are unavailable' })
+const basicLabel = useStoryLocale({ zh: '基础版', en: 'Basic' })
 </script>
 
 <template>
@@ -195,9 +206,9 @@ const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
               title: chooseLanguageTitle,
               description: languageDesc,
               options: [
-                { id: 'ts', label: 'TypeScript' },
-                { id: 'js', label: 'JavaScript' },
-                { id: 'python', label: 'Python' },
+                { id: 'ts', label: tsLabel },
+                { id: 'js', label: jsLabel },
+                { id: 'python', label: pythonLabel },
               ],
             },
             {
@@ -206,7 +217,7 @@ const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
               options: [
                 { id: 'auth', label: authLabel },
                 { id: 'db', label: databaseLabel },
-                { id: 'api', label: 'API' },
+                { id: 'api', label: apiLabel },
               ],
               selectionMode: 'multi',
             },
@@ -225,9 +236,9 @@ const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
             {
               id: 'tier',
               title: selectPlanTitle,
-              description: useStoryLocale({ zh: '部分选项不可用', en: 'Some options are unavailable' }),
+              description: someOptionsUnavailable,
               options: [
-                { id: 'basic', label: useStoryLocale({ zh: '基础版', en: 'Basic' }) },
+                { id: 'basic', label: basicLabel },
                 { id: 'pro', label: proLabel, disabled: true },
                 { id: 'enterprise', label: enterpriseLabel, disabled: true },
               ],
@@ -247,7 +258,7 @@ const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
             summary: [
               { label: projectTypeLabel, value: webAppLabel },
               { label: frameworkLabel, value: 'Vue' },
-              { label: featuresLabel, value: useStoryLocale({ zh: '认证, 支付, 数据分析', en: 'Auth, Payments, Analytics' }) },
+              { label: featuresLabel, value: receiptFeaturesValue },
             ],
           }"
         />
@@ -262,10 +273,10 @@ const selectedText = useStoryLocale({ zh: '已选择:', en: 'Selected:' })
           :choice="{
             title: orderSummaryTitle,
             summary: [
-              { label: planLabel, value: useStoryLocale({ zh: '专业版 - 按年', en: 'Pro Annual' }) },
-              { label: usersLabel, value: useStoryLocale({ zh: '25 名团队成员', en: '25 team members' }) },
+              { label: planLabel, value: proAnnualLabel },
+              { label: usersLabel, value: teamMembersValue },
               { label: storageLabel, value: '500 GB' },
-              { label: supportLabel, value: useStoryLocale({ zh: '优先', en: 'Priority' }) },
+              { label: supportLabel, value: priorityLabel },
               { label: totalLabel, value: '$299/year' },
             ],
           }"

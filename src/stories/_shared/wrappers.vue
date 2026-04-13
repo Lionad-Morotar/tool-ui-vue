@@ -83,7 +83,7 @@ export const StoryWrapper = {
             'bg-gray-50/50',
           ],
         },
-        slots.default?.(),
+        slots.default?.() as any,
       );
   },
 };

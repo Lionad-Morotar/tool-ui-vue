@@ -145,6 +145,18 @@ const researchPaperSnippet = useStoryLocale({ zh: '本研究探讨了各种 UI �
 const sourceDocTitle = useStoryLocale({ zh: '来源文档', en: 'Source Document' })
 const docRefTitle = useStoryLocale({ zh: '文档参考', en: 'Documentation Reference' })
 const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升处理多项数据时的性能。', en: 'The API supports batch operations for improved performance when processing multiple items.' })
+
+// Webpage variant
+const mdnTitle = useStoryLocale({ zh: 'MDN Web 文档', en: 'MDN Web Docs' })
+const mdnSnippet = useStoryLocale({ zh: '开发者资源，由开发者创建。', en: 'Resources for developers, by developers.' })
+
+// Code repository variant
+const toolUiTitle = useStoryLocale({ zh: 'tool-ui 组件库', en: 'tool-ui Library' })
+const toolUiSnippet = useStoryLocale({ zh: '一个用于构建 AI 助手界面的综合 Vue 组件库。', en: 'A comprehensive Vue component library for building AI assistant interfaces.' })
+
+// Document variant
+const whitepaperTitle = useStoryLocale({ zh: '技术白皮书', en: 'Technical Whitepaper' })
+const whitepaperSnippet = useStoryLocale({ zh: '对架构和设计决策的深入技术分析。', en: 'An in-depth technical analysis of the architecture and design decisions.' })
 </script>
 
 <template>
@@ -199,8 +211,8 @@ const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升�
         <citation
           id="citation-webpage"
           href="https://developer.mozilla.org"
-          title="MDN Web Docs"
-          snippet="Resources for developers, by developers."
+          :title="mdnTitle"
+          :snippet="mdnSnippet"
           domain="developer.mozilla.org"
           type="webpage"
         />
@@ -213,8 +225,8 @@ const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升�
         <citation
           id="citation-code"
           href="https://github.com/example/lib"
-          title="tool-ui Library"
-          snippet="A comprehensive Vue component library for building AI assistant interfaces."
+          :title="toolUiTitle"
+          :snippet="toolUiSnippet"
           domain="github.com"
           type="code"
         />
@@ -227,8 +239,8 @@ const docRefSnippet = useStoryLocale({ zh: '该 API 支持批量操作以提升�
         <citation
           id="citation-document"
           href="https://example.com/whitepaper.pdf"
-          title="Technical Whitepaper"
-          snippet="An in-depth technical analysis of the architecture and design decisions."
+          :title="whitepaperTitle"
+          :snippet="whitepaperSnippet"
           domain="example.com"
           author="Engineering Team"
           published-at="2024-01-01T00:00:00Z"

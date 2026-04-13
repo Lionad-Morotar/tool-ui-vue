@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale'
+import { useStoryLocale, currentLocale } from './_shared/use-story-locale'
 
-const interactiveState = reactive({
+const interactiveStateZh = {
+  title: '部署到生产环境',
+  description: '这会将最新变更推送给所有用户。',
+  variant: 'default' as const,
+  icon: 'rocket',
+  confirmLabel: '部署',
+  cancelLabel: '取消',
+  choice: undefined as 'approved' | 'denied' | undefined,
+};
+
+const interactiveStateEn = {
   title: 'Deploy to Production',
   description: 'This will push the latest changes to all users.',
   variant: 'default' as const,
@@ -11,7 +21,11 @@ const interactiveState = reactive({
   confirmLabel: 'Deploy',
   cancelLabel: 'Cancel',
   choice: undefined as 'approved' | 'denied' | undefined,
-});
+};
+
+const interactiveState = reactive({ ...interactiveStateZh });
+
+watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value === 'zh-CN' ? interactiveStateZh : interactiveStateEn); });
 
 function handleConfirm() {
   interactiveState.choice = 'approved';

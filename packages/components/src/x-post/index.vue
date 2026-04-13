@@ -33,7 +33,7 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
     :data-tool-ui-id="post.id"
     data-slot="x-post"
   >
-    <article class="rounded-xl border border-border bg-card p-3 shadow-sm">
+    <article class="bg-card shadow-sm p-3 border border-border rounded-xl">
       <div class="flex gap-3">
         <!-- Avatar -->
         <img
@@ -41,17 +41,17 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           :alt="`${post.author.name} avatar`"
           width="40"
           height="40"
-          class="size-10 shrink-0 rounded-full object-cover"
+          class="rounded-full size-10 object-cover shrink-0"
         />
-        <div class="min-w-0 flex-1">
+        <div class="flex-1 min-w-0">
           <!-- Header -->
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex min-w-0 items-center gap-1">
-              <span class="truncate font-semibold">{{ post.author.name }}</span>
+          <div class="flex justify-between items-start gap-2">
+            <div class="flex items-center gap-1 min-w-0">
+              <span class="font-semibold truncate">{{ post.author.name }}</span>
               <svg
                 v-if="post.author.verified"
                 viewBox="0 0 24 24"
-                class="size-[18px] shrink-0 text-blue-500"
+                class="size-[18px] text-blue-500 shrink-0"
                 role="img"
                 :aria-label="verifiedAriaLabel"
               >
@@ -60,14 +60,14 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
                   d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .495.083.965.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"
                 />
               </svg>
-              <span class="truncate text-muted-foreground">@{{ post.author.handle }}</span>
+              <span class="text-muted-foreground truncate">@{{ post.author.handle }}</span>
               <span v-if="post.createdAt" class="text-muted-foreground">·</span>
               <span v-if="post.createdAt" class="text-muted-foreground">{{ state.formatRelativeTime(post.createdAt) }}</span>
             </div>
             <!-- X Logo -->
             <svg
               viewBox="0 0 300 271"
-              class="size-4 shrink-0 text-muted-foreground/40"
+              class="size-4 text-muted-foreground/40 shrink-0"
               role="img"
               :aria-label="logoAriaLabel"
             >
@@ -79,12 +79,12 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           </div>
 
           <!-- Body -->
-          <p v-if="post.text" class="text-[15px] leading-normal text-pretty wrap-break-word whitespace-pre-wrap">{{ post.text }}</p>
+          <p v-if="post.text" class="text-[15px] wrap-break-word text-pretty leading-normal whitespace-pre-wrap">{{ post.text }}</p>
 
           <!-- Media -->
           <div
             v-if="post.media"
-            class="mt-2 w-full overflow-hidden rounded-xl bg-muted"
+            class="bg-muted mt-2 rounded-xl w-full overflow-hidden"
             :style="{ aspectRatio: state.getAspectRatio(post.media.aspectRatio) }"
           >
             <img
@@ -104,20 +104,20 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           </div>
 
           <!-- Quoted Post -->
-          <div v-if="post.quotedPost" class="mt-2 rounded-xl border-border border p-3 transition-colors hover:bg-muted/30">
-            <div class="flex min-w-0 items-center gap-1">
+          <div v-if="post.quotedPost" class="hover:bg-muted/30 mt-2 p-3 border border-border rounded-xl transition-colors">
+            <div class="flex items-center gap-1 min-w-0">
               <img
                 :src="post.quotedPost.author.avatarUrl"
                 :alt="`${post.quotedPost.author.name} avatar`"
                 width="16"
                 height="16"
-                class="size-4 rounded-full object-cover"
+                class="rounded-full size-4 object-cover"
               />
-              <span class="truncate font-semibold">{{ post.quotedPost.author.name }}</span>
+              <span class="font-semibold truncate">{{ post.quotedPost.author.name }}</span>
               <svg
                 v-if="post.quotedPost.author.verified"
                 viewBox="0 0 24 24"
-                class="size-3.5 shrink-0 text-blue-500"
+                class="size-3.5 text-blue-500 shrink-0"
                 role="img"
                 :aria-label="verifiedAriaLabel"
               >
@@ -126,16 +126,16 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
                   d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .495.083.965.238 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"
                 />
               </svg>
-              <span class="truncate text-muted-foreground">@{{ post.quotedPost.author.handle }}</span>
-              <span v-if="post.quotedPost.createdAt" class="shrink-0 text-muted-foreground">·</span>
-              <span v-if="post.quotedPost.createdAt" class="shrink-0 text-muted-foreground">{{ state.formatRelativeTime(post.quotedPost.createdAt) }}</span>
+              <span class="text-muted-foreground truncate">@{{ post.quotedPost.author.handle }}</span>
+              <span v-if="post.quotedPost.createdAt" class="text-muted-foreground shrink-0">·</span>
+              <span v-if="post.quotedPost.createdAt" class="text-muted-foreground shrink-0">{{ state.formatRelativeTime(post.quotedPost.createdAt) }}</span>
             </div>
             <p v-if="post.quotedPost.text" class="mt-1.5">{{ post.quotedPost.text }}</p>
             <img
               v-if="post.quotedPost.media"
               :src="post.quotedPost.media.url"
               :alt="post.quotedPost.media.alt"
-              class="mt-2 w-full rounded-lg object-cover"
+              class="mt-2 rounded-lg w-full object-cover"
             />
           </div>
 
@@ -143,7 +143,7 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           <div
             v-if="post.linkPreview && !post.quotedPost"
             :class="cn(
-              'mt-2 block overflow-hidden rounded-xl border',
+              'mt-2 block overflow-hidden rounded-xl border border-border',
               state.resolveSafeNavigationHref(post.linkPreview.url) && 'cursor-pointer transition-colors hover:bg-muted/50'
             )"
             @click="post.linkPreview.url && state.handleLinkClick(post.linkPreview.url)"
@@ -152,22 +152,22 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
               v-if="post.linkPreview.imageUrl"
               :src="post.linkPreview.imageUrl"
               alt=""
-              class="h-48 w-full object-cover"
+              class="w-full h-48 object-cover"
               loading="lazy"
             />
             <div class="p-3">
-              <div v-if="post.linkPreview.domain || state.getDomain(post.linkPreview.url)" class="text-xs text-muted-foreground">
+              <div v-if="post.linkPreview.domain || state.getDomain(post.linkPreview.url)" class="text-muted-foreground text-xs">
                 {{ post.linkPreview.domain || state.getDomain(post.linkPreview.url) }}
               </div>
               <div v-if="post.linkPreview.title" class="font-medium text-pretty">{{ post.linkPreview.title }}</div>
-              <div v-if="post.linkPreview.description" class="line-clamp-2 text-sm text-pretty text-muted-foreground">
+              <div v-if="post.linkPreview.description" class="text-muted-foreground text-sm line-clamp-2 text-pretty">
                 {{ post.linkPreview.description }}
               </div>
             </div>
           </div>
 
           <!-- Actions -->
-          <div class="mt-3 flex items-center gap-4">
+          <div class="flex items-center gap-4 mt-3">
             <button
               type="button"
               :class="cn(
@@ -195,7 +195,7 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
             </button>
             <button
               type="button"
-              class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm transition-colors hover:bg-blue-500/10 hover:text-blue-500"
+              class="inline-flex items-center gap-1.5 hover:bg-blue-500/10 px-2 py-1 rounded-md hover:text-blue-500 text-sm transition-colors"
               @click="state.handleAction('share')"
             >
               <svg

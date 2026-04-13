@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { Plan } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
 import type { PlanTodoStatus } from '@lionad/vtu-components/plan/schema';
 
 const subtitle = useStoryLocale({ zh: '任务计划列表组件，支持进度追踪、可展开描述和状态切换', en: 'Task plan list component with progress tracking, expandable descriptions, and status cycling.' });
@@ -53,13 +53,35 @@ const subtitle = useStoryLocale({ zh: '任务计划列表组件，支持进度�
  * ```
  */
 
-const interactivePlan = reactive({
+const interactivePlanZh = {
+  todos: [
+    { id: '1', label: '设计系统搭建', description: '配置 Tailwind 和颜色', status: 'completed' as PlanTodoStatus },
+    { id: '2', label: '组件库构建', description: '构建核心 UI 组件', status: 'in_progress' as PlanTodoStatus },
+    { id: '3', label: '文档编写', description: '编写使用指南', status: 'pending' as PlanTodoStatus },
+    { id: '4', label: '测试', description: '单元和集成测试', status: 'pending' as PlanTodoStatus },
+  ]
+}
+
+const interactivePlanEn = {
   todos: [
     { id: '1', label: 'Design system setup', description: 'Configure Tailwind and colors', status: 'completed' as PlanTodoStatus },
     { id: '2', label: 'Component library', description: 'Build core UI components', status: 'in_progress' as PlanTodoStatus },
     { id: '3', label: 'Documentation', description: 'Write usage guides', status: 'pending' as PlanTodoStatus },
     { id: '4', label: 'Testing', description: 'Unit and integration tests', status: 'pending' as PlanTodoStatus },
   ]
+}
+
+const interactivePlan = reactive({
+  todos: interactivePlanEn.todos,
+})
+
+watch(currentLocale, () => {
+  const next = currentLocale.value === 'zh-CN' ? interactivePlanZh : interactivePlanEn;
+  interactivePlan.todos = interactivePlan.todos.map((todo, i) => ({
+    ...todo,
+    label: next.todos[i].label,
+    description: next.todos[i].description,
+  }));
 });
 
 function cycleStatus(index: number) {

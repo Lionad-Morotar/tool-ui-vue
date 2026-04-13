@@ -130,3 +130,30 @@ Plans:
 - [ ] 06-02-PLAN.md — Data-heavy stories (data-table, preferences-panel, geo-map, weather + 5 social): Variant titles + inline data
 - [ ] 06-03-PLAN.md — Remaining 13 stories (citation, carousel, order-summary, etc.): Variant titles + inline data
 - [ ] 06-04-PLAN.md — Landing Page bilingual + phase-wide verification (Wave 2, depends on 01/02/03)
+
+### Phase 7: Story 结构重构与 i18n 解耦
+**Goal:** 将 `src/stories/*.story.vue` 的平铺结构重构为 `src/stories/{component-name}/` 目录结构，并将 story 级别的 `useStoryLocale` 内联文案抽取到独立的 `i18n/*.ts` 文件中，提升可维护性和复用性
+**Depends on:** Phase 6
+**Requirements:** STORY-STRUCT-01, STORY-STRUCT-02, STORY-STRUCT-03, STORY-STRUCT-04
+**Success Criteria** (what must be TRUE):
+  1. 全部 story 文件从 `src/stories/*.story.vue` 迁移到 `src/stories/{component-name}/index.story.vue`
+  2. 每个 story 目录包含独立的 `i18n/zh.ts` 和 `i18n/en.ts`（或统一入口）
+  3. Story 内不再直接内联 `useStoryLocale({ zh: '...', en: '...' })` 调用数十次，而改为导入翻译对象
+  4. Histoire 站点能正确识别迁移后的 story 路径，语言切换正常工作
+**UI hint**: no
+**Plans**: TBD
+
+## Progress
+
+**Execution Order:**
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. I18N Core | 1/1 | Complete    | 2026-04-11 |
+| 2. Component i18n (High + Med) | 5/5 | Complete    | 2026-04-11 |
+| 3. Component i18n (Low) + Tests | 5/5 | Complete    | 2026-04-11 |
+| 4. Quality + Compat | 1/1 | Complete    | 2026-04-11 |
+| 5. Documentation + Histoire | 2/2 | Complete    | 2026-04-11 |
+| 6. Histoire 站点数据 i18n | 4/4 | Complete    | 2026-04-11 |
+| 7. Story 结构重构与 i18n 解耦 | 0/0 | Not started | — |

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed, watch } from 'vue';
 import { ProgressTracker } from '@lionad/vtu-components';
-import { useStoryLocale } from './_shared/use-story-locale';
+import { useStoryLocale, currentLocale } from './_shared/use-story-locale';
 
 const subtitle = useStoryLocale({ zh: '多步骤进度组件，支持待处理、进行中、完成和失败状态', en: 'Multi-step progress component with pending, in-progress, completed, and failed states.' });
 
@@ -50,7 +50,54 @@ const subtitle = useStoryLocale({ zh: '多步骤进度组件，支持待处理�
  * ```
  */
 
-const interactiveProgress = reactive({
+// Step labels
+const accountLabel = useStoryLocale({ zh: '账户', en: 'Account' })
+const profileLabel = useStoryLocale({ zh: '个人资料', en: 'Profile' })
+const billingLabel = useStoryLocale({ zh: '账单', en: 'Billing' })
+const reviewLabel = useStoryLocale({ zh: '审查', en: 'Review' })
+const uploadLabel = useStoryLocale({ zh: '上传', en: 'Upload' })
+const processLabel = useStoryLocale({ zh: '处理', en: 'Process' })
+const exportLabel = useStoryLocale({ zh: '导出', en: 'Export' })
+const buildLabel = useStoryLocale({ zh: '构建', en: 'Build' })
+const testLabel = useStoryLocale({ zh: '测试', en: 'Test' })
+const deployLabel = useStoryLocale({ zh: '部署', en: 'Deploy' })
+const verifyLabel = useStoryLocale({ zh: '验证', en: 'Verify' })
+const designLabel = useStoryLocale({ zh: '设计', en: 'Design' })
+const developLabel = useStoryLocale({ zh: '开发', en: 'Develop' })
+const launchLabel = useStoryLocale({ zh: '发布', en: 'Launch' })
+const compileLabel = useStoryLocale({ zh: '编译', en: 'Compile' })
+const bundleLabel = useStoryLocale({ zh: '打包', en: 'Bundle' })
+const optimizeLabel = useStoryLocale({ zh: '优化', en: 'Optimize' })
+const stepALabel = useStoryLocale({ zh: '步骤 A', en: 'Step A' })
+const stepBLabel = useStoryLocale({ zh: '步骤 B', en: 'Step B' })
+const stepCLabel = useStoryLocale({ zh: '步骤 C', en: 'Step C' })
+const stepDLabel = useStoryLocale({ zh: '步骤 D', en: 'Step D' })
+const stepELabel = useStoryLocale({ zh: '步骤 E', en: 'Step E' })
+
+// Descriptions
+const processDesc = useStoryLocale({ zh: '正在分析数据', en: 'Analyzing data' })
+const reviewDesc = useStoryLocale({ zh: '检查结果', en: 'Check results' })
+const exportDesc = useStoryLocale({ zh: '下载输出', en: 'Download output' })
+const addFilesDesc = useStoryLocale({ zh: '添加你的文件', en: 'Add your files' })
+
+// Receipt summaries
+const exportComplete = useStoryLocale({ zh: '导出完成', en: 'Export complete' })
+const testsFailed = useStoryLocale({ zh: '测试失败', en: 'Tests failed' })
+
+// Button
+const advanceBtn = useStoryLocale({ zh: '推进步骤', en: 'Advance Step' })
+
+const interactiveProgressZh = {
+  steps: [
+    { id: '1', label: '上传', description: '选择你的文件', status: 'completed' as const },
+    { id: '2', label: '处理', description: '正在分析数据', status: 'completed' as const },
+    { id: '3', label: '审查', description: '检查结果', status: 'in-progress' as const },
+    { id: '4', label: '导出', description: '下载输出', status: 'pending' as const },
+  ],
+  currentStep: 2
+}
+
+const interactiveProgressEn = {
   steps: [
     { id: '1', label: 'Upload', description: 'Select your files', status: 'completed' as const },
     { id: '2', label: 'Process', description: 'Analyzing data', status: 'completed' as const },
@@ -58,6 +105,13 @@ const interactiveProgress = reactive({
     { id: '4', label: 'Export', description: 'Download output', status: 'pending' as const },
   ],
   currentStep: 2
+}
+
+const interactiveProgress = reactive({ ...interactiveProgressEn })
+
+watch(currentLocale, () => {
+  const source = currentLocale.value === 'zh-CN' ? interactiveProgressZh : interactiveProgressEn;
+  interactiveProgress.steps = source.steps.map(s => ({ ...s }));
 });
 
 function advanceStep() {
@@ -75,6 +129,7 @@ function advanceStep() {
     interactiveProgress.currentStep = 1;
   }
 }
+
 const horizontalSteps = useStoryLocale({ zh: '水平步骤', en: 'Horizontal Steps' })
 const withDescriptions = useStoryLocale({ zh: '含描述', en: 'With Descriptions' })
 const withFailedStep = useStoryLocale({ zh: '含失败步骤', en: 'With Failed Step' })
@@ -84,6 +139,61 @@ const receiptSuccess = useStoryLocale({ zh: '回执 - 成功', en: 'Receipt - Su
 const receiptFailed = useStoryLocale({ zh: '回执 - 失败', en: 'Receipt - Failed' })
 const interactiveClickToAdvance = useStoryLocale({ zh: '交互 - 点击推进', en: 'Interactive - Click to Advance' })
 const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linear Progress' })
+
+// Computed step arrays for static variants
+const horizontalStepsArr = computed<any[]>(() => [
+  { id: '1', label: accountLabel.value, status: 'completed' },
+  { id: '2', label: profileLabel.value, status: 'completed' },
+  { id: '3', label: billingLabel.value, status: 'in-progress' },
+  { id: '4', label: reviewLabel.value, status: 'pending' },
+])
+
+const descriptionStepsArr = computed<any[]>(() => [
+  { id: '1', label: uploadLabel.value, description: addFilesDesc.value, status: 'completed' },
+  { id: '2', label: processLabel.value, description: processDesc.value, status: 'completed' },
+  { id: '3', label: reviewLabel.value, description: reviewDesc.value, status: 'in-progress' },
+  { id: '4', label: exportLabel.value, description: exportDesc.value, status: 'pending' },
+])
+
+const failedStepsArr = computed<any[]>(() => [
+  { id: '1', label: buildLabel.value, status: 'completed' },
+  { id: '2', label: testLabel.value, status: 'completed' },
+  { id: '3', label: deployLabel.value, status: 'failed' },
+  { id: '4', label: verifyLabel.value, status: 'pending' },
+])
+
+const completedStepsArr = computed<any[]>(() => [
+  { id: '1', label: designLabel.value, status: 'completed' },
+  { id: '2', label: developLabel.value, status: 'completed' },
+  { id: '3', label: testLabel.value, status: 'completed' },
+  { id: '4', label: launchLabel.value, status: 'completed' },
+])
+
+const elapsedStepsArr = computed<any[]>(() => [
+  { id: '1', label: compileLabel.value, status: 'completed' },
+  { id: '2', label: bundleLabel.value, status: 'completed' },
+  { id: '3', label: optimizeLabel.value, status: 'in-progress' },
+])
+
+const receiptSuccessStepsArr = computed<any[]>(() => [
+  { id: '1', label: uploadLabel.value, status: 'completed' },
+  { id: '2', label: processLabel.value, status: 'completed' },
+  { id: '3', label: exportLabel.value, status: 'completed' },
+])
+
+const receiptFailedStepsArr = computed<any[]>(() => [
+  { id: '1', label: buildLabel.value, status: 'completed' },
+  { id: '2', label: testLabel.value, status: 'failed' },
+  { id: '3', label: deployLabel.value, status: 'pending' },
+])
+
+const nonLinearStepsArr = computed<any[]>(() => [
+  { id: '1', label: stepALabel.value, status: 'completed' },
+  { id: '2', label: stepBLabel.value, status: 'pending' },
+  { id: '3', label: stepCLabel.value, status: 'completed' },
+  { id: '4', label: stepDLabel.value, status: 'in-progress' },
+  { id: '5', label: stepELabel.value, status: 'pending' },
+])
 </script>
 
 <template>
@@ -93,12 +203,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-horizontal"
-          :steps="[
-            { id: '1', label: 'Account', status: 'completed' },
-            { id: '2', label: 'Profile', status: 'completed' },
-            { id: '3', label: 'Billing', status: 'in-progress' },
-            { id: '4', label: 'Review', status: 'pending' },
-          ]"
+          :steps="horizontalStepsArr"
         />
       </div>
     </Variant>
@@ -107,12 +212,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-descriptions"
-          :steps="[
-            { id: '1', label: 'Upload', description: 'Add your files', status: 'completed' },
-            { id: '2', label: 'Process', description: 'Analyzing data', status: 'completed' },
-            { id: '3', label: 'Review', description: 'Check results', status: 'in-progress' },
-            { id: '4', label: 'Export', description: 'Download output', status: 'pending' },
-          ]"
+          :steps="descriptionStepsArr"
         />
       </div>
     </Variant>
@@ -121,12 +221,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-failed"
-          :steps="[
-            { id: '1', label: 'Build', status: 'completed' },
-            { id: '2', label: 'Test', status: 'completed' },
-            { id: '3', label: 'Deploy', status: 'failed' },
-            { id: '4', label: 'Verify', status: 'pending' },
-          ]"
+          :steps="failedStepsArr"
         />
       </div>
     </Variant>
@@ -135,12 +230,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-complete"
-          :steps="[
-            { id: '1', label: 'Design', status: 'completed' },
-            { id: '2', label: 'Develop', status: 'completed' },
-            { id: '3', label: 'Test', status: 'completed' },
-            { id: '4', label: 'Launch', status: 'completed' },
-          ]"
+          :steps="completedStepsArr"
         />
       </div>
     </Variant>
@@ -149,11 +239,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-time"
-          :steps="[
-            { id: '1', label: 'Compile', status: 'completed' },
-            { id: '2', label: 'Bundle', status: 'completed' },
-            { id: '3', label: 'Optimize', status: 'in-progress' },
-          ]"
+          :steps="elapsedStepsArr"
           :elapsed-time="12500"
         />
       </div>
@@ -163,13 +249,9 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-receipt-success"
-          :steps="[
-            { id: '1', label: 'Upload', status: 'completed' },
-            { id: '2', label: 'Process', status: 'completed' },
-            { id: '3', label: 'Export', status: 'completed' },
-          ]"
+          :steps="receiptSuccessStepsArr"
           :elapsed-time="8500"
-          :choice="{ outcome: 'success', summary: 'Export complete', at: '2024-01-01T00:00:00Z' }"
+          :choice="{ outcome: 'success', summary: exportComplete, at: '2024-01-01T00:00:00Z' }"
         />
       </div>
     </Variant>
@@ -178,13 +260,9 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-receipt-failed"
-          :steps="[
-            { id: '1', label: 'Build', status: 'completed' },
-            { id: '2', label: 'Test', status: 'failed' },
-            { id: '3', label: 'Deploy', status: 'pending' },
-          ]"
+          :steps="receiptFailedStepsArr"
           :elapsed-time="32000"
-          :choice="{ outcome: 'failed', summary: 'Tests failed', at: '2024-01-01T00:00:00Z' }"
+          :choice="{ outcome: 'failed', summary: testsFailed, at: '2024-01-01T00:00:00Z' }"
         />
       </div>
     </Variant>
@@ -195,7 +273,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
           class="mb-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           @click="advanceStep"
         >
-          Advance Step
+          {{ advanceBtn }}
         </button>
         <progress-tracker
           id="progress-interactive"
@@ -208,13 +286,7 @@ const nonLinearProgress = useStoryLocale({ zh: '非线性进度', en: 'Non-linea
       <div class="w-full max-w-3xl">
         <progress-tracker
           id="progress-nonlinear"
-          :steps="[
-            { id: '1', label: 'Step A', status: 'completed' },
-            { id: '2', label: 'Step B', status: 'pending' },
-            { id: '3', label: 'Step C', status: 'completed' },
-            { id: '4', label: 'Step D', status: 'in-progress' },
-            { id: '5', label: 'Step E', status: 'pending' },
-          ]"
+          :steps="nonLinearStepsArr"
         />
       </div>
     </Variant>

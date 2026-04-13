@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { StatsDisplay } from '@lionad/vtu-components';
 import { useStoryLocale } from './_shared/use-story-locale'
 
@@ -32,6 +33,10 @@ const q4Desc = useStoryLocale({ zh: '2024 年 10 月至 12月', en: 'October thr
 
 // Currency
 const financialOverviewTitle = useStoryLocale({ zh: '财务概览', en: 'Financial Overview' })
+const usdLabel = useStoryLocale({ zh: '美元', en: 'USD' })
+const eurLabel = useStoryLocale({ zh: '欧元', en: 'EUR' })
+const gbpLabel = useStoryLocale({ zh: '英镑', en: 'GBP' })
+const jpyLabel = useStoryLocale({ zh: '日元', en: 'JPY' })
 
 // Number formats
 const usageStatisticsTitle = useStoryLocale({ zh: '使用统计', en: 'Usage Statistics' })
@@ -53,6 +58,14 @@ const revenueUpIsGoodLabel = useStoryLocale({ zh: '收入（上升为好）', en
 const costDownIsGoodLabel = useStoryLocale({ zh: '成本（下降为好）', en: 'Cost (down is good)' })
 const neutralChangeLabel = useStoryLocale({ zh: '中性变化', en: 'Neutral Change' })
 const errorsUpIsBadLabel = useStoryLocale({ zh: '错误（上升为坏）', en: 'Errors (up is bad)' })
+
+// Currency format stats
+const currencyStats = computed<any[]>(() => [
+  { key: 'usd', label: usdLabel.value, value: 125000, format: { kind: 'currency', currency: 'USD', decimals: 0 } },
+  { key: 'eur', label: eurLabel.value, value: 98000, format: { kind: 'currency', currency: 'EUR', decimals: 0 } },
+  { key: 'gbp', label: gbpLabel.value, value: 75000, format: { kind: 'currency', currency: 'GBP', decimals: 0 } },
+  { key: 'jpy', label: jpyLabel.value, value: 15000000, format: { kind: 'currency', currency: 'JPY', decimals: 0 } },
+])
 </script>
 
 <template>
@@ -174,12 +187,7 @@ const errorsUpIsBadLabel = useStoryLocale({ zh: '错误（上升为坏）', en: 
         <stats-display
           id="stats-currency"
           :title="financialOverviewTitle"
-          :stats="[
-            { key: 'usd', label: 'USD', value: 125000, format: { kind: 'currency', currency: 'USD', decimals: 0 } },
-            { key: 'eur', label: 'EUR', value: 98000, format: { kind: 'currency', currency: 'EUR', decimals: 0 } },
-            { key: 'gbp', label: 'GBP', value: 75000, format: { kind: 'currency', currency: 'GBP', decimals: 0 } },
-            { key: 'jpy', label: 'JPY', value: 15000000, format: { kind: 'currency', currency: 'JPY', decimals: 0 } },
-          ]"
+          :stats="currencyStats"
         />
       </div>
     </Variant>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { OrderSummary } from '@lionad/vtu-components';
 import { useStoryLocale } from './_shared/use-story-locale';
 
 /**
@@ -97,6 +98,10 @@ const annualSubDesc = useStoryLocale({ zh: '专业方案 - 按年计费', en: 'P
 // Many items variant
 const shoppingCartTitle = useStoryLocale({ zh: '购物车', en: 'Shopping Cart' })
 const genericItem = useStoryLocale({ zh: '商品', en: 'Item' })
+
+// EUR variant
+const eurOrderTitle = useStoryLocale({ zh: '订单概览', en: 'Order Overview' })
+const eurCoffeeName = useStoryLocale({ zh: '优质咖啡豆', en: 'Premium Coffee Beans' })
 </script>
 
 <template>
@@ -290,12 +295,12 @@ const genericItem = useStoryLocale({ zh: '商品', en: 'Item' })
       <div class="w-full max-w-md">
         <order-summary
           id="order-summary-eur"
-          title="Bestellübersicht"
+          :title="eurOrderTitle"
           variant="summary"
           :items="[
             {
               id: 'item-1',
-              name: 'Premium Kaffeebohnen',
+              name: eurCoffeeName,
               quantity: 1,
               unitPrice: 24.99,
             },
