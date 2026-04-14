@@ -1,0 +1,13 @@
+{
+  "name": "@lionad/vtu-skill",
+  "version": "0.1.0",
+  "description": "Claude skill for tool-ui-vue component library",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "SKILL.md"
+  ],
+  "main": "SKILL.md",
+  "scripts": {},
+  "packageManager": "pnpm@10.33.0"
+}
