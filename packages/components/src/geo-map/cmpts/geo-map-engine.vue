@@ -106,6 +106,8 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  resizeObserver?.disconnect();
+  resizeObserver = null;
   emit('ready', false);
 });
 
@@ -529,9 +531,35 @@ function applyViewportToMap(
   }
 }
 
+// ResizeObserver: re-fit viewport when container size changes
+// (e.g. map initialized inside a hidden v-show container, then revealed)
+let resizeObserver: ResizeObserver | null = null;
+
+function attachResizeObserver(map: LeafletMap, container: HTMLElement) {
+  resizeObserver = new ResizeObserver(() => {
+    if (!mapInstance.value) return;
+    mapInstance.value.invalidateSize();
+    // Re-apply viewport after size change so fitBounds uses correct dimensions
+    lastAppliedViewportRef.value = null;
+    if (leafletModule.value) {
+      applyViewportToMap(
+        mapInstance.value,
+        props.viewport,
+        props.markers,
+        resolvedRoutes.value
+      );
+    }
+  });
+  resizeObserver.observe(container);
+}
+
 // Map event handlers
 function handleMapReady(map: LeafletMap) {
   mapInstance.value = map;
+
+  // Watch for container size changes (hidden→visible transitions, flex layout, etc.)
+  const container = map.getContainer();
+  attachResizeObserver(map, container);
 
   if (leafletModule.value) {
     applyViewportToMap(
