@@ -9,9 +9,9 @@
     "noEmit": true,
     "paths": {
       "@/*": ["../src/*"],
-      "@lionad/vtu-core": ["../packages/core/dist/index.d.ts"],
-      "@lionad/vtu-core/i18n": ["../packages/core/dist/i18n/index.d.ts"],
-      "@lionad/vtu-components": ["../packages/components/dist/src/index.d.ts"]
+      "@lionad/vtu-core": ["../packages/core/src/index.ts"],
+      "@lionad/vtu-core/i18n": ["../packages/core/src/i18n/index.ts"],
+      "@lionad/vtu-components": ["../packages/components/src/index.ts"]
     }
   },
   "include": [
