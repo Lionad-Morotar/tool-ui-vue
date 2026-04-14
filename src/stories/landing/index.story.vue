@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import {
   BarChart3,
   ImageIcon,
@@ -8,15 +9,28 @@ import {
   Terminal,
   Zap,
 } from 'lucide-vue-next';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const heroTagline = useStoryLocale('content.heroTagline', messages);
 const heroCta = useStoryLocale('content.heroCta', messages);
+const copySuccess = useStoryLocale('content.copySuccess', messages);
 const browseByCategory = useStoryLocale('data.browseByCategory', messages);
 const footerText = useStoryLocale('content.footerText', messages);
 const footerViewOn = useStoryLocale('content.footerViewOn', messages);
+
+const copied = ref(false);
+
+async function copyInstallCommand() {
+  try {
+    await navigator.clipboard.writeText('pnpm add @lionad/vtu-components');
+    copied.value = true;
+    setTimeout(() => { copied.value = false; }, 2000);
+  } catch {
+    // Ignore errors
+  }
+}
 
 const categories = [
   {
@@ -73,7 +87,7 @@ const categories = [
       <section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
         <div class="mx-auto max-w-4xl text-center">
           <div class="mb-6 inline-flex items-center justify-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
-            <Zap class="mr-1.5 h-4 w-4" />
+            <zap class="mr-1.5 h-4 w-4" />
             <span>Vue 3 + TypeScript + Tailwind CSS v4</span>
           </div>
           <h1 class="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl">
@@ -85,16 +99,21 @@ const categories = [
 
           <!-- Install command -->
           <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <code class="inline-flex items-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-mono text-card-foreground shadow-sm">
+            <code class="inline-flex items-center rounded-lg border border-border bg-card px-4 py-2 font-mono text-sm text-card-foreground shadow-sm">
               pnpm add @lionad/vtu-components
             </code>
-            <a
-              href="#/story/src-stories-code-block-index-story-vue"
-              target="_parent"
-              class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+            <button
+              class="relative inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              @click="copyInstallCommand"
             >
               {{ heroCta }}
-            </a>
+              <span
+                v-if="copied"
+                class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs text-background shadow-md"
+              >
+                {{ copySuccess }}
+              </span>
+            </button>
           </div>
         </div>
       </section>
@@ -138,9 +157,19 @@ const categories = [
       <footer class="border-t border-border px-6 py-10 text-center text-sm text-muted-foreground">
         <p>
           {{ footerText }}
-          <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar" target="_blank" rel="noopener noreferrer">Lionad-Morotar</a>
+          <a
+            class="font-medium text-foreground hover:underline"
+            href="https://github.com/Lionad-Morotar"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Lionad-Morotar</a>
           · {{ footerViewOn }}
-          <a class="font-medium text-foreground hover:underline" href="https://github.com/Lionad-Morotar/tool-ui-vue" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a
+            class="font-medium text-foreground hover:underline"
+            href="https://github.com/Lionad-Morotar/tool-ui-vue"
+            target="_blank"
+            rel="noopener noreferrer"
+          >GitHub</a>
         </p>
       </footer>
     </div>
