@@ -81,7 +81,7 @@ Wrap your app with `<LocaleProvider>` and use `registerEnglish()`:
 ```vue
 <script setup lang="ts">
 import { LocaleProvider } from '@lionad/vtu-core'
-import { registerEnglish } from '@lionad/vtu-core'
+import { registerEnglish, enAll } from '@lionad/vtu-components/i18n'
 
 registerEnglish() // switches locale and loads en messages
 </script>

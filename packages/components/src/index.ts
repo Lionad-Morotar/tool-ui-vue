@@ -444,5 +444,8 @@ export {
   safeParseSerializableWeatherWidget,
 } from './weather-widget'
 
+// i18n exports
+export { zhCNAll, enAll, registerEnglish } from './i18n'
+
 // Placeholder version (kept for backwards compatibility)
 export const VERSION = '0.4.0'

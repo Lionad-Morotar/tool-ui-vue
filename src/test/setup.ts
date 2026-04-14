@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { registerEnglish } from '@lionad/vtu-core';
+import { registerEnglish } from '@lionad/vtu-components/i18n';
 import { setupConsoleGuard } from './console-guard';
 
 // Switch tests to English locale so assertions match legacy English copy

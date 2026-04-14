@@ -1,5 +1,6 @@
 <script setup>
-import { LocaleProvider, zhCNAll, registerEnglish } from '@lionad/vtu-core'
+import { LocaleProvider } from '@lionad/vtu-core'
+import { zhCNAll, registerEnglish } from '@lionad/vtu-components/i18n'
 import { setLocale, setMessages } from '@lionad/vtu-core/i18n'
 import { watchEffect } from 'vue'
 
