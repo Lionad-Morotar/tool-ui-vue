@@ -2,6 +2,12 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import pkg from './package.json' with { type: 'json' };
+
+const external = [
+  ...Object.keys(pkg.peerDependencies || {}),
+  ...Object.keys(pkg.dependencies || {}),
+];
 
 export default defineConfig({
   plugins: [
@@ -26,14 +32,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: [
-        'vue',
-        '@lionad/vtu-core',
-        '@lionad/vtu-theme',
-        'zod',
-        'clsx',
-        'tailwind-merge',
-      ],
+      external,
       output: {
         globals: {
           vue: 'Vue',
