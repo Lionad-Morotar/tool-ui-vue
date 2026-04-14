@@ -245,6 +245,7 @@ function handleResize() {
   const width = containerRef.value.clientWidth
   const height = containerRef.value.clientHeight
   renderer.setSize(width, height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   const aspect = width / height
   const frustumSize = 5
   camera.left = -frustumSize * aspect / 2
@@ -260,12 +261,39 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (rafId) cancelAnimationFrame(rafId)
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId)
+    rafId = null
+  }
   window.removeEventListener('resize', handleResize)
-  renderer?.dispose()
+
+  if (mesh) {
+    if (scene) scene.remove(mesh)
+    mesh.geometry.dispose()
+    ;(mesh.material as THREE.Material).dispose()
+    mesh = null
+  }
+
   if (cloudMesh) {
+    if (scene) scene.remove(cloudMesh)
     cloudMesh.geometry.dispose()
     ;(cloudMesh.material as THREE.ShaderMaterial).dispose()
+    cloudMesh = null
+  }
+
+  if (directionalLight && scene) {
+    scene.remove(directionalLight)
+    directionalLight = null
+  }
+
+  renderer?.dispose()
+  renderer = null
+  scene = null
+  camera = null
+
+  if (audioCtx) {
+    audioCtx.close()
+    audioCtx = null
   }
 })
 
@@ -290,5 +318,3 @@ watch(() => config.value, updateTheme, { deep: true })
   </div>
 </template>
 
-<style scoped>
-</style>
