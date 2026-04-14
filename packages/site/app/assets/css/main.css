@@ -1,9 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "@lionad/vtu-theme/tokens.css";
 
 /* Scan monorepo component sources for Tailwind classes */
-@source "../../../../components/src";
-@source "../../../../core/src";
+@source "/Users/lionad/Github/Lionad-Morotar/tool-ui-vue/packages/components/src";
+@source "/Users/lionad/Github/Lionad-Morotar/tool-ui-vue/packages/core/src";
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;

@@ -25,7 +25,7 @@ onUnmounted(() => {
       <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl tracking-tight">
         {{ t('hero.h1').value }}<br>
         {{ t('hero.h1SubMain').value }}
-        <span class="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-medium align-middle ml-1 sm:ml-2">
+        <span class="ml-1 sm:ml-2 font-medium text-muted-foreground text-xl sm:text-2xl lg:text-3xl align-middle">
           {{ t('hero.h1SubNote').value }}
         </span>
       </h1>

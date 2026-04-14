@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 
   css: [
     '~/assets/css/main.css',
-    '@lionad/vtu-theme/tokens.css'
+    'markstream-vue/index.css'
   ],
 
   colorMode: {
