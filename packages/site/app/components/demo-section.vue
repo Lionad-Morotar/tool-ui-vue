@@ -8,12 +8,24 @@ const tabs = computed(() => [
 ])
 
 const activeTab = ref('restaurant')
+const contentRef = ref<HTMLElement | null>(null)
+
+watch(activeTab, () => {
+  nextTick(() => {
+    if (contentRef.value) {
+      contentRef.value.scrollTop = 0
+    }
+  })
+})
 </script>
 
 <template>
   <section class="mx-auto -mt-58 px-6 py-16 max-w-7xl">
     <!-- Browser Mockup -->
-    <div class="bg-card shadow-xl border border-border rounded-xl overflow-hidden">
+    <div
+      class="flex flex-col bg-card shadow-xl border border-border rounded-xl overflow-hidden"
+      :style="{ height: 'calc(100vh - 2.5rem - var(--hero-height, 0px) + 12rem)' }"
+    >
       <!-- Browser Chrome -->
       <div class="flex items-center gap-2 bg-muted/50 px-4 py-3 border-border border-b">
         <div class="flex gap-1.5">
@@ -29,7 +41,7 @@ const activeTab = ref('restaurant')
       </div>
 
       <!-- Tabs -->
-      <div class="bg-muted/30 px-4 pt-3 border-border border-b">
+      <div class="bg-muted/30 px-2 pt-1 border-border border-b">
         <div class="flex gap-2">
           <button
             v-for="tab in tabs"
@@ -48,10 +60,11 @@ const activeTab = ref('restaurant')
       </div>
 
       <!-- Content -->
-      <div class="bg-background p-6 min-h-[420px]">
+      <div ref="contentRef" class="flex-1 grid bg-background p-6 overflow-x-hidden overflow-y-auto">
         <DemoRestaurant v-if="activeTab === 'restaurant'" />
         <DemoTravel v-else-if="activeTab === 'travel'" />
         <DemoCodeReview v-else />
+        <div class="h-30 for-padding" />
       </div>
     </div>
   </section>

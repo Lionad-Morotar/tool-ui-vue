@@ -50,7 +50,7 @@ function handlePanelAction(actionId: string) {
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto max-w-2xl">
+  <div class="space-y-4 mx-auto w-[70%] max-w-3xl">
     <!-- 用户首轮 -->
     <div class="flex justify-end">
       <div class="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%] text-primary-foreground text-sm">

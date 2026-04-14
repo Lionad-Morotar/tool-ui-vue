@@ -1,9 +1,25 @@
 <script setup lang="ts">
 const { t } = useSiteLocale()
+const heroRef = ref<HTMLElement | null>(null)
+
+function updateHeroHeight() {
+  if (heroRef.value) {
+    document.documentElement.style.setProperty('--hero-height', `${heroRef.value.offsetHeight}px`)
+  }
+}
+
+onMounted(() => {
+  updateHeroHeight()
+  window.addEventListener('resize', updateHeroHeight)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateHeroHeight)
+})
 </script>
 
 <template>
-  <section class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-6 max-w-7xl">
+  <section ref="heroRef" class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-6 max-w-7xl">
     <!-- Left: Copy -->
     <div class="flex flex-col justify-center">
       <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl tracking-tight">
