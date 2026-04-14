@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ItemCarousel, PreferencesPanel, zhCNAll } from '@lionad/vtu-components'
-import { LocaleProvider } from '@lionad/vtu-core'
+import { ItemCarousel, PreferencesPanel, zhCNAll, LocaleProvider } from '@lionad/vtu-components'
 import { computed, ref } from 'vue'
 
 type Step = 'intro' | 'carousel' | 'panel' | 'done'
@@ -55,6 +54,13 @@ const restaurants = [
     subtitle: '王府井 · 中餐',
     image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&q=80',
     actions: [{ id: 'select', label: '选择' }]
+  },
+  {
+    id: 'r4',
+    name: '翡翠轩',
+    subtitle: '朝阳 · 粤菜',
+    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=80',
+    actions: [{ id: 'select', label: '选择' }]
   }
 ]
 
@@ -76,7 +82,7 @@ function handlePanelAction(actionId: string) {
 
 <template>
   <LocaleProvider :messages="zhCNAll" locale="zh-CN">
-    <main class="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12 text-foreground">
+    <main class="flex flex-col justify-center items-center bg-background px-6 py-12 min-h-screen text-foreground">
       <div class="space-y-4 mx-auto w-full max-w-2xl">
         <!-- 用户首轮 -->
         <div class="flex justify-end">
