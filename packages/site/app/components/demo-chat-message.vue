@@ -15,12 +15,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const visible = ref(false)
+let timer: ReturnType<typeof setTimeout> | null = null
 
 onMounted(() => {
-  const timer = setTimeout(() => {
+  timer = setTimeout(() => {
     visible.value = true
   }, props.delay + props.order * 500)
-  onUnmounted(() => clearTimeout(timer))
+})
+
+onUnmounted(() => {
+  if (timer !== null) clearTimeout(timer)
 })
 </script>
 

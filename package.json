@@ -13,7 +13,7 @@
     "lint": "eslint . --fix",
     "dev": "pnpm --filter @lionad/vtu-site dev",
     "dev:playground": "vite dev playground --config playground/vite.config.ts --port 5749 --host",
-    "dev:story": "histoire dev --host --port 5741",
+    "dev:histoire": "histoire dev --host --port 5741",
     "build:site": "pnpm --filter @lionad/vtu-site generate",
     "build:story": "histoire build",
     "check": "pnpm lint && pnpm typecheck"
