@@ -1,5 +1,5 @@
 import { ref, computed, type ComputedRef } from 'vue'
-import { siteZhCN, siteEn } from '~/i18n/messages'
+import { siteZhCN, siteEn } from '../i18n/messages'
 
 export type SiteLocale = 'zh-CN' | 'en'
 
@@ -10,8 +10,6 @@ const messagesMap = {
   'en': siteEn
 } as const
 
-type Messages = typeof siteZhCN
-
 function getPath(obj: Record<string, unknown>, path: string): string {
   const result = path.split('.').reduce<unknown>((o, key) => {
     if (o && typeof o === 'object') return (o as Record<string, unknown>)[key]
@@ -21,7 +19,7 @@ function getPath(obj: Record<string, unknown>, path: string): string {
 }
 
 export function useSiteLocale() {
-  const t = (key: keyof Messages | string, params?: Record<string, string | number>): ComputedRef<string> => {
+  const t = (key: string, params?: Record<string, string | number>): ComputedRef<string> => {
     return computed(() => {
       const msgs = messagesMap[locale.value]
       let text = getPath(msgs as unknown as Record<string, unknown>, key)

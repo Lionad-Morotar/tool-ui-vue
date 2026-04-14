@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
+    "@nuxtjs/color-mode": "^3.5.2",
     "@types/three": "^0.174.0",
     "eslint": "^10.2.0",
     "typescript": "^6.0.2",
