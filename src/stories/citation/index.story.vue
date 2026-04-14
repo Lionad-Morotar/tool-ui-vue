@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive, computed, watch } from 'vue';
 import { Citation, CitationList } from '@lionad/vtu-components';
-import type { SerializableCitation } from '@lionad/vtu-components/citation/schema';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import type { SerializableCitation } from '@lionad/vtu-components/citation/schema';
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeDiff } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)
@@ -109,9 +109,9 @@ const darkThemeSplit = DarkThemeSplit
 <template>
   <Story title="CodeDiff/All">
     <Variant :title="wordLevelDiff">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
-        <p class="mb-4 text-muted-foreground text-sm">
+        <p class="mb-4 text-sm text-muted-foreground">
           Word-level diff highlights specific changes within modified lines:
         </p>
         <code-diff
@@ -126,7 +126,7 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="splitDiff">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl">
         <code-diff
           id="diff-split"
@@ -141,11 +141,11 @@ const darkThemeSplit = DarkThemeSplit
 
     <Variant :title="interactiveToggleDiffStyle">
       <div class="w-full max-w-4xl">
-        <div class="flex items-center gap-4 bg-muted mb-4 p-4 rounded-lg">
+        <div class="mb-4 flex items-center gap-4 rounded-lg bg-muted p-4">
           <label class="flex items-center gap-2 text-sm">
             <select
               v-model="diffState.style"
-              class="px-2 py-1 border border-border rounded"
+              class="rounded border border-border px-2 py-1"
             >
               <option value="unified">Unified</option>
               <option value="split">Split</option>
@@ -156,7 +156,7 @@ const darkThemeSplit = DarkThemeSplit
             <input
               v-model="diffState.showLines"
               type="checkbox"
-              class="border border-border rounded"
+              class="rounded border border-border"
             />
             {{ ShowLineNumbers }}
           </label>
@@ -174,7 +174,7 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="unifiedDiff">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-unified"
@@ -188,7 +188,7 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="patchMode">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-patch"
@@ -200,7 +200,7 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="modifications">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-3xl">
         <code-diff
           id="diff-modify"
@@ -214,8 +214,8 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="darkThemeUnified">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-3xl dark">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="dark w-full max-w-3xl">
         <code-diff
           id="diff-dark-unified"
           language="typescript"
@@ -228,8 +228,8 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="darkThemeSplit">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl dark">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="dark w-full max-w-4xl">
         <code-diff
           id="diff-dark-split"
           language="typescript"
@@ -242,9 +242,9 @@ const darkThemeSplit = DarkThemeSplit
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffProps }}</h2>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ CodeDiffProps }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
@@ -265,34 +265,34 @@ const darkThemeSplit = DarkThemeSplit
             </tbody>
           </table>
         </div>
-        <div class="bg-muted mt-6 p-4 rounded-lg">
+        <div class="mt-6 rounded-lg bg-muted p-4">
           <h3 class="mb-2 font-semibold">{{ UsageModes1 }}</h3>
-          <ul class="space-y-1 text-sm list-disc list-inside">
+          <ul class="list-inside list-disc space-y-1 text-sm">
             <li><strong>{{ FileDiffMode }}</strong> 提供 <code>oldCode</code> 和/或 <code>newCode</code> 来比较两个版本</li>
             <li><strong>{{ PatchMode1 }}</strong> 提供 <code>patch</code> 与 git diff 字符串</li>
             <li><strong>{{ Note }}</strong> 不能混用补丁模式和 oldCode/newCode — 选择一种</li>
           </ul>
         </div>
       </div>
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ CodeDiffFeatures }}</h2>
-        <div class="gap-4 grid grid-cols-2">
-          <div class="p-4 border border-border rounded-lg">
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ CodeDiffFeatures }}</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-lg border border-border p-4">
             <h3 class="mb-2 font-semibold">{{ UnifiedView }}</h3>
-            <p class="text-muted-foreground text-sm">{{ ShowsChangesInline }}</p>
+            <p class="text-sm text-muted-foreground">{{ ShowsChangesInline }}</p>
           </div>
-          <div class="p-4 border border-border rounded-lg">
+          <div class="rounded-lg border border-border p-4">
             <h3 class="mb-2 font-semibold">{{ SplitView }}</h3>
-            <p class="text-muted-foreground text-sm">{{ SideBySide }}</p>
+            <p class="text-sm text-muted-foreground">{{ SideBySide }}</p>
           </div>
-          <div class="p-4 border border-border rounded-lg">
+          <div class="rounded-lg border border-border p-4">
             <h3 class="mb-2 font-semibold">{{ WordLevelDiff1 }}</h3>
-            <p class="text-muted-foreground text-sm">{{ HighlightsSpecificWords }}</p>
+            <p class="text-sm text-muted-foreground">{{ HighlightsSpecificWords }}</p>
           </div>
-          <div class="p-4 border border-border rounded-lg">
+          <div class="rounded-lg border border-border p-4">
             <h3 class="mb-2 font-semibold">{{ Statistics }}</h3>
-            <p class="text-muted-foreground text-sm">{{ ShowsNumberOf }}</p>
+            <p class="text-sm text-muted-foreground">{{ ShowsNumberOf }}</p>
           </div>
         </div>
       </div>

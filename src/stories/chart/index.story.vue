@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { Chart } from '@lionad/vtu-components';
-import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale } from '../_shared/use-story-locale'
+import type { ChartDataPoint } from '@lionad/vtu-components/chart/schema';
 
 const lineChart = useStoryLocale('content.lineChart', messages)
 const barChart = useStoryLocale('content.barChart', messages)
@@ -70,7 +70,7 @@ const props = [
   { name: 'colors', type: 'string[]', description: { zh: '系列自定义颜色（默认 CSS 变量）', en: 'Custom colors for series (defaults to CSS vars)' } },
   { name: 'showLegend', type: 'boolean', default: 'false', description: { zh: '是否显示图例', en: 'Whether to show the legend' } },
   { name: 'showGrid', type: 'boolean', default: 'true', description: { zh: '是否显示网格线', en: 'Whether to show grid lines' } },
-  { name: 'css', type: "{ root?: string, title?: string, legend?: string, canvas?: string }", description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
+  { name: 'css', type: '{ root?: string, title?: string, legend?: string, canvas?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
 const headerName = Name

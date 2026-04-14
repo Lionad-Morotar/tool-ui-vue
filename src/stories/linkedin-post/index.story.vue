@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { LinkedInPost } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const textOnly = useStoryLocale('content.textOnly', messages)
 const withImage = useStoryLocale('content.withImage', messages)

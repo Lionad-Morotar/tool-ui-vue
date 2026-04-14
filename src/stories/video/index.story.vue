@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { Video } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const basic = useStoryLocale('content.basic', messages)
 const withPoster = useStoryLocale('content.withPoster', messages)
@@ -124,7 +124,7 @@ function clearNavigateLog() {
     <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-basic"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           asset-id="demo-video-1"
@@ -135,7 +135,7 @@ function clearNavigateLog() {
     <Variant :title="withPoster">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-poster"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           asset-id="demo-video-2"
@@ -148,7 +148,7 @@ function clearNavigateLog() {
     <Variant :title="withDescription">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-description"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
           asset-id="demo-video-3"
@@ -163,7 +163,7 @@ function clearNavigateLog() {
     <Variant :title="withNavigation">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-nav"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-nav"
@@ -180,7 +180,7 @@ function clearNavigateLog() {
     <Variant :title="squareFormat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
-        <Video
+        <video
           id="video-square"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-4"
@@ -193,7 +193,7 @@ function clearNavigateLog() {
     <Variant :title="verticalFormat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xs">
-        <Video
+        <video
           id="video-vertical"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
           asset-id="demo-video-5"
@@ -207,7 +207,7 @@ function clearNavigateLog() {
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-events"
             src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             asset-id="demo-video-events"
@@ -245,7 +245,7 @@ function clearNavigateLog() {
     <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-interactive"
             v-bind="interactiveState"
             @media-event="handleMediaEvent"

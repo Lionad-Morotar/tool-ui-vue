@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { InstagramPost } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const singleImage = useStoryLocale('content.singleImage', messages)
 const multipleImages2 = useStoryLocale('content.multipleImages2', messages)

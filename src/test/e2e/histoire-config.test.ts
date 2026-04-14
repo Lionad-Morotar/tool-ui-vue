@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'vitest';
 import { globSync } from 'glob';
+import { describe, expect, test } from 'vitest';
 import config from '../../../histoire.config';
 
 /**

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { Terminal } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)
@@ -68,7 +68,7 @@ const interactive = Interactive
 
 <template>
   <Story title="Terminal/All">
-<Variant :title="successWithANSIColors">
+    <Variant :title="successWithANSIColors">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -82,7 +82,7 @@ const interactive = Interactive
       </div>
     </Variant>
 
-<Variant :title="withError">
+    <Variant :title="withError">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -101,7 +101,7 @@ AssertionError: expected true to be false
       </div>
     </Variant>
 
-<Variant :title="withWorkingDirectory">
+    <Variant :title="withWorkingDirectory">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -122,7 +122,7 @@ no changes added to commit"
       </div>
     </Variant>
 
-<Variant :title="longOutputCollapsed">
+    <Variant :title="longOutputCollapsed">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -148,7 +148,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="truncated">
+    <Variant :title="truncated">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
         <terminal
@@ -165,7 +165,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="simpleCommand">
+    <Variant :title="simpleCommand">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <terminal
@@ -178,7 +178,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="darkThemeSuccess">
+    <Variant :title="darkThemeSuccess">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -192,7 +192,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="darkThemeError">
+    <Variant :title="darkThemeError">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="dark w-full max-w-2xl">
         <terminal
@@ -206,7 +206,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="interactive" auto-props-disabled>
+    <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
         <div class="flex flex-wrap items-center gap-4 rounded-lg bg-muted p-4">
           <div class="flex items-center gap-2">
@@ -214,7 +214,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             <input
               v-model="interactiveState.command"
               type="text"
-              class="w-40 rounded-md border-border border bg-background px-3 py-1 text-sm"
+              class="w-40 rounded-md border border-border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -223,7 +223,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
               v-model.number="interactiveState.exitCode"
               type="number"
               min="0"
-              class="w-20 rounded-md border-border border bg-background px-3 py-1 text-sm"
+              class="w-20 rounded-md border border-border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -232,7 +232,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
               v-model.number="interactiveState.durationMs"
               type="number"
               min="0"
-              class="w-24 rounded-md border-border border bg-background px-3 py-1 text-sm"
+              class="w-24 rounded-md border border-border bg-background px-3 py-1 text-sm"
             />
           </div>
           <div class="flex items-center gap-2">
@@ -240,7 +240,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
             <input
               v-model="interactiveState.cwd"
               type="text"
-              class="w-32 rounded-md border-border border bg-background px-3 py-1 text-sm"
+              class="w-32 rounded-md border border-border bg-background px-3 py-1 text-sm"
             />
           </div>
         </div>
@@ -251,7 +251,7 @@ drwxr-xr-x   3 user staff    96 Jan 15 09:00 tests
       </div>
     </Variant>
 
-<Variant :title="propsTitle">
+    <Variant :title="propsTitle">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-4xl p-6">
         <h2 class="mb-4 text-2xl font-bold">{{ TerminalProps }}</h2>

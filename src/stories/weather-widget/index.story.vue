@@ -2,9 +2,9 @@
 <script setup lang="ts">
 import { reactive, computed, type ComputedRef } from 'vue';
 import { WeatherWidget } from '@lionad/vtu-components';
-import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
+import type { WeatherConditionCode, TemperatureUnit, ForecastDay, EffectSettings } from '@lionad/vtu-components/weather-widget/schema';
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)

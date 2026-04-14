@@ -8,9 +8,9 @@ const title = computed(() => `Switch to ${currentLocale.value === 'zh-CN' ? 'Eng
 
 <template>
   <button
-    @click="toggleLocale"
-    class="h-7 rounded-md border border-gray-300 px-2 text-xs font-medium text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+    class="h-7 cursor-pointer rounded-md border border-gray-300 px-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100"
     :title
+    @click="toggleLocale"
   >
     {{ label }}
   </button>

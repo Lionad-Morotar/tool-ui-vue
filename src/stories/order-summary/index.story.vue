@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import { OrderSummary } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)

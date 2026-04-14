@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)

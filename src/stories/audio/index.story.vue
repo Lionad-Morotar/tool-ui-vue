@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { Audio } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const audioBasicTitle = useStoryLocale('content.audioBasicTitle', messages)
 const audioBasicDescription = useStoryLocale('content.audioBasicDescription', messages)
@@ -106,7 +106,7 @@ function clearEvents() {
     <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <Audio
+        <audio
           id="audio-basic"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-1"
@@ -117,7 +117,7 @@ function clearEvents() {
     <Variant :title="withMetadata">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <Audio
+        <audio
           id="audio-metadata"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
           asset-id="demo-audio-2"
@@ -132,7 +132,7 @@ function clearEvents() {
     <Variant :title="compactVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <Audio
+        <audio
           id="audio-compact"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
           asset-id="demo-audio-3"
@@ -147,7 +147,7 @@ function clearEvents() {
     <Variant :title="compactWithoutArtwork">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <Audio
+        <audio
           id="audio-compact-no-art"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-4"
@@ -162,7 +162,7 @@ function clearEvents() {
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <Audio
+          <audio
             id="audio-events"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-events"
@@ -199,7 +199,7 @@ function clearEvents() {
     <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <Audio
+          <audio
             id="audio-interactive"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-interactive"

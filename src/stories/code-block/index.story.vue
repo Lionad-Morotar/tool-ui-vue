@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { CodeBlock } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)
@@ -284,7 +284,7 @@ const colors = {
             <label class="text-sm font-medium">{{ Language }}</label>
             <select
               v-model="interactiveState.language"
-              class="rounded-md border-border border bg-background px-3 py-1 text-sm"
+              class="rounded-md border border-border bg-background px-3 py-1 text-sm"
             >
               <option v-for="lang in languages" :key="lang" :value="lang">
                 {{ lang }}
@@ -297,7 +297,7 @@ const colors = {
               type="checkbox"
               true-value="visible"
               false-value="hidden"
-              class="rounded border-border border"
+              class="rounded border border-border"
             />
             {{ ShowLineNumbers }}
           </label>

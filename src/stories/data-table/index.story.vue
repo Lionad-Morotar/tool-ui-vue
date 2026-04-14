@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { DataTable } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basic = useStoryLocale('content.basic', messages)

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { ImageGallery } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const imageN = useStoryLocale('content.imageN', messages)

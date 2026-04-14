@@ -42,7 +42,7 @@ export default defineConfig({
     })),
   },
   vite: {
-    base: '/tool-ui-vue/',
+    base: '/tool-ui-vue/docs/',
     plugins: [tailwindcss()],
     resolve: {
       alias: {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
 import { LinkPreview } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const withImage = useStoryLocale('variant.withImage', messages)
 const withoutImage = useStoryLocale('variant.withoutImage', messages)

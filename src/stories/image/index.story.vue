@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Image is used in template as <Image> (kebab-case)
 import { Image } from '@lionad/vtu-components';
-import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale, currentLocale } from '../_shared/use-story-locale'
 
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basic = useStoryLocale('content.basic', messages)
@@ -90,7 +89,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
     <Variant :title="basic">
       <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-basic"
           asset-id="image-basic-asset"
           src="https://picsum.photos/400/300?random=1"
@@ -101,7 +100,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withTitle">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-title"
           asset-id="image-title-asset"
           src="https://picsum.photos/400/300?random=2"
@@ -113,7 +112,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="squareRatio">
       <div class="w-full max-w-sm">
-        <Image
+        <image
           id="image-square"
           asset-id="image-square-asset"
           src="https://picsum.photos/400/400?random=3"
@@ -125,7 +124,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="videoRatio">
       <div class="w-full max-w-lg">
-        <Image
+        <image
           id="image-video"
           asset-id="image-video-asset"
           src="https://picsum.photos/640/360?random=4"
@@ -137,7 +136,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withLink">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-link"
           asset-id="image-link-asset"
           src="https://picsum.photos/400/300?random=5"
@@ -150,7 +149,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withSource">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-source"
           asset-id="image-source-asset"
           src="https://picsum.photos/400/300?random=6"
@@ -163,7 +162,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="objectFitContain">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-contain"
           asset-id="image-contain-asset"
           src="https://picsum.photos/200/400?random=7"
@@ -177,7 +176,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <Image
+        <image
           v-bind="interactiveState"
         />
       </div>

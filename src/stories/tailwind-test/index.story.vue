@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ApprovalCard } from '@lionad/vtu-components';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n'
+import { useStoryLocale } from '../_shared/use-story-locale'
 
 const cancelLabel = useStoryLocale('content.cancelLabel', messages)
 const component = useStoryLocale('content.component', messages)

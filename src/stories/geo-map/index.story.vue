@@ -2,9 +2,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { GeoMap } from '@lionad/vtu-components';
-import type { GeoMapMarker, GeoMapRoute } from '@lionad/vtu-components/geo-map/schema';
-import { useStoryLocale } from '../_shared/use-story-locale'
 import messages from './i18n';
+import { useStoryLocale } from '../_shared/use-story-locale'
+import type { GeoMapMarker, GeoMapRoute } from '@lionad/vtu-components/geo-map/schema';
 
 const Name = useStoryLocale('content.name', messages)
 const Type = useStoryLocale('content.type', messages)
