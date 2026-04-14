@@ -41,12 +41,12 @@ const copyButtonAriaLabel = computed(() =>
     :data-tool-ui-id="id"
     data-slot="terminal"
   >
-    <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
+    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
-      <div class="flex justify-between items-center bg-card px-4 py-2 border-border border-b">
+      <div class="flex items-center justify-between border-b border-border bg-card px-4 py-2">
         <div class="flex items-center gap-2 overflow-hidden">
-          <terminal-icon class="w-4 h-4 text-muted-foreground shrink-0" />
-          <code class="font-mono text-foreground text-xs truncate">
+          <terminal-icon class="h-4 w-4 shrink-0 text-muted-foreground" />
+          <code class="truncate font-mono text-xs text-foreground">
             <span v-if="cwd" class="text-muted-foreground">{{ cwd }}$ </span>
             {{ command }}
           </code>
@@ -54,7 +54,7 @@ const copyButtonAriaLabel = computed(() =>
         <div class="flex items-center gap-3">
           <span
             v-if="state.formattedDuration"
-            class="font-mono tabular-nums text-muted-foreground text-sm"
+            class="font-mono text-sm text-muted-foreground tabular-nums"
           >
             {{ state.formattedDuration }}
           </span>
@@ -82,11 +82,11 @@ const copyButtonAriaLabel = computed(() =>
           >
             <check
               v-if="state.hasOutput && isCopied"
-              class="w-4 h-4 text-green-700 dark:text-green-400"
+              class="h-4 w-4 text-green-700 dark:text-green-400"
             />
             <copy
               v-else
-              class="w-4 h-4 text-muted-foreground"
+              class="h-4 w-4 text-muted-foreground"
             />
           </button>
         </div>
@@ -100,20 +100,20 @@ const copyButtonAriaLabel = computed(() =>
             state.isCollapsed && 'max-h-[200px] overflow-hidden',
           )"
         >
-          <div class="p-4 overflow-x-auto">
+          <div class="overflow-x-auto p-4">
             <div
               v-if="stdout"
-              class="text-foreground whitespace-pre"
+              class="whitespace-pre text-foreground"
               v-html="state.ansiToHtml(stdout)"
             />
             <div
               v-if="stderr"
-              class="mt-2 text-red-500 dark:text-red-400 whitespace-pre"
+              class="mt-2 whitespace-pre text-red-500 dark:text-red-400"
               v-html="state.ansiToHtml(stderr)"
             />
             <div
               v-if="truncated"
-              class="mt-2 text-muted-foreground text-xs italic"
+              class="mt-2 text-xs text-muted-foreground italic"
             >
               {{ t('terminal.outputTruncated') }}
             </div>
@@ -122,7 +122,7 @@ const copyButtonAriaLabel = computed(() =>
           <!-- Gradient overlay when collapsed -->
           <div
             v-if="state.isCollapsed"
-            class="bottom-0 absolute inset-x-0 bg-gradient-to-t from-card to-transparent h-16"
+            class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card to-transparent"
           />
         </div>
 
@@ -152,7 +152,7 @@ const copyButtonAriaLabel = computed(() =>
       <!-- Empty State -->
       <div
         v-else
-        class="px-4 py-3 font-mono text-muted-foreground text-sm italic"
+        class="px-4 py-3 font-mono text-sm text-muted-foreground italic"
       >
         {{ t('terminal.noOutput') }}
       </div>

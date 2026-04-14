@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
 import { useI18n } from '@lionad/vtu-core/i18n';
+import { reactive } from 'vue';
 import { useOptionList } from './states';
 import type { OptionListProps, OptionListSelection } from './schema';
 

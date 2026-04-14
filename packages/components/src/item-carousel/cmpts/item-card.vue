@@ -51,7 +51,7 @@ function handleActionClick(actionId: string, event: Event) {
     />
 
     <!-- Image/Color Area -->
-    <div class="relative bg-muted w-full aspect-square overflow-hidden">
+    <div class="relative aspect-square w-full overflow-hidden bg-muted">
       <img
         v-if="item.image"
         :src="item.image"
@@ -77,12 +77,12 @@ function handleActionClick(actionId: string, event: Event) {
     </div>
 
     <!-- Content -->
-    <div class="flex flex-col flex-1 gap-1 p-3">
+    <div class="flex flex-1 flex-col gap-1 p-3">
       <div class="flex flex-col gap-1">
-        <h3 class="font-medium text-sm line-clamp-2 leading-tight">
+        <h3 class="line-clamp-2 text-sm leading-tight font-medium">
           {{ item.name }}
         </h3>
-        <p v-if="item.subtitle" class="text-muted-foreground text-sm line-clamp-1">
+        <p v-if="item.subtitle" class="line-clamp-1 text-sm text-muted-foreground">
           {{ item.subtitle }}
         </p>
       </div>

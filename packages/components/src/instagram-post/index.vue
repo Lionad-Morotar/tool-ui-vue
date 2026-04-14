@@ -35,7 +35,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
     :data-tool-ui-id="post.id"
     data-slot="instagram-post"
   >
-    <article class="bg-card shadow-sm border border-border rounded-lg overflow-hidden">
+    <article class="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <!-- Header -->
       <header class="flex items-center gap-3 p-3">
         <img
@@ -43,14 +43,14 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
           :alt="`${post.author.name} avatar`"
           width="32"
           height="32"
-          class="rounded-full size-8 object-cover"
+          class="size-8 rounded-full object-cover"
         />
-        <div class="flex flex-1 items-center gap-1.5 min-w-0">
-          <span class="font-semibold text-sm truncate">{{ post.author.handle }}</span>
+        <div class="flex min-w-0 flex-1 items-center gap-1.5">
+          <span class="truncate text-sm font-semibold">{{ post.author.handle }}</span>
           <svg
             v-if="post.author.verified"
             viewBox="0 0 24 24"
-            class="size-3.5 text-sky-500 shrink-0"
+            class="size-3.5 shrink-0 text-sky-500"
             role="img"
             :aria-label="verifiedAriaLabel"
           >
@@ -61,7 +61,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
           </svg>
           <template v-if="post.createdAt">
             <span class="text-muted-foreground">·</span>
-            <span class="text-muted-foreground text-sm">{{ state.formatRelativeTime(post.createdAt) }}</span>
+            <span class="text-sm text-muted-foreground">{{ state.formatRelativeTime(post.createdAt) }}</span>
           </template>
         </div>
         <!-- Instagram Logo -->
@@ -121,11 +121,11 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
         class="w-full"
       >
         <!-- Single image -->
-        <div v-if="post.media.length === 1" class="w-full aspect-square overflow-hidden">
+        <div v-if="post.media.length === 1" class="aspect-square w-full overflow-hidden">
           <button
             v-if="post.media[0].type === 'image'"
             type="button"
-            class="block relative bg-muted size-full overflow-hidden"
+            class="relative block size-full overflow-hidden bg-muted"
             @click="state.handleAction('open-media')"
           >
             <img
@@ -144,12 +144,12 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
         </div>
 
         <!-- Two images -->
-        <div v-else-if="post.media.length === 2" class="gap-0.5 grid grid-cols-2 w-full aspect-square overflow-hidden">
+        <div v-else-if="post.media.length === 2" class="grid aspect-square w-full grid-cols-2 gap-0.5 overflow-hidden">
           <button
             v-for="(item, index) in post.media"
             :key="index"
             type="button"
-            class="block relative bg-muted size-full overflow-hidden"
+            class="relative block size-full overflow-hidden bg-muted"
             @click="state.handleAction('open-media')"
           >
             <img
@@ -169,11 +169,11 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
         </div>
 
         <!-- Three images -->
-        <div v-else-if="post.media.length === 3" class="gap-0.5 grid grid-cols-2 w-full aspect-square overflow-hidden">
+        <div v-else-if="post.media.length === 3" class="grid aspect-square w-full grid-cols-2 gap-0.5 overflow-hidden">
           <div class="h-full">
             <button
               type="button"
-              class="block relative bg-muted size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="state.handleAction('open-media')"
             >
               <img
@@ -191,12 +191,12 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
               />
             </button>
           </div>
-          <div class="gap-0.5 grid grid-rows-2 h-full">
+          <div class="grid h-full grid-rows-2 gap-0.5">
             <button
               v-for="(item, index) in post.media.slice(1)"
               :key="index + 1"
               type="button"
-              class="block relative bg-muted size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="state.handleAction('open-media')"
             >
               <img
@@ -217,15 +217,15 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
         </div>
 
         <!-- Four or more images -->
-        <div v-else class="gap-0.5 grid grid-cols-2 w-full aspect-square overflow-hidden">
+        <div v-else class="grid aspect-square w-full grid-cols-2 gap-0.5 overflow-hidden">
           <div
             v-for="(item, index) in post.media.slice(0, 4)"
             :key="index"
-            class="relative w-full h-full"
+            class="relative h-full w-full"
           >
             <button
               type="button"
-              class="block relative bg-muted size-full overflow-hidden"
+              class="relative block size-full overflow-hidden bg-muted"
               @click="state.handleAction('open-media')"
             >
               <img
@@ -244,9 +244,9 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
             </button>
             <div
               v-if="index === 3 && post.media.length > 4"
-              class="absolute inset-0 flex justify-center items-center bg-black/50 pointer-events-none"
+              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
             >
-              <span class="font-semibold text-white text-2xl">
+              <span class="text-2xl font-semibold text-white">
                 +{{ post.media.length - 4 }}
               </span>
             </div>
@@ -283,7 +283,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
           </button>
           <button
             type="button"
-            class="hover:opacity-60 px-3 py-2 rounded-md h-auto transition-colors"
+            class="h-auto rounded-md px-3 py-2 transition-colors hover:opacity-60"
             :aria-label="shareAriaLabel"
             @click="state.handleAction('share')"
           >
@@ -313,8 +313,8 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
 
         <!-- Caption -->
         <div v-if="post.text">
-          <span class="font-semibold text-sm">{{ post.author.handle }}</span>
-          <span class="text-sm text-pretty leading-relaxed whitespace-pre-wrap"> {{ post.text }}</span>
+          <span class="text-sm font-semibold">{{ post.author.handle }}</span>
+          <span class="text-sm leading-relaxed text-pretty whitespace-pre-wrap"> {{ post.text }}</span>
         </div>
       </div>
     </article>

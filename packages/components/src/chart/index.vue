@@ -28,7 +28,7 @@ const chartState = reactive(useChart(props, emit));
     <div
       :class="
         cn(
-          'group isolate relative flex flex-col rounded-xl w-full min-w-0 overflow-hidden',
+          'group relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
           'border border-border bg-card text-sm shadow-xs'
         )
       "
@@ -36,17 +36,17 @@ const chartState = reactive(useChart(props, emit));
       <!-- Header -->
       <div
         v-if="title || description"
-        class="px-4 pt-4 pb-3 border-border/40 border-b"
+        class="border-b border-border/40 px-4 pt-4 pb-3"
       >
         <h3
           v-if="title"
-          class="font-semibold text-[15px] leading-tight tracking-tight"
+          class="text-[15px] leading-tight font-semibold tracking-tight"
         >
           {{ title }}
         </h3>
         <p
           v-if="description"
-          class="mt-1 text-muted-foreground text-sm leading-snug"
+          class="mt-1 text-sm leading-snug text-muted-foreground"
         >
           {{ description }}
         </p>
@@ -55,7 +55,7 @@ const chartState = reactive(useChart(props, emit));
       <!-- Content -->
       <div class="relative p-4">
         <svg
-          class="w-full h-auto"
+          class="h-auto w-full"
           :viewBox="`0 0 ${chartState.CHART_WIDTH} ${chartState.CHART_HEIGHT}`"
           role="img"
           aria-label="chart"
@@ -80,7 +80,7 @@ const chartState = reactive(useChart(props, emit));
           <text
             v-for="(tick, i) in chartState.yTicks"
             :key="`y-label-${i}`"
-            class="fill-muted-foreground text-xs y-axis-label"
+            class="y-axis-label fill-muted-foreground text-xs"
             :x="chartState.MARGIN.left - 8"
             :y="chartState.MARGIN.top + chartState.yScale(tick) + 4"
             text-anchor="end"
@@ -97,7 +97,7 @@ const chartState = reactive(useChart(props, emit));
               <rect
                 v-for="(s, sIndex) in series"
                 :key="`bar-${rowIndex}-${sIndex}`"
-                class="hover:opacity-80 transition-opacity"
+                class="transition-opacity hover:opacity-80"
                 :x="
                   chartState.xScaleBar(rowIndex).x + sIndex * chartState.xScaleBar(rowIndex).barWidth
                 "
@@ -133,7 +133,7 @@ const chartState = reactive(useChart(props, emit));
                 series.map((s, sIndex) => ({ row, rowIndex, s, sIndex }))
               )"
               :key="`dot-${item.rowIndex}-${item.sIndex}`"
-              class="transition-all chart-dot hover:r-6"
+              class="chart-dot hover:r-6 transition-all"
               :cx="chartState.xScaleLine(item.rowIndex)"
               :cy="chartState.MARGIN.top + chartState.yScale(Number(item.row[item.s.key]) || 0)"
               r="4"
@@ -157,7 +157,7 @@ const chartState = reactive(useChart(props, emit));
           <text
             v-for="(row, i) in data"
             :key="`x-label-${i}`"
-            class="fill-muted-foreground text-xs x-axis-label"
+            class="x-axis-label fill-muted-foreground text-xs"
             :x="
               type === 'bar'
                 ? chartState.xScaleBar(i).x + chartState.xScaleBar(i).innerBand / 2
@@ -174,7 +174,7 @@ const chartState = reactive(useChart(props, emit));
         <div
           v-if="chartState.tooltip.visible"
           data-testid="chart-tooltip"
-          class="z-10 fixed bg-background shadow px-2 py-1.5 border border-border rounded min-w-[120px] text-xs pointer-events-none"
+          class="pointer-events-none fixed z-10 min-w-[120px] rounded border border-border bg-background px-2 py-1.5 text-xs shadow"
           :style="{ left: `${chartState.tooltip.x}px`, top: `${chartState.tooltip.y}px` }"
         >
           <div class="mb-1 font-medium">{{ chartState.tooltip.title }}</div>
@@ -185,7 +185,7 @@ const chartState = reactive(useChart(props, emit));
               class="flex items-center gap-1.5"
             >
               <span
-                class="rounded-full size-2"
+                class="size-2 rounded-full"
                 :style="{ backgroundColor: item.color }"
               />
               <span class="text-muted-foreground">{{ item.label }}:</span>
@@ -198,7 +198,7 @@ const chartState = reactive(useChart(props, emit));
         <div
           v-if="showLegend && series.length > 0"
           data-testid="chart-legend"
-          class="flex flex-wrap justify-center items-center gap-4 mt-4"
+          class="mt-4 flex flex-wrap items-center justify-center gap-4"
         >
           <div
             v-for="(s, sIndex) in series"
@@ -206,10 +206,10 @@ const chartState = reactive(useChart(props, emit));
             class="flex items-center gap-1.5"
           >
             <div
-              class="rounded-full size-2"
+              class="size-2 rounded-full"
               :style="{ backgroundColor: chartState.seriesColors[sIndex] }"
             />
-            <span class="text-muted-foreground text-xs">{{ s.label }}</span>
+            <span class="text-xs text-muted-foreground">{{ s.label }}</span>
           </div>
         </div>
       </div>

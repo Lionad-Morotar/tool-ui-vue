@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { computed } from 'vue';
 import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed } from 'vue';
 import {
   useSlider,
   useDrag,

@@ -74,7 +74,7 @@ defineExpose({
     data-slot="item-carousel"
     :data-tool-ui-id="id"
   >
-    <p class="text-muted-foreground text-sm">{{ t('itemCarousel.noItems') }}</p>
+    <p class="text-sm text-muted-foreground">{{ t('itemCarousel.noItems') }}</p>
   </div>
 
   <!-- Carousel -->
@@ -95,10 +95,10 @@ defineExpose({
   >
     <!-- Header -->
     <div v-if="title || description" class="px-4 pt-4 pb-1">
-      <h3 v-if="title" class="font-semibold text-[15px] leading-tight tracking-tight">
+      <h3 v-if="title" class="text-[15px] leading-tight font-semibold tracking-tight">
         {{ title }}
       </h3>
-      <p v-if="description" class="mt-1 text-muted-foreground text-sm leading-snug">
+      <p v-if="description" class="mt-1 text-sm leading-snug text-muted-foreground">
         {{ description }}
       </p>
     </div>
@@ -109,9 +109,9 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] w-6 min-h-[50px] rounded-2xl bg-background/60 hover:bg-background/50 backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] min-h-[50px] w-6 rounded-2xl bg-background/60 backdrop-blur-lg hover:bg-background/50',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
-          'justify-center items-center',
+          'items-center justify-center',
           'left-1.5',
           carouselState.canScrollLeft && 'pointer-events-auto scale-100 opacity-100'
         )"
@@ -131,7 +131,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="w-4 h-4"
+          class="h-4 w-4"
         >
           <path d="m15 18-6-6 6-6" />
         </svg>
@@ -141,9 +141,9 @@ defineExpose({
         type="button"
         :class="cn(
           'pointer-events-none scale-90 border-none opacity-0',
-          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] w-6 min-h-[50px] rounded-2xl bg-background/60 hover:bg-background/50 backdrop-blur-lg',
+          'absolute inset-y-0 z-20 my-auto flex h-[6cqh] min-h-[50px] w-6 rounded-2xl bg-background/60 backdrop-blur-lg hover:bg-background/50',
           'transition-[opacity,transform] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
-          'justify-center items-center',
+          'items-center justify-center',
           'right-1.5',
           carouselState.canScrollRight && 'pointer-events-auto scale-100 opacity-100'
         )"
@@ -163,7 +163,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="w-4 h-4"
+          class="h-4 w-4"
         >
           <path d="m9 18 6-6-6-6" />
         </svg>
@@ -192,7 +192,7 @@ defineExpose({
           :data-item-id="item.id"
           :data-index="index"
           role="listitem"
-          class="flex snap-always snap-start"
+          class="flex snap-start snap-always"
           :aria-label="getItemAriaLabel(index)"
         >
           <item-card
@@ -204,6 +204,5 @@ defineExpose({
         </div>
       </div>
     </div>
-
   </div>
 </template>

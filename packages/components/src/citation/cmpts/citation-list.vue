@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { computed } from 'vue';
-import Citation from '../index.vue';
 import { typeIcons } from '../icons';
+import Citation from '../index.vue';
 import { usePopover } from '../states/usePopover';
 import type { CitationType, SerializableCitation, CitationListProps } from '../schema';
 
@@ -79,7 +79,7 @@ function getTypeIcon(type: CitationType | undefined) {
   <div
     v-if="variant === 'stacked'"
     v-bind="$attrs"
-    class="inline-flex relative"
+    class="relative inline-flex"
     data-testid="citation-list-container"
   >
     <button
@@ -118,7 +118,7 @@ function getTypeIcon(type: CitationType | undefined) {
             aria-hidden="true"
             width="18"
             height="18"
-            class="rounded-full size-4.5 object-cover"
+            class="size-4.5 rounded-full object-cover"
           />
           <svg
             v-else
@@ -136,15 +136,15 @@ function getTypeIcon(type: CitationType | undefined) {
         </div>
         <div
           v-if="stackedRemainingCount > 0"
-          class="relative flex justify-center items-center bg-background shadow-xs -ml-2 border border-border dark:border-foreground/20 rounded-full size-6"
+          class="relative -ml-2 flex size-6 items-center justify-center rounded-full border border-border bg-background shadow-xs dark:border-foreground/20"
           style="z-index: 0"
         >
-          <span class="font-medium text-[10px] text-muted-foreground tracking-tight">
+          <span class="text-[10px] font-medium tracking-tight text-muted-foreground">
             •••
           </span>
         </div>
       </div>
-      <span class="tabular-nums text-muted-foreground text-sm">
+      <span class="text-sm text-muted-foreground tabular-nums">
         {{ citations.length }} source{{ citations.length !== 1 ? 's' : '' }}
       </span>
     </button>
@@ -163,12 +163,12 @@ function getTypeIcon(type: CitationType | undefined) {
       @mouseleave="popoverBottom.handleMouseLeave"
       @keydown="popoverBottom.handlePopoverKeyDown"
     >
-      <div class="flex flex-col max-h-72 overflow-y-auto">
+      <div class="flex max-h-72 flex-col overflow-y-auto">
         <button
           v-for="citation in citations"
           :key="citation.id"
           type="button"
-          class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
+          class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
           @click="handleStackedClick(citation)"
         >
           <img
@@ -178,12 +178,12 @@ function getTypeIcon(type: CitationType | undefined) {
             aria-hidden="true"
             width="16"
             height="16"
-            class="bg-muted rounded size-4 object-cover shrink-0"
+            class="size-4 shrink-0 rounded bg-muted object-cover"
           />
           <svg
             v-else
             :viewBox="getTypeIcon(citation.type).viewBox"
-            class="size-4 text-muted-foreground shrink-0"
+            class="size-4 shrink-0 text-muted-foreground"
             aria-hidden="true"
             fill="none"
             stroke="currentColor"
@@ -193,11 +193,11 @@ function getTypeIcon(type: CitationType | undefined) {
           >
             <path :d="getTypeIcon(citation.type).path" />
           </svg>
-          <div class="flex-1 min-w-0">
-            <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
               {{ citation.title }}
             </p>
-            <p class="text-muted-foreground text-xs truncate">
+            <p class="truncate text-xs text-muted-foreground">
               {{ citation.domain }}
             </p>
           </div>
@@ -211,7 +211,7 @@ function getTypeIcon(type: CitationType | undefined) {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
+            class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
           >
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
             <polyline points="15 3 21 3 21 9" />
@@ -264,7 +264,7 @@ function getTypeIcon(type: CitationType | undefined) {
         @mouseleave="popoverBottom.handleMouseLeave"
         @keydown="popoverBottom.handleTriggerKeyDown"
       >
-        <span class="tabular-nums text-muted-foreground text-sm">
+        <span class="text-sm text-muted-foreground tabular-nums">
           +{{ overflowCount }} more sources
         </span>
       </button>
@@ -282,12 +282,12 @@ function getTypeIcon(type: CitationType | undefined) {
         @mouseleave="popoverBottom.handleMouseLeave"
         @keydown="popoverBottom.handlePopoverKeyDown"
       >
-        <div class="flex flex-col max-h-72 overflow-y-auto">
+        <div class="flex max-h-72 flex-col overflow-y-auto">
           <button
             v-for="citation in overflowCitations"
             :key="citation.id"
             type="button"
-            class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
+            class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
             @click="handleOverflowClick(citation)"
           >
             <img
@@ -297,12 +297,12 @@ function getTypeIcon(type: CitationType | undefined) {
               aria-hidden="true"
               width="16"
               height="16"
-              class="bg-muted rounded size-4 object-cover shrink-0"
+              class="size-4 shrink-0 rounded bg-muted object-cover"
             />
             <svg
               v-else
               :viewBox="getTypeIcon(citation.type).viewBox"
-              class="size-4 text-muted-foreground shrink-0"
+              class="size-4 shrink-0 text-muted-foreground"
               aria-hidden="true"
               fill="none"
               stroke="currentColor"
@@ -312,11 +312,11 @@ function getTypeIcon(type: CitationType | undefined) {
             >
               <path :d="getTypeIcon(citation.type).path" />
             </svg>
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
                 {{ citation.title }}
               </p>
-              <p class="text-muted-foreground text-xs truncate">
+              <p class="truncate text-xs text-muted-foreground">
                 {{ citation.domain }}
               </p>
             </div>
@@ -330,7 +330,7 @@ function getTypeIcon(type: CitationType | undefined) {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
+              class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
             >
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
               <polyline points="15 3 21 3 21 9" />
@@ -398,12 +398,12 @@ function getTypeIcon(type: CitationType | undefined) {
         @mouseleave="popoverTop.handleMouseLeave"
         @keydown="popoverTop.handlePopoverKeyDown"
       >
-        <div class="flex flex-col max-h-72 overflow-y-auto">
+        <div class="flex max-h-72 flex-col overflow-y-auto">
           <button
             v-for="citation in overflowCitations"
             :key="citation.id"
             type="button"
-            class="group flex items-center gap-2.5 hover:bg-muted focus-visible:bg-muted px-2 py-2 rounded-md focus-visible:outline-none w-full text-left transition-colors cursor-pointer"
+            class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
             @click="handleOverflowClick(citation)"
           >
             <img
@@ -413,12 +413,12 @@ function getTypeIcon(type: CitationType | undefined) {
               aria-hidden="true"
               width="16"
               height="16"
-              class="bg-muted rounded size-4 object-cover shrink-0"
+              class="size-4 shrink-0 rounded bg-muted object-cover"
             />
             <svg
               v-else
               :viewBox="getTypeIcon(citation.type).viewBox"
-              class="size-4 text-muted-foreground shrink-0"
+              class="size-4 shrink-0 text-muted-foreground"
               aria-hidden="true"
               fill="none"
               stroke="currentColor"
@@ -428,11 +428,11 @@ function getTypeIcon(type: CitationType | undefined) {
             >
               <path :d="getTypeIcon(citation.type).path" />
             </svg>
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-sm group-hover:decoration-foreground/30 group-hover:underline group-hover:underline-offset-2 truncate">
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
                 {{ citation.title }}
               </p>
-              <p class="text-muted-foreground text-xs truncate">
+              <p class="truncate text-xs text-muted-foreground">
                 {{ citation.domain }}
               </p>
             </div>
@@ -446,7 +446,7 @@ function getTypeIcon(type: CitationType | undefined) {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="self-start opacity-0 group-hover:opacity-100 mt-0.5 size-3.5 text-muted-foreground transition-opacity shrink-0"
+              class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
             >
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
               <polyline points="15 3 21 3 21 9" />

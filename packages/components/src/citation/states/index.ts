@@ -2,9 +2,9 @@
 // All business logic lives here, index.vue is UI-only
 
 import { computed } from 'vue';
+import { typeIcons } from '../icons';
 import type { CitationProps, CitationVariant } from '../schema';
 import type { ComputedRef } from 'vue';
-import { typeIcons } from '../icons';
 
 export type CitationEmit = {
   (e: 'navigate', href: string, citation: CitationProps): void;

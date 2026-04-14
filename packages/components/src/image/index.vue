@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { computed, reactive } from 'vue';
 import { useI18n } from '@lionad/vtu-core/i18n';
+import { computed, reactive } from 'vue';
 import { useImage } from './states';
 import type { ImageProps } from './schema';
 

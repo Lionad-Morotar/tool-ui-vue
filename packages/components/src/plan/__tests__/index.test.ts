@@ -325,7 +325,7 @@ describe('Plan', () => {
         'utf-8'
       );
       expect(code).toContain("t('plan.complete')");
-      expect(code).not.toContain("complete</");
+      expect(code).not.toContain('complete</');
     });
 
     test('uses t() for hidden count with params', async () => {
@@ -336,7 +336,7 @@ describe('Plan', () => {
         'utf-8'
       );
       expect(code).toContain("t('plan.more'");
-      expect(code).not.toContain("more</");
+      expect(code).not.toContain('more</');
     });
   });
 

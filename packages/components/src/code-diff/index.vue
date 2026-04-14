@@ -34,20 +34,20 @@ const copyButtonAriaLabel = computed(() =>
     :data-tool-ui-id="id"
     data-slot="code-diff"
   >
-    <div class="bg-card shadow-xs border border-border rounded-lg overflow-hidden">
+    <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
-      <div class="flex justify-between items-center gap-2 bg-card px-4 py-2 border-border border-b">
+      <div class="flex items-center justify-between gap-2 border-b border-border bg-card px-4 py-2">
         <div class="flex items-center gap-1">
-          <span class="text-muted-foreground text-sm">
+          <span class="text-sm text-muted-foreground">
             {{ states.languageDisplayName }}
           </span>
           <template v-if="filename">
             <span class="text-muted-foreground/50">&bull;</span>
-            <span class="font-medium text-foreground text-sm">{{ filename }}</span>
+            <span class="text-sm font-medium text-foreground">{{ filename }}</span>
           </template>
         </div>
         <div class="flex items-center gap-3">
-          <span v-if="states.hasChanges" class="font-mono tabular-nums text-xs">
+          <span v-if="states.hasChanges" class="font-mono text-xs tabular-nums">
             <span v-if="states.stats.additions > 0" class="text-[#00cab1] dark:text-[#2ee8c8]">+{{ states.stats.additions }}</span>
             <span v-if="states.stats.additions > 0 && states.stats.deletions > 0"> </span>
             <span v-if="states.stats.deletions > 0" class="text-[#ff2e3f] dark:text-[#ff5c6a]">-{{ states.stats.deletions }}</span>
@@ -62,8 +62,8 @@ const copyButtonAriaLabel = computed(() =>
             :aria-label="copyButtonAriaLabel"
             @click="states.copyCode"
           >
-            <check v-if="isCopied" class="w-4 h-4 text-green-700 dark:text-green-400" />
-            <copy v-else class="w-4 h-4 text-muted-foreground" />
+            <check v-if="isCopied" class="h-4 w-4 text-green-700 dark:text-green-400" />
+            <copy v-else class="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
       </div>
@@ -85,12 +85,12 @@ const copyButtonAriaLabel = computed(() =>
           >
             <template v-if="lineNumbers !== 'hidden'">
               <span
-                class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground/60 text-xs text-right select-none shrink-0"
+                class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground/60 select-none"
               >
                 {{ line.oldLineNum ?? '' }}
               </span>
               <span
-                class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground text-xs text-right select-none shrink-0"
+                class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground select-none"
               >
                 {{ line.newLineNum ?? '' }}
               </span>
@@ -132,7 +132,7 @@ const copyButtonAriaLabel = computed(() =>
         <template v-else>
           <div class="flex">
             <!-- Old side -->
-            <div class="flex-1 border-border/50 border-r min-w-0">
+            <div class="min-w-0 flex-1 border-r border-border/50">
               <div
                 v-for="(line, index) in states.displaySplitLines"
                 :key="`old-${index}`"
@@ -143,13 +143,13 @@ const copyButtonAriaLabel = computed(() =>
               >
                 <template v-if="lineNumbers !== 'hidden'">
                   <span
-                    class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground/60 text-xs text-right select-none shrink-0"
+                    class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground/60 select-none"
                   >
                     {{ line.oldLine?.lineNum ?? '' }}
                   </span>
                 </template>
                 <span
-                  class="flex-1 px-3 py-0.5 min-w-0 overflow-hidden whitespace-pre"
+                  class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
                   :class="[
                     line.oldLine?.type === 'deletion' && states.deletionTextColor,
                   ]"
@@ -180,7 +180,7 @@ const copyButtonAriaLabel = computed(() =>
             </div>
 
             <!-- New side -->
-            <div class="flex-1 min-w-0">
+            <div class="min-w-0 flex-1">
               <div
                 v-for="(line, index) in states.displaySplitLines"
                 :key="`new-${index}`"
@@ -191,13 +191,13 @@ const copyButtonAriaLabel = computed(() =>
               >
                 <template v-if="lineNumbers !== 'hidden'">
                   <span
-                    class="px-2 py-0.5 border-border/50 border-r w-10 text-muted-foreground text-xs text-right select-none shrink-0"
+                    class="w-10 shrink-0 border-r border-border/50 px-2 py-0.5 text-right text-xs text-muted-foreground select-none"
                   >
                     {{ line.newLine?.lineNum ?? '' }}
                   </span>
                 </template>
                 <span
-                  class="flex-1 px-3 py-0.5 min-w-0 overflow-hidden whitespace-pre"
+                  class="min-w-0 flex-1 overflow-hidden px-3 py-0.5 whitespace-pre"
                   :class="[
                     line.newLine?.type === 'addition' && states.additionTextColor,
                   ]"

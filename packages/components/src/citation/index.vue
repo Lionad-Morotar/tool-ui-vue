@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
-import { reactive } from 'vue';
 import { useI18n } from '@lionad/vtu-core/i18n';
+import { reactive } from 'vue';
 import { useCitation } from './states';
 import { usePopover } from './states/usePopover';
 import type { CitationProps } from './schema';
