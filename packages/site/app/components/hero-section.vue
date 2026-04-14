@@ -19,13 +19,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section ref="heroRef" class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-6 max-w-7xl">
+  <section ref="heroRef" class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-0 max-w-7xl">
     <!-- Left: Copy -->
     <div class="flex flex-col justify-center">
-      <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+      <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl lg:leading-18 tracking-normal">
         {{ t('hero.h1').value }}<br>
         {{ t('hero.h1SubMain').value }}
-        <span class="ml-1 sm:ml-2 font-medium text-muted-foreground text-xl sm:text-2xl lg:text-3xl align-middle">
+        <span class="ml-1 sm:ml-2 font-medium text-muted-foreground text-sm sm:text-sm lg:text-base align-middle">
           {{ t('hero.h1SubNote').value }}
         </span>
       </h1>

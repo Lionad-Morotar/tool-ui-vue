@@ -17,7 +17,7 @@ export function createHexnutGeometry(
   shape.closePath()
 
   const hole = new Path()
-  const segments = 32
+  const segments = 256
   for (let i = 0; i < segments; i++) {
     const angle = (i / segments) * Math.PI * 2
     const x = Math.cos(angle) * innerRadius

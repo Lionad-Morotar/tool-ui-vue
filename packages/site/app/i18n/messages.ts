@@ -11,9 +11,9 @@ export const siteZhCN = {
   },
   hero: {
     h1: '使用交互式组件',
-    h1SubMain: '增强 UX',
-    h1SubNote: '( 以及 Agent Experience )',
-    description: '让 Agent 的每一次回复都赏心悦目。专为工具调用场景打造的 Vue 组件，提升用户体验只需5分钟。你只需要在 Nuxt 项目告诉你的 Agent，”帮我接入 tool-ui-vue”',
+    h1SubMain: '增强 UX & AX',
+    h1SubNote: '( Agent Experience )',
+    description: '让 Agent 的每一次回复都赏心悦目。专为工具调用场景打造的 Vue 组件，提升用户体验只需5分钟。',
     ctaDocs: '查看文档',
     ctaGithub: 'GitHub'
   },
@@ -91,9 +91,9 @@ export const siteEn = {
   },
   hero: {
     h1: 'Interactive components',
-    h1SubMain: 'for UX',
-    h1SubNote: '( and Agent Experience )',
-    description: 'Make every Agent response delightful. Vue components purpose-built for tool-call scenarios. Upgrade your UX in 5 minutes. Just tell your Agent in a Nuxt project, "Help me integrate tool-ui-vue."',
+    h1SubMain: 'for UX & AX',
+    h1SubNote: '( Agent Experience )',
+    description: 'Make every Agent response delightful. Vue components purpose-built for tool-call scenarios. Upgrade your UX in 5 minutes.',
     ctaDocs: 'View Docs',
     ctaGithub: 'GitHub'
   },

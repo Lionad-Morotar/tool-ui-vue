@@ -38,7 +38,7 @@ const cloudVertexShader = `
   varying vec2 vUv;
   void main() {
     vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 0.279);
   }
 `
 
@@ -140,7 +140,7 @@ function init() {
 
   scene = new THREE.Scene()
 
-  const frustumSize = 5
+  const frustumSize = 6
   const aspect = width / height
   camera = new THREE.OrthographicCamera(
     -frustumSize * aspect / 2,
@@ -306,7 +306,7 @@ watch(() => config.value, updateTheme, { deep: true })
     ref="containerRef"
     class="relative w-full h-full overflow-hidden"
     :class="[dragState.isDragging ? 'cursor-grabbing' : 'cursor-grab']"
-    :style="{ touchAction: 'none' }"
+    :style="{ touchAction: 'none', 'clip-path': 'polygon(100% 0px, 100% 100%, 100% 100%, 0px 82%, 0px 0px)' }"
     @pointerdown="handlePointerDown"
     @pointerup="handlePointerUp"
     @pointerleave="handlePointerUp"
