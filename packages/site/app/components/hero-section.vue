@@ -7,11 +7,12 @@ const { t } = useSiteLocale()
     <!-- Left: Copy -->
     <div class="flex flex-col justify-center">
       <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-        {{ t('hero.h1').value }}
+        {{ t('hero.h1').value }}<br>
+        {{ t('hero.h1SubMain').value }}
+        <span class="text-xl sm:text-2xl lg:text-3xl text-muted-foreground font-medium align-middle ml-1 sm:ml-2">
+          {{ t('hero.h1SubNote').value }}
+        </span>
       </h1>
-      <div class="mt-3 inline-flex items-center rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 px-3 py-1 text-sm font-semibold text-white shadow-sm">
-        {{ t('hero.h1Sub').value }}
-      </div>
       <p class="mt-6 max-w-lg text-muted-foreground text-lg">
         {{ t('hero.description').value }}
       </p>
