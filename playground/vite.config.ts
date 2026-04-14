@@ -20,7 +20,7 @@ export default defineConfig({
         '**/index.ts', // 排除 barrel export 文件
       ],
     }),
-    // 自动引入组件
+    // 自动引入组件（从源码扫描；主要组件改为显式从 dist 导入）
     Components({
       dirs: ['../packages/components/src'],
       dts: './components.d.ts',
@@ -34,12 +34,15 @@ export default defineConfig({
       ],
     }),
   ],
+  server: {
+    port: 5749,
+  },
   root: __dirname,
   resolve: {
     alias: {
       '@': resolve(__dirname, '../src'),
-      '@lionad/vtu-components': resolve(__dirname, '../packages/components/src'),
-      '@lionad/vtu-core': resolve(__dirname, '../packages/core/src'),
+      '@lionad/vtu-components': resolve(__dirname, '../packages/components/dist'),
+      '@lionad/vtu-core': resolve(__dirname, '../packages/core/dist'),
     },
   },
 });
