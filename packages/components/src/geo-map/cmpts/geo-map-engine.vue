@@ -261,6 +261,10 @@ function resolveInitialView(
   const fitTarget = viewport?.target ?? 'all';
   const fitPoints = resolveFitPointsWithFallback(markers, routes, fitTarget);
 
+  if (fitPoints.length === 0) {
+    return { center: DEFAULT_CENTER, zoom: DEFAULT_VIEW_ZOOM };
+  }
+
   if (fitPoints.length === 1) {
     return {
       center: [fitPoints[0][0], fitPoints[0][1]],
@@ -270,7 +274,44 @@ function resolveInitialView(
     };
   }
 
-  return { center: DEFAULT_CENTER, zoom: DEFAULT_VIEW_ZOOM };
+  // 2+ points: compute centroid and approximate zoom from bounding box
+  const lats = fitPoints.map(([lat]) => lat);
+  const lngs = fitPoints.map(([, lng]) => lng);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+
+  const center: [number, number] = [
+    (minLat + maxLat) / 2,
+    (minLng + maxLng) / 2,
+  ];
+
+  const latSpan = maxLat - minLat;
+  const lngSpan = maxLng - minLng;
+  // Account for Mercator projection narrowing at higher latitudes
+  const cosLat = Math.cos((center[0] * Math.PI) / 180);
+  const adjustedLngSpan = lngSpan / Math.max(cosLat, 0.01);
+  const maxSpan = Math.max(latSpan, adjustedLngSpan);
+
+  let zoom: number;
+  if (maxSpan < 1e-10) {
+    // Degenerate: all points are essentially the same location
+    zoom = SINGLE_LOCATION_ZOOM;
+  } else {
+    // Web Mercator: at zoom z each 256px tile spans 360/2^z degrees.
+    // Target: the bounding box fills ~50% of viewport, leaving room for padding.
+    zoom = Math.max(
+      1,
+      Math.min(22, Math.round(Math.log2(360 / maxSpan) - 1))
+    );
+  }
+
+  if (viewport?.maxZoom) {
+    zoom = Math.min(zoom, viewport.maxZoom);
+  }
+
+  return { center, zoom };
 }
 
 function getClusterFeatureKey(
