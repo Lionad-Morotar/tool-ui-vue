@@ -10,7 +10,7 @@ export default defineConfig({
     // 自动引入 Vue API 和 VueUse
     AutoImport({
       imports: ['vue', '@vueuse/core'],
-      dirs: ['../src/utils'], // 只从 utils 引入 cn，避免 shared 的重复导出
+      dirs: ['../src/utils', './composables'], // 自动引入 utils 和 playground composables
       dts: './auto-imports.d.ts',
       vueTemplate: true,
       // 排除特定文件避免重复导出
@@ -22,7 +22,7 @@ export default defineConfig({
     }),
     // 自动引入组件（从源码扫描；主要组件改为显式从 dist 导入）
     Components({
-      dirs: ['../packages/components/src'],
+      dirs: ['../packages/components/src', './components'],
       dts: './components.d.ts',
       // 排除测试文件、示例文件和子组件目录
       exclude: [

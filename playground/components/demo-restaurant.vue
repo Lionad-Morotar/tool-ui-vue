@@ -62,12 +62,12 @@ function handlePanelAction(actionId: string) {
 <template>
   <div class="space-y-4 mx-auto w-[70%] max-w-3xl">
     <!-- 用户首轮 -->
-    <DemoChatMessage role="user" :content="t('demoRestaurant.userIntro').value" :delay="0" :order="0" />
+    <DemoChatMessage role="user" :content="t('demoRestaurant.userIntro').value" />
 
     <!-- Agent 推荐 -->
     <div class="flex justify-start">
       <div class="w-full max-w-[90%] space-y-3">
-        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentIntro').value" :delay="120" :order="1" />
+        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentIntro').value" />
         <DemoDelayedShow :order="2">
           <div v-show="step === 'intro' || step === 'carousel'">
             <ItemCarousel
@@ -86,8 +86,6 @@ function handlePanelAction(actionId: string) {
       v-if="step === 'panel' || step === 'done'"
       role="user"
       :content="t('demoRestaurant.userSelect', { name: selectedRestaurant }).value"
-      :delay="0"
-      :order="2"
     />
 
     <!-- Agent 确认偏好 -->
@@ -96,7 +94,7 @@ function handlePanelAction(actionId: string) {
       class="flex justify-start"
     >
       <div class="w-full max-w-[90%] space-y-3">
-        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" :delay="120" :order="3" />
+        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" />
         <DemoDelayedShow :order="4">
           <div v-show="step === 'panel'">
             <PreferencesPanel
@@ -138,8 +136,6 @@ function handlePanelAction(actionId: string) {
           v-if="step === 'done'"
           role="agent"
           :content="t('demoRestaurant.agentDone').value"
-          :delay="120"
-          :order="4"
         />
       </div>
     </div>
@@ -149,8 +145,6 @@ function handlePanelAction(actionId: string) {
       v-if="step === 'done'"
       role="user"
       :content="t('demoRestaurant.userDone').value"
-      :delay="0"
-      :order="5"
     />
   </div>
 </template>

@@ -52,14 +52,12 @@ describe('E2E: Playground Loads', () => {
       expect(wrapper.find('main').exists()).toBe(true);
     });
 
-    test('playground renders gallery layout', async () => {
+    test('playground renders restaurant demo', async () => {
       const { default: App } = await import('../App.vue');
       const wrapper = mount(App);
 
-      // Should have the playground title
-      expect(wrapper.text()).toContain('Playground');
-      // App.vue is a dev-only welcome page without component gallery cards
-      expect(wrapper.findAll('article').length).toBe(0);
+      // Should render the new restaurant reservation demo content
+      expect(wrapper.text()).toContain('圣诞餐厅推荐');
     });
 
     test('playground imports all 27 components', async () => {
