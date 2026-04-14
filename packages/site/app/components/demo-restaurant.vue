@@ -27,8 +27,8 @@ const restaurants = computed(() => [
   {
     id: 'r3',
     name: isEn.value ? 'Red Velvet Theatre' : '红丝绒剧场',
-    subtitle: isEn.value ? 'Wangfujing · French' : '王府井 · 法餐',
-    image: 'https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?w=400&q=80',
+    subtitle: isEn.value ? 'Wangfujing · French' : '王府井 · 中餐',
+    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&q=80',
     actions: [{ id: 'select', label: isEn.value ? 'Select' : '选择' }]
   }
 ])
@@ -50,18 +50,18 @@ function handlePanelAction(actionId: string) {
 </script>
 
 <template>
-  <div class="mx-auto max-w-2xl space-y-4">
+  <div class="space-y-4 mx-auto max-w-2xl">
     <!-- 用户首轮 -->
     <div class="flex justify-end">
-      <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
+      <div class="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%] text-primary-foreground text-sm">
         {{ t('demoRestaurant.userIntro') }}
       </div>
     </div>
 
     <!-- Agent 推荐 -->
     <div class="flex justify-start">
-      <div class="w-full max-w-[90%] space-y-3">
-        <p class="text-sm text-muted-foreground">
+      <div class="space-y-3 w-full max-w-[90%]">
+        <p class="text-muted-foreground text-sm">
           {{ t('demoRestaurant.agentIntro') }}
         </p>
         <ItemCarousel
@@ -79,7 +79,7 @@ function handlePanelAction(actionId: string) {
       v-if="step === 'panel' || step === 'done'"
       class="flex justify-end"
     >
-      <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
+      <div class="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%] text-primary-foreground text-sm">
         {{ t('demoRestaurant.userSelect', { name: selectedRestaurant }) }}
       </div>
     </div>
@@ -89,8 +89,8 @@ function handlePanelAction(actionId: string) {
       v-if="step === 'panel' || step === 'done'"
       class="flex justify-start"
     >
-      <div class="w-full max-w-[90%] space-y-3">
-        <p class="text-sm text-muted-foreground">
+      <div class="space-y-3 w-full max-w-[90%]">
+        <p class="text-muted-foreground text-sm">
           {{ t('demoRestaurant.agentPanel', { name: selectedRestaurant }) }}
         </p>
         <PreferencesPanel
@@ -129,7 +129,7 @@ function handlePanelAction(actionId: string) {
         />
         <p
           v-else
-          class="text-sm text-muted-foreground"
+          class="text-muted-foreground text-sm"
         >
           {{ t('demoRestaurant.agentDone') }}
         </p>
@@ -141,7 +141,7 @@ function handlePanelAction(actionId: string) {
       v-if="step === 'done'"
       class="flex justify-end"
     >
-      <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
+      <div class="bg-primary px-4 py-2 rounded-2xl rounded-tr-sm max-w-[80%] text-primary-foreground text-sm">
         {{ t('demoRestaurant.userDone') }}
       </div>
     </div>
