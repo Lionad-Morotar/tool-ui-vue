@@ -221,7 +221,6 @@ function animate() {
   }
 
   if (cloudMesh) {
-    cloudMesh.rotation.z = -mesh.rotation.z
     const material = cloudMesh.material as THREE.ShaderMaterial
     material.uniforms.uTime!.value = cloudTime
   }
