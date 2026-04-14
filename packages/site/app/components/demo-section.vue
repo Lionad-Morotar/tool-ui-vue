@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import type { OverlayScrollbars as OverlayScrollbarsType } from 'overlayscrollbars'
+
 const { t } = useSiteLocale()
+const { $overlayScrollbars } = useNuxtApp()
 
 const tabs = computed(() => [
   { id: 'restaurant', label: t('demo.tabRestaurant').value },
@@ -9,10 +12,32 @@ const tabs = computed(() => [
 
 const activeTab = ref('restaurant')
 const contentRef = ref<HTMLElement | null>(null)
+let osInstance: OverlayScrollbarsType | null = null
+
+onMounted(() => {
+  if (contentRef.value) {
+    osInstance = $overlayScrollbars(contentRef.value as HTMLElement, {
+      scrollbars: {
+        autoHide: 'move',
+        autoHideDelay: 500,
+        autoHideSuspend: true
+      },
+      overflow: {
+        x: 'hidden'
+      }
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  osInstance?.destroy()
+})
 
 watch(activeTab, () => {
   nextTick(() => {
-    if (contentRef.value) {
+    if (osInstance) {
+      osInstance.elements().viewport.scrollTo({ top: 0 })
+    } else if (contentRef.value) {
       contentRef.value.scrollTop = 0
     }
   })
@@ -60,7 +85,7 @@ watch(activeTab, () => {
       </div>
 
       <!-- Content -->
-      <div ref="contentRef" class="flex-1 grid bg-background p-6 overflow-x-hidden overflow-y-auto">
+      <div ref="contentRef" class="flex-1 grid bg-background p-6">
         <DemoRestaurant v-if="activeTab === 'restaurant'" />
         <DemoTravel v-else-if="activeTab === 'travel'" />
         <DemoCodeReview v-else />
@@ -70,13 +95,18 @@ watch(activeTab, () => {
   </section>
 </template>
 
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.2s ease;
+<style>
+/* OverlayScrollbars 主题：与设计系统配色对齐 */
+.os-scrollbar-handle {
+  background-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+  border-radius: 999px;
 }
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+
+.os-scrollbar-handle:hover {
+  background-color: var(--color-border);
+}
+
+.os-scrollbar-track {
+  background: transparent;
 }
 </style>

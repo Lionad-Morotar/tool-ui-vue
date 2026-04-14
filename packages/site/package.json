@@ -24,6 +24,7 @@
     "@vueuse/nuxt": "^14.2.1",
     "markstream-vue": "^0.0.12",
     "nuxt": "^4.4.2",
+    "overlayscrollbars": "^2.15.1",
     "tailwindcss": "^4.2.2",
     "three": "^0.174.0",
     "vue": "^3.5.32"

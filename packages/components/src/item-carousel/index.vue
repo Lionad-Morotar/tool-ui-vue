@@ -193,6 +193,7 @@ defineExpose({
           :data-index="index"
           role="listitem"
           class="flex snap-start snap-always"
+          :style="{ viewTransitionName: `item-card-${item.id}` }"
           :aria-label="getItemAriaLabel(index)"
         >
           <item-card

@@ -50,6 +50,12 @@ importers:
       lucide-vue-next:
         specifier: ^1.0.0
         version: 1.0.0(vue@3.5.32(typescript@6.0.2))
+      overlayscrollbars:
+        specifier: ^2.15.1
+        version: 2.15.1
+      overlayscrollbars-vue:
+        specifier: ^0.5.9
+        version: 0.5.9(overlayscrollbars@2.15.1)(vue@3.5.32(typescript@6.0.2))
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
@@ -323,6 +329,9 @@ importers:
       nuxt:
         specifier: ^4.4.2
         version: 4.4.2(@babel/core@7.29.0)(@babel/plugin-syntax-jsx@7.28.6(@babel/core@7.29.0))(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@parcel/watcher@2.5.6)(@types/node@25.5.2)(@vue/compiler-sfc@3.5.32)(cac@6.7.14)(db0@0.3.4)(eslint@10.2.0(jiti@2.6.1))(ioredis@5.10.1)(lightningcss@1.32.0)(magicast@0.5.2)(optionator@0.9.4)(rolldown@1.0.0-rc.12(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1))(rollup-plugin-visualizer@7.0.1(rolldown@1.0.0-rc.12(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1))(rollup@4.60.1))(rollup@4.60.1)(srvx@0.11.14)(terser@5.46.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))(vue-tsc@3.2.6(typescript@6.0.2))(yaml@2.8.3)
+      overlayscrollbars:
+        specifier: ^2.15.1
+        version: 2.15.1
       tailwindcss:
         specifier: ^4.2.2
         version: 4.2.2
@@ -5193,6 +5202,15 @@ packages:
 
   orderedmap@2.1.1:
     resolution: {integrity: sha512-TvAWxi0nDe1j/rtMcWcIj94+Ffe6n7zhow33h40SKxmsmozs6dz/e+EajymfoFcHd7sxNn8yHM8839uixMOV6g==}
+
+  overlayscrollbars-vue@0.5.9:
+    resolution: {integrity: sha512-zZEcsb6llnKaRwXTP44E4RrmwuH+eAi70mgCdiiPwcPBE2H99Vs2V0q7sWnEanqU3462ch38e4SmIMnuH906DQ==}
+    peerDependencies:
+      overlayscrollbars: ^2.0.0
+      vue: ^3.2.25
+
+  overlayscrollbars@2.15.1:
+    resolution: {integrity: sha512-glX26JwjL+Tkzv0JNOWdW4VozP5dGXO+Wx8+TPrdTEJTSYT/8eJS8yXM+fewjU0nFq/JeCa+X+BqABNjC4YZSA==}
 
   oxc-minify@0.117.0:
     resolution: {integrity: sha512-JHsv/b+bmBJkAzkHXgTN7RThloVxLHPT0ojHfjqxVeHuQB7LPpLUbJ2qfwz37sto9stZ9+AVwUP4b3gtR7p/Tw==}
@@ -12609,6 +12627,13 @@ snapshots:
       word-wrap: 1.2.5
 
   orderedmap@2.1.1: {}
+
+  overlayscrollbars-vue@0.5.9(overlayscrollbars@2.15.1)(vue@3.5.32(typescript@6.0.2)):
+    dependencies:
+      overlayscrollbars: 2.15.1
+      vue: 3.5.32(typescript@6.0.2)
+
+  overlayscrollbars@2.15.1: {}
 
   oxc-minify@0.117.0(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1):
     optionalDependencies:

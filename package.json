@@ -36,6 +36,8 @@
     "diff": "^8.0.4",
     "leaflet": "^1.9.4",
     "lucide-vue-next": "^1.0.0",
+    "overlayscrollbars": "^2.15.1",
+    "overlayscrollbars-vue": "^0.5.9",
     "shiki": "^4.0.2",
     "supercluster": "^8.0.1",
     "tailwind-merge": "^3.5.0",

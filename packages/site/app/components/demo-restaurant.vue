@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ItemCarousel, PreferencesPanel } from '@lionad/vtu-components'
-import { computed, ref } from 'vue'
+import { ItemCarousel, PreferencesPanel, ItemCard } from '@lionad/vtu-components'
+import { computed, ref, nextTick } from 'vue'
 import DemoChatMessage from './demo-chat-message.vue'
 import DemoDelayedShow from './demo-delayed-show.vue'
 import { useSiteLocale } from '../composables/use-site-locale'
 
 type Step = 'intro' | 'carousel' | 'panel' | 'done'
 const step = ref<Step>('intro')
-const selectedRestaurant = ref('星光圣诞餐厅')
+const selectedItemId = ref<string | null>(null)
 const { t, locale } = useSiteLocale()
 
 const isEn = computed(() => locale.value === 'en')
@@ -43,18 +43,42 @@ const restaurants = computed(() => [
   }
 ])
 
-function handleItemAction(_itemId: string, actionId: string) {
+const selectedRestaurant = computed(() => {
+  return restaurants.value.find(r => r.id === selectedItemId.value)?.name || ''
+})
+
+const selectedItem = computed(() => {
+  return restaurants.value.find(r => r.id === selectedItemId.value)
+})
+
+async function handleItemAction(_itemId: string, actionId: string) {
   if (actionId === 'select') {
-    selectedRestaurant.value = restaurants.value.find(r => r.id === _itemId)?.name || restaurants.value[0]?.name || ''
-    step.value = 'panel'
+    selectedItemId.value = _itemId
+    if (document.startViewTransition) {
+      await document.startViewTransition(async () => {
+        step.value = 'panel'
+        await nextTick()
+      }).updateCallbackDone
+    } else {
+      step.value = 'panel'
+    }
   }
 }
 
-function handlePanelAction(actionId: string) {
+async function handlePanelAction(actionId: string) {
   if (actionId === 'confirm') {
     step.value = 'done'
   } else if (actionId === 'cancel') {
-    step.value = 'carousel'
+    if (document.startViewTransition) {
+      await document.startViewTransition(async () => {
+        step.value = 'carousel'
+        selectedItemId.value = null
+        await nextTick()
+      }).updateCallbackDone
+    } else {
+      step.value = 'carousel'
+      selectedItemId.value = null
+    }
   }
 }
 </script>
@@ -77,6 +101,14 @@ function handlePanelAction(actionId: string) {
               @item-action="handleItemAction"
             />
           </div>
+          <!-- 选中的卡片：carousel 原位保留 -->
+          <div
+            v-if="selectedItem && (step === 'panel' || step === 'done')"
+            :style="{ viewTransitionName: `item-card-${selectedItem.id}` }"
+            class="inline-flex"
+          >
+            <ItemCard :item="{ ...selectedItem, actions: [] }" :interactive="false" />
+          </div>
         </DemoDelayedShow>
       </div>
     </div>
@@ -97,6 +129,7 @@ function handlePanelAction(actionId: string) {
     >
       <div class="w-full max-w-[90%] space-y-3">
         <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" :delay="120" :order="3" />
+
         <DemoDelayedShow :order="4">
           <div v-show="step === 'panel'">
             <PreferencesPanel
@@ -154,3 +187,30 @@ function handlePanelAction(actionId: string) {
     />
   </div>
 </template>
+
+<style>
+/* View Transition 伪元素在 document overlay 层，必须用非 scoped 样式 */
+::view-transition-old(item-card-r1),
+::view-transition-old(item-card-r2),
+::view-transition-old(item-card-r3),
+::view-transition-old(item-card-r4) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-new(item-card-r1),
+::view-transition-new(item-card-r2),
+::view-transition-new(item-card-r3),
+::view-transition-new(item-card-r4) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-group(item-card-r1),
+::view-transition-group(item-card-r2),
+::view-transition-group(item-card-r3),
+::view-transition-group(item-card-r4) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+</style>

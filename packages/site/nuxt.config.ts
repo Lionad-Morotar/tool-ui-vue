@@ -16,8 +16,15 @@ export default defineNuxtConfig({
 
   css: [
     '~/assets/css/main.css',
-    'markstream-vue/index.css'
+    'markstream-vue/index.css',
+    'overlayscrollbars/styles/overlayscrollbars.css'
   ],
+
+  vite: {
+    optimizeDeps: {
+      include: ['overlayscrollbars']
+    }
+  },
 
   colorMode: {
     preference: 'system',
