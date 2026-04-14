@@ -6,6 +6,8 @@ import {
   i18nInjectionKey,
   zhCN,
   en,
+  hasMessages,
+  isLocaleExplicitlySet,
 } from '@lionad/vtu-core/i18n'
 
 export {
@@ -146,4 +148,10 @@ export function registerEnglish(): void {
 
 // Auto-register zh-CN with all component messages for non-i18n users
 // (per D-05/D-06: global default, copy-paste users need no config)
-setMessages(zhCNAll)
+// Guard against overwriting messages/locale that were explicitly set before this import.
+if (!hasMessages()) {
+  setMessages(zhCNAll)
+}
+if (!isLocaleExplicitlySet()) {
+  setLocale('zh-CN')
+}

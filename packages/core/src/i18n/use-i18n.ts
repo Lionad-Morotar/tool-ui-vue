@@ -8,6 +8,7 @@ export const i18nInjectionKey = Symbol('vtu:i18n')
 // Internal reactive messages reference (set by LocaleProvider via setMessages)
 const _messages: Ref<Record<string, unknown> | null> = ref(null)
 const _locale: Ref<string> = ref('zh-CN')
+let _localeExplicitlySet = false
 
 export function setMessages(messages: Record<string, unknown>): void {
   _messages.value = messages
@@ -15,6 +16,17 @@ export function setMessages(messages: Record<string, unknown>): void {
 
 export function setLocale(locale: string): void {
   _locale.value = locale
+  _localeExplicitlySet = true
+}
+
+/** Check whether global messages have been explicitly set (or injected by LocaleProvider) */
+export function hasMessages(): boolean {
+  return _messages.value !== null
+}
+
+/** Check whether global locale has been explicitly set (or injected by LocaleProvider) */
+export function isLocaleExplicitlySet(): boolean {
+  return _localeExplicitlySet
 }
 
 // Resolve a dot-notation key path against a nested message object

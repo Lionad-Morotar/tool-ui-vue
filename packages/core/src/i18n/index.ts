@@ -1,5 +1,5 @@
 // Composable
-export { useI18n, i18nInjectionKey, setMessages, setLocale } from './use-i18n'
+export { useI18n, i18nInjectionKey, setMessages, setLocale, hasMessages, isLocaleExplicitlySet } from './use-i18n'
 
 // Component
 export { LocaleProvider } from './locale-provider'
