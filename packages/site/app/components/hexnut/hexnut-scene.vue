@@ -15,8 +15,9 @@ const hexnutColor = computed(() => (isDark.value ? '#ffffff' : '#111827'))
 let rafId: number | null = null
 let renderer: THREE.WebGLRenderer | null = null
 let scene: THREE.Scene | null = null
-let camera: THREE.PerspectiveCamera | null = null
+let camera: THREE.OrthographicCamera | null = null
 let mesh: THREE.Mesh | null = null
+let cloudMesh: THREE.Mesh | null = null
 let directionalLight: THREE.DirectionalLight | null = null
 
 const dragState = ref({
@@ -31,6 +32,42 @@ let audioCtx: AudioContext | null = null
 let lastNotch = 0
 
 const NOTCH_ANGLE = Math.PI / 6
+let cloudTime = 0
+
+const cloudVertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
+
+const cloudFragmentShader = `
+  varying vec2 vUv;
+  uniform float uTime;
+  uniform vec3 uColor;
+  uniform float uFadeStart;
+
+  void main() {
+    float flow = vUv.y + uTime * 0.08;
+
+    float n1 = sin(flow * 8.0) * 0.5 + 0.5;
+    float n2 = sin(flow * 1.0 + 1.5) * 0.5 + 0.5;
+    float n3 = sin(vUv.x * 32.0 + uTime * 0.8) * 0.5 + 0.5;
+
+    float noise = n1 * 0.5 + n2 * 0.3 + n3 * 0.2;
+
+    float edge = 1.0 - abs(vUv.x - 0.5) * 2.0;
+    edge = pow(edge, 1.6);
+
+    float alpha = smoothstep(0.35, 0.65, noise) * edge * 0.55;
+
+    float fade = smoothstep(uFadeStart, 1.0, vUv.y) + 0.6;
+    alpha *= fade;
+
+    gl_FragColor = vec4(uColor, alpha);
+  }
+`
 
 function playClick() {
   if (!audioCtx) {
@@ -103,7 +140,16 @@ function init() {
 
   scene = new THREE.Scene()
 
-  camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100)
+  const frustumSize = 5
+  const aspect = width / height
+  camera = new THREE.OrthographicCamera(
+    -frustumSize * aspect / 2,
+    frustumSize * aspect / 2,
+    frustumSize / 2,
+    -frustumSize / 2,
+    0.1,
+    100
+  )
   camera.position.z = config.value.cameraZ
 
   directionalLight = new THREE.DirectionalLight(0xffffff, config.value.intensity)
@@ -118,6 +164,26 @@ function init() {
   lastNotch = Math.floor(mesh.rotation.z / NOTCH_ANGLE)
   scene.add(mesh)
 
+  // Inner cloud cylinder aligned with hexnut hole
+  const cloudGeometry = new THREE.CylinderGeometry(0.35, 0.35, 8, 64, 1, true)
+  cloudGeometry.rotateX(-Math.PI / 2)
+  const cloudMaterial = new THREE.ShaderMaterial({
+    vertexShader: cloudVertexShader,
+    fragmentShader: cloudFragmentShader,
+    uniforms: {
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color(isDark.value ? '#a5f3fc' : '#0ea5e9') },
+      uFadeStart: { value: 0.5 }
+    },
+    transparent: true,
+    depthWrite: true,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending
+  })
+  cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial)
+  cloudMesh.rotation.set(config.value.rotX, config.value.rotY, 0)
+  scene.add(cloudMesh)
+
   animate()
 }
 
@@ -125,6 +191,8 @@ function animate() {
   rafId = requestAnimationFrame(animate)
 
   if (!mesh || !renderer || !scene || !camera) return
+
+  cloudTime += 1 / 30
 
   if (dragState.value.isDragging) {
     const dragDelta = dragState.value.deltaX * DRAG_SENSITIVITY
@@ -152,6 +220,12 @@ function animate() {
     mesh.rotation.z += (1 / 60) * velocity
   }
 
+  if (cloudMesh) {
+    cloudMesh.rotation.z = -mesh.rotation.z
+    const material = cloudMesh.material as THREE.ShaderMaterial
+    material.uniforms.uTime!.value = cloudTime
+  }
+
   renderer.render(scene, camera)
 }
 
@@ -161,6 +235,10 @@ function updateTheme() {
   directionalLight.intensity = config.value.intensity
   camera.position.z = config.value.cameraZ
   ;(mesh.material as THREE.MeshStandardMaterial).color.set(hexnutColor.value)
+  if (cloudMesh) {
+    const material = cloudMesh.material as THREE.ShaderMaterial
+    material.uniforms.uColor!.value.set(isDark.value ? '#a5f3fc' : '#0ea5e9')
+  }
 }
 
 function handleResize() {
@@ -168,7 +246,12 @@ function handleResize() {
   const width = containerRef.value.clientWidth
   const height = containerRef.value.clientHeight
   renderer.setSize(width, height)
-  camera.aspect = width / height
+  const aspect = width / height
+  const frustumSize = 5
+  camera.left = -frustumSize * aspect / 2
+  camera.right = frustumSize * aspect / 2
+  camera.top = frustumSize / 2
+  camera.bottom = -frustumSize / 2
   camera.updateProjectionMatrix()
 }
 
@@ -181,6 +264,10 @@ onUnmounted(() => {
   if (rafId) cancelAnimationFrame(rafId)
   window.removeEventListener('resize', handleResize)
   renderer?.dispose()
+  if (cloudMesh) {
+    cloudMesh.geometry.dispose()
+    ;(cloudMesh.material as THREE.ShaderMaterial).dispose()
+  }
 })
 
 watch(() => config.value, updateTheme, { deep: true })
@@ -189,7 +276,7 @@ watch(() => config.value, updateTheme, { deep: true })
 <template>
   <div
     ref="containerRef"
-    class="relative h-full w-full overflow-hidden"
+    class="relative w-full h-full overflow-hidden"
     :class="[dragState.isDragging ? 'cursor-grabbing' : 'cursor-grab']"
     :style="{ touchAction: 'none' }"
     @pointerdown="handlePointerDown"
@@ -199,7 +286,10 @@ watch(() => config.value, updateTheme, { deep: true })
   >
     <canvas
       ref="canvasRef"
-      class="block h-full w-full"
+      class="block z-10 relative w-full h-full"
     />
   </div>
 </template>
+
+<style scoped>
+</style>
