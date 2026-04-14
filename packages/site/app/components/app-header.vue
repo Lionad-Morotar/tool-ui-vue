@@ -1,11 +1,24 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+const { locale, toggleLocale, t } = useSiteLocale()
+const config = useRuntimeConfig()
+
+const themeLabel = computed(() =>
+  colorMode.value === 'dark' ? t('header.toggleLight').value : t('header.toggleDark').value
+)
+const docsUrl = computed(() => {
+  const base = config.app.baseURL
+  return base === '/' ? '/docs/' : `${base}docs/`
+})
 </script>
 
 <template>
   <header class="top-0 z-50 sticky bg-background/80 backdrop-blur-md border-border border-b w-full">
     <div class="flex justify-between items-center mx-auto px-6 max-w-7xl h-10">
-      <NuxtLink to="/" class="flex items-center gap-2 font-semibold text-base">
+      <NuxtLink
+        to="/"
+        class="flex items-center gap-2 font-semibold text-base"
+      >
         <span class="inline-flex justify-center items-center bg-primary rounded-lg w-6 h-6 text-primary-foreground">
           V
         </span>
@@ -13,22 +26,32 @@ const colorMode = useColorMode()
       </NuxtLink>
 
       <nav class="flex items-center gap-4">
-        <NuxtLink to="/docs" class="font-medium text-muted-foreground hover:text-foreground text-sm transition-colors">
-          文档
-        </NuxtLink>
+        <a
+          :href="docsUrl"
+          class="font-medium text-muted-foreground hover:text-foreground text-sm transition-colors"
+        >
+          {{ t('header.docs') }}
+        </a>
         <NuxtLink
           to="https://github.com/Lionad-Morotar/tool-ui-vue"
           target="_blank"
           rel="noopener noreferrer"
           class="font-medium text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
-          GitHub
+          {{ t('header.github') }}
         </NuxtLink>
         <UButton
           color="neutral"
           variant="ghost"
+          class="uppercase text-xs"
+          :label="locale"
+          @click="toggleLocale"
+        />
+        <UButton
+          color="neutral"
+          variant="ghost"
           :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
-          :aria-label="colorMode.value === 'dark' ? '切换到浅色模式' : '切换到深色模式'"
+          :aria-label="themeLabel"
           @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
         />
       </nav>

@@ -1,5 +1,11 @@
 <script setup>
-useHead({
+import { LocaleProvider, zhCNAll, registerEnglish } from '@lionad/vtu-core'
+import { setLocale, setMessages } from '@lionad/vtu-core/i18n'
+import { watchEffect } from 'vue'
+
+const { locale, t } = useSiteLocale()
+
+useHead(() => ({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
@@ -7,25 +13,40 @@ useHead({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: 'zh-CN'
+    lang: locale.value
   }
-})
+}))
 
-const title = 'tool-ui-vue'
-const description = '让 Agent 的每一次回复都赏心悦目。专为工具调用场景打造的 Vue 组件库。'
+const title = computed(() => t('site.title').value)
+const description = computed(() => t('site.description').value)
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
-  ogDescription: description,
+  ogDescription: description
+})
+
+// Sync vtu-core i18n with site locale
+watchEffect(() => {
+  if (locale.value === 'en') {
+    registerEnglish()
+  } else {
+    setMessages(zhCNAll)
+    setLocale('zh-CN')
+  }
 })
 </script>
 
 <template>
-  <UApp>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </UApp>
+  <LocaleProvider
+    :messages="zhCNAll"
+    :locale="locale"
+  >
+    <UApp>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </UApp>
+  </LocaleProvider>
 </template>

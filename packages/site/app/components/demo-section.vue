@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const tabs = [
-  { id: 'restaurant', label: '餐厅预订' },
-  { id: 'travel', label: '旅行规划' },
-  { id: 'code', label: '代码审查' },
-]
+const { t } = useSiteLocale()
+
+const tabs = computed(() => [
+  { id: 'restaurant', label: t('demo.tabRestaurant').value },
+  { id: 'travel', label: t('demo.tabTravel').value },
+  { id: 'code', label: t('demo.tabCode').value }
+])
 
 const activeTab = ref('restaurant')
 </script>
@@ -21,7 +23,7 @@ const activeTab = ref('restaurant')
         </div>
         <div class="flex-1 ml-4">
           <div class="bg-background mx-auto px-3 py-1 rounded-md max-w-md text-muted-foreground text-xs text-center">
-            chat.example.com
+            {{ t('demo.addressBar').value }}
           </div>
         </div>
       </div>

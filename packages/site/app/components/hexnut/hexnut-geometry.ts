@@ -3,7 +3,7 @@ import { ExtrudeGeometry, Path, Shape } from 'three'
 export function createHexnutGeometry(
   outerRadius = 1,
   innerRadius = 0.5,
-  height = 0.4,
+  height = 0.4
 ) {
   const shape = new Shape()
 
@@ -30,7 +30,7 @@ export function createHexnutGeometry(
 
   const geometry = new ExtrudeGeometry(shape, {
     depth: height,
-    bevelEnabled: false,
+    bevelEnabled: false
   })
   geometry.center()
   return geometry

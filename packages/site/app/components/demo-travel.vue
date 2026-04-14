@@ -3,6 +3,8 @@ import { GeoMap, Plan } from '@lionad/vtu-components'
 import { ref } from 'vue'
 
 const step = ref(1)
+const { t, locale } = useSiteLocale()
+const isEn = computed(() => locale.value === 'en')
 </script>
 
 <template>
@@ -10,7 +12,7 @@ const step = ref(1)
     <!-- 用户首轮 -->
     <div class="flex justify-end">
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        周末想去杭州走走，西湖和灵隐寺都要去，帮我安排一个轻松的两日游。
+        {{ t('demoTravel.userIntro') }}
       </div>
     </div>
 
@@ -18,33 +20,33 @@ const step = ref(1)
     <div class="flex justify-start">
       <div class="w-full max-w-[95%] space-y-4">
         <p class="text-sm text-muted-foreground">
-          没问题，这条路线兼顾了湖光山色和禅意清幽，节奏也比较舒缓。先看一下路线：
+          {{ t('demoTravel.agentMap') }}
         </p>
 
         <ClientOnly>
           <template #fallback>
             <div class="flex h-48 items-center justify-center rounded-lg border border-border bg-muted/30 text-sm text-muted-foreground">
-              加载地图中...
+              {{ isEn ? 'Loading map...' : '加载地图中...' }}
             </div>
           </template>
           <GeoMap
             id="demo-travel-map"
-            title="杭州两日游路线"
+            :title="t('demoTravel.mapTitle').value"
             :markers="[
-              { id: 'm1', lat: 30.2489, lng: 120.1460, label: '西湖', description: '断桥残雪、苏堤春晓' },
-              { id: 'm2', lat: 30.2406, lng: 120.0986, label: '灵隐寺', description: '千年古刹，禅意清幽' },
+              { id: 'm1', lat: 30.2489, lng: 120.1460, label: t('demoTravel.markerWestLake').value, description: t('demoTravel.markerWestLakeDesc').value },
+              { id: 'm2', lat: 30.2406, lng: 120.0986, label: t('demoTravel.markerLingyin').value, description: t('demoTravel.markerLingyinDesc').value }
             ]"
             :routes="[
               {
                 id: 'r1',
                 points: [
                   { lat: 30.2489, lng: 120.1460 },
-                  { lat: 30.2406, lng: 120.0986 },
+                  { lat: 30.2406, lng: 120.0986 }
                 ],
-                label: 'Day 1 路线',
+                label: t('demoTravel.routeDay1').value,
                 color: '#3b82f6',
-                weight: 4,
-              },
+                weight: 4
+              }
             ]"
             :viewport="{ mode: 'fit', padding: 40 }"
           />
@@ -55,7 +57,7 @@ const step = ref(1)
     <!-- 用户追问 -->
     <div class="flex justify-end">
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        路线看起来不错，具体行程怎么安排？希望能详细一点。
+        {{ t('demoTravel.userAskPlan') }}
       </div>
     </div>
 
@@ -63,18 +65,18 @@ const step = ref(1)
     <div class="flex justify-start">
       <div class="w-full max-w-[95%] space-y-4">
         <p class="text-sm text-muted-foreground">
-          好的，我为您整理了一份轻松惬意的两日游行程：
+          {{ t('demoTravel.agentPlan') }}
         </p>
 
         <Plan
           id="demo-travel-plan"
-          title="杭州周末行程"
-          description="轻松惬意的两日游"
+          :title="t('demoTravel.planTitle').value"
+          :description="t('demoTravel.planDesc').value"
           :todos="[
-            { id: 't1', label: '周六上午 · 西湖游船', status: 'pending', description: '手划船体验，约 1.5 小时' },
-            { id: 't2', label: '周六下午 · 断桥漫步', status: 'pending', description: '欣赏湖光山色，拍照打卡' },
-            { id: 't3', label: '周日上午 · 灵隐寺祈福', status: 'pending', description: '参观飞来峰造像' },
-            { id: 't4', label: '周日下午 · 龙井问茶', status: 'pending', description: '茶园品茶，采购伴手礼' },
+            { id: 't1', label: t('demoTravel.todo1').value, status: 'pending', description: t('demoTravel.todo1Desc').value },
+            { id: 't2', label: t('demoTravel.todo2').value, status: 'pending', description: t('demoTravel.todo2Desc').value },
+            { id: 't3', label: t('demoTravel.todo3').value, status: 'pending', description: t('demoTravel.todo3Desc').value },
+            { id: 't4', label: t('demoTravel.todo4').value, status: 'pending', description: t('demoTravel.todo4Desc').value }
           ]"
         />
 
@@ -83,23 +85,29 @@ const step = ref(1)
             class="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
             @click="step = 2"
           >
-            帮我加入待办
+            {{ t('demoTravel.actionAddTodo') }}
           </button>
         </div>
       </div>
     </div>
 
     <!-- 用户行动 -->
-    <div v-if="step >= 2" class="flex justify-end">
+    <div
+      v-if="step >= 2"
+      class="flex justify-end"
+    >
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        帮我加入待办吧，这样就不会忘记了。
+        {{ t('demoTravel.userAddTodo') }}
       </div>
     </div>
 
     <!-- Agent 最终确认 -->
-    <div v-if="step >= 2" class="flex justify-start">
+    <div
+      v-if="step >= 2"
+      class="flex justify-start"
+    >
       <div class="max-w-[90%] rounded-2xl rounded-tl-sm bg-muted px-4 py-2 text-sm text-muted-foreground">
-        已为您添加到待办清单，并设置了周六早上 8:00 的出发提醒。祝您旅途愉快！
+        {{ t('demoTravel.agentDone') }}
       </div>
     </div>
   </div>

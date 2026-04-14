@@ -5,35 +5,43 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
     '@tresjs/nuxt',
-    '@vueuse/nuxt',
+    '@vueuse/nuxt'
   ],
 
   devtools: { enabled: true },
 
+  app: {
+    baseURL: process.env.NODE_ENV === 'production' ? '/tool-ui-vue/' : '/'
+  },
+
   css: [
     '~/assets/css/main.css',
-    '@lionad/vtu-theme/tokens.css',
+    '@lionad/vtu-theme/tokens.css'
   ],
 
   colorMode: {
     preference: 'system',
     fallback: 'light',
     classSuffix: '',
-    storageKey: 'vtu-color-mode',
+    storageKey: 'vtu-color-mode'
+  },
+
+  alias: {
+    '@lionad/vtu-components': resolve(__dirname, '../components/src'),
+    '@lionad/vtu-core': resolve(__dirname, '../core/src')
+  },
+
+  routeRules: {
+    '/': { prerender: true },
+    '/docs/**': { prerender: false }
   },
 
   compatibilityDate: '2026-04-14',
 
-  routeRules: {
-    '/': { prerender: true }
-  },
-
-  vite: {
-    resolve: {
-      alias: {
-        '@lionad/vtu-components': resolve(__dirname, '../components/src'),
-        '@lionad/vtu-core': resolve(__dirname, '../core/src'),
-      },
-    },
-  },
+  nitro: {
+    prerender: {
+      crawlLinks: false,
+      routes: ['/']
+    }
+  }
 })

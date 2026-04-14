@@ -10,6 +10,6 @@ export default defineNuxtPlugin(() => {
         document.documentElement.removeAttribute('data-theme')
       }
     },
-    { immediate: true },
+    { immediate: true }
   )
 })

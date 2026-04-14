@@ -20,7 +20,7 @@ export const THEME_CONFIGS: Record<'dark' | 'light', ThemeConfig> = {
     rotY: 0.72,
     scale: 2.1,
     speed: 0.15,
-    cameraZ: 6.8,
+    cameraZ: 6.8
   },
   light: {
     lightX: 50,
@@ -31,8 +31,8 @@ export const THEME_CONFIGS: Record<'dark' | 'light', ThemeConfig> = {
     rotY: 0.72,
     scale: 2.1,
     speed: 0.15,
-    cameraZ: 6.8,
-  },
+    cameraZ: 6.8
+  }
 }
 
 export const DRAG_SENSITIVITY = 0.01

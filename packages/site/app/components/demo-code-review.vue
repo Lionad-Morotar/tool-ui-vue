@@ -3,6 +3,7 @@ import { CodeDiff } from '@lionad/vtu-components'
 import { ref } from 'vue'
 
 const step = ref(1)
+const { t } = useSiteLocale()
 </script>
 
 <template>
@@ -10,7 +11,7 @@ const step = ref(1)
     <!-- 用户首轮 -->
     <div class="flex justify-end">
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        帮我 review 一下这个 PR 里的日期格式化代码，总觉得时区处理有问题。
+        {{ t('demoCode.userIntro') }}
       </div>
     </div>
 
@@ -18,10 +19,7 @@ const step = ref(1)
     <div class="flex justify-start">
       <div class="w-full max-w-[95%] space-y-3">
         <p class="text-sm text-muted-foreground">
-          我检查了 <code class="rounded bg-muted px-1 py-0.5 text-xs">utils/formatDate.ts</code> 的改动，发现一处潜在问题：
-          <code class="rounded bg-muted px-1 py-0.5 text-xs">
-            toLocaleDateString()
-          </code> 在未指定时区的情况下会跟随用户本地环境，对于需要固定展示北京时间的业务场景可能导致不一致。建议如下修改：
+          {{ t('demoCode.agentReview', { file: 'utils/formatDate.ts', fn: 'toLocaleDateString()' }) }}
         </p>
 
         <CodeDiff
@@ -46,24 +44,30 @@ const step = ref(1)
             class="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
             @click="step = 2"
           >
-            应用修改
+            {{ t('demoCode.actionApply') }}
           </button>
         </div>
       </div>
     </div>
 
     <!-- 用户确认应用 -->
-    <div v-if="step >= 2" class="flex justify-end">
+    <div
+      v-if="step >= 2"
+      class="flex justify-end"
+    >
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        已经按照建议修改并提交了，再看看还有没有其他问题？
+        {{ t('demoCode.userApplied') }}
       </div>
     </div>
 
     <!-- Agent 最终确认 -->
-    <div v-if="step >= 2" class="flex justify-start">
+    <div
+      v-if="step >= 2"
+      class="flex justify-start"
+    >
       <div class="max-w-[95%] space-y-3">
         <p class="text-sm text-muted-foreground">
-          修改后的代码看起来很好，时区问题已经解决。整体改动简洁，没有引入额外风险。PR 可以合并了。
+          {{ t('demoCode.agentConfirm') }}
         </p>
 
         <div class="flex items-center gap-2">
@@ -71,22 +75,28 @@ const step = ref(1)
             class="rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
             @click="step = 3"
           >
-            合并 PR
+            {{ t('demoCode.actionMerge') }}
           </button>
         </div>
       </div>
     </div>
 
     <!-- 合并成功 -->
-    <div v-if="step >= 3" class="flex justify-end">
+    <div
+      v-if="step >= 3"
+      class="flex justify-end"
+    >
       <div class="max-w-[80%] rounded-2xl rounded-tr-sm bg-primary px-4 py-2 text-sm text-primary-foreground">
-        已合并，谢谢 review！
+        {{ t('demoCode.userMerged') }}
       </div>
     </div>
 
-    <div v-if="step >= 3" class="flex justify-start">
+    <div
+      v-if="step >= 3"
+      class="flex justify-start"
+    >
       <div class="max-w-[90%] rounded-2xl rounded-tl-sm bg-muted px-4 py-2 text-sm text-muted-foreground">
-        不客气，有问题随时找我。
+        {{ t('demoCode.agentDone') }}
       </div>
     </div>
   </div>

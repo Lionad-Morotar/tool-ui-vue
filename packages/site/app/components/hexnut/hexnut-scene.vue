@@ -22,7 +22,7 @@ let directionalLight: THREE.DirectionalLight | null = null
 const dragState = ref({
   isDragging: false,
   deltaX: 0,
-  velocity: 0,
+  velocity: 0
 })
 const previousX = ref(0)
 const lastMoveTime = ref(0)
@@ -197,6 +197,9 @@ watch(() => config.value, updateTheme, { deep: true })
     @pointerleave="handlePointerUp"
     @pointermove="handlePointerMove"
   >
-    <canvas ref="canvasRef" class="block h-full w-full" />
+    <canvas
+      ref="canvasRef"
+      class="block h-full w-full"
+    />
   </div>
 </template>

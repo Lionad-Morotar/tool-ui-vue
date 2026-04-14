@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen bg-background text-foreground">
+  <div class="relative min-h-screen bg-background text-foreground">
+    <TechBackground />
     <AppHeader />
     <slot />
   </div>

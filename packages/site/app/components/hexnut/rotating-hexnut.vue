@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   scale: 2.1,
   initialRotation: () => [-0.7, 0.72, 0],
   rotationSpeed: 0.15,
-  color: '#ffffff',
+  color: '#ffffff'
 })
 
 const meshRef = shallowRef<any>(null)

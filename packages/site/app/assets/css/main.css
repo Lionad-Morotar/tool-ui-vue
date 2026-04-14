@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* Scan monorepo component sources for Tailwind classes */
+@source "../../../../components/src";
+@source "../../../../core/src";
+
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
 
