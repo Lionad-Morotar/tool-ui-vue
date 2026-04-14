@@ -286,6 +286,7 @@ onUnmounted(() => {
     directionalLight = null
   }
 
+  renderer?.forceContextLoss()
   renderer?.dispose()
   renderer = null
   scene = null
