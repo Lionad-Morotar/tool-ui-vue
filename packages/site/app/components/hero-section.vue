@@ -44,7 +44,7 @@ const { t } = useSiteLocale()
       <div
         class="absolute inset-0 opacity-40 dark:opacity-50 rounded-full animate-pulse-glow"
         :style="{
-          background: 'radial-gradient(circle, hsl(var(--color-primary) / 0.25) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, color-mix(in oklab, var(--ui-primary) 25%, transparent) 0%, transparent 70%)',
           filter: 'blur(48px)'
         }"
       />
