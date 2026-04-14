@@ -7,7 +7,7 @@ import pkg from './package.json' with { type: 'json' };
 const external = [
   ...Object.keys(pkg.peerDependencies || {}),
   ...Object.keys(pkg.dependencies || {}),
-].filter((dep) => dep !== '@lionad/vtu-core');
+].filter((dep) => dep !== '@lionad/vtu-core' && dep !== '@lionad/vtu-theme');
 
 export default defineConfig({
   plugins: [
@@ -36,7 +36,6 @@ export default defineConfig({
       output: {
         globals: {
           vue: 'Vue',
-          '@lionad/vtu-theme': 'ToolUiVueTheme',
           zod: 'zod',
           clsx: 'clsx',
           'tailwind-merge': 'tailwindMerge',
