@@ -8,6 +8,7 @@ import { useSiteLocale } from '../composables/use-site-locale'
 type Step = 'intro' | 'carousel' | 'panel' | 'done'
 const step = ref<Step>('intro')
 const selectedItemId = ref<string | null>(null)
+const panelChoice = ref<Record<string, string | boolean> | null>(null)
 const { t, locale } = useSiteLocale()
 
 const isEn = computed(() => locale.value === 'en')
@@ -65,9 +66,17 @@ async function handleItemAction(_itemId: string, actionId: string) {
   }
 }
 
-async function handlePanelAction(actionId: string) {
+async function handlePanelAction(actionId: string, value: Record<string, string | boolean>) {
   if (actionId === 'confirm') {
-    step.value = 'done'
+    panelChoice.value = value
+    if (document.startViewTransition) {
+      await document.startViewTransition(async () => {
+        step.value = 'done'
+        await nextTick()
+      }).updateCallbackDone
+    } else {
+      step.value = 'done'
+    }
   } else if (actionId === 'cancel') {
     if (document.startViewTransition) {
       await document.startViewTransition(async () => {
@@ -131,41 +140,41 @@ async function handlePanelAction(actionId: string) {
         <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" :delay="120" :order="3" />
 
         <DemoDelayedShow :order="4">
-          <div v-show="step === 'panel'">
-            <PreferencesPanel
-              id="demo-restaurant-panel"
-              :title="t('demoRestaurant.panelTitle').value"
-              :sections="[
-                {
-                  heading: t('demoRestaurant.sectionAmbience').value,
-                  items: [
-                    { id: 'music', type: 'switch', label: t('demoRestaurant.labelMusic').value, defaultChecked: true },
-                    { id: 'wine', type: 'switch', label: t('demoRestaurant.labelWine').value, defaultChecked: false }
-                  ]
-                },
-                {
-                  heading: t('demoRestaurant.sectionPackage').value,
-                  items: [
-                    {
-                      id: 'package',
-                      type: 'toggle',
-                      label: t('demoRestaurant.sectionPackage').value,
-                      options: [
-                        { value: 'standard', label: t('demoRestaurant.packageStandard').value },
-                        { value: 'premium', label: t('demoRestaurant.packagePremium').value }
-                      ],
-                      defaultValue: 'standard'
-                    }
-                  ]
-                }
-              ]"
-              :actions="[
-                { id: 'confirm', label: t('demoRestaurant.actionConfirm').value, variant: 'default' },
-                { id: 'cancel', label: t('demoRestaurant.actionCancel').value, variant: 'outline' }
-              ]"
-              @action="handlePanelAction"
-            />
-          </div>
+          <PreferencesPanel
+            v-if="step === 'panel' || step === 'done'"
+            id="demo-restaurant-panel"
+            :title="t('demoRestaurant.panelTitle').value"
+            :sections="[
+              {
+                heading: t('demoRestaurant.sectionAmbience').value,
+                items: [
+                  { id: 'music', type: 'switch', label: t('demoRestaurant.labelMusic').value, defaultChecked: true },
+                  { id: 'wine', type: 'switch', label: t('demoRestaurant.labelWine').value, defaultChecked: false }
+                ]
+              },
+              {
+                heading: t('demoRestaurant.sectionPackage').value,
+                items: [
+                  {
+                    id: 'package',
+                    type: 'toggle',
+                    label: t('demoRestaurant.sectionPackage').value,
+                    options: [
+                      { value: 'standard', label: t('demoRestaurant.packageStandard').value },
+                      { value: 'premium', label: t('demoRestaurant.packagePremium').value }
+                    ],
+                    defaultValue: 'standard'
+                  }
+                ]
+              }
+            ]"
+            :actions="step === 'panel' ? [
+              { id: 'confirm', label: t('demoRestaurant.actionConfirm').value, variant: 'default' },
+              { id: 'cancel', label: t('demoRestaurant.actionCancel').value, variant: 'outline' }
+            ] : undefined"
+            :choice="step === 'done' && panelChoice ? panelChoice : undefined"
+            @action="handlePanelAction"
+          />
         </DemoDelayedShow>
         <DemoChatMessage
           v-if="step === 'done'"

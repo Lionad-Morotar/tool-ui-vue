@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { OverlayScrollbars as OverlayScrollbarsType } from 'overlayscrollbars'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
 
 const { t } = useSiteLocale()
-const { $overlayScrollbars } = useNuxtApp()
 
 const tabs = computed(() => [
   { id: 'restaurant', label: t('demo.tabRestaurant').value },
@@ -11,35 +11,12 @@ const tabs = computed(() => [
 ])
 
 const activeTab = ref('restaurant')
-const contentRef = ref<HTMLElement | null>(null)
-let osInstance: OverlayScrollbarsType | null = null
-
-onMounted(() => {
-  if (contentRef.value) {
-    osInstance = $overlayScrollbars(contentRef.value as HTMLElement, {
-      scrollbars: {
-        autoHide: 'move',
-        autoHideDelay: 500,
-        autoHideSuspend: true
-      },
-      overflow: {
-        x: 'hidden'
-      }
-    })
-  }
-})
-
-onBeforeUnmount(() => {
-  osInstance?.destroy()
-})
+const osRef = ref<OverlayScrollbarsComponentRef | null>(null)
 
 watch(activeTab, () => {
   nextTick(() => {
-    if (osInstance) {
-      osInstance.elements().viewport.scrollTo({ top: 0 })
-    } else if (contentRef.value) {
-      contentRef.value.scrollTop = 0
-    }
+    const osInstance = osRef.value?.osInstance()
+    osInstance?.elements().viewport.scrollTo({ top: 0 })
   })
 })
 </script>
@@ -85,12 +62,35 @@ watch(activeTab, () => {
       </div>
 
       <!-- Content -->
-      <div ref="contentRef" class="flex-1 grid bg-background p-6">
-        <DemoRestaurant v-if="activeTab === 'restaurant'" />
-        <DemoTravel v-else-if="activeTab === 'travel'" />
-        <DemoCodeReview v-else />
-        <div class="h-30 for-padding" />
-      </div>
+      <ClientOnly>
+        <OverlayScrollbarsComponent
+          ref="osRef"
+          :defer
+          class="flex-1 grid bg-background p-6"
+          :options="{
+            scrollbars: {
+              autoHide: 'move',
+              autoHideDelay: 500,
+              autoHideSuspend: true
+            },
+            overflow: {
+              x: 'hidden'
+            }
+          }"
+        >
+          <DemoRestaurant v-if="activeTab === 'restaurant'" />
+          <DemoTravel v-else-if="activeTab === 'travel'" />
+          <DemoCodeReview v-else />
+          <div class="h-30 for-padding" />
+        </OverlayScrollbarsComponent>
+        <template #fallback>
+          <div class="flex-1 grid bg-background p-6">
+            <DemoRestaurant v-if="activeTab === 'restaurant'" />
+            <DemoTravel v-else-if="activeTab === 'travel'" />
+            <DemoCodeReview v-else />
+          </div>
+        </template>
+      </ClientOnly>
     </div>
   </section>
 </template>
