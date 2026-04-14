@@ -1,3 +1,5 @@
+/* eslint-disable import-x/order */
+
 // Re-export cn utility for downstream packages
 export { cn, prefersReducedMotion } from './utils'
 
@@ -86,10 +88,8 @@ function mergeMessages(...messages: Record<string, unknown>[]): Record<string, u
   return merged
 }
 
-// Auto-register zh-CN with all component messages for non-i18n users
-// (per D-05/D-06: global default, copy-paste users need no config)
-// Explicit LocaleProvider with custom messages overrides this.
-setMessages(mergeMessages(
+/** Merged Chinese messages (all component locales included) */
+export const zhCNAll = mergeMessages(
   coreZhCN as unknown as Record<string, unknown>,
   terminalZhCN as unknown as Record<string, unknown>,
   codeBlockZhCN as unknown as Record<string, unknown>,
@@ -114,7 +114,12 @@ setMessages(mergeMessages(
   planZhCN as unknown as Record<string, unknown>,
   statsDisplayZhCN as unknown as Record<string, unknown>,
   xPostZhCN as unknown as Record<string, unknown>,
-))
+)
+
+// Auto-register zh-CN with all component messages for non-i18n users
+// (per D-05/D-06: global default, copy-paste users need no config)
+// Explicit LocaleProvider with custom messages overrides this.
+setMessages(zhCNAll)
 
 // ---------------------------------------------------------------------------
 // English locale support
@@ -122,28 +127,28 @@ setMessages(mergeMessages(
 // Call registerEnglish() to switch to English; zh-CN remains the default.
 // ---------------------------------------------------------------------------
 import { en as coreEn } from './i18n/locales/en'
-import { en as terminalEn } from '../../components/src/terminal/i18n/en'
-import { en as codeBlockEn } from '../../components/src/code-block/i18n/en'
-import { en as codeDiffEn } from '../../components/src/code-diff/i18n/en'
-import { en as orderSummaryEn } from '../../components/src/order-summary/i18n/en'
-import { en as questionFlowEn } from '../../components/src/question-flow/i18n/en'
-import { en as dataTableEn } from '../../components/src/data-table/i18n/en'
-import { en as messageDraftEn } from '../../components/src/message-draft/i18n/en'
-import { en as audioEn } from '../../components/src/audio/i18n/en'
-import { en as videoEn } from '../../components/src/video/i18n/en'
-import { en as geoMapEn } from '../../components/src/geo-map/i18n/en'
-import { en as itemCarouselEn } from '../../components/src/item-carousel/i18n/en'
-import { en as preferencesPanelEn } from '../../components/src/preferences-panel/i18n/en'
 import { en as approvalCardEn } from '../../components/src/approval-card/i18n/en'
+import { en as audioEn } from '../../components/src/audio/i18n/en'
 import { en as chartEn } from '../../components/src/chart/i18n/en'
 import { en as citationEn } from '../../components/src/citation/i18n/en'
+import { en as codeBlockEn } from '../../components/src/code-block/i18n/en'
+import { en as codeDiffEn } from '../../components/src/code-diff/i18n/en'
+import { en as dataTableEn } from '../../components/src/data-table/i18n/en'
+import { en as geoMapEn } from '../../components/src/geo-map/i18n/en'
 import { en as imageEn } from '../../components/src/image/i18n/en'
 import { en as instagramPostEn } from '../../components/src/instagram-post/i18n/en'
+import { en as itemCarouselEn } from '../../components/src/item-carousel/i18n/en'
 import { en as linkedinPostEn } from '../../components/src/linkedin-post/i18n/en'
+import { en as messageDraftEn } from '../../components/src/message-draft/i18n/en'
 import { en as optionListEn } from '../../components/src/option-list/i18n/en'
+import { en as orderSummaryEn } from '../../components/src/order-summary/i18n/en'
 import { en as parameterSliderEn } from '../../components/src/parameter-slider/i18n/en'
 import { en as planEn } from '../../components/src/plan/i18n/en'
+import { en as preferencesPanelEn } from '../../components/src/preferences-panel/i18n/en'
+import { en as questionFlowEn } from '../../components/src/question-flow/i18n/en'
 import { en as statsDisplayEn } from '../../components/src/stats-display/i18n/en'
+import { en as terminalEn } from '../../components/src/terminal/i18n/en'
+import { en as videoEn } from '../../components/src/video/i18n/en'
 import { en as xPostEn } from '../../components/src/x-post/i18n/en'
 
 /** Merged English messages (all component locales included) */

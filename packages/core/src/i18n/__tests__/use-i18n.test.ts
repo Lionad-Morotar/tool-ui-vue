@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeEach } from 'vitest';
 import { defineComponent, nextTick } from 'vue';
-import { useI18n, setMessages, setLocale } from '../use-i18n';
-import { zhCN } from '../locales/zh-CN';
 import { en } from '../locales/en';
+import { zhCN } from '../locales/zh-CN';
+import { useI18n, setMessages, setLocale } from '../use-i18n';
 
 type MessageSchema = typeof zhCN;
 
@@ -18,7 +18,7 @@ function createTConsumer() {
       const { t } = useI18n<MessageSchema>();
       return { t };
     },
-    template: `<span data-testid="result">{{ t(i18nKey, params) }}</span>`,
+    template: '<span data-testid="result">{{ t(i18nKey, params) }}</span>',
   });
 }
 
@@ -27,7 +27,7 @@ const LocaleConsumer = defineComponent({
     const { locale } = useI18n<MessageSchema>();
     return { locale };
   },
-  template: `<span data-testid="locale">{{ locale }}</span>`,
+  template: '<span data-testid="locale">{{ locale }}</span>',
 });
 
 describe('useI18n()', () => {

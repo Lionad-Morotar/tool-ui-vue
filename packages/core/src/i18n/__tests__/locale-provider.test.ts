@@ -1,10 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeEach } from 'vitest';
-import { nextTick, defineComponent, h, computed } from 'vue';
+import { nextTick, defineComponent, h } from 'vue';
 import { LocaleProvider } from '../locale-provider';
-import { useI18n, setMessages, setLocale } from '../use-i18n';
-import { zhCN } from '../locales/zh-CN';
 import { en } from '../locales/en';
+import { zhCN } from '../locales/zh-CN';
+import { useI18n, setMessages, setLocale } from '../use-i18n';
+import type { computed } from 'vue';
 
 // MessageSchema alias for test consumers — matches the shape of zhCN/en
 type MessageSchema = typeof zhCN;
@@ -30,7 +31,7 @@ const InterpConsumer = defineComponent({
     const { t } = useI18n<MessageSchema>();
     return { t };
   },
-  template: `<span data-testid="show-all">{{ t('shared.showAll', { count }) }}</span>`,
+  template: '<span data-testid="show-all">{{ t(\'shared.showAll\', { count }) }}</span>',
 });
 
 // Consumer for testing missing key fallback (uses render fn for TS cast)
@@ -50,7 +51,7 @@ const NoProviderConsumer = defineComponent({
     const { t } = useI18n<MessageSchema>();
     return { t };
   },
-  template: `<span data-testid="fallback">{{ t('shared.copy') }}</span>`,
+  template: '<span data-testid="fallback">{{ t(\'shared.copy\') }}</span>',
 });
 
 // Consumer for testing nested LocaleProvider
@@ -59,7 +60,7 @@ const NestedConsumer = defineComponent({
     const { t } = useI18n<MessageSchema>();
     return { t };
   },
-  template: `<span data-testid="nested">{{ t('shared.copy') }}</span>`,
+  template: '<span data-testid="nested">{{ t(\'shared.copy\') }}</span>',
 });
 
 describe('LocaleProvider', () => {
@@ -169,7 +170,7 @@ describe('LocaleProvider', () => {
           const { t } = useI18n<MessageSchema>();
           return { t };
         },
-        template: `<span data-testid="deep-fallback">{{ t('completely.made.up.key') }}</span>`,
+        template: '<span data-testid="deep-fallback">{{ t(\'completely.made.up.key\') }}</span>',
       });
       const wrapper = mount(Consumer);
       expect(wrapper.find('[data-testid="deep-fallback"]').text()).toBe('completely.made.up.key');
@@ -227,7 +228,7 @@ describe('LocaleProvider', () => {
           const { t } = useI18n<MessageSchema>();
           return { t };
         },
-        template: `<span data-testid="page">{{ t('dataTable.page', { current: 2, total: 5 }) }}</span>`,
+        template: '<span data-testid="page">{{ t(\'dataTable.page\', { current: 2, total: 5 }) }}</span>',
       });
 
       const wrapper = mount(ConsumerWithParams);

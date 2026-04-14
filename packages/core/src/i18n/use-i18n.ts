@@ -1,7 +1,7 @@
 import { inject, computed, ref, type Ref, type ComputedRef } from 'vue'
-import type { DeepKeyPath, ParamValue, I18nContext, I18nReturn } from './types'
-import { zhCN } from './locales/zh-CN'
 import { en } from './locales/en'
+import { zhCN } from './locales/zh-CN'
+import type { DeepKeyPath, ParamValue, I18nContext, I18nReturn } from './types'
 
 export const i18nInjectionKey = Symbol('vtu:i18n')
 
