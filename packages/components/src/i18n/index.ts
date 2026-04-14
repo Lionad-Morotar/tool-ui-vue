@@ -1,5 +1,22 @@
-import { setMessages, setLocale } from '@lionad/vtu-core/i18n'
-import { zhCN as coreZhCN, en as coreEn } from '@lionad/vtu-core/i18n'
+import {
+  setMessages,
+  setLocale,
+  useI18n,
+  LocaleProvider,
+  i18nInjectionKey,
+  zhCN,
+  en,
+} from '@lionad/vtu-core/i18n'
+
+export {
+  useI18n,
+  LocaleProvider,
+  i18nInjectionKey,
+  setMessages,
+  setLocale,
+  zhCN,
+  en,
+}
 
 // Component i18n messages (zh-CN)
 import { zhCN as terminalZhCN } from '../terminal/i18n/zh-CN'
@@ -67,7 +84,7 @@ function mergeMessages(...messages: Record<string, unknown>[]): Record<string, u
 
 /** Merged Chinese messages (all component locales included) */
 export const zhCNAll = mergeMessages(
-  coreZhCN as unknown as Record<string, unknown>,
+  zhCN as unknown as Record<string, unknown>,
   terminalZhCN as unknown as Record<string, unknown>,
   codeBlockZhCN as unknown as Record<string, unknown>,
   codeDiffZhCN as unknown as Record<string, unknown>,
@@ -95,7 +112,7 @@ export const zhCNAll = mergeMessages(
 
 /** Merged English messages (all component locales included) */
 export const enAll = mergeMessages(
-  coreEn as unknown as Record<string, unknown>,
+  en as unknown as Record<string, unknown>,
   terminalEn as unknown as Record<string, unknown>,
   codeBlockEn as unknown as Record<string, unknown>,
   codeDiffEn as unknown as Record<string, unknown>,

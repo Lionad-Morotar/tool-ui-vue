@@ -445,7 +445,18 @@ export {
 } from './weather-widget'
 
 // i18n exports
-export { zhCNAll, enAll, registerEnglish } from './i18n'
+export {
+  useI18n,
+  LocaleProvider,
+  i18nInjectionKey,
+  setMessages,
+  setLocale,
+  zhCN,
+  en,
+  zhCNAll,
+  enAll,
+  registerEnglish,
+} from './i18n'
 
 // Placeholder version (kept for backwards compatibility)
 export const VERSION = '0.4.0'

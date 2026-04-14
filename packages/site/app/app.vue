@@ -1,7 +1,11 @@
 <script setup>
-import { LocaleProvider } from '@lionad/vtu-core'
-import { zhCNAll, registerEnglish } from '@lionad/vtu-components/i18n'
-import { setLocale, setMessages } from '@lionad/vtu-core/i18n'
+import {
+  LocaleProvider,
+  zhCNAll,
+  registerEnglish,
+  setLocale,
+  setMessages,
+} from '@lionad/vtu-components'
 import { watchEffect } from 'vue'
 
 const { locale, t } = useSiteLocale()
