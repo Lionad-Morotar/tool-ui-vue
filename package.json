@@ -8,20 +8,14 @@
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' run build",
     "typecheck": "pnpm -r --filter='./packages/*' run typecheck",
-    "build:all": "pnpm -r build",
-    "typecheck:all": "pnpm -r typecheck",
-    "dev": "vite dev playground --config playground/vite.config.ts --port 5740 --host",
-    "dev:lib": "vite",
-    "story:dev": "histoire dev --host --port 5741",
-    "story:build": "histoire build && node scripts/post-build-histoire.mjs",
-    "story:preview": "histoire preview",
-    "serve:story": "rm -rf .serve/tool-ui-vue && mkdir -p .serve/tool-ui-vue && cp -r dist-histoire/* .serve/tool-ui-vue/ && npx http-server .serve -p 5750 -o /tool-ui-vue/",
+    "serve:pages": "rm -rf .serve/tool-ui-vue/ && mkdir -p packages/site/.output/public/docs && cp -r dist-histoire/* packages/site/.output/public/docs/ && mkdir -p .serve && cp -r packages/site/.output/public .serve/tool-ui-vue && npx serve .serve/",
     "test": "vitest run",
-    "test:watch": "vitest",
     "lint": "eslint . --fix",
-    "site:dev": "pnpm --filter @lionad/vtu-site dev",
-    "site:build": "pnpm --filter @lionad/vtu-site generate",
-    "check": "pnpm lint && pnpm typecheck:all"
+    "dev": "pnpm --filter @lionad/vtu-site dev",
+    "dev:story": "histoire dev --host --port 5741",
+    "build:site": "pnpm --filter @lionad/vtu-site generate",
+    "build:story": "histoire build",
+    "check": "pnpm lint && pnpm typecheck"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

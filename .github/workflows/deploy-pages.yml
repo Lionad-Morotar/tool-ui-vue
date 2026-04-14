@@ -33,10 +33,10 @@ jobs:
         run: pnpm install
 
       - name: Build landing page
-        run: pnpm site:build
+        run: pnpm build:site
 
       - name: Build Histoire docs
-        run: pnpm story:build
+        run: pnpm build:story
 
       - name: Merge Histoire into landing page
         run: |
