@@ -255,12 +255,33 @@ function handleResize() {
   camera.updateProjectionMatrix()
 }
 
+let observer: IntersectionObserver | null = null
+
 onMounted(() => {
   init()
   window.addEventListener('resize', handleResize)
+
+  observer = new IntersectionObserver((entries) => {
+    const entry = entries[0]
+    if (!entry) return
+    if (entry.isIntersecting) {
+      if (rafId === null) animate()
+    } else {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    }
+  })
+  if (containerRef.value) {
+    observer.observe(containerRef.value)
+  }
 })
 
 onUnmounted(() => {
+  observer?.disconnect()
+  observer = null
+
   if (rafId !== null) {
     cancelAnimationFrame(rafId)
     rafId = null

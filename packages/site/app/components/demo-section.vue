@@ -22,11 +22,10 @@ watch(activeTab, () => {
 </script>
 
 <template>
-  <section class="mx-auto -mt-58 px-6 py-16 max-w-7xl">
+  <section class="mx-auto px-6 py-16 max-w-7xl">
     <!-- Browser Mockup -->
     <div
-      class="flex flex-col bg-card shadow-xl border border-border rounded-xl overflow-hidden"
-      :style="{ height: 'calc(100vh - 2.5rem - var(--hero-height, 0px) + 12rem)' }"
+      class="flex flex-col bg-card shadow-xl border border-border rounded-xl overflow-hidden h-[70vh] min-h-120 lg:min-h-150"
     >
       <!-- Browser Chrome -->
       <div class="flex items-center gap-2 bg-muted/50 px-4 py-3 border-border border-b">

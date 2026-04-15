@@ -16,19 +16,24 @@ const subtitle = useStoryLocale('content.subtitle', messages);
 const heroTagline = useStoryLocale('content.heroTagline', messages);
 const heroCta = useStoryLocale('content.heroCta', messages);
 const copySuccess = useStoryLocale('content.copySuccess', messages);
+const copyFailed = useStoryLocale('content.copyFailed', messages);
 const browseByCategory = useStoryLocale('data.browseByCategory', messages);
 const footerText = useStoryLocale('content.footerText', messages);
 const footerViewOn = useStoryLocale('content.footerViewOn', messages);
 
 const copied = ref(false);
+const copyFailedVisible = ref(false);
 
 async function copyInstallCommand() {
   try {
     await navigator.clipboard.writeText('pnpm add @lionad/vtu-components');
     copied.value = true;
     setTimeout(() => { copied.value = false; }, 2000);
-  } catch {
-    // Ignore errors
+  } catch (err) {
+    copyFailedVisible.value = true;
+    setTimeout(() => { copyFailedVisible.value = false; }, 2000);
+    // eslint-disable-next-line no-console
+    console.error('Failed to copy install command:', err);
   }
 }
 
@@ -77,6 +82,15 @@ const categories = [
   },
 ];
 
+const categoryTitles: Record<string, ReturnType<typeof useStoryLocale>> = {
+  'data-display': useStoryLocale(categories[0].title, messages),
+  'code-terminal': useStoryLocale(categories[1].title, messages),
+  'media': useStoryLocale(categories[2].title, messages),
+  'social': useStoryLocale(categories[3].title, messages),
+  'forms-input': useStoryLocale(categories[4].title, messages),
+  'workflow': useStoryLocale(categories[5].title, messages),
+};
+
 </script>
 
 <template>
@@ -87,7 +101,7 @@ const categories = [
       <section class="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
         <div class="mx-auto max-w-4xl text-center">
           <div class="mb-6 inline-flex items-center justify-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
-            <zap class="mr-1.5 h-4 w-4" />
+            <Zap class="mr-1.5 h-4 w-4" />
             <span>Vue 3 + TypeScript + Tailwind CSS v4</span>
           </div>
           <h1 class="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl">
@@ -113,6 +127,12 @@ const categories = [
               >
                 {{ copySuccess }}
               </span>
+              <span
+                v-if="copyFailedVisible"
+                class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-destructive px-2 py-1 text-xs text-destructive-foreground shadow-md"
+              >
+                {{ copyFailed }}
+              </span>
             </button>
           </div>
         </div>
@@ -137,7 +157,7 @@ const categories = [
                 <component :is="cat.icon" class="h-5 w-5" />
               </div>
               <h3 class="text-lg font-semibold text-card-foreground">
-                {{ useStoryLocale(cat.title) }}
+                {{ categoryTitles[cat.id] }}
               </h3>
               <p class="mt-2 flex flex-wrap gap-2">
                 <span

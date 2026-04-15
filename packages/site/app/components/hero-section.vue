@@ -1,37 +1,26 @@
 <script setup lang="ts">
 const { t } = useSiteLocale()
 const config = useRuntimeConfig()
-const heroRef = ref<HTMLElement | null>(null)
 
 const docsUrl = computed(() => {
   const base = config.app.baseURL
   return base === '/' ? '/docs/' : `${base}docs/`
 })
-
-function updateHeroHeight() {
-  if (heroRef.value) {
-    document.documentElement.style.setProperty('--hero-height', `${heroRef.value.offsetHeight}px`)
-  }
-}
-
-onMounted(() => {
-  updateHeroHeight()
-  window.addEventListener('resize', updateHeroHeight)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updateHeroHeight)
-})
 </script>
 
 <template>
-  <section ref="heroRef" class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-0 max-w-7xl">
+  <section class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-0 max-w-7xl">
     <!-- Left: Copy -->
     <div class="flex flex-col justify-center">
-      <h1 class="font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl lg:leading-18 tracking-normal">
-        {{ t('hero.h1').value }}<br>
-        {{ t('hero.h1SubMain').value }}
-        <span class="ml-1 sm:ml-2 font-medium text-muted-foreground text-sm sm:text-sm lg:text-base align-middle">
+      <h1 class="flex flex-wrap items-center gap-2 font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl lg:leading-18 tracking-normal">
+        <span class="inline-flex items-center gap-2">
+          <span class="lg:hidden inline-flex items-center justify-center text-primary">
+            <Icon name="lucide:nut" class="h-8 w-8" />
+          </span>
+          {{ t('hero.h1').value }}
+        </span>
+        <span>{{ t('hero.h1SubMain').value }}</span>
+        <span class="font-medium text-muted-foreground text-sm sm:text-base lg:text-base align-middle">
           {{ t('hero.h1SubNote').value }}
         </span>
       </h1>
@@ -62,7 +51,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Right: Hexnut -->
-    <div class="relative flex justify-center items-center w-full lg:max-w-full max-w-md aspect-square">
+    <div class="hidden relative lg:flex justify-center items-center w-full lg:max-w-full max-w-md aspect-square">
       <!-- Subtle ambient glow behind hexnut -->
       <div
         class="absolute inset-0 opacity-40 dark:opacity-50 rounded-full animate-pulse-glow"

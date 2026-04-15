@@ -34,6 +34,7 @@ export default defineConfig({
       'src/**/*.{test,spec}.{js,ts,tsx}',
       'playground/**/*.{test,spec}.{js,ts,tsx}',
       'packages/*/src/**/*.{test,spec}.{js,ts,tsx}',
+      'packages/site/app/**/*.{test,spec}.{js,ts,tsx}',
     ],
     exclude: ['node_modules', 'dist'],
     setupFiles: ['src/test/setup.ts'],
