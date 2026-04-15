@@ -23,6 +23,11 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: ['overlayscrollbars']
+    },
+    // 禁用 CSS sourcemap 以消除 @tailwindcss/vite 的构建警告
+    // @see https://github.com/tailwindlabs/tailwindcss/issues/15839
+    css: {
+      devSourcemap: false
     }
   },
 

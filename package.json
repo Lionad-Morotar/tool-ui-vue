@@ -16,6 +16,7 @@
     "dev:histoire": "histoire dev --host --port 5741",
     "build:site": "pnpm --filter @lionad/vtu-site generate",
     "build:story": "histoire build",
+    "build:pages": "pnpm build:site && pnpm build:story",
     "check": "pnpm lint && pnpm typecheck"
   },
   "peerDependencies": {
