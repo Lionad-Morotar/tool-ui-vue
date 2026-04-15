@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@histoire/app@1.0.0-beta.1':
+    hash: 9560bb32a39c4d5c323a8ce509639d8369e0698d01358496bab666fc73c5496d
+    path: patches/@histoire__app@1.0.0-beta.1.patch
+
 importers:
 
   .:
@@ -7460,7 +7465,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@histoire/app@1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))':
+  '@histoire/app@1.0.0-beta.1(patch_hash=9560bb32a39c4d5c323a8ce509639d8369e0698d01358496bab666fc73c5496d)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))':
     dependencies:
       '@histoire/controls': 1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
       '@histoire/shared': 1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
@@ -11440,7 +11445,7 @@ snapshots:
   histoire@1.0.0-beta.1(@types/node@25.5.2)(lightningcss@1.32.0)(terser@5.46.1)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))(yaml@2.8.3):
     dependencies:
       '@akryum/tinypool': 0.3.1
-      '@histoire/app': 1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
+      '@histoire/app': 1.0.0-beta.1(patch_hash=9560bb32a39c4d5c323a8ce509639d8369e0698d01358496bab666fc73c5496d)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
       '@histoire/controls': 1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
       '@histoire/shared': 1.0.0-beta.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.2)(esbuild@0.27.5)(jiti@2.6.1)(terser@5.46.1)(yaml@2.8.3))
       '@histoire/vendors': 1.0.0-beta.1

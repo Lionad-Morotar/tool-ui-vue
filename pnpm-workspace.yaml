@@ -3,3 +3,5 @@ packages:
 
 allowBuilds:
   '@parcel/watcher': true
+patchedDependencies:
+  '@histoire/app@1.0.0-beta.1': patches/@histoire__app@1.0.0-beta.1.patch
