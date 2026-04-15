@@ -1,6 +1,12 @@
 <script setup lang="ts">
 const { t } = useSiteLocale()
+const config = useRuntimeConfig()
 const heroRef = ref<HTMLElement | null>(null)
+
+const docsUrl = computed(() => {
+  const base = config.app.baseURL
+  return base === '/' ? '/docs/' : `${base}docs/`
+})
 
 function updateHeroHeight() {
   if (heroRef.value) {
@@ -34,7 +40,8 @@ onUnmounted(() => {
       </p>
       <div class="flex flex-wrap gap-4 mt-8">
         <UButton
-          to="/docs/"
+          :to="docsUrl"
+          external
           size="lg"
           color="primary"
           trailing-icon="i-lucide-arrow-right"
