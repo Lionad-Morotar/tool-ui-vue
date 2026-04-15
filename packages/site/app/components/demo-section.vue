@@ -64,7 +64,7 @@ watch(activeTab, () => {
       <ClientOnly>
         <OverlayScrollbarsComponent
           ref="osRef"
-          :defer
+          :defer="true"
           class="flex-1 grid bg-background p-6"
           :options="{
             scrollbars: {
