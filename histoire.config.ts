@@ -22,7 +22,7 @@ export default defineConfig({
   routerMode: 'hash',
   theme: {
     title: 'tool-ui-vue',
-    logoHref: '/#/story/src-stories-landing-story-vue',
+    logoHref: '/#/story/src-stories-landing-index-story-vue',
   },
   defaultStoryProps: {
     layout: {

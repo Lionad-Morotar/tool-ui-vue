@@ -8,7 +8,7 @@ const html = readFileSync(indexPath, 'utf-8');
 
 const redirectScript = `<script>
   if (window.location.hash === '' || window.location.hash === '#' || window.location.hash === '#/') {
-    window.location.replace('#/story/src-stories-landing-story-vue');
+    window.location.replace('#/story/src-stories-landing-index-story-vue');
   }
 </script>`;
 
