@@ -102,6 +102,8 @@ export const ImageCssSchema = z.object({
   source: z.string().optional(),
 });
 
+export type ImageCss = z.infer<typeof ImageCssSchema>;
+
 /**
  * Image 组件的 Props 接口
  * 包含所有可配置的属性
@@ -128,5 +130,5 @@ export interface ImageProps {
   createdAt?: string;
   locale?: string;
   source?: Source;
-  css?: { root?: string; image?: string; caption?: string; source?: string };
+  css?: ImageCss;
 }

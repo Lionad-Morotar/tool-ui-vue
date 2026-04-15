@@ -8,10 +8,10 @@ import type { CodeBlockProps } from './schema';
 
 defineOptions({ name: 'CmptCodeBlock', inheritAttrs: false })
 
-const props = withDefaults(defineProps<CodeBlockProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<CodeBlockProps>(), {
   language: 'text',
   lineNumbers: 'visible',
-  css: () => ({ root: '' })
+  css: () => ({}),
 });
 
 // All business logic delegated to states layer
@@ -44,7 +44,10 @@ const copyButtonAriaLabel = computed(() =>
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
       <div
-        class="flex items-center justify-between border-b border-border bg-card px-4 py-2"
+        :class="cn(
+          'flex items-center justify-between border-b border-border bg-card px-4 py-2',
+          css?.header,
+        )"
       >
         <div class="flex items-center gap-1">
           <span class="text-sm text-muted-foreground">
@@ -63,6 +66,7 @@ const copyButtonAriaLabel = computed(() =>
             'inline-flex h-7 w-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
             'hover:bg-accent hover:text-accent-foreground',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+            css?.copyButton,
           )"
           :aria-label="copyButtonAriaLabel"
           @click="codeBlockState.copyCode"
@@ -83,6 +87,7 @@ const copyButtonAriaLabel = computed(() =>
         :class="cn(
           'overflow-x-auto overflow-y-clip text-[13px] leading-[1.4] [&_code]:block [&_code]:w-full [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4',
           codeBlockState.isCollapsed && 'max-h-[200px]',
+          css?.content,
         )"
       >
         <div

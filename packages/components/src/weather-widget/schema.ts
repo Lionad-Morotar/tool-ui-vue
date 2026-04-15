@@ -99,16 +99,36 @@ export const EffectSettingsSchema = z.object({
 export type EffectSettings = z.infer<typeof EffectSettingsSchema>;
 
 /**
- * WeatherWidgetCssSchema Zod Schema
+ * EffectCompositor 子组件的 CssSchema
  */
-export const WeatherWidgetCssSchema = z.object({
+export const EffectCompositorCssSchema = z.object({
+  root: z.string().optional(),
+});
+
+export type EffectCompositorCss = z.infer<typeof EffectCompositorCssSchema>;
+
+/**
+ * WeatherDataOverlay 子组件的 CssSchema
+ */
+export const WeatherDataOverlayCssSchema = z.object({
   root: z.string().optional(),
   header: z.string().optional(),
   current: z.string().optional(),
   forecast: z.string().optional(),
-  canvas: z.string().optional(),
-  overlay: z.string().optional(),
 });
+
+export type WeatherDataOverlayCss = z.infer<typeof WeatherDataOverlayCssSchema>;
+
+/**
+ * WeatherWidgetCssSchema Zod Schema
+ */
+export const WeatherWidgetCssSchema = z.object({
+  root: z.string().optional(),
+  canvas: EffectCompositorCssSchema.optional(),
+  overlay: WeatherDataOverlayCssSchema.optional(),
+});
+
+export type WeatherWidgetCss = z.infer<typeof WeatherWidgetCssSchema>;
 
 /** SerializableWeatherWidgetSchema 的可序列化 Zod Schema */
 export const SerializableWeatherWidgetSchema = z.object({
@@ -137,7 +157,7 @@ export interface WeatherWidgetProps {
   forecast: ForecastDay[];
   time?: WeatherWidgetTime;
   updatedAt?: string;
-  css?: { root?: string; header?: string; current?: string; forecast?: string; canvas?: string; overlay?: string };
+  css?: WeatherWidgetCss;
   effects?: EffectSettings;
 }
 

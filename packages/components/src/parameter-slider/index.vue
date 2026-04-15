@@ -16,8 +16,8 @@ import type { ParameterSliderProps, SliderValue } from './schema';
 
 defineOptions({ name: 'CmptParameterSlider', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ParameterSliderProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<ParameterSliderProps>(), {
+  css: () => ({}),
 })
 
 // i18n
@@ -123,6 +123,7 @@ function handleAction(actionId: string) {
       :class="
         cn(
           'flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card px-5 py-3 shadow-xs',
+          props.css?.slider,
         )
       "
     >
@@ -347,6 +348,7 @@ function handleAction(actionId: string) {
               : normalizedActions.align === 'center'
                 ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-center @[240px]/actions:gap-2'
                 : 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-end @[240px]/actions:gap-2',
+            props.css?.actions,
           )
         "
       >

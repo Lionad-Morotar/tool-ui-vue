@@ -83,6 +83,12 @@ export const AudioCssSchema = z.object({
 });
 
 /**
+ * Audio CSS 覆盖类型
+ * 对应 AudioCssSchema 的 TypeScript 类型
+ */
+export type AudioCss = z.infer<typeof AudioCssSchema>;
+
+/**
  * Audio 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -105,6 +111,6 @@ export interface AudioProps {
   createdAt?: string;
   locale?: string;
   source?: Source;
-  css?: { root?: string; header?: string; artwork?: string; controls?: string; source?: string };
+  css?: AudioCss;
   variant?: AudioVariant;
 }

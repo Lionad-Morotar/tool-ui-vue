@@ -27,6 +27,7 @@ import type {
   ForecastDay,
   TemperatureUnit,
   WeatherConditionCode,
+  WeatherDataOverlayCss,
 } from '../schema';
 
 interface GlassEffectParams {
@@ -50,7 +51,7 @@ interface WeatherDataOverlayProps {
   theme?: WeatherTheme;
   timeOfDay?: number;
   timestamp?: string;
-  css?: { root?: string };
+  css?: WeatherDataOverlayCss;
   reducedMotion?: boolean;
   glassParams?: GlassEffectParams;
 }
@@ -61,7 +62,7 @@ const props = withDefaults(defineProps<WeatherDataOverlayProps>(), {
   theme: undefined,
   timeOfDay: undefined,
   timestamp: undefined,
-  css: () => ({ root: '' }),
+  css: () => ({}),
   reducedMotion: false,
   glassParams: undefined,
 });
@@ -463,8 +464,8 @@ const innerGlowStyle = computed(() => ({
     "
   >
     <!-- Current weather (more inset than forecast strip) -->
-    <div class="px-6 pt-6">
-      <div class="flex flex-col items-start">
+    <div :class="cn('px-6 pt-6', props.css?.header)">
+      <div :class="cn('flex flex-col items-start', props.css?.current)">
         <h2
           :class="cn('leading-[1.08] font-medium tracking-tight', textSecondary)"
           :style="locationStyle"
@@ -523,7 +524,7 @@ const innerGlowStyle = computed(() => ({
     <div class="flex-1" />
 
     <!-- Forecast strip -->
-    <div v-if="forecast.length > 0" class="px-3 pb-3">
+    <div v-if="forecast.length > 0" :class="cn('px-3 pb-3', props.css?.forecast)">
       <div
         ref="cardRef"
         class="weather-forecast-strip relative hidden"

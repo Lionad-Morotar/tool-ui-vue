@@ -11,8 +11,8 @@ import type {
 
 defineOptions({ name: 'CmptPreferencesPanel', inheritAttrs: false })
 
-const props = withDefaults(defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<PreferencesPanelProps & Partial<PreferencesPanelReceiptProps>>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -70,14 +70,14 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
-          <fieldset v-if="section.heading" class="flex flex-col">
+          <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
             <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
                 <hr v-if="itemIndex > 0" class="my-1 border-border" />
-                <div class="flex items-start justify-between gap-4 py-3">
+                <div :class="cn('flex items-start justify-between gap-4 py-3', props.css?.item)">
                   <div class="flex flex-col gap-1">
                     <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                     <span
@@ -110,7 +110,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
               </template>
             </div>
           </fieldset>
-          <div v-else class="flex flex-col">
+          <div v-else :class="cn('flex flex-col', props.css?.section)">
             <template v-for="(item, itemIndex) in section.items" :key="item.id">
               <hr
                 v-if="itemIndex > 0"
@@ -119,7 +119,8 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
               <div
                 :class="cn(
                   'flex items-start justify-between gap-4',
-                  itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3'
+                  itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
+                  props.css?.item
                 )"
               >
                 <div class="flex flex-col gap-1">
@@ -181,7 +182,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
-          <fieldset v-if="section.heading" class="flex flex-col">
+          <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
             <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
               {{ section.heading }}
             </legend>
@@ -192,7 +193,8 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   :class="cn(
                     'flex items-start justify-between gap-4',
                     'py-3',
-                    item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'
+                    item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
+                    props.css?.item
                   )"
                 >
                   <div class="flex flex-col gap-1">
@@ -277,7 +279,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
               </template>
             </div>
           </fieldset>
-          <div v-else class="flex flex-col">
+          <div v-else :class="cn('flex flex-col', props.css?.section)">
             <template v-for="(item, itemIndex) in section.items" :key="item.id">
               <hr
                 v-if="itemIndex > 0"
@@ -287,7 +289,8 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                 :class="cn(
                   'flex items-start justify-between gap-4',
                   itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
-                  item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'
+                  item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
+                  props.css?.item
                 )"
               >
                 <div class="flex flex-col gap-1">
@@ -376,7 +379,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
     </div>
 
     <!-- Actions -->
-    <div v-if="state.normalizedActions" class="@container/actions">
+    <div v-if="state.normalizedActions" :class="cn('@container/actions', props.css?.actions)">
       <div
         :class="cn(
           'flex w-full gap-2',

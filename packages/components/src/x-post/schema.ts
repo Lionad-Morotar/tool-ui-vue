@@ -117,9 +117,11 @@ export const XPostCssSchema = z.object({
   actions: z.string().optional(),
 });
 
+export type XPostCss = z.infer<typeof XPostCssSchema>;
+
 /** XPostProps 组件属性接口 */
 export interface XPostProps {
   post: XPostData;
-  css?: { root?: string; header?: string; content?: string; actions?: string };
+  css?: XPostCss;
   onAction?: (action: string, post: XPostData) => void;
 }

@@ -88,6 +88,12 @@ export const ApprovalCardCssSchema = z.object({
 });
 
 /**
+ * ApprovalCard 的 CSS 覆盖类型
+ * 对应 ApprovalCardCssSchema 的 TypeScript 类型
+ */
+export type ApprovalCardCss = z.infer<typeof ApprovalCardCssSchema>;
+
+/**
  * ApprovalCard 组件的基础 Props 接口（不含回调函数）
  * 包含所有可配置的属性
  */
@@ -102,7 +108,7 @@ export interface ApprovalCardBaseProps {
   confirmLabel?: string;
   cancelLabel?: string;
   choice?: ApprovalDecision;
-  css?: { root?: string; header?: string; content?: string; actions?: string };
+  css?: ApprovalCardCss;
 }
 
 /**

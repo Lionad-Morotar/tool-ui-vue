@@ -7,8 +7,8 @@ import type { ApprovalCardBaseProps } from './schema';
 
 defineOptions({ name: 'CmptApprovalCard', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ApprovalCardBaseProps & { css?: { root?: string; header?: string; content?: string; actions?: string } }>(), {
-  css: () => ({ root: '', header: '', content: '', actions: '' })
+const props = withDefaults(defineProps<ApprovalCardBaseProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -91,7 +91,10 @@ const IconComponent = toRef(state, 'IconComponent');
     <div
       class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
     >
-      <div class="flex items-start gap-3">
+      <div
+        :class="cn('flex items-start gap-3', css?.header)"
+        data-slot="header"
+      >
         <span
           v-if="IconComponent"
           :class="
@@ -122,7 +125,11 @@ const IconComponent = toRef(state, 'IconComponent');
         </div>
       </div>
 
-      <template v-if="metadata && metadata.length > 0">
+      <div
+        v-if="metadata && metadata.length > 0"
+        :class="cn('flex flex-col gap-4', css?.content)"
+        data-slot="content"
+      >
         <hr class="shrink-0 border-t border-border" />
         <dl class="flex flex-col gap-2 text-sm">
           <div
@@ -134,11 +141,14 @@ const IconComponent = toRef(state, 'IconComponent');
             <dd class="min-w-0 truncate">{{ item.value }}</dd>
           </div>
         </dl>
-      </template>
+      </div>
     </div>
 
     <!-- Action buttons -->
-    <div class="@container/actions">
+    <div
+      :class="cn('@container/actions', css?.actions)"
+      data-slot="actions"
+    >
       <div
         :class="
           cn(

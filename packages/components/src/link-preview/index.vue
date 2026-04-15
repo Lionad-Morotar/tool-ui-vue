@@ -6,8 +6,8 @@ import type { LinkPreviewProps } from './schema';
 
 defineOptions({ name: 'CmptLinkPreview', inheritAttrs: false })
 
-const props = withDefaults(defineProps<LinkPreviewProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<LinkPreviewProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -44,6 +44,7 @@ const state = reactive(useLinkPreview(props, emit));
           :class="cn(
             'relative w-full overflow-hidden bg-muted',
             state.resolvedRatio !== 'auto' ? state.ratioClassMap[state.resolvedRatio] : 'aspect-[5/3]',
+            css?.image,
           )"
         >
           <img
@@ -60,7 +61,7 @@ const state = reactive(useLinkPreview(props, emit));
         </div>
 
         <!-- Content -->
-        <div class="flex flex-col gap-2 px-5 py-4">
+        <div :class="cn('flex flex-col gap-2 px-5 py-4', css?.content)">
           <!-- Domain -->
           <div v-if="state.displayDomain" class="flex items-center gap-2 text-xs text-muted-foreground">
             <img

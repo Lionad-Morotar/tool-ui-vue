@@ -159,6 +159,12 @@ export const OrderSummaryCssSchema = z.object({
 });
 
 /**
+ * OrderSummaryCss 类型
+ * 对应 OrderSummaryCssSchema 的 TypeScript 类型
+ */
+export type OrderSummaryCss = z.infer<typeof OrderSummaryCssSchema>;
+
+/**
  * OrderSummary 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -170,5 +176,5 @@ export interface OrderSummaryProps {
   items: OrderItem[];
   pricing: Pricing;
   choice?: OrderDecision;
-  css?: { root?: string; header?: string; items?: string; pricing?: string; actions?: string };
+  css?: OrderSummaryCss;
 }

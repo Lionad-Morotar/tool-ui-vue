@@ -155,6 +155,8 @@ export const PreferencesPanelCssSchema = z.object({
   actions: z.string().optional(),
 });
 
+export type PreferencesPanelCss = z.infer<typeof PreferencesPanelCssSchema>;
+
 /**
  * PreferencesPanel 组件的 Props 接口
  * 包含所有可配置的属性
@@ -165,7 +167,7 @@ export interface PreferencesPanelProps {
   receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
-  css?: { root?: string; section?: string; item?: string; actions?: string };
+  css?: PreferencesPanelCss;
   value?: PreferencesValue;
   actions?:
     | Action[]
@@ -185,7 +187,7 @@ export interface PreferencesPanelReceiptProps {
   sections: PreferenceSection[];
   choice: Record<string, string | boolean>;
   error?: Record<string, string>;
-  css?: { root?: string; section?: string; item?: string; actions?: string };
+  css?: PreferencesPanelCss;
 }
 
 /**

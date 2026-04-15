@@ -103,13 +103,16 @@ export const CitationCssSchema = z.object({
   root: z.string().optional(),
   header: z.string().optional(),
   body: z.string().optional(),
-  footer: z.string().optional(),
 });
+
+export type CitationCss = z.infer<typeof CitationCssSchema>;
 
 export const CitationListCssSchema = z.object({
   root: z.string().optional(),
   item: z.string().optional(),
 });
+
+export type CitationListCss = z.infer<typeof CitationListCssSchema>;
 
 /**
  * Citation 组件的 Props 接口
@@ -134,7 +137,7 @@ export interface CitationProps {
   type?: CitationType;
   locale?: string;
   variant?: CitationVariant;
-  css?: { root?: string; header?: string; body?: string; footer?: string };
+  css?: CitationCss;
   onNavigate?: (href: string, citation: CitationProps) => void;
 }
 
@@ -147,6 +150,6 @@ export interface CitationListProps {
   citations: SerializableCitation[];
   variant?: CitationVariant;
   maxVisible?: number;
-  css?: { root?: string; item?: string };
+  css?: CitationListCss;
   onNavigate?: (href: string, citation: SerializableCitation) => void;
 }

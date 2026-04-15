@@ -8,8 +8,8 @@ import type { CitationProps } from './schema';
 
 defineOptions({ name: 'CmptCitation', inheritAttrs: false })
 
-const props = withDefaults(defineProps<CitationProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<CitationProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -150,7 +150,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
       @keydown="state.handleKeyDown"
     >
       <div class="flex flex-col gap-2 p-4">
-        <div class="flex min-w-0 items-center justify-between gap-1.5 text-xs text-muted-foreground">
+        <div :class="cn('flex min-w-0 items-center justify-between gap-1.5 text-xs text-muted-foreground', css?.header)">
           <div class="flex min-w-0 items-center gap-1.5">
             <!-- Icon -->
             <img
@@ -210,6 +210,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
           </svg>
         </div>
 
+        <div :class="cn('flex flex-col gap-2', css?.body)">
         <h3 class="text-[15px] leading-snug font-medium text-pretty text-foreground">
           <span class="line-clamp-2 group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
             {{ title }}
@@ -219,6 +220,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
         <p v-if="snippet" class="text-[13px] leading-relaxed text-pretty text-muted-foreground">
           <span class="line-clamp-3">{{ snippet }}</span>
         </p>
+        </div>
       </div>
     </div>
   </article>

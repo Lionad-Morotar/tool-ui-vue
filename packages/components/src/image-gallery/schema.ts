@@ -66,12 +66,51 @@ export type SerializableImageGallery = z.infer<
   typeof SerializableImageGallerySchema
 >;
 
+/**
+ * GalleryGrid 子组件的 CSS 覆盖 Schema
+ */
+export const GalleryGridCssSchema = z.object({
+  root: z.string().optional(),
+  item: z.string().optional(),
+});
+
+export type GalleryGridCss = z.infer<typeof GalleryGridCssSchema>;
+
+/**
+ * GalleryImageCard 子组件的 CSS 覆盖 Schema
+ */
+export const GalleryImageCardCssSchema = z.object({
+  root: z.string().optional(),
+  image: z.string().optional(),
+  error: z.string().optional(),
+});
+
+export type GalleryImageCardCss = z.infer<typeof GalleryImageCardCssSchema>;
+
+/**
+ * GalleryLightbox 子组件的 CSS 覆盖 Schema
+ */
+export const GalleryLightboxCssSchema = z.object({
+  root: z.string().optional(),
+  content: z.string().optional(),
+  metadata: z.string().optional(),
+  close: z.string().optional(),
+});
+
+export type GalleryLightboxCss = z.infer<typeof GalleryLightboxCssSchema>;
+
+/**
+ * ImageGallery 主组件的 CSS 覆盖 Schema
+ * grid / card / lightbox 为嵌套对象，引用子组件的 CssSchema
+ */
 export const ImageGalleryCssSchema = z.object({
   root: z.string().optional(),
-  grid: z.string().optional(),
-  card: z.string().optional(),
-  lightbox: z.string().optional(),
+  grid: GalleryGridCssSchema.optional(),
+  card: GalleryImageCardCssSchema.optional(),
+  lightbox: GalleryLightboxCssSchema.optional(),
 });
+
+export type ImageGalleryCss = z.infer<typeof ImageGalleryCssSchema>;
 
 /**
  * ImageGallery 组件的 Props 接口
@@ -85,7 +124,7 @@ export interface ImageGalleryProps {
   images: ImageGalleryItem[];
   title?: string;
   description?: string;
-  css?: { root?: string; grid?: string; card?: string; lightbox?: string };
+  css?: ImageGalleryCss;
   onImageClick?: (imageId: string, image: ImageGalleryItem) => void;
 }
 

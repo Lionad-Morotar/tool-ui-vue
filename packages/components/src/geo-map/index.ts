@@ -14,6 +14,9 @@ export type {
   GeoMapViewport,
   GeoMapClientProps,
   GeoMapStyle,
+  GeoMapCss,
+  GeoMapEngineCss,
+  GeoMapOverlaysCss,
 } from './schema';
 export {
   SerializableGeoMapSchema,
@@ -22,6 +25,9 @@ export {
   GeoMapMarkerIconSchema,
   GeoMapClusteringSchema,
   GeoMapViewportSchema,
+  GeoMapCssSchema,
+  GeoMapEngineCssSchema,
+  GeoMapOverlaysCssSchema,
   parseSerializableGeoMap,
   safeParseSerializableGeoMap,
 } from './schema';

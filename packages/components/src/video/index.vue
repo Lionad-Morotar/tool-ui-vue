@@ -12,8 +12,8 @@ import type { VideoProps } from './schema';
 
 defineOptions({ name: 'CmptVideo', inheritAttrs: false })
 
-const props = withDefaults(defineProps<VideoProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<VideoProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -50,7 +50,8 @@ const { t } = useI18n();
             'group relative w-full overflow-hidden bg-black',
             videoState.resolvedRatio !== 'auto'
               ? RATIO_CLASS_MAP[videoState.resolvedRatio]
-              : 'aspect-video'
+              : 'aspect-video',
+            css?.player
           )
         "
       >
@@ -84,7 +85,7 @@ const { t } = useI18n();
             :style="{ backgroundImage: OVERLAY_GRADIENT }"
           />
           <div
-            class="absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100"
+            :class="cn('absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100', css?.controls)"
           >
             <div
               v-if="title"
@@ -149,7 +150,7 @@ const { t } = useI18n();
       </div>
 
       <!-- Metadata -->
-      <div v-if="videoState.hasMetadata" class="flex flex-col gap-1.5 px-4 py-3">
+      <div v-if="videoState.hasMetadata" :class="cn('flex flex-col gap-1.5 px-4 py-3', css?.source)">
         <p v-if="description" class="line-clamp-2 text-sm leading-snug text-foreground">
           {{ description }}
         </p>

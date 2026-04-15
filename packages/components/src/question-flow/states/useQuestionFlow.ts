@@ -18,7 +18,7 @@ const ENTER_DELAY = 200;
 const ENTER_DURATION = 250;
 
 export function useQuestionFlow(
-  props: QuestionFlowProps & { css?: { root?: string } },
+  props: QuestionFlowProps,
   emit: QuestionFlowEmit,
 ) {
   const rawProps = props as unknown as Record<string, unknown>;

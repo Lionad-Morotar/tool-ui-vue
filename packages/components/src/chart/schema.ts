@@ -43,6 +43,12 @@ export const ChartCssSchema = z.object({
 });
 
 /**
+ * Chart 的 CSS 覆盖类型
+ * 对应 ChartCssSchema 的 TypeScript 类型
+ */
+export type ChartCss = z.infer<typeof ChartCssSchema>;
+
+/**
  * Chart 的可序列化数据 Schema
  * 用于验证从外部传入的数据结构
  */
@@ -136,7 +142,7 @@ export type ChartDataPoint = {
  * 图表客户端 Props 类型
  */
 export type ChartClientProps = {
-  css?: { root?: string; title?: string; legend?: string; canvas?: string };
+  css?: ChartCss;
   onDataPointClick?: (point: ChartDataPoint) => void;
 };
 
@@ -157,7 +163,7 @@ export interface ChartProps {
   colors?: string[];
   showLegend?: boolean;
   showGrid?: boolean;
-  css?: { root?: string; title?: string; legend?: string; canvas?: string };
+  css?: ChartCss;
   onDataPointClick?: (point: ChartDataPoint) => void;
 }
 

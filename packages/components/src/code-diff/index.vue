@@ -8,8 +8,8 @@ import type { CodeDiffProps } from './schema';
 
 defineOptions({ name: 'CmptCodeDiff', inheritAttrs: false })
 
-const props = withDefaults(defineProps<CodeDiffProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<CodeDiffProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer
@@ -36,7 +36,7 @@ const copyButtonAriaLabel = computed(() =>
   >
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
-      <div class="flex items-center justify-between gap-2 border-b border-border bg-card px-4 py-2">
+      <div :class="cn('flex items-center justify-between gap-2 border-b border-border bg-card px-4 py-2', css?.header)">
         <div class="flex items-center gap-1">
           <span class="text-sm text-muted-foreground">
             {{ states.languageDisplayName }}
@@ -70,7 +70,7 @@ const copyButtonAriaLabel = computed(() =>
 
       <!-- Content -->
       <div
-        :class="cn('overflow-x-auto overflow-y-clip text-sm', states.isCollapsed && 'max-h-[200px]')"
+        :class="cn('overflow-x-auto overflow-y-clip text-sm', states.isCollapsed && 'max-h-[200px]', css?.content)"
       >
         <!-- Unified Diff Mode -->
         <template v-if="!states.isSplitMode">

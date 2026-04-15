@@ -6,8 +6,8 @@ import type { ProgressTrackerProps } from './schema';
 
 defineOptions({ name: 'CmptProgressTracker', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ProgressTrackerProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<ProgressTrackerProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer - re-create state when props change
@@ -146,7 +146,7 @@ const formatElapsedTimeDateTime = (ms: number) => trackerState.value.formatElaps
         <li
           v-for="(step, index) in steps"
           :key="step.id"
-          class="relative -mx-2 flex items-start gap-3 rounded-lg px-2 py-1.5"
+          :class="cn('relative -mx-2 flex items-start gap-3 rounded-lg px-2 py-1.5', css?.step)"
         >
           <div
             v-if="index < steps.length - 1"
@@ -290,7 +290,7 @@ const formatElapsedTimeDateTime = (ms: number) => trackerState.value.formatElaps
         <li
           v-for="(step, index) in steps"
           :key="step.id"
-          class="relative -mx-2"
+          :class="cn('relative -mx-2', css?.step)"
           :aria-current="step.id === currentStepId ? 'step' : undefined"
         >
           <!-- Connector Line -->

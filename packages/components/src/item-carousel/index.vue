@@ -83,6 +83,7 @@ defineExpose({
     ref="outerContainerRef"
     :class="cn(
       '@container relative isolate w-full gap-0 overflow-hidden rounded-2xl border border-border bg-background p-0',
+      css?.root,
       $attrs.class as string
     )"
     :data-tool-ui-id="id"
@@ -95,7 +96,7 @@ defineExpose({
   >
     <!-- Header -->
     <div v-if="title || description" class="px-4 pt-4 pb-1">
-      <h3 v-if="title" class="text-[15px] leading-tight font-semibold tracking-tight">
+      <h3 v-if="title" :class="cn('text-[15px] leading-tight font-semibold tracking-tight', css?.title)">
         {{ title }}
       </h3>
       <p v-if="description" class="mt-1 text-sm leading-snug text-muted-foreground">
@@ -199,6 +200,7 @@ defineExpose({
           <item-card
             :item="item"
             :interactive="carouselState.isInteractive.value"
+            :css="css?.card"
             @item-click="carouselState.handleItemClick"
             @item-action="carouselState.handleItemAction"
           />

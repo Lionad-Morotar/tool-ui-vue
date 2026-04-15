@@ -3,5 +3,5 @@ import ItemCarousel from './index.vue'
 
 export { ItemCarousel, ItemCard }
 export default ItemCarousel
-export type { ItemCarouselProps, SerializableItemCarousel, Item, SerializableItem } from './schema';
-export { SerializableItemCarouselSchema, ItemSchema, SerializableItemSchema, parseSerializableItemCarousel, safeParseSerializableItemCarousel } from './schema';
+export type { ItemCarouselProps, SerializableItemCarousel, Item, SerializableItem, ItemCardCss, ItemCarouselCss } from './schema';
+export { SerializableItemCarouselSchema, ItemSchema, SerializableItemSchema, ItemCardCssSchema, ItemCarouselCssSchema, parseSerializableItemCarousel, safeParseSerializableItemCarousel } from './schema';

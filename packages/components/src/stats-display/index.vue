@@ -8,8 +8,8 @@ import type { StatsDisplayProps } from './schema';
 
 defineOptions({ name: 'CmptStatsDisplay', inheritAttrs: false })
 
-const props = withDefaults(defineProps<StatsDisplayProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<StatsDisplayProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer
@@ -45,7 +45,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
       <!-- Header -->
       <div
         v-if="state.hasHeader"
-        class="border-b border-border px-6 pt-3 pb-4"
+        :class="cn('border-b border-border px-6 pt-3 pb-4', css?.header)"
       >
         <h2 v-if="title" class="text-base font-semibold text-pretty">{{ title }}</h2>
         <p v-if="description" class="text-sm text-pretty text-muted-foreground">{{ description }}</p>
@@ -62,7 +62,8 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
             :key="stat.key"
             :class="cn(
               'overflow-clip py-3 first:pt-0 @[440px]:border-t @[440px]:border-l @[440px]:border-border @[440px]:py-3 @[440px]:first:pt-3',
-              index > 0 && 'border-t border-border'
+              index > 0 && 'border-t border-border',
+              css?.stat
             )"
           >
             <div
@@ -78,6 +79,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
                 :color="stat.sparkline.color || 'var(--muted-foreground)'"
                 :show-fill="true"
                 :fill-opacity="0.09"
+                :css="css?.sparkline"
                 class="animate-in fade-in slide-in-from-bottom-12 fill-mode-both pointer-events-none absolute inset-x-0 top-2 bottom-2 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 :style="{ animationDelay: `${index * 175}ms` }"
               />

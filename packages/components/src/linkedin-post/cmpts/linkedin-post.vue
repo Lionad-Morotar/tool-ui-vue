@@ -3,12 +3,12 @@ import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
 import { computed, reactive, toRef } from 'vue';
 import { useLinkedinPost } from '../states';
-import type { LinkedInPostProps, LinkedInPostData } from '../schema';
+import type { LinkedInPostProps, LinkedInPostCss, LinkedInPostData } from '../schema';
 
 defineOptions({ name: 'CmptLinkedinPost', inheritAttrs: false })
 
-const props = withDefaults(defineProps<LinkedInPostProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<LinkedInPostProps>(), {
+  css: () => ({}) as LinkedInPostCss,
 })
 
 const emit = defineEmits<{
@@ -38,7 +38,7 @@ const shareAriaLabel = computed(() => t('linkedinPost.share').value)
   >
     <article class="flex flex-col gap-3 rounded-lg border border-border bg-card p-3 shadow-sm">
       <!-- Header -->
-      <header class="flex items-start gap-3">
+      <header :class="cn('flex items-start gap-3', css?.header)" data-slot="header">
         <img
           :src="post.author.avatarUrl"
           :alt="`${post.author.name} avatar`"
@@ -78,7 +78,7 @@ const shareAriaLabel = computed(() => t('linkedinPost.share').value)
       </header>
 
       <!-- Body -->
-      <div v-if="post.text" class="text-sm leading-relaxed text-pretty whitespace-pre-wrap">
+      <div v-if="post.text" :class="cn('text-sm leading-relaxed text-pretty whitespace-pre-wrap', css?.content)" data-slot="content">
         {{ state.displayText }}
         <template v-if="state.shouldTruncate && !isExpanded">
           ...
@@ -138,7 +138,7 @@ const shareAriaLabel = computed(() => t('linkedinPost.share').value)
       </div>
 
       <!-- Actions -->
-      <div class="mt-1 flex items-center gap-1 border-t border-border pt-1.5">
+      <div :class="cn('mt-1 flex items-center gap-1 border-t border-border pt-1.5', css?.actions)" data-slot="actions">
         <button
           type="button"
           :class="cn(

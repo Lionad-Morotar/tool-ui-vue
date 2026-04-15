@@ -3,14 +3,17 @@ import { cn } from '@lionad/vtu-core';
 import { ImageOff } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
 import { useImageGallery } from '../states';
-import type { ImageGalleryItem } from '../schema';
+import type { ImageGalleryItem, GalleryImageCardCss } from '../schema';
 
 interface Props {
   image: ImageGalleryItem;
   isPortrait?: boolean;
+  css?: GalleryImageCardCss;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  css: () => ({}),
+});
 
 const hasError = ref(false);
 const wrapperRef = ref<HTMLDivElement | null>(null);
@@ -40,12 +43,16 @@ onUnmounted(() => {
     :class="cn(
       'relative h-full w-full overflow-hidden rounded-lg bg-muted',
       'transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]',
-      'group-hover:scale-[1.02] group-active:scale-[0.98]'
+      'group-hover:scale-[1.02] group-active:scale-[0.98]',
+      css?.root
     )"
   >
     <div
       v-if="hasError"
-      class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4"
+      :class="cn(
+        'absolute inset-0 flex flex-col items-center justify-center gap-2 p-4',
+        css?.error
+      )"
     >
       <image-off class="h-8 w-8 text-muted-foreground" />
       <span class="line-clamp-2 text-center text-xs text-muted-foreground">
@@ -61,7 +68,7 @@ onUnmounted(() => {
       loading="lazy"
       decoding="async"
       draggable="false"
-      class="h-full w-full object-cover"
+      :class="cn('h-full w-full object-cover', css?.image)"
       @error="hasError = true"
     />
   </div>

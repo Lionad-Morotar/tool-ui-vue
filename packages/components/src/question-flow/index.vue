@@ -3,12 +3,12 @@ import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
 import { computed, reactive } from 'vue';
 import { useQuestionFlow } from './states';
-import type { QuestionFlowProps } from './schema';
+import type { QuestionFlowCss, QuestionFlowProps } from './schema';
 
 defineOptions({ name: 'CmptQuestionFlow', inheritAttrs: false })
 
-const props = withDefaults(defineProps<QuestionFlowProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<QuestionFlowProps>(), {
+  css: () => ({} as QuestionFlowCss)
 })
 
 const emit = defineEmits<{
@@ -50,7 +50,7 @@ const CheckIcon = {
         '@container/question-flow flex w-full max-w-md min-w-80 flex-col',
         'text-foreground',
         'motion-safe:animate-in motion-safe:fade-in motion-safe:blur-in-sm motion-safe:zoom-in-95 motion-safe:fill-mode-both motion-safe:duration-300 motion-safe:ease-out',
-        state.receiptProps.css?.root
+        props.css?.root
       )
     "
     data-slot="question-flow"
@@ -62,14 +62,14 @@ const CheckIcon = {
     <div
       class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card/60 px-5 py-4 shadow-xs"
     >
-      <div class="flex items-center justify-between gap-3">
+      <div :class="cn('flex items-center justify-between gap-3', props.css?.header)">
         <span class="text-base font-medium">{{ state.receiptProps.choice?.title ?? t('questionFlow.completed') }}</span>
         <span class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500">
           <component :is="CheckIcon" class="size-3.5" />
           {{ t('questionFlow.complete') }}
         </span>
       </div>
-      <div v-if="state.receiptProps.choice?.summary" class="flex flex-col">
+      <div v-if="state.receiptProps.choice?.summary" :class="cn('flex flex-col', props.css?.options)">
         <template v-for="(item, index) in state.receiptProps.choice.summary" :key="item.label">
           <hr v-if="index > 0" class="my-2 border-border" />
           <div
@@ -92,7 +92,7 @@ const CheckIcon = {
       cn(
         '@container/question-flow flex w-full max-w-md min-w-80 flex-col gap-3',
         'text-foreground',
-        (state.progressiveProps?.css?.root || state.upfrontProps?.css?.root)
+        props.css?.root
       )
     "
     data-slot="question-flow"
@@ -105,7 +105,7 @@ const CheckIcon = {
       class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-xs"
     >
       <!-- Progress -->
-      <div class="flex flex-col gap-1">
+      <div :class="cn('flex flex-col gap-1', props.css?.header)">
         <div class="flex flex-col gap-2">
           <span
             class="text-xs font-medium tracking-wide text-muted-foreground uppercase"
@@ -238,7 +238,7 @@ const CheckIcon = {
 
           <!-- Options -->
           <div
-            class="flex flex-col px-1"
+            :class="cn('flex flex-col px-1', props.css?.options)"
             role="listbox"
             :aria-multiselectable="state.currentSelectionMode === 'multi'"
             @keydown="state.handleKeyDown"
@@ -325,7 +325,7 @@ const CheckIcon = {
       </div>
 
       <!-- Actions -->
-      <div class="flex items-center justify-between pt-2">
+      <div :class="cn('flex items-center justify-between pt-2', props.css?.actions)">
         <button
           v-if="state.showBack"
           type="button"

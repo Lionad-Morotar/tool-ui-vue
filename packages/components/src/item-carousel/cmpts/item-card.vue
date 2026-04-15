@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { cn } from '@lionad/vtu-core';
 import { computed } from 'vue';
-import type { Item } from '../schema';
+import type { Item, ItemCardCss } from '../schema';
 
 interface ItemCardProps {
   item: Item;
   interactive?: boolean;
+  css?: ItemCardCss;
 }
 
 const props = defineProps<ItemCardProps>();
@@ -34,7 +35,8 @@ function handleActionClick(actionId: string, event: Event) {
       'group @container/card relative flex w-52 min-w-48 flex-col gap-0 self-stretch overflow-clip rounded-md p-0 @lg:w-56',
       'border border-border bg-card',
       isCardInteractive && 'cursor-pointer hover:shadow',
-      'touch-manipulation'
+      'touch-manipulation',
+      css?.root
     )"
   >
     <!-- Clickable overlay for interactive cards -->
@@ -51,7 +53,7 @@ function handleActionClick(actionId: string, event: Event) {
     />
 
     <!-- Image/Color Area -->
-    <div class="relative aspect-square w-full overflow-hidden bg-muted">
+    <div :class="cn('relative aspect-square w-full overflow-hidden bg-muted', css?.image)">
       <img
         v-if="item.image"
         :src="item.image"
@@ -77,12 +79,12 @@ function handleActionClick(actionId: string, event: Event) {
     </div>
 
     <!-- Content -->
-    <div class="flex flex-1 flex-col gap-1 p-3">
+    <div :class="cn('flex flex-1 flex-col gap-1 p-3', css?.content)">
       <div class="flex flex-col gap-1">
-        <h3 class="line-clamp-2 text-sm leading-tight font-medium">
+        <h3 :class="cn('line-clamp-2 text-sm leading-tight font-medium', css?.title)">
           {{ item.name }}
         </h3>
-        <p v-if="item.subtitle" class="line-clamp-1 text-sm text-muted-foreground">
+        <p v-if="item.subtitle" :class="cn('line-clamp-1 text-sm text-muted-foreground', css?.subtitle)">
           {{ item.subtitle }}
         </p>
       </div>
@@ -91,7 +93,8 @@ function handleActionClick(actionId: string, event: Event) {
       <div
         v-if="item.actions && item.actions.length > 0"
         :class="cn(
-          'relative z-20 mt-auto flex flex-col-reverse gap-2 pt-2 @[176px]/card:flex-row'
+          'relative z-20 mt-auto flex flex-col-reverse gap-2 pt-2 @[176px]/card:flex-row',
+          css?.actions
         )"
       >
         <button

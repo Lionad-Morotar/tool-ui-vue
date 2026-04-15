@@ -7,8 +7,8 @@ import type { ImageProps } from './schema';
 
 defineOptions({ name: 'CmptImage', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ImageProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<ImageProps>(), {
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -43,6 +43,7 @@ const state = reactive(useImage(props, emit));
           'group relative w-full overflow-hidden bg-muted',
           state.resolvedRatio !== 'auto' ? state.ratioClassMap[state.resolvedRatio] : 'min-h-[160px]',
           state.sanitizedHref && 'cursor-pointer',
+          css?.image,
         )"
         :role="state.sanitizedHref ? 'link' : undefined"
         :tabindex="state.sanitizedHref ? 0 : undefined"
@@ -64,11 +65,11 @@ const state = reactive(useImage(props, emit));
       </div>
 
       <!-- Source Attribution -->
-      <div v-if="state.hasMetadata" class="flex items-center gap-3 px-4 py-3">
+      <div v-if="state.hasMetadata" :class="cn('flex items-center gap-3 px-4 py-3', css?.caption)">
         <button
           v-if="state.sanitizedSourceUrl && state.hasSource"
           type="button"
-          class="flex w-full items-center gap-3 text-left hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          :class="cn('flex w-full items-center gap-3 text-left hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none', css?.source)"
           @click="state.handleSourceClick"
         >
           <div class="flex min-w-0 flex-1 items-center gap-3">
@@ -99,7 +100,7 @@ const state = reactive(useImage(props, emit));
             </div>
           </div>
         </button>
-        <div v-else class="flex min-w-0 flex-1 items-center gap-3">
+        <div v-else :class="cn('flex min-w-0 flex-1 items-center gap-3', css?.source)">
           <img
             v-if="state.sanitizedSourceIconUrl"
             :src="state.sanitizedSourceIconUrl"

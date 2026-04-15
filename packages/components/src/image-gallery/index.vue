@@ -4,12 +4,12 @@ import { reactive } from 'vue';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';
 import { useGallery } from './states';
-import type { ImageGalleryProps, ImageGalleryItem } from './schema';
+import type { ImageGalleryProps, ImageGalleryItem, ImageGalleryCss } from './schema';
 
 defineOptions({ name: 'CmptImageGallery', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ImageGalleryProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<ImageGalleryProps & { css?: ImageGalleryCss }>(), {
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -58,11 +58,11 @@ const galleryState = reactive(useGallery(props, emit));
 
       <!-- Grid -->
       <div class="p-3">
-        <gallery-grid :on-image-click="galleryState.handleImageClick" />
+        <gallery-grid :on-image-click="galleryState.handleImageClick" :css="css?.grid" :card-css="css?.card" />
       </div>
     </div>
 
     <!-- Lightbox -->
-    <gallery-lightbox />
+    <gallery-lightbox :css="css?.lightbox" />
   </article>
 </template>

@@ -24,14 +24,37 @@ export const ItemSchema = z.object({
 });
 
 /**
+ * ItemCardCssSchema Zod Schema
+ * 子组件 item-card 的 CSS 覆盖 schema
+ */
+export const ItemCardCssSchema = z.object({
+  root: z.string().optional(),
+  image: z.string().optional(),
+  content: z.string().optional(),
+  title: z.string().optional(),
+  subtitle: z.string().optional(),
+  actions: z.string().optional(),
+});
+
+/**
+ * ItemCardCss 类型
+ */
+export type ItemCardCss = z.infer<typeof ItemCardCssSchema>;
+
+/**
  * ItemCarouselCssSchema Zod Schema
+ * card 键嵌套引用子组件 ItemCardCssSchema
  */
 export const ItemCarouselCssSchema = z.object({
   root: z.string().optional(),
   title: z.string().optional(),
-  card: z.string().optional(),
-  actions: z.string().optional(),
+  card: ItemCardCssSchema.optional(),
 });
+
+/**
+ * ItemCarouselCss 类型
+ */
+export type ItemCarouselCss = z.infer<typeof ItemCarouselCssSchema>;
 
 /**
  * 轮播组件 Props 的 Schema 定义
@@ -65,7 +88,7 @@ export interface ItemCarouselProps {
   title?: string;
   description?: string;
   items: Item[];
-  css?: { root?: string; title?: string; card?: string; actions?: string };
+  css?: ItemCarouselCss;
   onItemClick?: (itemId: string) => void;
   onItemAction?: (itemId: string, actionId: string) => void;
 }

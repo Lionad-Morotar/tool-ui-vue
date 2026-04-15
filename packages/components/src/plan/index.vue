@@ -7,9 +7,9 @@ import type { PlanProps } from './schema';
 
 defineOptions({ name: 'CmptPlan', inheritAttrs: false })
 
-const props = withDefaults(defineProps<PlanProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<PlanProps>(), {
   maxVisibleTodos: 4,
-  css: () => ({ root: '' })
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -34,7 +34,7 @@ const { t } = useI18n()
     :data-tool-ui-id="id"
   >
     <!-- Header -->
-    <div class="flex flex-row items-start justify-between gap-4 px-6">
+    <div :class="cn('flex flex-row items-start justify-between gap-4 px-6', css?.header)">
       <div class="space-y-1.5">
         <h2 class="leading-5 font-medium text-pretty">{{ title }}</h2>
         <p v-if="description" class="text-sm text-muted-foreground">{{ description }}</p>
@@ -96,6 +96,7 @@ const { t } = useI18n()
             :key="todo.id"
             :class="cn(
               'relative -mx-2 flex cursor-default items-start gap-3 rounded-md px-2 py-1.5',
+              css?.todo,
             )"
             @click="state.handleTodoClick(todo, index)"
           >
@@ -249,6 +250,7 @@ const { t } = useI18n()
                 :key="todo.id"
                 :class="cn(
                   'relative -mx-2 flex cursor-default items-start gap-3 rounded-md px-2 py-1.5',
+                  css?.todo,
                 )"
                 @click="state.handleTodoClick(todo, state.visibleTodos.length + index)"
               >

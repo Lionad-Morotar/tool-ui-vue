@@ -8,8 +8,8 @@ import type { OrderSummaryProps } from './schema';
 
 defineOptions({ name: 'CmptOrderSummary', inheritAttrs: false })
 
-const props = withDefaults(defineProps<OrderSummaryProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<OrderSummaryProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer
@@ -29,7 +29,7 @@ const { t } = useI18n()
     :data-tool-ui-id="id"
     :aria-labelledby="`${id}-title`"
   >
-    <div class="rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm">
+    <div :class="cn('rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm', css?.header)">
       <h2 :id="`${id}-title`" class="text-base font-semibold">
         {{ title || t('orderSummary.title') }}
       </h2>
@@ -56,7 +56,7 @@ const { t } = useI18n()
   >
     <div class="rounded-lg border border-border bg-card/60 text-card-foreground shadow-sm">
       <div class="space-y-4 p-4 opacity-95">
-        <div>
+        <div :class="cn('', css?.header)">
           <h2
             :id="`${id}-title`"
             class="flex items-center gap-2 text-base font-semibold"
@@ -73,7 +73,7 @@ const { t } = useI18n()
           </p>
         </div>
 
-        <div class="space-y-3">
+        <div :class="cn('space-y-3', css?.items)">
           <div
             v-for="item in items"
             :key="item.id"
@@ -111,7 +111,7 @@ const { t } = useI18n()
         <hr class="shrink-0 border-t border-border" />
 
         <!-- Pricing -->
-        <dl class="flex flex-col gap-2 text-sm">
+        <dl :class="cn('flex flex-col gap-2 text-sm', css?.pricing)">
           <div class="flex justify-between gap-4">
             <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
@@ -158,11 +158,11 @@ const { t } = useI18n()
   >
     <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
       <div class="space-y-4 p-4">
-        <div>
+        <div :class="cn('', css?.header)">
           <h2 :id="`${id}-title`" class="text-base font-semibold">{{ title || t('orderSummary.title') }}</h2>
         </div>
 
-        <div class="space-y-3">
+        <div :class="cn('space-y-3', css?.items)">
           <div
             v-for="item in items"
             :key="item.id"
@@ -200,7 +200,7 @@ const { t } = useI18n()
         <hr class="shrink-0 border-t border-border" />
 
         <!-- Pricing -->
-        <dl class="flex flex-col gap-2 text-sm">
+        <dl :class="cn('flex flex-col gap-2 text-sm', css?.pricing)">
           <div class="flex justify-between gap-4">
             <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>

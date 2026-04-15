@@ -7,9 +7,9 @@ import type { DataTableProps } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
 
-const props = withDefaults(defineProps<DataTableProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<DataTableProps>(), {
   layout: 'auto',
-  css: () => ({ root: '' })
+  css: () => ({}),
 });
 
 const emit = defineEmits<{
@@ -72,7 +72,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Table Content -->
             <template v-else>
-              <thead class="[&_tr]:border-b [&_tr]:border-border">
+              <thead :class="cn('[&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
                   <th
                     v-for="(column, columnIndex) in columns"
@@ -132,11 +132,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   </th>
                 </tr>
               </thead>
-              <tbody class="[&_tr]:border-border [&_tr:last-child]:border-0">
+              <tbody :class="cn('[&_tr]:border-border [&_tr:last-child]:border-0', css?.body)">
                 <tr
                   v-for="(row, index) in state.sortedData"
                   :key="state.getRowId(row, index)"
-                  class="border-b border-border transition-colors hover:bg-muted/50"
+                  :class="cn('border-b border-border transition-colors hover:bg-muted/50', css?.row)"
                 >
                   <td
                     v-for="(column, columnIndex) in columns"
@@ -266,7 +266,8 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
           :key="state.getRowId(row, index)"
           :class="cn(
             'border-border',
-            index > 0 && 'border-t'
+            index > 0 && 'border-t',
+            css?.row
           )"
           role="listitem"
         >

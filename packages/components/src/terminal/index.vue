@@ -8,8 +8,8 @@ import type { TerminalProps } from './schema';
 
 defineOptions({ name: 'CmptTerminal', inheritAttrs: false })
 
-const props = withDefaults(defineProps<TerminalProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<TerminalProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer
@@ -43,7 +43,7 @@ const copyButtonAriaLabel = computed(() =>
   >
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
-      <div class="flex items-center justify-between border-b border-border bg-card px-4 py-2">
+      <div :class="cn('flex items-center justify-between border-b border-border bg-card px-4 py-2', css?.header)">
         <div class="flex items-center gap-2 overflow-hidden">
           <terminal-icon class="h-4 w-4 shrink-0 text-muted-foreground" />
           <code class="truncate font-mono text-xs text-foreground">
@@ -98,6 +98,7 @@ const copyButtonAriaLabel = computed(() =>
           :class="cn(
             'relative font-mono text-sm',
             state.isCollapsed && 'max-h-[200px] overflow-hidden',
+            css?.content,
           )"
         >
           <div class="overflow-x-auto p-4">

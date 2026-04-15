@@ -186,8 +186,12 @@ export const DataTableCssSchema = z.object({
   header: z.string().optional(),
   body: z.string().optional(),
   row: z.string().optional(),
-  footer: z.string().optional(),
 });
+
+/**
+ * DataTable 的 CSS 覆盖类型
+ */
+export type DataTableCss = z.infer<typeof DataTableCssSchema>;
 
 /**
  * DataTable 组件的 Props 接口
@@ -206,7 +210,7 @@ export interface DataTableProps {
   emptyMessage?: string;
   maxHeight?: string;
   locale?: string;
-  css?: { root?: string; header?: string; body?: string; row?: string; footer?: string };
+  css?: DataTableCss;
   layout?: 'auto' | 'table' | 'cards';
   onSortChange?: (sort: { by?: string; direction?: 'asc' | 'desc' }) => void;
 }

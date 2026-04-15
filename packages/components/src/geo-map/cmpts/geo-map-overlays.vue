@@ -3,14 +3,17 @@ import { cn } from '@lionad/vtu-core';
 import { LPopup, LTooltip } from '@vue-leaflet/vue-leaflet';
 import { ref, computed } from 'vue';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   tooltipMode: 'none' | 'hover' | 'always';
   tooltipContent?: string;
   label?: string;
   description?: string;
   tooltipClassName?: string;
   popupClassName?: string;
-}>();
+  css?: { root?: string };
+}>(), {
+  css: () => ({}),
+});
 
 const hasPopup = computed(() => Boolean(props.label || props.description));
 const isPopupOpen = ref(false);

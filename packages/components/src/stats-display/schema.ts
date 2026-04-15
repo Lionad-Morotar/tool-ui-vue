@@ -134,14 +134,33 @@ export const safeParseSerializableStatsDisplay: (
   SerializableStatsDisplaySchemaContract.safeParse;
 
 /**
+ * SparklineCssSchema Zod Schema
+ * 子组件 sparkline 的 CSS 覆盖 schema
+ */
+export const SparklineCssSchema = z.object({
+  root: z.string().optional(),
+});
+
+/**
+ * SparklineCss 类型
+ */
+export type SparklineCss = z.infer<typeof SparklineCssSchema>;
+
+/**
  * StatsDisplayCssSchema Zod Schema
+ * sparkline 键嵌套引用子组件 SparklineCssSchema
  */
 export const StatsDisplayCssSchema = z.object({
   root: z.string().optional(),
   header: z.string().optional(),
   stat: z.string().optional(),
-  sparkline: z.string().optional(),
+  sparkline: SparklineCssSchema.optional(),
 });
+
+/**
+ * StatsDisplayCss 类型
+ */
+export type StatsDisplayCss = z.infer<typeof StatsDisplayCssSchema>;
 
 /**
  * StatsDisplay 组件的 Props 接口
@@ -153,7 +172,7 @@ export interface StatsDisplayProps {
   title?: string;
   description?: string;
   stats: StatItem[];
-  css?: { root?: string; header?: string; stat?: string; sparkline?: string };
+  css?: StatsDisplayCss;
   locale?: string;
 }
 
@@ -165,7 +184,7 @@ export interface SparklineProps {
   color?: string;
   width?: number;
   height?: number;
-  css?: { root?: string };
+  css?: SparklineCss;
   style?: CSSProperties;
   showFill?: boolean;
   fillOpacity?: number;

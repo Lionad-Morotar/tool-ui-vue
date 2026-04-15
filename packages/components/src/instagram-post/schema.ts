@@ -113,11 +113,17 @@ export const InstagramPostCssSchema = z.object({
 });
 
 /**
+ * InstagramPost 的 CSS 覆盖类型
+ * 对应 InstagramPostCssSchema 的 TypeScript 类型
+ */
+export type InstagramPostCss = z.infer<typeof InstagramPostCssSchema>;
+
+/**
  * InstagramPost 组件的 Props 接口
  * 包含所有可配置的属性
  */
 export interface InstagramPostProps {
   post: InstagramPostData;
-  css?: { root?: string; header?: string; content?: string; actions?: string };
+  css?: InstagramPostCss;
   onAction?: (action: string, post: InstagramPostData) => void;
 }

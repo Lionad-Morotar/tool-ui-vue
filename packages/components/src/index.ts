@@ -331,11 +331,15 @@ export type {
   SerializableItemCarousel,
   Item,
   SerializableItem,
+  ItemCardCss,
+  ItemCarouselCss,
 } from './item-carousel'
 export {
   SerializableItemCarouselSchema,
   ItemSchema,
   SerializableItemSchema,
+  ItemCardCssSchema,
+  ItemCarouselCssSchema,
   parseSerializableItemCarousel,
   safeParseSerializableItemCarousel,
 } from './item-carousel'
@@ -399,6 +403,9 @@ export type {
   GeoMapViewport,
   GeoMapClientProps,
   GeoMapStyle,
+  GeoMapCss,
+  GeoMapEngineCss,
+  GeoMapOverlaysCss,
 } from './geo-map'
 export {
   SerializableGeoMapSchema,
@@ -407,6 +414,9 @@ export {
   GeoMapMarkerIconSchema,
   GeoMapClusteringSchema,
   GeoMapViewportSchema,
+  GeoMapCssSchema,
+  GeoMapEngineCssSchema,
+  GeoMapOverlaysCssSchema,
   parseSerializableGeoMap,
   safeParseSerializableGeoMap,
 } from './geo-map'

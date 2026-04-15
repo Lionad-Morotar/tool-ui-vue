@@ -7,9 +7,9 @@ import type { AudioProps } from './schema';
 
 defineOptions({ name: 'CmptAudio', inheritAttrs: false })
 
-const props = withDefaults(defineProps<AudioProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<AudioProps>(), {
   variant: 'full',
-  css: () => ({ root: '' })
+  css: () => ({}),
 });
 
 const emit = defineEmits<{
@@ -64,7 +64,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
       <template v-if="!isCompact">
         <div class="flex w-full flex-col">
           <!-- Artwork -->
-          <div v-if="artwork" class="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+          <div v-if="artwork" data-slot="artwork" :class="cn('relative aspect-[4/3] w-full overflow-hidden bg-muted', css?.artwork)">
             <img
               :src="artwork"
               alt=""
@@ -76,9 +76,9 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
           </div>
 
           <!-- Controls -->
-          <div class="flex flex-col gap-5 p-4">
+          <div data-slot="controls" :class="cn('flex flex-col gap-5 p-4', css?.controls)">
             <!-- Title/Description -->
-            <div v-if="title || description" class="space-y-0.5">
+            <div v-if="title || description" data-slot="header" :class="cn('space-y-0.5', css?.header)">
               <div v-if="title" class="line-clamp-2 leading-snug font-semibold text-foreground">
                 {{ title }}
               </div>
@@ -170,12 +170,19 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
               </button>
             </div>
           </div>
+
+          <!-- Source -->
+          <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 px-4 pb-3 text-xs text-muted-foreground', css?.source)">
+            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="size-3 rounded-sm" />
+            <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
+            <span v-else>{{ source.label }}</span>
+          </div>
         </div>
       </template>
 
       <!-- Compact Player -->
       <template v-else>
-        <div class="relative flex w-full items-center gap-3 overflow-hidden p-3">
+        <div data-slot="controls" :class="cn('relative flex w-full items-center gap-3 overflow-hidden p-3', css?.controls)">
           <template v-if="artwork">
             <img
               :src="artwork"
@@ -186,7 +193,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
             <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-card/60 to-card/90" />
           </template>
 
-          <div v-if="artwork" class="relative size-12 shrink-0 overflow-hidden rounded-lg shadow-lg ring-1 ring-background/20">
+          <div v-if="artwork" data-slot="artwork" :class="cn('relative size-12 shrink-0 overflow-hidden rounded-lg shadow-lg ring-1 ring-background/20', css?.artwork)">
             <img
               :src="artwork"
               alt=""
@@ -197,7 +204,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
             />
           </div>
 
-          <div class="relative flex min-w-0 flex-1 flex-col justify-center">
+          <div data-slot="header" :class="cn('relative flex min-w-0 flex-1 flex-col justify-center', css?.header)">
             <div v-if="title" class="truncate text-sm leading-tight font-semibold text-foreground">
               {{ title }}
             </div>
@@ -215,6 +222,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
             </div>
           </div>
 
+          <!-- Play/Pause Button -->
           <button
             type="button"
             class="relative inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
@@ -262,6 +270,13 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
               <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />
             </svg>
           </button>
+
+          <!-- Source -->
+          <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 text-xs text-muted-foreground', css?.source)">
+            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="size-3 rounded-sm" />
+            <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
+            <span v-else>{{ source.label }}</span>
+          </div>
         </div>
       </template>
 

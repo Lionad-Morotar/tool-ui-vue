@@ -115,12 +115,14 @@ export const LinkedInPostCssSchema = z.object({
   actions: z.string().optional(),
 });
 
+export type LinkedInPostCss = z.infer<typeof LinkedInPostCssSchema>;
+
 /**
  * LinkedInPost 组件的 Props 接口
  * 包含所有可配置的属性
  */
 export interface LinkedInPostProps {
   post: LinkedInPostData;
-  css?: { root?: string; header?: string; content?: string; actions?: string };
+  css?: LinkedInPostCss;
   onAction?: (action: string, post: LinkedInPostData) => void;
 }

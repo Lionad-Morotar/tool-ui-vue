@@ -173,6 +173,12 @@ export const QuestionFlowCssSchema = z.object({
 });
 
 /**
+ * QuestionFlow CSS 类型
+ * 对应 QuestionFlowCssSchema 的 TypeScript 类型
+ */
+export type QuestionFlowCss = z.infer<typeof QuestionFlowCssSchema>;
+
+/**
  * QuestionFlow 渐进模式 Props 接口
  */
 export interface QuestionFlowProgressiveProps {
@@ -181,7 +187,7 @@ export interface QuestionFlowProgressiveProps {
   step: number;
   title: string;
   description?: string;
-  css?: { root?: string; header?: string; options?: string; actions?: string };
+  css?: QuestionFlowCss;
   options: QuestionFlowOption[];
   selectionMode?: 'single' | 'multi';
   defaultValue?: string[];
@@ -196,7 +202,7 @@ export interface QuestionFlowUpfrontProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   steps: QuestionFlowStepDefinition[];
-  css?: { root?: string; header?: string; options?: string; actions?: string };
+  css?: QuestionFlowCss;
   onStepChange?: (stepId: string) => void;
   onComplete?: (answers: Record<string, string[]>) => void | Promise<void>;
 }
@@ -208,7 +214,7 @@ export interface QuestionFlowReceiptProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   choice: QuestionFlowChoice;
-  css?: { root?: string; header?: string; options?: string; actions?: string };
+  css?: QuestionFlowCss;
 }
 
 /**

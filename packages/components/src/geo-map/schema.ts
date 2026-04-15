@@ -227,21 +227,38 @@ export type GeoMapStyle = {
 };
 
 /**
+ * GeoMapEngine 子组件的 CssSchema
+ */
+export const GeoMapEngineCssSchema = z.object({
+  root: z.string().optional(),
+});
+
+/**
+ * GeoMapOverlays 子组件的 CssSchema
+ */
+export const GeoMapOverlaysCssSchema = z.object({
+  root: z.string().optional(),
+});
+
+/**
  * GeoMapCssSchema Zod Schema
  */
 export const GeoMapCssSchema = z.object({
   root: z.string().optional(),
   title: z.string().optional(),
-  canvas: z.string().optional(),
-  overlay: z.string().optional(),
-  controls: z.string().optional(),
+  canvas: GeoMapEngineCssSchema.optional(),
+  loading: z.string().optional(),
 });
+
+export type GeoMapCss = z.infer<typeof GeoMapCssSchema>;
+export type GeoMapEngineCss = z.infer<typeof GeoMapEngineCssSchema>;
+export type GeoMapOverlaysCss = z.infer<typeof GeoMapOverlaysCssSchema>;
 
 /**
  * 地图客户端 Props 类型
  */
 export type GeoMapClientProps = {
-  css?: { root?: string; title?: string; canvas?: string; overlay?: string; controls?: string };
+  css?: GeoMapCss;
   style?: GeoMapStyle;
   tooltipClassName?: string;
   popupClassName?: string;
@@ -265,7 +282,7 @@ export interface GeoMapProps {
   viewport?: GeoMapViewport;
   showZoomControl?: boolean;
   theme?: 'light' | 'dark';
-  css?: { root?: string; title?: string; canvas?: string; overlay?: string; controls?: string };
+  css?: GeoMapCss;
   style?: GeoMapStyle;
   tooltipClassName?: string;
   popupClassName?: string;

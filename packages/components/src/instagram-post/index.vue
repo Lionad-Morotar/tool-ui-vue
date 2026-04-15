@@ -7,8 +7,8 @@ import type { InstagramPostProps, InstagramPostData } from './schema';
 
 defineOptions({ name: 'CmptInstagramPost', inheritAttrs: false })
 
-const props = withDefaults(defineProps<InstagramPostProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<InstagramPostProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -37,7 +37,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
   >
     <article class="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <!-- Header -->
-      <header class="flex items-center gap-3 p-3">
+      <header :class="cn('flex items-center gap-3 p-3', css?.header)">
         <img
           :src="post.author.avatarUrl"
           :alt="`${post.author.name} avatar`"
@@ -118,7 +118,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
       <!-- Media Grid -->
       <div
         v-if="post.media && post.media.length > 0"
-        class="w-full"
+        :class="cn('w-full', css?.content)"
       >
         <!-- Single image -->
         <div v-if="post.media.length === 1" class="aspect-square w-full overflow-hidden">
@@ -255,7 +255,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
       </div>
 
       <!-- Actions -->
-      <div class="flex flex-col gap-2 p-3">
+      <div :class="cn('flex flex-col gap-2 p-3', css?.actions)">
         <div class="flex items-center gap-1">
           <button
             type="button"

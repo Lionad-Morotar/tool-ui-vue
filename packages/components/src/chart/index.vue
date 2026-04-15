@@ -6,8 +6,8 @@ import type { ChartProps } from './schema';
 
 defineOptions({ name: 'CmptChart', inheritAttrs: false })
 
-const props = withDefaults(defineProps<ChartProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<ChartProps>(), {
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -36,7 +36,7 @@ const chartState = reactive(useChart(props, emit));
       <!-- Header -->
       <div
         v-if="title || description"
-        class="border-b border-border/40 px-4 pt-4 pb-3"
+        :class="cn('border-b border-border/40 px-4 pt-4 pb-3', css?.title)"
       >
         <h3
           v-if="title"
@@ -55,7 +55,7 @@ const chartState = reactive(useChart(props, emit));
       <!-- Content -->
       <div class="relative p-4">
         <svg
-          class="h-auto w-full"
+          :class="cn('h-auto w-full', css?.canvas)"
           :viewBox="`0 0 ${chartState.CHART_WIDTH} ${chartState.CHART_HEIGHT}`"
           role="img"
           aria-label="chart"
@@ -198,7 +198,7 @@ const chartState = reactive(useChart(props, emit));
         <div
           v-if="showLegend && series.length > 0"
           data-testid="chart-legend"
-          class="mt-4 flex flex-wrap items-center justify-center gap-4"
+          :class="cn('mt-4 flex flex-wrap items-center justify-center gap-4', css?.legend)"
         >
           <div
             v-for="(s, sIndex) in series"

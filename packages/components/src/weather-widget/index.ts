@@ -16,9 +16,15 @@ export type {
   WeatherWidgetLocation,
   WeatherWidgetCurrent,
   WeatherWidgetTime,
+  WeatherWidgetCss,
+  EffectCompositorCss,
+  WeatherDataOverlayCss,
 } from './schema';
 export {
   SerializableWeatherWidgetSchema,
+  WeatherWidgetCssSchema,
+  EffectCompositorCssSchema,
+  WeatherDataOverlayCssSchema,
   WeatherConditionCodeSchema,
   ForecastDaySchema,
   TemperatureUnitSchema,

@@ -131,6 +131,11 @@ export const MessageDraftCssSchema = z.object({
 });
 
 /**
+ * MessageDraftCss 类型
+ */
+export type MessageDraftCss = z.infer<typeof MessageDraftCssSchema>;
+
+/**
  * MessageDraft 组件的基础 Props 接口
  * 包含所有可配置的属性
  */
@@ -140,7 +145,7 @@ export interface MessageDraftProps {
   body: string;
   outcome?: 'sent' | 'cancelled';
   channel: 'email' | 'slack';
-  css?: { root?: string; header?: string; body?: string; actions?: string };
+  css?: MessageDraftCss;
   undoGracePeriod?: number;
   onSend?: () => void | Promise<void>;
   onUndo?: () => void;

@@ -22,6 +22,9 @@ export const TerminalCssSchema = z.object({
   content: z.string().optional(),
 });
 
+/** TerminalCss 类型，由 Zod Schema 推导 */
+export type TerminalCss = z.infer<typeof TerminalCssSchema>;
+
 /** TerminalPropsSchema Zod Schema */
 export const TerminalPropsSchema = z.object({
   id: ToolUIIdSchema,
@@ -51,7 +54,7 @@ export interface TerminalProps {
   cwd?: string;
   truncated?: boolean;
   maxCollapsedLines?: number;
-  css?: { root?: string; header?: string; content?: string };
+  css?: TerminalCss;
 }
 
 export const SerializableTerminalSchema = TerminalPropsSchema.omit({

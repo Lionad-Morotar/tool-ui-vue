@@ -8,8 +8,8 @@ import type { WeatherWidgetProps } from './schema';
 
 defineOptions({ name: 'CmptWeatherWidget', inheritAttrs: false })
 
-const props = withDefaults(defineProps<WeatherWidgetProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<WeatherWidgetProps>(), {
+  css: () => ({}),
 })
 
 // All business logic delegated to states layer
@@ -35,6 +35,7 @@ const state = reactive(useWeatherWidget(props));
       <effect-compositor
         v-if="state.effectsEnabled"
         class="absolute inset-0"
+        :css="css?.canvas"
         :condition-code="current.conditionCode"
         :wind-speed="current.windSpeed"
         :precipitation-level="current.precipitationLevel"
@@ -46,6 +47,7 @@ const state = reactive(useWeatherWidget(props));
 
       <!-- Weather Data Overlay -->
       <weather-data-overlay
+        :css="css?.overlay"
         :location="location.name"
         :condition-code="current.conditionCode"
         :temperature="current.temperature"

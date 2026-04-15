@@ -62,7 +62,7 @@ type MapViewportState = {
   zoom: number;
 };
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   id: string;
   markers: GeoMapMarker[];
   routes?: GeoMapRoute[];
@@ -73,7 +73,10 @@ const props = defineProps<{
   mapAriaLabel: string;
   tooltipClassName?: string;
   popupClassName?: string;
-}>();
+  css?: { root?: string };
+}>(), {
+  css: () => ({}),
+});
 
 const emit = defineEmits<{
   'marker-click': [marker: GeoMapMarker];
@@ -628,13 +631,13 @@ function handleRouteClick(route: GeoMapRoute) {
 </script>
 
 <template>
-  <div v-if="!leafletReady" class="h-full w-full" />
+  <div v-if="!leafletReady" :class="cn('h-full w-full', css?.root)" />
   <l-map
     v-else
     :center="mapCenter"
     :zoom="mapZoom"
     :options="{ zoomControl: false }"
-    class="h-full w-full"
+    :class="cn('h-full w-full', css?.root)"
     :use-global-leaflet="false"
     @ready="handleMapReady"
     @moveend="handleViewportChange"

@@ -10,7 +10,7 @@ import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from '../effects/generated
 import type { WeatherEffectsTunedPresets } from '../effects/tuning';
 import type { EffectSettings } from '../effects/types';
 import type { WeatherEffectsCanvasProps } from '../effects/weather-effects-types';
-import type { WeatherConditionCode } from '../schema';
+import type { WeatherConditionCode, EffectCompositorCss } from '../schema';
 
 const DEFAULT_TUNED_PRESETS: WeatherEffectsTunedPresets =
   TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES;
@@ -23,7 +23,7 @@ interface EffectCompositorProps {
   timestamp?: string;
   timeOfDay?: number;
   settings?: EffectSettings;
-  css?: { root?: string };
+  css?: EffectCompositorCss;
 }
 
 const props = defineProps<EffectCompositorProps>();

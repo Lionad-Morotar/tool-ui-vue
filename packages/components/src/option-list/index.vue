@@ -7,8 +7,8 @@ import type { OptionListProps, OptionListSelection } from './schema';
 
 defineOptions({ name: 'CmptOptionList', inheritAttrs: false })
 
-const props = withDefaults(defineProps<OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<OptionListProps & { modelValue?: OptionListSelection }>(), {
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -123,6 +123,7 @@ const state = reactive(useOptionList(props, emit));
               'rounded-none border-0 bg-transparent px-0 py-2 shadow-none transition-none hover:bg-transparent! @md/option-list:text-sm',
               index === 0 && 'pb-2.5',
               index > 0 && index < props.options.length - 1 && 'py-2.5',
+              props.css?.item,
             )
           "
           :aria-selected="state.getOptionState(option).isSelected"
@@ -209,6 +210,7 @@ const state = reactive(useOptionList(props, emit));
           state.normalizedActions.align === 'left' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-start @[240px]/actions:gap-2' :
           state.normalizedActions.align === 'center' ? 'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-center @[240px]/actions:gap-2' :
           'flex-col @[240px]/actions:flex-row @[240px]/actions:flex-wrap @[240px]/actions:items-center @[240px]/actions:justify-end @[240px]/actions:gap-2',
+          props.css?.actions,
         )"
       >
         <button

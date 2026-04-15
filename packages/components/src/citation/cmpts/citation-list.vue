@@ -8,10 +8,10 @@ import type { CitationType, SerializableCitation, CitationListProps } from '../s
 
 defineOptions({ name: 'CmptCitationList', inheritAttrs: false })
 
-const props = withDefaults(defineProps<CitationListProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<CitationListProps>(), {
   variant: 'default',
   maxVisible: undefined,
-  css: () => ({ root: '' }),
+  css: () => ({}),
   onNavigate: undefined,
 });
 
@@ -240,6 +240,7 @@ function getTypeIcon(type: CitationType | undefined) {
       :key="citation.id"
       v-bind="citation"
       variant="default"
+      :css="{ root: css?.item }"
       @navigate="(href, cit) => emit('navigate', href, cit)"
     />
     <!-- Overflow for default variant -->
@@ -360,6 +361,7 @@ function getTypeIcon(type: CitationType | undefined) {
       :key="citation.id"
       v-bind="citation"
       variant="inline"
+      :css="{ root: css?.item }"
       @navigate="(href, cit) => emit('navigate', href, cit)"
     />
     <!-- Overflow for inline variant -->

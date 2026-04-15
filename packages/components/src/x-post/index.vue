@@ -3,12 +3,12 @@ import { cn } from '@lionad/vtu-core';
 import { useI18n } from '@lionad/vtu-core/i18n';
 import { computed, reactive } from 'vue';
 import { useXPost } from './states';
-import type { XPostProps, XPostData } from './schema';
+import type { XPostProps, XPostCss, XPostData } from './schema';
 
 defineOptions({ name: 'CmptXPost', inheritAttrs: false })
 
-const props = withDefaults(defineProps<XPostProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<XPostProps>(), {
+  css: () => ({}) as XPostCss,
 })
 
 const emit = defineEmits<{
@@ -43,9 +43,9 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           height="40"
           class="size-10 shrink-0 rounded-full object-cover"
         />
-        <div class="min-w-0 flex-1">
+        <div :class="cn('min-w-0 flex-1', css?.content)">
           <!-- Header -->
-          <div class="flex items-start justify-between gap-2">
+          <div :class="cn('flex items-start justify-between gap-2', css?.header)">
             <div class="flex min-w-0 items-center gap-1">
               <span class="truncate font-semibold">{{ post.author.name }}</span>
               <svg
@@ -167,7 +167,7 @@ const logoAriaLabel = computed(() => t('xPost.logo').value)
           </div>
 
           <!-- Actions -->
-          <div class="mt-3 flex items-center gap-4">
+          <div :class="cn('mt-3 flex items-center gap-4', css?.actions)">
             <button
               type="button"
               :class="cn(

@@ -12,9 +12,8 @@ const props = withDefaults(defineProps<RuntimeMessageDraftProps & {
   onSend?: () => void | Promise<void>;
   onUndo?: () => void;
   onCancel?: () => void;
-  css?: { root?: string };
 }>(), {
-  css: () => ({ root: '' })
+  css: () => ({})
 })
 
 const emit = defineEmits<{
@@ -97,6 +96,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
       >
         <!-- Email Draft Content -->
         <template v-if="state.isEmailDraft">
+          <div :class="css?.header" data-slot="header">
           <h2
             :id="`${id}-title`"
             class="pt-2 text-base leading-tight font-semibold"
@@ -172,11 +172,12 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
               </tr>
             </tbody>
           </table>
+          </div>
 
           <div class="-mx-5 h-px bg-border" role="separator" />
 
           <!-- Expandable Body -->
-          <div class="relative">
+          <div class="relative" :class="css?.body" data-slot="body">
             <div
               :class="
                 cn(
@@ -213,6 +214,8 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
           <div
             :id="`${id}-title`"
             class="flex items-center gap-1.5 text-sm font-medium"
+            :class="css?.header"
+            data-slot="header"
           >
             <!-- Slack Logo -->
             <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
@@ -247,7 +250,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
           <div class="-mx-5 h-px bg-border" role="separator" />
 
           <!-- Expandable Body -->
-          <div class="relative">
+          <div class="relative" :class="css?.body" data-slot="body">
             <div
               :class="
                 cn(
@@ -312,7 +315,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
       </div>
 
       <!-- Actions -->
-      <div class="@container/actions">
+      <div class="@container/actions" :class="css?.actions" data-slot="actions">
         <!-- Sending State -->
         <div
           v-if="draftState === 'sending'"

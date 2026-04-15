@@ -8,6 +8,13 @@ import {
 import { X } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
 import { useImageGallery } from '../states';
+import type { GalleryLightboxCss } from '../schema';
+
+const props = withDefaults(defineProps<{
+  css?: GalleryLightboxCss;
+}>(), {
+  css: () => ({}),
+});
 
 const dialogRef = ref<HTMLDialogElement | null>(null);
 const contentRef = ref<HTMLDivElement | null>(null);
@@ -94,7 +101,8 @@ const currentIndexDisplay = computed(() =>
         'm-0 h-full max-h-full w-full max-w-full',
         'overflow-hidden p-0',
         'bg-transparent backdrop:bg-black/95 dark:backdrop:bg-black/90',
-        'focus-visible:outline-none'
+        'focus-visible:outline-none',
+        css?.root
       )"
       aria-label="Image lightbox"
       @click="handleBackdropClick"
@@ -109,7 +117,8 @@ const currentIndexDisplay = computed(() =>
               'inline-flex items-center justify-center rounded-md',
               'h-10 w-10',
               'text-white/80 hover:bg-white/10 hover:text-white',
-              'transition-colors duration-200'
+              'transition-colors duration-200',
+              css?.close
             )"
             aria-label="Close"
             @click="closeLightbox"
@@ -179,7 +188,7 @@ const currentIndexDisplay = computed(() =>
         <!-- Content -->
         <div
           ref="contentRef"
-          class="relative z-10 flex h-full w-full flex-col items-center justify-center gap-4 p-8"
+          :class="cn('relative z-10 flex h-full w-full flex-col items-center justify-center gap-4 p-8', css?.content)"
         >
           <div
             v-if="currentImage"
@@ -206,7 +215,7 @@ const currentIndexDisplay = computed(() =>
                 currentImage?.caption ||
                 currentImage?.source?.label
             "
-            class="text-center"
+            :class="cn('text-center', css?.metadata)"
           >
             <h3
               v-if="currentImage.title"

@@ -115,6 +115,8 @@ export const OptionListCssSchema = z.object({
   actions: z.string().optional(),
 });
 
+export type OptionListCss = z.infer<typeof OptionListCssSchema>;
+
 const OptionListPropsSchemaBase = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
@@ -177,7 +179,7 @@ export interface OptionListProps {
   onChange?: (value: OptionListSelection) => void;
   onAction?: (actionId: string, value: OptionListSelection) => void | Promise<void>;
   onBeforeAction?: (actionId: string, value: OptionListSelection) => void | Promise<void>;
-  css?: { root?: string; item?: string; actions?: string };
+  css?: OptionListCss;
 }
 
 /**

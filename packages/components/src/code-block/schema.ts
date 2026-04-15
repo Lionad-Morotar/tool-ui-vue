@@ -22,6 +22,8 @@ export const CodeBlockCssSchema = z.object({
   copyButton: z.string().optional(),
 });
 
+export type CodeBlockCss = z.infer<typeof CodeBlockCssSchema>;
+
 export const CodeBlockPropsSchema = z.object({
   id: ToolUIIdSchema,
   role: ToolUIRoleSchema.optional(),
@@ -49,7 +51,7 @@ export interface CodeBlockProps {
   filename?: string;
   highlightLines?: number[];
   maxCollapsedLines?: number;
-  css?: { root?: string; header?: string; content?: string; copyButton?: string };
+  css?: CodeBlockCss;
 }
 
 /**

@@ -9,8 +9,8 @@ import type { GeoMapProps, GeoMapMarker, GeoMapRoute } from './schema';
 
 defineOptions({ name: 'CmptGeoMap', inheritAttrs: false })
 
-const props = withDefaults(defineProps<GeoMapProps & { css?: { root?: string } }>(), {
-  css: () => ({ root: '' })
+const props = withDefaults(defineProps<GeoMapProps>(), {
+  css: () => ({}),
 })
 
 const emit = defineEmits<{
@@ -47,6 +47,7 @@ const { t } = useI18n();
         :map-aria-label="state.mapAriaLabel"
         :tooltip-class-name="tooltipClassName"
         :popup-class-name="popupClassName"
+        :css="css?.canvas"
         @marker-click="state.handleMarkerClick"
         @route-click="state.handleRouteClick"
         @ready="state.handleReadyChange"
@@ -59,7 +60,8 @@ const { t } = useI18n();
           cn(
             'pointer-events-none absolute top-3 left-3 z-[900]',
             'max-w-[min(75%,22rem)] rounded-lg border border-border/70 bg-background/70 px-3 py-2',
-            'shadow-sm backdrop-blur-md'
+            'shadow-sm backdrop-blur-md',
+            css?.title
           )
         "
       >
@@ -81,7 +83,7 @@ const { t } = useI18n();
       <div
         v-if="!state.isMapReady"
         data-slot="geo-map-loading"
-        class="pointer-events-none absolute inset-0 flex items-center justify-center bg-muted/30 text-muted-foreground"
+        :class="cn('pointer-events-none absolute inset-0 flex items-center justify-center bg-muted/30 text-muted-foreground', css?.loading)"
       >
         <span data-slot="geo-map-loading-label">{{ t('geoMap.loadingMap') }}</span>
       </div>

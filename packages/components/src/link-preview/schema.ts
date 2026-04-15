@@ -89,6 +89,12 @@ export const LinkPreviewCssSchema = z.object({
 });
 
 /**
+ * LinkPreview Css 类型
+ * 对应 LinkPreviewCssSchema 的 TypeScript 类型
+ */
+export type LinkPreviewCss = z.infer<typeof LinkPreviewCssSchema>;
+
+/**
  * LinkPreview 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -111,5 +117,5 @@ export interface LinkPreviewProps {
   fit?: MediaFit;
   createdAt?: string;
   locale?: string;
-  css?: { root?: string; image?: string; content?: string; footer?: string };
+  css?: LinkPreviewCss;
 }

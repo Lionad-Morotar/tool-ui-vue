@@ -2,11 +2,16 @@
 import { cn } from '@lionad/vtu-core';
 import { useImageGallery } from '../states';
 import GalleryImageCard from './gallery-image-card.vue';
-import type { ImageGalleryItem } from '../schema';
+import type { ImageGalleryItem, GalleryGridCss } from '../schema';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   onImageClick?: (imageId: string) => void;
-}>();
+  css?: GalleryGridCss;
+  cardCss?: import('../schema').GalleryImageCardCss;
+}>(), {
+  css: () => ({}),
+  cardCss: () => ({}),
+});
 
 const { images, openLightbox } = useImageGallery();
 
@@ -28,7 +33,7 @@ function isPortraitImage(image: ImageGalleryItem): boolean {
 
 <template>
   <div
-    class="grid grid-cols-2 gap-2 @md:grid-cols-3 @lg:grid-cols-4"
+    :class="cn('grid grid-cols-2 gap-2 @md:grid-cols-3 @lg:grid-cols-4', css?.root)"
     role="list"
   >
     <div
@@ -37,7 +42,8 @@ function isPortraitImage(image: ImageGalleryItem): boolean {
       role="listitem"
       :class="cn(
         'group relative cursor-pointer',
-        isPortraitImage(image) && 'row-span-2'
+        isPortraitImage(image) && 'row-span-2',
+        css?.item
       )"
       :style="{ aspectRatio: isPortraitImage(image) ? undefined : '1 / 1' }"
     >
@@ -50,6 +56,7 @@ function isPortraitImage(image: ImageGalleryItem): boolean {
       <gallery-image-card
         :image="image"
         :is-portrait="isPortraitImage(image)"
+        :css="cardCss"
       />
     </div>
   </div>

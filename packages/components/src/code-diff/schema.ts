@@ -21,6 +21,11 @@ export const CodeDiffCssSchema = z.object({
 });
 
 /**
+ * CodeDiffCss 类型，从 CssSchema 推导
+ */
+export type CodeDiffCss = z.infer<typeof CodeDiffCssSchema>;
+
+/**
  * CodeDiff 基础 Props Schema
  */
 const CodeDiffPropsSchemaBase = z.object({
@@ -90,7 +95,7 @@ export interface CodeDiffProps {
   lineNumbers?: 'visible' | 'hidden';
   diffStyle?: 'unified' | 'split';
   maxCollapsedLines?: number;
-  css?: { root?: string; header?: string; content?: string };
+  css?: CodeDiffCss;
 }
 
 /**

@@ -5,11 +5,11 @@ import type { SparklineProps } from '../schema';
 
 defineOptions({ name: 'CmptSparkline', inheritAttrs: false })
 
-const props = withDefaults(defineProps<SparklineProps & { css?: { root?: string } }>(), {
+const props = withDefaults(defineProps<SparklineProps>(), {
   color: 'currentColor',
   width: 64,
   height: 24,
-  css: () => ({ root: '' }),
+  css: () => ({}),
   style: undefined,
   showFill: false,
   fillOpacity: 0.09,
