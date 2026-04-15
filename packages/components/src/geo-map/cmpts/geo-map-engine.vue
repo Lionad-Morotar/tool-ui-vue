@@ -538,7 +538,7 @@ function applyViewportToMap(
 // (e.g. map initialized inside a hidden v-show container, then revealed)
 let resizeObserver: ResizeObserver | null = null;
 
-function attachResizeObserver(map: LeafletMap, container: HTMLElement) {
+function attachResizeObserver(container: HTMLElement) {
   resizeObserver = new ResizeObserver(() => {
     if (!mapInstance.value) return;
     mapInstance.value.invalidateSize();
@@ -562,7 +562,7 @@ function handleMapReady(map: LeafletMap) {
 
   // Watch for container size changes (hidden→visible transitions, flex layout, etc.)
   const container = map.getContainer();
-  attachResizeObserver(map, container);
+  attachResizeObserver(container);
 
   if (leafletModule.value) {
     applyViewportToMap(
