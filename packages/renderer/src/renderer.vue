@@ -7,7 +7,6 @@ import {
   StateProvider,
 } from '@json-render/vue';
 import type { Spec } from '@json-render/core';
-import ErrorBoundary from './error-boundary.vue';
 import { registry } from './registry';
 
 interface Props {
@@ -20,15 +19,13 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <ErrorBoundary>
-    <StateProvider :initial-state="props.initialState ?? {}">
-      <ActionProvider :handlers="props.handlers ?? {}">
-        <VisibilityProvider>
-          <ValidationProvider>
-            <Renderer :spec="props.spec" :registry="registry" />
-          </ValidationProvider>
-        </VisibilityProvider>
-      </ActionProvider>
-    </StateProvider>
-  </ErrorBoundary>
+  <StateProvider :initial-state="props.initialState ?? {}">
+    <ActionProvider :handlers="props.handlers ?? {}">
+      <VisibilityProvider>
+        <ValidationProvider>
+          <Renderer :spec="props.spec" :registry="registry" />
+        </ValidationProvider>
+      </VisibilityProvider>
+    </ActionProvider>
+  </StateProvider>
 </template>

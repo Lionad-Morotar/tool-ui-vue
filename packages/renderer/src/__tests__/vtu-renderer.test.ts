@@ -1,5 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
+import {
+  ActionProvider,
+  Renderer,
+  StateProvider,
+  ValidationProvider,
+  VisibilityProvider,
+} from '@json-render/vue';
 import { VtuRenderer } from '../index';
 
 function createMinimalSpec() {
@@ -35,7 +42,7 @@ describe('VtuRenderer', () => {
         spec: createMinimalSpec(),
       },
     });
-    const renderer = wrapper.findComponent({ name: 'JsonRenderer' });
+    const renderer = wrapper.findComponent(Renderer);
     expect(renderer.exists()).toBe(true);
     expect(renderer.props('spec')).toEqual(createMinimalSpec());
     expect(renderer.props('registry')).toBeDefined();
@@ -47,10 +54,10 @@ describe('VtuRenderer', () => {
         spec: createMinimalSpec(),
       },
     });
-    expect(wrapper.findComponent({ name: 'StateProvider' }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: 'ActionProvider' }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: 'VisibilityProvider' }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: 'ValidationProvider' }).exists()).toBe(true);
+    expect(wrapper.findComponent(StateProvider).exists()).toBe(true);
+    expect(wrapper.findComponent(ActionProvider).exists()).toBe(true);
+    expect(wrapper.findComponent(VisibilityProvider).exists()).toBe(true);
+    expect(wrapper.findComponent(ValidationProvider).exists()).toBe(true);
   });
 
   test('passes initialState to StateProvider', () => {
@@ -61,7 +68,7 @@ describe('VtuRenderer', () => {
         initialState,
       },
     });
-    const provider = wrapper.findComponent({ name: 'StateProvider' });
+    const provider = wrapper.findComponent(StateProvider);
     expect(provider.props('initialState')).toEqual(initialState);
   });
 
@@ -73,7 +80,7 @@ describe('VtuRenderer', () => {
         handlers,
       },
     });
-    const provider = wrapper.findComponent({ name: 'ActionProvider' });
+    const provider = wrapper.findComponent(ActionProvider);
     expect(provider.props('handlers')).toEqual(handlers);
   });
 
@@ -83,8 +90,8 @@ describe('VtuRenderer', () => {
         spec: createMinimalSpec(),
       },
     });
-    const stateProvider = wrapper.findComponent({ name: 'StateProvider' });
-    const actionProvider = wrapper.findComponent({ name: 'ActionProvider' });
+    const stateProvider = wrapper.findComponent(StateProvider);
+    const actionProvider = wrapper.findComponent(ActionProvider);
     expect(stateProvider.props('initialState')).toEqual({});
     expect(actionProvider.props('handlers')).toEqual({});
   });

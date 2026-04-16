@@ -1,4 +1,3 @@
-import { h } from 'vue';
 import type { Components } from '@json-render/vue';
 import { defineRegistry } from '@json-render/vue';
 import {
@@ -33,37 +32,37 @@ import {
 } from '@lionad/vtu-components';
 import { catalog } from './catalog';
 import type { AppCatalog } from './catalog';
-import { withErrorBoundary } from './with-error-boundary';
+import { createRenderer, withErrorBoundary } from './with-error-boundary';
 
 const rawComponents: Components<AppCatalog> = {
-  ApprovalCard: ({ props }) => h(ApprovalCard, props as any),
-  Audio: ({ props }) => h(Audio, props as any),
-  Chart: ({ props }) => h(Chart, props as any),
-  Citation: ({ props }) => h(Citation, props as any),
-  CitationList: ({ props }) => h(CitationList, props as any),
-  CodeBlock: ({ props }) => h(CodeBlock, props as any),
-  CodeDiff: ({ props }) => h(CodeDiff, props as any),
-  DataTable: ({ props }) => h(DataTable, props as any),
-  GeoMap: ({ props }) => h(GeoMap, props as any),
-  Image: ({ props }) => h(Image, props as any),
-  ImageGallery: ({ props }) => h(ImageGallery, props as any),
-  InstagramPost: ({ props }) => h(InstagramPost, props as any),
-  ItemCarousel: ({ props }) => h(ItemCarousel, props as any),
-  LinkPreview: ({ props }) => h(LinkPreview, props as any),
-  LinkedInPost: ({ props }) => h(LinkedInPost, props as any),
-  MessageDraft: ({ props }) => h(MessageDraft, props as any),
-  OptionList: ({ props }) => h(OptionList, props as any),
-  OrderSummary: ({ props }) => h(OrderSummary, props as any),
-  ParameterSlider: ({ props }) => h(ParameterSlider, props as any),
-  Plan: ({ props }) => h(Plan, props as any),
-  PreferencesPanel: ({ props }) => h(PreferencesPanel, props as any),
-  ProgressTracker: ({ props }) => h(ProgressTracker, props as any),
-  QuestionFlow: ({ props }) => h(QuestionFlow, props as any),
-  StatsDisplay: ({ props }) => h(StatsDisplay, props as any),
-  Terminal: ({ props }) => h(Terminal, props as any),
-  Video: ({ props }) => h(Video, props as any),
-  WeatherWidget: ({ props }) => h(WeatherWidget, props as any),
-  XPost: ({ props }) => h(XPost, props as any),
+  ApprovalCard: createRenderer(ApprovalCard),
+  Audio: createRenderer(Audio),
+  Chart: createRenderer(Chart),
+  Citation: createRenderer(Citation),
+  CitationList: createRenderer(CitationList),
+  CodeBlock: createRenderer(CodeBlock),
+  CodeDiff: createRenderer(CodeDiff),
+  DataTable: createRenderer(DataTable),
+  GeoMap: createRenderer(GeoMap),
+  Image: createRenderer(Image),
+  ImageGallery: createRenderer(ImageGallery),
+  InstagramPost: createRenderer(InstagramPost),
+  ItemCarousel: createRenderer(ItemCarousel),
+  LinkPreview: createRenderer(LinkPreview),
+  LinkedInPost: createRenderer(LinkedInPost),
+  MessageDraft: createRenderer(MessageDraft),
+  OptionList: createRenderer(OptionList),
+  OrderSummary: createRenderer(OrderSummary),
+  ParameterSlider: createRenderer(ParameterSlider),
+  Plan: createRenderer(Plan),
+  PreferencesPanel: createRenderer(PreferencesPanel),
+  ProgressTracker: createRenderer(ProgressTracker),
+  QuestionFlow: createRenderer(QuestionFlow),
+  StatsDisplay: createRenderer(StatsDisplay),
+  Terminal: createRenderer(Terminal),
+  Video: createRenderer(Video),
+  WeatherWidget: createRenderer(WeatherWidget),
+  XPost: createRenderer(XPost),
 };
 
 export const components = Object.fromEntries(

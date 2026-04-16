@@ -1,14 +1,13 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
 import { defineComponent, h } from 'vue';
-import ErrorBoundaryWrapper from '../error-boundary-wrapper.vue';
 import ErrorBoundary from '../error-boundary.vue';
 import { withErrorBoundary } from '../with-error-boundary';
 
 describe('error boundary', () => {
-  describe('ErrorBoundaryWrapper', () => {
+  describe('ErrorBoundary', () => {
     test('renders slot content when no error occurs', () => {
-      const wrapper = mount(ErrorBoundaryWrapper, {
+      const wrapper = mount(ErrorBoundary, {
         slots: {
           default: '<div class="safe-content">Hello</div>',
         },
@@ -24,7 +23,7 @@ describe('error boundary', () => {
         },
       });
 
-      const wrapper = mount(ErrorBoundaryWrapper, {
+      const wrapper = mount(ErrorBoundary, {
         slots: {
           default: () => h(BadComponent),
         },
@@ -33,35 +32,6 @@ describe('error boundary', () => {
       await wrapper.vm.$nextTick();
       expect(wrapper.find('.safe-content').exists()).toBe(false);
       expect(wrapper.text()).toContain('Component exploded');
-    });
-  });
-
-  describe('ErrorBoundary (outer)', () => {
-    test('renders slot content when no error occurs', () => {
-      const wrapper = mount(ErrorBoundary, {
-        slots: {
-          default: '<div class="safe-content">Outer content</div>',
-        },
-      });
-      expect(wrapper.find('.safe-content').exists()).toBe(true);
-      expect(wrapper.text()).toContain('Outer content');
-    });
-
-    test('renders fallback UI when child throws', async () => {
-      const BadComponent = defineComponent({
-        render() {
-          throw new Error('Outer explosion');
-        },
-      });
-
-      const wrapper = mount(ErrorBoundary, {
-        slots: {
-          default: () => h(BadComponent),
-        },
-      });
-
-      await wrapper.vm.$nextTick();
-      expect(wrapper.text()).toContain('Outer explosion');
     });
   });
 
