@@ -79,15 +79,19 @@ export type {
   CitationProps,
   CitationListProps,
   SerializableCitation,
+  SerializableCitationList,
   CitationType,
   CitationVariant,
 } from './citation'
 export {
   SerializableCitationSchema,
+  SerializableCitationListSchema,
   CitationTypeSchema,
   CitationVariantSchema,
   parseSerializableCitation,
   safeParseSerializableCitation,
+  parseSerializableCitationList,
+  safeParseSerializableCitationList,
 } from './citation'
 
 // LinkPreview

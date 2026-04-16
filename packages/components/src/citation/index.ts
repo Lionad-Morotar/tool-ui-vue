@@ -8,14 +8,18 @@ export type {
   CitationProps,
   CitationListProps,
   SerializableCitation,
+  SerializableCitationList,
   CitationType,
   CitationVariant,
 } from './schema'
 
 export {
   SerializableCitationSchema,
+  SerializableCitationListSchema,
   CitationTypeSchema,
   CitationVariantSchema,
   parseSerializableCitation,
   safeParseSerializableCitation,
+  parseSerializableCitationList,
+  safeParseSerializableCitationList,
 } from './schema'

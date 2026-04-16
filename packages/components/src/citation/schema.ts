@@ -115,6 +115,41 @@ export const CitationListCssSchema = z.object({
 export type CitationListCss = z.infer<typeof CitationListCssSchema>;
 
 /**
+ * CitationList 的可序列化数据 Schema
+ */
+export const SerializableCitationListSchema = z.object({
+  id: ToolUIIdSchema,
+  citations: z.array(SerializableCitationSchema),
+  variant: CitationVariantSchema.optional(),
+  maxVisible: z.number().optional(),
+  css: CitationListCssSchema.optional(),
+});
+
+/**
+ * CitationList 的可序列化数据类型
+ */
+export interface SerializableCitationList {
+  id: string;
+  citations: SerializableCitation[];
+  variant?: CitationVariant;
+  maxVisible?: number;
+  css?: CitationListCss;
+}
+
+const SerializableCitationListSchemaContract = defineToolUiContract(
+  'CitationList',
+  SerializableCitationListSchema as z.ZodType<SerializableCitationList>,
+);
+
+export const parseSerializableCitationList = SerializableCitationListSchemaContract.parse as (
+  input: unknown,
+) => SerializableCitationList;
+
+export const safeParseSerializableCitationList = SerializableCitationListSchemaContract.safeParse as (
+  input: unknown,
+) => SerializableCitationList | null;
+
+/**
  * Citation 组件的 Props 接口
  * 包含所有可配置的属性
  */

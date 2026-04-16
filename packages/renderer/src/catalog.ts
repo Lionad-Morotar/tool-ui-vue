@@ -1,10 +1,10 @@
 import { schema } from '@json-render/vue/schema';
-import { z } from 'zod';
 import {
   SerializableApprovalCardSchema,
   SerializableAudioSchema,
   SerializableChartSchema,
   SerializableCitationSchema,
+  SerializableCitationListSchema,
   SerializableCodeBlockSchema,
   SerializableCodeDiffSchema,
   SerializableDataTableSchema,
@@ -30,19 +30,6 @@ import {
   SerializableXPostSchema,
 } from '@lionad/vtu-components';
 
-const CitationListSchema = z.object({
-  id: z.string(),
-  citations: z.array(SerializableCitationSchema),
-  variant: z.enum(['default', 'inline', 'stacked']).optional(),
-  maxVisible: z.number().optional(),
-  css: z
-    .object({
-      root: z.string().optional(),
-      item: z.string().optional(),
-    })
-    .optional(),
-});
-
 export const catalog = schema.createCatalog({
   components: {
     ApprovalCard: {
@@ -66,7 +53,7 @@ export const catalog = schema.createCatalog({
       description: 'A single citation/link reference',
     },
     CitationList: {
-      props: CitationListSchema,
+      props: SerializableCitationListSchema,
       slots: [],
       description: 'A list of citations with collapse/expand behavior',
     },
