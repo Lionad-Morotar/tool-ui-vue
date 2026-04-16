@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LocaleProvider, zhCNAll } from '@lionad/vtu-components'
-import DemoRestaurant from './components/demo-restaurant.vue'
+import DemoRestaurant from '../components/demo-restaurant.vue'
 </script>
 
 <template>
