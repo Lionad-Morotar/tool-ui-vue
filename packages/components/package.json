@@ -7,10 +7,10 @@
   "files": ["dist"],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/src/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
@@ -52,6 +52,7 @@
   "devDependencies": {
     "@lionad/vtu-core": "workspace:*",
     "@lionad/vtu-theme": "workspace:*",
+    "@lionad/vtu-renderer": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.5",
     "@types/diff": "^8.0.0",
     "@types/leaflet": "^1.9.21",

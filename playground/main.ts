@@ -6,7 +6,7 @@ const pages = import.meta.glob<true, string, () => Promise<{ default: Component 
 
 (async () => {
   const name = location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'App';
-  const file = pages[`./pages/${name}.vue`] ?? pages[`./${name}.vue`];
+  let file = pages[`./pages/${name}.vue`] ?? pages[`./${name}.vue`];
 
   if (!file) {
     location.pathname = '/';
