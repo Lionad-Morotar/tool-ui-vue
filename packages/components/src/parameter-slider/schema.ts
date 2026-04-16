@@ -9,9 +9,9 @@
  * @module tool-ui-vue/vtu-components/parameter-slider/schema
  */
 
-import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '@lionad/vtu-core';
+import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '../core';
 import { z } from 'zod';
-import type { Action, SerializableActionsConfig } from '@lionad/vtu-core';
+import type { Action, SerializableActionsConfig } from '../core';
 
 /**
  * 滑块配置的 Schema 定义

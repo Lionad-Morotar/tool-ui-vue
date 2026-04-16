@@ -8,7 +8,7 @@
  *
  * @module tool-ui-vue/vtu-components/instagram-post/schema
  */
-import { defineToolUiContract } from '@lionad/vtu-core';
+import { defineToolUiContract } from '../core';
 import { z } from 'zod';
 
 /**

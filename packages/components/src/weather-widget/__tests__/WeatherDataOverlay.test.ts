@@ -1,8 +1,8 @@
-import { setMessages } from '@lionad/vtu-core/i18n';
+import { setMessages } from '../../core/i18n';
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
 import { nextTick } from 'vue';
-import { en } from '../../../../core/src/i18n/locales/en';
+import { en } from '../../core/i18n/locales/en';
 import WeatherDataOverlay from '../cmpts/weather-data-overlay.vue';
 import type { WeatherConditionCode, ForecastDay } from '../schema';
 

@@ -9,9 +9,9 @@
  * @module tool-ui-vue/vtu-components/option-list/schema
  */
 
-import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '@lionad/vtu-core';
+import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import { z } from 'zod';
-import type { Action, SerializableActionsConfig } from '@lionad/vtu-core';
+import type { Action, SerializableActionsConfig } from '../core';
 
 /**
  * 选项列表中单个选项的 Schema 定义

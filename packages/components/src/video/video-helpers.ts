@@ -1,7 +1,7 @@
 import {
   resolveSafeNavigationHref,
   sanitizeHref,
-} from '@lionad/vtu-core';
+} from '../core';
 import type { SerializableVideo } from './schema';
 
 export type VideoMediaEvent = 'mute' | 'unmute';

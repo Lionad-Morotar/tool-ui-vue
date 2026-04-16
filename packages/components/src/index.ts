@@ -1,4 +1,5 @@
 // Barrel exports for all components, types, schemas, and parsers
+export * from './core'
 
 // ApprovalCard
 export { ApprovalCard } from './approval-card'
@@ -458,15 +459,10 @@ export {
   safeParseSerializableWeatherWidget,
 } from './weather-widget'
 
-// i18n exports
+// i18n exports (core i18n symbols are re-exported via `export * from './core'` above)
 export {
-  useI18n,
-  LocaleProvider,
-  i18nInjectionKey,
   setMessages,
   setLocale,
-  zhCN,
-  en,
   zhCNAll,
   enAll,
   registerEnglish,

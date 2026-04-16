@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { nextTick } from 'vue';
 import ItemCarousel from '../index.vue';
 
-vi.mock('@lionad/vtu-core', async (importOriginal) => {
+vi.mock('../../core', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

@@ -8,7 +8,7 @@ const pages = [
 
 <template>
   <main class="flex flex-col justify-center items-center bg-background px-6 py-12 min-h-screen text-foreground">
-    <h1 class="mb-8 font-semibold text-2xl tracking-tight">Playground</h1>
+    <h1 class="-mt-80 mb-8 font-semibold text-2xl tracking-tight">Playground</h1>
     <nav class="w-full max-w-xs">
       <ul class="space-y-3">
         <li v-for="page in pages" :key="page.path">

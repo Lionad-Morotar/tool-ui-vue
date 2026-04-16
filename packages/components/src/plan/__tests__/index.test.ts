@@ -23,7 +23,7 @@ function createProps(overrides: Record<string, unknown> = {}) {
 const currentLocale = ref('en');
 
 // Mock useI18n before any component imports it
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const { computed } = await import('vue');
   const actual = await importOriginal<Record<string, unknown>>();
   const messagesByLocale: Record<string, Record<string, string>> = {
@@ -314,7 +314,7 @@ describe('Plan', () => {
         path.join(__dirname, '../index.vue'),
         'utf-8'
       );
-      expect(code).toContain("import { useI18n } from '@lionad/vtu-core/i18n'");
+      expect(code).toContain("import { useI18n } from '../core/i18n'");
     });
 
     test('uses t() for progress text instead of hardcoded string', async () => {

@@ -8,7 +8,7 @@ const messagesByLocale: Record<string, Record<string, string>> = {
   'zh-CN': { 'optionList.selected': '已选', 'optionList.select': '选择', 'optionList.noOptions': '无选项', 'optionList.search': '搜索选项...', 'optionList.clear': '清除', 'optionList.all': '全部' },
 };
 
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

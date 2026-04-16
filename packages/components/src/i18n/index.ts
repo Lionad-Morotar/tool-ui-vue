@@ -8,7 +8,7 @@ import {
   en,
   hasMessages,
   isLocaleExplicitlySet,
-} from '@lionad/vtu-core/i18n'
+} from '../core/i18n'
 
 export {
   useI18n,

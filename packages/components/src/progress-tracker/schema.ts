@@ -12,7 +12,7 @@ import {
   defineToolUiContract,
   ToolUISurfaceSchema,
   ToolUIReceiptSchema,
-  type ToolUIReceipt,} from '@lionad/vtu-core';
+  type ToolUIReceipt,} from '../core';
 import { z } from 'zod';
 
 /**

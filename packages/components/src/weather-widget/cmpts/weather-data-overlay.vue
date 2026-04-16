@@ -1,8 +1,8 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptWeatherDataOverlay', inheritAttrs: false })
 
-import { cn } from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+import { cn } from '../../core';
+import { useI18n } from '../../core/i18n';
 import {
   Sun,
   Cloud,

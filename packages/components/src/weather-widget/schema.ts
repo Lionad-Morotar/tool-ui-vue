@@ -9,7 +9,7 @@
  * @module tool-ui-vue/vtu-components/weather-widget/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema  } from '@lionad/vtu-core';
+import { defineToolUiContract, ToolUIIdSchema  } from '../core';
 import { z } from 'zod';
 
 /** WeatherConditionCodeSchema Zod Schema */

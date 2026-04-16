@@ -8,7 +8,7 @@
  *
  * @module tool-ui-vue/vtu-components/question-flow/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '@lionad/vtu-core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
 
 /**

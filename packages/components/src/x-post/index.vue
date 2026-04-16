@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+import { cn } from '../core';
+import { useI18n } from '../core/i18n';
 import { computed, reactive } from 'vue';
 import { useXPost } from './states';
 import type { XPostProps, XPostCss, XPostData } from './schema';

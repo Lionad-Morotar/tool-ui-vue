@@ -9,7 +9,7 @@ const messagesByLocale: Record<string, Record<string, string>> = {
   'zh-CN': { 'image.alt': '图片描述', 'image.loading': '图片加载中...', 'image.error': '图片加载失败', 'image.retry': '重新加载' },
 };
 
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

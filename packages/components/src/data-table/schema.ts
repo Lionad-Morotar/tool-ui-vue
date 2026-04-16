@@ -8,7 +8,7 @@
  *
  * @module tool-ui-vue/vtu-components/data-table/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '@lionad/vtu-core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
 
 const AlignEnum = z.enum(['left', 'right', 'center']);

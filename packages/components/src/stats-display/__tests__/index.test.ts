@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
 
 // Mock useI18n to provide predictable aria-label values
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const { computed } = await import('vue');
   const actual = await importOriginal<Record<string, unknown>>();
   return {

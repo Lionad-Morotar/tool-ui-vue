@@ -4,8 +4,8 @@ import {
   getFitClass,
   OVERLAY_GRADIENT,
   formatDuration, cn
-} from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+} from '../core';
+import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
 import { useVideo } from './states';
 import type { VideoProps } from './schema';

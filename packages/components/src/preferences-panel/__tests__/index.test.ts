@@ -18,7 +18,7 @@ const messagesByLocale: Record<string, Record<string, string>> = {
   },
 };
 
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

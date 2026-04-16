@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
+import { cn } from '../../core';
 import {
   useMagicKeys,
   useSwipe,

@@ -2,7 +2,7 @@
  * Utility functions for Tool UI Vue components
  */
 
-export { cn } from '@lionad/vtu-core'
+export { cn } from '../core'
 
 /**
  * Check if user prefers reduced motion

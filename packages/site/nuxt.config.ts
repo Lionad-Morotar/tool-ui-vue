@@ -39,8 +39,7 @@ export default defineNuxtConfig({
   },
 
   alias: {
-    '@lionad/vtu-components': resolve(__dirname, '../components/src'),
-    '@lionad/vtu-core': resolve(__dirname, '../core/src')
+    '@lionad/vtu-components': resolve(__dirname, '../components/src')
   },
 
   routeRules: {

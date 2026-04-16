@@ -8,7 +8,7 @@
  *
  * @module tool-ui-vue/vtu-components/geo-map/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '@lionad/vtu-core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
 
 const LatitudeSchema = z.number().min(-90).max(90);

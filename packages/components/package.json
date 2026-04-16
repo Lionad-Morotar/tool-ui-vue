@@ -50,7 +50,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@lionad/vtu-core": "workspace:*",
     "@lionad/vtu-theme": "workspace:*",
     "@lionad/vtu-renderer": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.5",

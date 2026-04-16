@@ -20,8 +20,6 @@
     "declarationMap": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@lionad/vtu-core": ["./packages/core/src/index.ts"],
-      "@lionad/vtu-core/*": ["./packages/core/src/*"],
       "@lionad/vtu-components": ["./packages/components/src/index.ts"],
       "@lionad/vtu-components/*": ["./packages/components/src/*"]
     }

@@ -9,7 +9,7 @@
  * @module tool-ui-vue/vtu-components/stats-display/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '@lionad/vtu-core';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
 import type { CSSProperties } from 'vue';
 

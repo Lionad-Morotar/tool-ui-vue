@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+import { cn } from '../../core';
+import { useI18n } from '../../core/i18n';
 import { reactive, toRef } from 'vue';
 import { useMessageDraft } from '../states';
 import type { RuntimeMessageDraftProps } from '../schema';

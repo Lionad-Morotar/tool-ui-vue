@@ -15,7 +15,6 @@
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.78",
     "@lionad/vtu-components": "workspace:*",
-    "@lionad/vtu-core": "workspace:*",
     "@lionad/vtu-theme": "workspace:*",
     "@nuxt/ui": "^4.6.1",
     "@tresjs/cientos": "^5.7.0",

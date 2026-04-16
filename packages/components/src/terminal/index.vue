@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+import { cn } from '../core';
+import { useI18n } from '../core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
 import { computed, reactive, toRef } from 'vue';
 import { useTerminal } from './states';

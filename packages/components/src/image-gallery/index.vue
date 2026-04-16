@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
+import { cn } from '../core';
 import { reactive } from 'vue';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';

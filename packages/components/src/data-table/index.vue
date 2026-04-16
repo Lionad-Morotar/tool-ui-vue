@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@lionad/vtu-core';
-import { useI18n } from '@lionad/vtu-core/i18n';
+import { cn } from '../core';
+import { useI18n } from '../core/i18n';
 import { reactive, computed } from 'vue';
 import { useDataTable } from './states';
 import type { DataTableProps } from './schema';

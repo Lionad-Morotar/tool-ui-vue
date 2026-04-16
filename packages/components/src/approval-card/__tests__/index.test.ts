@@ -17,7 +17,7 @@ const messagesByLocale: Record<string, Record<string, string>> = {
 };
 
 // Mock useI18n to provide locale-aware translations
-vi.mock('@lionad/vtu-core/i18n', async (importOriginal) => {
+vi.mock('../../core/i18n', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,
