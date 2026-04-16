@@ -43,6 +43,7 @@ export default defineConfig({
       '@': resolve(__dirname, '../src'),
       '@lionad/vtu-components': resolve(__dirname, '../packages/components/src'),
       '@lionad/vtu-core': resolve(__dirname, '../packages/core/src'),
+      '@lionad/vtu-renderer': resolve(__dirname, '../packages/renderer/src'),
     },
   },
 });
