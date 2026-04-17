@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import { runClaudeTask } from './helpers.js'
 
 describe('search_documentation', () => {
-  it('should find STACK.md when searching for stack', () => {
+  it('should find Audio story when searching for audio', () => {
     const result = runClaudeTask(
-      `Use the search_documentation tool to find pages with "STACK" in the title. ` +
+      `Use the search_documentation tool to find pages with "audio" in the title. ` +
         `Return the raw JSON result only.`,
       `The output must contain a JSON object with a "pages" array. ` +
-        `One page must have a title containing "STACK" or a path ending with "STACK.md".`,
-      'search-documentation-stack',
+        `At least one page must have "Audio" in its title.`,
+      'search-documentation-audio',
     )
 
     expect(result.pass).toBe(true)
@@ -19,7 +19,7 @@ describe('search_documentation', () => {
       `Use the search_documentation tool with no arguments to list all docs. ` +
         `Return the raw JSON result only.`,
       `The output must contain a "pages" array with at least 3 items, ` +
-        `including paths like "/README.md" or "/CLAUDE.md" or "/.planning/codebase/STACK.md".`,
+        `each with "title", "path", "storyId", and "category" fields.`,
       'search-documentation-all',
     )
 

@@ -8,12 +8,12 @@ const inputSchema = z.object({
 
 const tool: ToolDefinition<typeof inputSchema> = {
   name: 'get_documentation_page',
-  description: 'Retrieves documentation page content by path.',
+  description: 'Retrieves a Histoire story page source code by path. Returns the .story.vue file content.',
   inputSchema,
   handler({ path }) {
     const content = readDocumentationPage(path)
     if (content === null) {
-      throw new Error(`Documentation page not found at path: ${path}`)
+      throw new Error(`Story page not found at path: ${path}`)
     }
     return { content }
   },

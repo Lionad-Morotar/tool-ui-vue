@@ -10,7 +10,7 @@
     "vtu-mcp-server": "./dist/mcp/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/copy-sources.mjs",
     "typecheck": "tsc --noEmit",
     "dev": "tsx watch mcp/index.ts",
     "test:smoke": "vitest run mcp/__test__"

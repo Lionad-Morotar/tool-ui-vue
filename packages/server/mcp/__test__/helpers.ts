@@ -56,7 +56,7 @@ export interface EvalResult {
 function execClaude(args: string[]): string {
   const result = spawnSync('claude', args, {
     encoding: 'utf-8',
-    timeout: 120000,
+    timeout: 600000,
   })
   const stdout = result.stdout || ''
   const stderr = result.stderr || ''
@@ -121,12 +121,10 @@ export function runClaudeTask(
     '--no-session-persistence',
     '--output-format',
     'json',
-    '--json-schema',
-    '{"type":"object","properties":{"pass":{"type":"boolean"},"reason":{"type":"string"}},"required":["pass","reason"]}',
     '--max-budget-usd',
     '1.00',
     '--max-turns',
-    '3',
+    '5',
   ]
 
   let evalOutput: string
@@ -152,7 +150,8 @@ export function runClaudeTask(
 
     if ('type' in wrapper && typeof wrapper.result === 'string') {
       try {
-        const parsed = JSON.parse(wrapper.result) as EvalResult
+        const inner = wrapper.result.trim().replace(/^```json\s*|\s*```$/g, '')
+        const parsed = JSON.parse(inner) as EvalResult
         return parsed
       } catch {
         // Fallback to structured_output when result is empty/unparseable

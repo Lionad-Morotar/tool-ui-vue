@@ -110,40 +110,59 @@ export function extractPropsFromInterface(content: string): string[] {
 }
 
 /**
- * 列出项目文档页面
+ * Histoire story 分类（与 histoire.config.ts 中的 storyGroups 对齐）
  */
-export function listDocumentationPages(): Array<{ title: string; path: string; description?: string }> {
-  const pages: Array<{ title: string; path: string; description?: string }> = []
+const STORY_CATEGORIES: Record<string, string> = {
+  landing: 'Getting Started',
+  chart: 'Data Display', 'data-table': 'Data Display', 'stats-display': 'Data Display', 'weather-widget': 'Data Display',
+  'code-block': 'Code & Terminal', 'code-diff': 'Code & Terminal', terminal: 'Code & Terminal',
+  audio: 'Media', image: 'Media', 'image-gallery': 'Media', 'item-carousel': 'Media', video: 'Media',
+  'approval-card': 'Social', citation: 'Social', 'instagram-post': 'Social', 'linkedin-post': 'Social',
+  'link-preview': 'Social', 'message-draft': 'Social', 'x-post': 'Social',
+  'option-list': 'Forms & Input', 'parameter-slider': 'Forms & Input', 'preferences-panel': 'Forms & Input',
+  'geo-map': 'Workflow', plan: 'Workflow', 'progress-tracker': 'Workflow', 'question-flow': 'Workflow', 'order-summary': 'Workflow',
+}
 
-  // README.md
-  const readmePath = join(PROJECT_ROOT, 'README.md')
-  if (existsSync(readmePath)) {
-    pages.push({ title: 'README', path: '/README.md', description: 'Project overview and quick start' })
+export interface DocPage {
+  title: string
+  path: string
+  storyId: string
+  category: string
+}
+
+/**
+ * 将 story 文件路径转为 Histoire storyId
+ * 例: src/stories/audio/index.story.vue → src-stories-audio-index-story-vue
+ */
+function toStoryId(filePath: string): string {
+  return filePath.replace(/\.(vue|ts|js)$/, '-$1').replace(/[/.]/g, '-')
+}
+
+/**
+ * 列出 Histoire 文档页面
+ */
+export function listDocumentationPages(): DocPage[] {
+  const storiesDir = join(PROJECT_ROOT, 'src', 'stories')
+  if (!existsSync(storiesDir)) return []
+
+  const pages: DocPage[] = []
+  const entries = readdirSync(storiesDir)
+
+  for (const entry of entries) {
+    if (entry.startsWith('_') || entry === 'tailwind-test' || entry === 'vue-shim.d.ts') continue
+    const storyFile = join(storiesDir, entry, 'index.story.vue')
+    if (!existsSync(storyFile)) continue
+
+    const slug = entry
+    pages.push({
+      title: slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+      path: `/src/stories/${entry}/index.story.vue`,
+      storyId: toStoryId(`src/stories/${entry}/index.story.vue`),
+      category: STORY_CATEGORIES[slug] || 'Other',
+    })
   }
 
-  // CLAUDE.md / AGENTS.md
-  const claudePath = join(PROJECT_ROOT, 'CLAUDE.md')
-  if (existsSync(claudePath)) {
-    pages.push({ title: 'CLAUDE.md', path: '/CLAUDE.md', description: 'Project instructions for Claude' })
-  }
-
-  // .planning/codebase/*.md
-  const planningDir = join(PROJECT_ROOT, '.planning', 'codebase')
-  if (existsSync(planningDir)) {
-    const files = readdirSync(planningDir)
-    for (const file of files) {
-      if (file.endsWith('.md')) {
-        const name = file.replace(/\.md$/, '')
-        pages.push({
-          title: name,
-          path: `/.planning/codebase/${file}`,
-          description: `Planning document: ${name}`,
-        })
-      }
-    }
-  }
-
-  return pages.sort((a, b) => a.path.localeCompare(b.path))
+  return pages.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
 }
 
 /**

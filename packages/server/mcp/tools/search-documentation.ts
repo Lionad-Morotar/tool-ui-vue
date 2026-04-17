@@ -9,13 +9,13 @@ const inputSchema = z.object({
 
 const tool: ToolDefinition<typeof inputSchema> = {
   name: 'search_documentation',
-  description: 'Search project documentation pages by title or path. With no params, lists all pages.',
+  description: 'Search Histoire documentation pages by title or category. With no params, lists all component story pages.',
   inputSchema,
   handler({ search, section }) {
     let results = listDocumentationPages()
 
     if (section) {
-      results = results.filter((p) => p.path.includes(section))
+      results = results.filter((p) => p.category.toLowerCase().includes(section.toLowerCase()))
     }
 
     if (search) {
