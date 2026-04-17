@@ -104,9 +104,9 @@ function clearEvents() {
 <template>
   <Story title="Audio/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-basic"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-1"
@@ -115,9 +115,9 @@ function clearEvents() {
     </Variant>
 
     <Variant :title="withMetadata">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-metadata"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
           asset-id="demo-audio-2"
@@ -130,9 +130,9 @@ function clearEvents() {
     </Variant>
 
     <Variant :title="compactVariant">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-compact"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
           asset-id="demo-audio-3"
@@ -145,9 +145,9 @@ function clearEvents() {
     </Variant>
 
     <Variant :title="compactWithoutArtwork">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <audio
+        <Audio
           id="audio-compact-no-art"
           src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
           asset-id="demo-audio-4"
@@ -159,10 +159,10 @@ function clearEvents() {
     </Variant>
 
     <Variant :title="withEventLogging" auto-props-disabled>
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <audio
+          <Audio
             id="audio-events"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-events"
@@ -173,18 +173,18 @@ function clearEvents() {
             @media-event="handleMediaEvent"
           />
         </div>
-        <div class="w-full max-w-md rounded-lg border border-border bg-card p-4">
-          <div class="mb-2 flex items-center justify-between">
-            <h4 class="text-sm font-semibold">{{ audioEventLogHeading }}</h4>
+        <div class="bg-card p-4 border border-border rounded-lg w-full max-w-md">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="font-semibold text-sm">{{ audioEventLogHeading }}</h4>
             <button
               type="button"
-              class="text-xs text-muted-foreground hover:text-foreground"
+              class="text-muted-foreground hover:text-foreground text-xs"
               @click="clearEvents"
             >
               {{ audioClearButton }}
             </button>
           </div>
-          <div class="h-24 overflow-y-auto rounded bg-muted/50 p-2 font-mono text-xs">
+          <div class="bg-muted/50 p-2 rounded h-24 overflow-y-auto font-mono text-xs">
             <div v-if="eventLog.length === 0" class="text-muted-foreground italic">
               {{ audioEmptyState }}
             </div>
@@ -199,22 +199,22 @@ function clearEvents() {
     <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-md">
-          <audio
+          <Audio
             id="audio-interactive"
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             asset-id="demo-audio-interactive"
             v-bind="interactiveState"
           />
         </div>
-        <div class="w-full max-w-md space-y-3 rounded-lg border border-border bg-card p-4">
-          <h4 class="text-sm font-semibold">{{ audioControlsHeading }}</h4>
+        <div class="space-y-3 bg-card p-4 border border-border rounded-lg w-full max-w-md">
+          <h4 class="font-semibold text-sm">{{ audioControlsHeading }}</h4>
           <div class="space-y-2">
             <label class="flex items-center gap-2 text-sm">
               <span class="w-20">{{ audioFormTitle }}</span>
               <input
                 v-model="interactiveState.title"
                 type="text"
-                class="flex-1 rounded border border-border bg-background px-2 py-1 text-sm"
+                class="flex-1 bg-background px-2 py-1 border border-border rounded text-sm"
               />
             </label>
             <label class="flex items-center gap-2 text-sm">
@@ -222,14 +222,14 @@ function clearEvents() {
               <input
                 v-model="interactiveState.description"
                 type="text"
-                class="flex-1 rounded border border-border bg-background px-2 py-1 text-sm"
+                class="flex-1 bg-background px-2 py-1 border border-border rounded text-sm"
               />
             </label>
             <label class="flex items-center gap-2 text-sm">
               <span class="w-20">{{ audioFormVariant }}</span>
               <select
                 v-model="interactiveState.variant"
-                class="rounded border border-border bg-background px-2 py-1 text-sm"
+                class="bg-background px-2 py-1 border border-border rounded text-sm"
               >
                 <option value="full">{{ audioVariantFull }}</option>
                 <option value="compact">{{ audioVariantCompact }}</option>
@@ -241,9 +241,9 @@ function clearEvents() {
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
