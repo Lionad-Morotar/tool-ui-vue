@@ -1,63 +1,59 @@
 import { z } from 'zod'
 import type { ToolDefinition } from '../../src/types.js'
 
-const lucideIcons = [
-  'home', 'user', 'users', 'settings', 'search', 'bell', 'menu', 'x', 'check', 'chevron-left',
-  'chevron-right', 'chevron-down', 'chevron-up', 'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down',
-  'plus', 'minus', 'trash', 'edit', 'copy', 'save', 'download', 'upload', 'share', 'link',
-  'external-link', 'mail', 'message-square', 'message-circle', 'phone', 'calendar', 'clock', 'star',
-  'heart', 'thumbs-up', 'thumbs-down', 'flag', 'bookmark', 'tag', 'folder', 'file', 'file-text',
-  'image', 'video', 'music', 'play', 'pause', 'stop', 'skip-forward', 'skip-back', 'volume', 'volume-off',
-  'mic', 'camera', 'map', 'map-pin', 'navigation', 'compass', 'globe', 'zap', 'flashlight', 'battery',
-  'wifi', 'bluetooth', 'sun', 'moon', 'cloud', 'cloud-rain', 'cloud-snow', 'wind', 'thermometer',
-  'alert-circle', 'alert-triangle', 'info', 'help-circle', 'shield', 'lock', 'unlock', 'key', 'eye',
-  'eye-off', 'filter', 'sliders', 'list', 'grid', 'layout', 'maximize', 'minimize', 'more-horizontal',
-  'more-vertical', 'refresh-cw', 'rotate-ccw', 'undo', 'redo', 'scissors', 'paperclip', 'inbox',
-  'send', 'archive', 'trash-2', 'log-in', 'log-out', 'user-plus', 'user-minus', 'user-check',
-  'shopping-cart', 'credit-card', 'dollar-sign', 'euro', 'pound-sterling', 'bitcoin', 'bar-chart',
-  'pie-chart', 'activity', 'trending-up', 'trending-down', 'layers', 'code', 'terminal', 'github',
-  'gitlab', 'twitter', 'facebook', 'instagram', 'linkedin', 'youtube', 'slack', 'trello', 'figma',
-  'chrome', 'framer', 'aperture', 'anchor', 'award', 'briefcase', 'cpu', 'database', 'disc',
-  'feather', 'gift', 'hash', 'loader', 'package', 'pen-tool', 'printer', 'rss', 'scissors',
-  'server', 'tool', 'truck', 'umbrella', 'watch', 'anchor', 'box', 'circle', 'hexagon', 'octagon',
-  'square', 'triangle', 'diamond', 'asterisk', 'at-sign', 'command', 'option', 'shift', 'control',
-  'space', 'tab', 'caps-lock', 'backspace', 'delete', 'enter', 'escape', 'arrow-big-left',
-  'arrow-big-right', 'arrow-big-up', 'arrow-big-down', 'caret-left', 'caret-right', 'caret-up',
-  'caret-down', 'first-aid', 'pill', 'stethoscope', 'syringe', 'thermometer-snowflake',
-  'thermometer-sun', 'brain', 'heart-pulse', 'activity', 'dna', 'microscope', 'rocket',
-  'plane', 'train', 'car', 'bus', 'ship', 'bike', 'walk', 'run', 'swim', 'ski', 'snowboard',
-  'anchor', 'anchor', 'life-buoy', 'sailboat', 'fuel', 'gauge', 'wrench', 'hammer', 'construction',
-  'factory', 'warehouse', 'store', 'hotel', 'school', 'university', 'bank', 'landmark', 'church',
-  'mosque', 'synagogue', 'temple', 'castle', 'monument', 'mountain', 'tree-pine', 'tree-deciduous',
-  'flower', 'leaf', 'sprout', 'recycle', 'trash', 'zap-off', 'flame', 'droplet', 'snowflake',
-  'tornado', 'hurricane', 'earthquake', 'flood', 'tsunami', 'volcano', 'asterisk', 'infinity',
-  'sigma', 'pi', 'omega', 'alpha', 'beta', 'gamma', 'delta', 'lambda', 'psi', 'phi',
-]
+const ICONIFY_SEARCH_URL = 'https://api.iconify.design/search'
+const ICONIFY_SVG_URL = 'https://api.iconify.design'
 
 const inputSchema = z.object({
   query: z.string().describe('Search term to filter icon names'),
-  collection: z.string().optional().describe('Icon collection to search within (default: lucide)'),
+  collection: z.string().optional().describe('Icon collection prefix to search within (default: lucide). Examples: lucide, heroicons, mdi, tabler, ph'),
+  limit: z.number().min(1).max(64).optional().describe('Maximum number of results (default: 16)'),
 })
+
+interface IconResult {
+  name: string
+  preview: string
+}
+
+async function searchIconify(query: string, prefix: string, limit: number): Promise<IconResult[]> {
+  const url = new URL(ICONIFY_SEARCH_URL)
+  url.searchParams.set('query', query)
+  url.searchParams.set('prefix', prefix)
+  url.searchParams.set('limit', String(limit))
+
+  const res = await fetch(url.toString())
+  if (!res.ok) {
+    throw new Error(`Iconify search failed: ${res.status} ${res.statusText}`)
+  }
+
+  const data = await res.json() as { icons: string[]; total: number }
+  return (data.icons || []).map((iconId: string) => {
+    const [coll, name] = iconId.split(':')
+    return {
+      name: `i-${coll}-${name}`,
+      preview: `${ICONIFY_SVG_URL}/${coll}/${name}.svg`,
+    }
+  })
+}
 
 const tool: ToolDefinition<typeof inputSchema> = {
   name: 'search_icons',
-  description: 'Search for icons across Iconify collections. Defaults to lucide. Returns icon names in the i-{prefix}-{name} format used by the project.',
+  description:
+    'Search for icons using the Iconify API. Supports all Iconify collections (lucide, heroicons, mdi, tabler, ph, etc). Returns icon names in i-{prefix}-{name} format with SVG preview URLs.',
   inputSchema,
-  handler({ query, collection }) {
-    const coll = collection || 'lucide'
-    if (coll !== 'lucide') {
+  async handler({ query, collection, limit }) {
+    const prefix = collection || 'lucide'
+    const max = limit || 16
+
+    try {
+      const icons = await searchIconify(query, prefix, max)
+      return { icons, total: icons.length }
+    } catch (err: any) {
       return {
         icons: [],
         total: 0,
-        note: `Collection "${coll}" is not available. Only "lucide" is supported.`,
+        error: `Iconify API error: ${err.message}`,
       }
-    }
-
-    const q = query.toLowerCase()
-    const matches = lucideIcons.filter((name) => name.includes(q))
-    return {
-      icons: matches.map((name) => `i-${coll}-${name}`),
-      total: matches.length,
     }
   },
 }
