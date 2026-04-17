@@ -1,0 +1,29 @@
+{
+  "name": "@lionad/vtu-server",
+  "version": "0.1.0",
+  "description": "MCP server for tool-ui-vue component library",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/mcp/index.js",
+  "types": "./dist/mcp/index.d.ts",
+  "bin": {
+    "vtu-mcp-server": "./dist/mcp/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsx watch mcp/index.ts",
+    "test:smoke": "vitest run mcp/__test__"
+  },
+  "dependencies": {
+    "@lionad/vtu-components": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
