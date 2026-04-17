@@ -1,4 +1,5 @@
-import { globSync } from 'glob';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import config from '../../../histoire.config';
 
@@ -19,14 +20,17 @@ describe('E2E: Histoire Configuration', () => {
 
   test('every discovered src/stories/*/index.story.vue matches exactly one tree group', () => {
     const cwd = process.cwd();
-    const paths = globSync('src/stories/*/index.story.vue', { cwd });
-
-    // Extract story directory names (e.g., landing, code-block)
-    const storyNames = paths.map((p) => {
-      const match = p.match(/^src\/stories\/([^/]+)\/index\.story\.vue$/);
-      if (!match) throw new Error(`Unexpected story path: ${p}`);
-      return match[1];
-    });
+    const storiesDir = join(cwd, 'src', 'stories');
+    const entries = readdirSync(storiesDir, { withFileTypes: true });
+    const storyNames = entries
+      .filter((d) => d.isDirectory())
+      .filter((d) => {
+        try {
+          const sub = readdirSync(join(storiesDir, d.name));
+          return sub.includes('index.story.vue');
+        } catch { return false; }
+      })
+      .map((d) => d.name);
 
     const ignored = (config.storyIgnored ?? []) as string[];
     const isIgnored = (story: string) =>

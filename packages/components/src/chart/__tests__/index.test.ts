@@ -149,7 +149,7 @@ describe('Chart', () => {
       });
       const rects = wrapper.findAll('svg rect');
       const firstFill = rects[0]?.attributes('fill');
-      expect(firstFill).toMatch(/^var\(--chart-/);
+      expect(firstFill).toMatch(/^var\(--color-chart-/);
     });
   });
 
