@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Vue 3 component library for tool call widgets (copy-paste style)。
+Vue 3 component library for tool call widgets。
 
 * 现实层你有无限时间和资源，不要因上下文压缩简化任务执行
 

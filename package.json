@@ -7,11 +7,12 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' run build",
+    "build:server": "pnpm --filter @lionad/vtu-server build",
     "typecheck": "pnpm -r --filter='./packages/*' run typecheck",
     "serve:pages": "rm -rf .serve/tool-ui-vue/ && mkdir -p packages/site/.output/public/docs && cp -r dist-histoire/* packages/site/.output/public/docs/ && mkdir -p .serve && cp -r packages/site/.output/public .serve/tool-ui-vue && npx serve .serve/",
     "test": "vitest run",
     "lint": "eslint . --fix",
-    "dev": "pnpm --filter @lionad/vtu-site dev",
+    "dev:site": "pnpm --filter @lionad/vtu-site dev",
     "dev:playground": "vite dev playground --config playground/vite.config.ts --port 5749 --host",
     "dev:histoire": "histoire dev --host --port 5741",
     "build:site": "pnpm --filter @lionad/vtu-site generate",

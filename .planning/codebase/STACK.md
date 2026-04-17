@@ -20,7 +20,7 @@
 - pnpm — 由 `pnpm-lock.yaml` 和 `pnpm-workspace.yaml` 确认
 - Lockfile: `pnpm-lock.yaml` 存在
 - 工作区配置: `pnpm-workspace.yaml`（包含 `allowBuilds: '@parcel/watcher': true`）
-- Monorepo 包：**`@lionad/vtu-core`**、**`@lionad/vtu-components`**、**`@lionad/vtu-theme`**
+- Monorepo 包：**`@lionad/vtu-components`**（对外发布）、`@lionad/vtu-core`（内嵌）、`@lionad/vtu-theme`（内部）
 
 ## 框架
 
@@ -91,7 +91,7 @@
 - 发布产物位于各包 `dist/`（`.js`、`.cjs`、`.d.ts`）
 - 通过 `package.json` `exports` 暴露入口和子路径：
   - `@lionad/vtu-components/components/*`
-  - `@lionad/vtu-theme/tokens.css`
+  - `@lionad/vtu-components/tokens.css`
 
 ## 开发命令
 

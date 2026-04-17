@@ -14,7 +14,7 @@ tool-ui-vue 的目标很简单：**让开发者只需要几行代码，就能给
 
 ### 复制即用，不需要复杂配置
 
-我们采用 "copy-paste" 的设计理念。你可以直接在工作区里安装 `@lionad/vtu-components`，也可以把单个组件文件夹复制到自己的项目里。组件自带类型定义和 Zod Schema，甚至自带了中文语言包——默认就是中文，不需要额外配置 i18n。
+安装 `@lionad/vtu-components` 即可使用。组件自带类型定义和 Zod Schema，甚至自带了中文语言包——默认就是中文，不需要额外配置 i18n。
 
 ### 为 Agent 场景量身定做
 
@@ -38,10 +38,8 @@ tool-ui-vue 的目标很简单：**让开发者只需要几行代码，就能给
 
 ## 快速开始
 
-如果你已经在用 pnpm 和 monorepo，可以直接把组件作为 workspace 依赖引入：
-
 ```bash
-pnpm add @lionad/vtu-components @lionad/vtu-core @lionad/vtu-theme
+pnpm add @lionad/vtu-components
 ```
 
 然后在你的 Nuxt 或 Vue 应用里引入主题 CSS，接着像使用普通组件一样使用即可。每个组件都支持通过 `v-bind` 直接绑定结构化数据，也可以细粒度地控制每一个子元素。

@@ -1,6 +1,6 @@
 # tool-ui-vue
 
-Vue 3 component library for AI tool call widgets (copy-paste style).
+Vue 3 component library for AI tool call widgets (Zod + Tailwind CSS v4).
 
 ![Histoire Docs](assets/landing.png)
 
@@ -40,7 +40,6 @@ import { Terminal } from '@lionad/vtu-components'
 <script setup lang="ts">
 import { LocaleProvider } from '@lionad/vtu-components'
 import { zhCN } from '@lionad/vtu-components/i18n'
-// 或 import { zhCN } from '@lionad/vtu-core/i18n'
 </script>
 
 <template>
@@ -54,7 +53,7 @@ import { zhCN } from '@lionad/vtu-components/i18n'
 
 ```vue
 <script setup lang="ts">
-import { useI18n } from '@lionad/vtu-core/i18n'
+import { useI18n } from '@lionad/vtu-components/i18n'
 
 type MessageSchema = { shared: { copy: string; cancel: string } }
 const { t } = useI18n<MessageSchema>()
@@ -129,7 +128,7 @@ t(key: DeepKeyPath<TMessages>, params?: Record<string, ParamValue>): ComputedRef
 | 模块 | 导出 |
 |------|------|
 | `@lionad/vtu-components` | `LocaleProvider`, `zhCN`, `en` |
-| `@lionad/vtu-core/i18n` | `useI18n`, `setLocale`, `setMessages`, types |
+| `@lionad/vtu-components/i18n` | `useI18n`, `registerEnglish`, types |
 
 > 完整 API 文档：[API-i18n.md](.planning/docs/API-i18n.md)
 
@@ -164,5 +163,4 @@ export const ja = {
 ## 消费者指南
 
 - **零侵入模式**：不使用 LocaleProvider 时，组件以内置 zh-CN 文案正常渲染，不会显示 key 字符串
-- **Copy-Paste 模式**：直接复制 `.vue` 文件到项目，组件内 `useI18n()` 自动 fallback
 - **完整接入指南**：[CONSUMER-ONBOARDING.md](.planning/docs/CONSUMER-ONBOARDING.md)

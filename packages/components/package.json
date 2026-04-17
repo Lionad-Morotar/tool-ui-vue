@@ -19,10 +19,11 @@
       "import": "./dist/i18n/index.js",
       "require": "./dist/i18n/index.cjs"
     },
-    "./components/*": "./dist/components/*"
+    "./components/*": "./dist/components/*",
+    "./tokens.css": "./dist/tokens.css"
   },
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build && cp ../theme/dist/tokens.css dist/tokens.css",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {

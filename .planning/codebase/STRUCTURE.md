@@ -7,18 +7,7 @@
 ```
 [project-root]/
 ├── packages/                  # Monorepo 包
-│   ├── core/                  # 基础组件 + 共享基础设施
-│   │   ├── src/
-│   │   │   ├── components/    # Badge、Button、Card、CopyButton
-│   │   │   ├── contract.ts    # ToolUiContract 工厂
-│   │   │   ├── schema.ts      # 基础 Zod schemas
-│   │   │   ├── parse.ts       # Zod 错误格式化
-│   │   │   ├── utils.ts       # cn()、prefersReducedMotion()
-│   │   │   └── media/         # 媒体处理工具
-│   │   ├── dist/              # 构建输出
-│   │   ├── package.json       # @lionad/vtu-core
-│   │   └── vite.config.ts
-│   ├── components/            # 复杂 Tool UI 组件（32 个）
+│   ├── components/            # 对外唯一发布包（@lionad/vtu-components）
 │   │   ├── src/
 │   │   │   ├── approval-card/
 │   │   │   ├── audio/
@@ -47,10 +36,10 @@
 │   │   │   ├── video/
 │   │   │   ├── weather-widget/
 │   │   │   └── x-post/
-│   │   ├── dist/              # 构建输出（含子路径 exports）
+│   │   ├── dist/              # 构建输出（含子路径 exports + tokens.css）
 │   │   ├── package.json       # @lionad/vtu-components
 │   │   └── vite.config.ts
-│   └── theme/                 # Design tokens 和 CSS variables
+│   └── theme/                 # 内部包，不对外发布（构建时复制 tokens.css 到 components）
 │       ├── src/
 │       │   ├── index.ts       # 入口（导入 tokens.css）
 │       │   └── tokens.css     # CSS 变量定义
@@ -86,24 +75,23 @@
 
 ## 目录用途
 
-**`packages/core/src/`：**
+**`packages/core/src/`（内嵌于 components）：**
 - 目的：基础组件和共享基础设施
 - 包含：Button、Card、Badge、CopyButton 以及 schema/contract/parse/media 工具
 - 关键文件：`contract.ts`、`schema.ts`、`parse.ts`、`utils.ts`
-- 包名：`@lionad/vtu-core`
+- 注：已内嵌到 `packages/components/src/core/`，不单独发布
 
-**`packages/components/src/`：**
-- 目的：复杂 Tool UI 组件实现
-- 包含：32 个组件目录，每个都有 schema.ts 和 index.vue
+**`packages/components/src/`（对外唯一发布包）：**
+- 目的：Tool UI 组件实现 + 核心基础设施 + design tokens
+- 包含：27 个业务组件目录、core primitives、i18n 系统、tokens.css 导出
 - 关键模式：Headless 架构，逻辑抽离到 `states/` 目录
 - 包名：`@lionad/vtu-components`
-- 依赖：`workspace:*` 引用 `@lionad/vtu-core` 和 `@lionad/vtu-theme`
+- 导出：`.`、`./i18n`、`./components/*`、`./tokens.css`
 
-**`packages/theme/src/`：**
-- 目的：Design tokens 和 CSS variables
+**`packages/theme/src/`（内部包，不对外发布）：**
+- 目的：Design tokens 和 CSS variables 源文件
 - 包含：`tokens.css`（颜色、间距、字体等变量）
-- 包名：`@lionad/vtu-theme`
-- 导出：`./tokens.css` 子路径
+- 注：构建时 `tokens.css` 被复制到 `packages/components/dist/tokens.css`
 
 **`src/stories/`：**
 - 目的：Histoire story 文件用于组件文档和视觉测试

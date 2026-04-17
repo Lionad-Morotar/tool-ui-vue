@@ -8,34 +8,20 @@
 
 **关键特性：**
 - 使用 Zod 进行运行时校验的 Schema-first 组件设计
-- Copy-paste 风格的组件库（同时以 workspace packages 组织）
 - 可序列化的数据契约，用于 AI/LLM 工具 UI 渲染
 - Headless 架构迁移：组件逻辑逐步抽离到 `states/` 目录
 - Vue 3 Composition API + TypeScript
 
 ## 分层架构
 
-**核心契约层（`@lionad/vtu-core`）：**
-- 目的：定义数据 schemas、类型、验证逻辑和基础组件
-- 位置：`packages/core/src/`
-- 包含：Zod schemas、基础类型、解析工具、契约、媒体处理工具
-- 额外提供：Badge、Button、Card、CopyButton 四个基础组件
-- 依赖：Zod 库、class-variance-authority
-- 被用于：`@lionad/vtu-components`
-
-**主题层（`@lionad/vtu-theme`）：**
-- 目的：提供 Design tokens 和 CSS variables
-- 位置：`packages/theme/src/`
-- 包含：`tokens.css`（颜色、间距、阴影、字体等变量定义）
-- 依赖：无运行时依赖
-- 被用于：`@lionad/vtu-components`（运行时 peer-like 依赖）
-
-**组件层（`@lionad/vtu-components`）：**
-- 目的：实现复杂 Tool UI 组件
+**组件层（`@lionad/vtu-components`，对外唯一发布包）：**
+- 目的：实现 Tool UI 组件 + 内嵌核心基础设施 + design tokens
 - 位置：`packages/components/src/{component-name}/`
-- 包含：组件逻辑、模板、样式、子组件、headless states
-- 依赖：核心契约层（`@lionad/vtu-core`）、主题层（`@lionad/vtu-theme`）、Vue 3
+- 包含：27 个业务组件、core primitives（Badge/Button/Card/CopyButton）、Zod schemas、contract 工厂、媒体工具、i18n 系统、tokens.css 导出
+- 依赖：Vue 3（peer）、Zod、Tailwind CSS v4
 - 被用于：应用层、Story 层
+- 内嵌 core：`packages/components/src/core/`（原 `@lionad/vtu-core` 已内嵌）
+- 内嵌 theme：构建时从 `packages/theme/dist/tokens.css` 复制到 `dist/tokens.css`
 
 **Stories 层：**
 - 目的：组件文档和视觉测试
@@ -62,10 +48,11 @@ src/stories/          playground/
                 │
      ┌──────────┴──────────┐
      ▼                     ▼
-@lionad/vtu-core    @lionad/vtu-theme
+  core/（内嵌）        theme/（构建时复制 tokens.css）
 ```
 
-- **不允许反向依赖**：core 不能依赖 components 或 theme；theme 不能依赖 core
+- core 和 theme 是内部模块，不对外发布
+- **`@lionad/vtu-components`** 是消费者唯一需要安装的包
 - **根 `src/index.ts`** 作为聚合入口，向消费者统一暴露 API
 
 ## 数据流
