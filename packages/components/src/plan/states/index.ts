@@ -30,7 +30,11 @@ export function usePlan(props: PlanProps, emit: PlanEmitFn): PlanState {
   const todos = computed(() => props.todos);
   const maxVisibleTodos = computed(() => props.maxVisibleTodos ?? 4);
 
-  const expandedTodos = ref<Set<string>>(new Set());
+  const expandedTodos = ref<Set<string>>(
+    props.defaultExpanded
+      ? new Set(props.todos.map((t) => t.id))
+      : new Set(),
+  );
   const isCelebrating = ref(false);
   const prevProgress = ref(0);
   const showMoreExpanded = ref(false);

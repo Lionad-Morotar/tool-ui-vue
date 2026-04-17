@@ -56,6 +56,7 @@ export const PlanPropsSchema = z
     description: z.string().optional(),
     todos: z.array(PlanTodoSchema).min(1),
     maxVisibleTodos: z.int().min(1).optional(),
+    defaultExpanded: z.boolean().optional(),
   })
   .superRefine((value, ctx) => {
     const seenTodoIds = new Set<string>();
@@ -99,6 +100,7 @@ export interface PlanProps {
   description?: string;
   todos: PlanTodo[];
   maxVisibleTodos?: number;
+  defaultExpanded?: boolean;
   css?: PlanCss;
 }
 

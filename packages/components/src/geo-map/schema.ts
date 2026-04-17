@@ -179,6 +179,7 @@ export const GeoMapPropsSchema = z
     viewport: GeoMapViewportSchema.optional(),
     showZoomControl: z.boolean().optional(),
     theme: z.enum(['light', 'dark']).optional(),
+    tileUrl: z.string().optional(),
   })
   .superRefine((value, ctx) => {
     const seenMarkerIds = new Set<string>();
@@ -282,6 +283,7 @@ export interface GeoMapProps {
   viewport?: GeoMapViewport;
   showZoomControl?: boolean;
   theme?: 'light' | 'dark';
+  tileUrl?: string;
   css?: GeoMapCss;
   style?: GeoMapStyle;
   tooltipClassName?: string;
