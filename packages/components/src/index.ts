@@ -469,4 +469,4 @@ export {
 } from './i18n'
 
 // Placeholder version (kept for backwards compatibility)
-export const VERSION = '0.4.0'
+export const VERSION = '0.1.0'
