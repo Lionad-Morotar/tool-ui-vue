@@ -332,7 +332,7 @@ export function useItemCarousel(
     const isLongSwipe = Math.abs(deltaX) > SWIPE_THRESHOLD;
 
     if (isFastSwipe || isLongSwipe) {
-      event.preventDefault();
+      if (event.cancelable) event.preventDefault();
       if (deltaX > 0 && canScrollRight.value) {
         scroll('right');
       } else if (deltaX < 0 && canScrollLeft.value) {

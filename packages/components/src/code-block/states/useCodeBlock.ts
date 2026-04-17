@@ -63,6 +63,8 @@ function getDocumentTheme(): 'light' | 'dark' | null {
   if (dataTheme === 'light') return 'light';
   if (root.classList.contains('dark')) return 'dark';
   if (root.classList.contains('light')) return 'light';
+  // Story environments: .dark on wrapper div instead of html
+  if (document.querySelector('.dark')) return 'dark';
   return null;
 }
 
@@ -84,6 +86,9 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
 
   // Cache
   const htmlCache = new Map<string, string>();
+
+  // Race guard — prevents stale async highlights from overwriting newer ones
+  let highlightVersion = 0;
 
   // Highlighter singleton
   let highlighterPromise: Promise<Highlighter> | null = null;
@@ -140,6 +145,7 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
   }
 
   async function highlightCode() {
+    const version = ++highlightVersion;
     const theme = resolvedTheme.value === 'dark' ? 'pierre-dark' : 'pierre-light';
     const cacheKey = getCacheKey(
       code ?? '',
@@ -164,6 +170,8 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
 
     try {
       const highlighter = await getHighlighter();
+      // Discard result if a newer highlight call started while we awaited
+      if (version !== highlightVersion) return;
       const loadedLangs = highlighter.getLoadedLanguages();
       const lang = language ?? 'text';
 
