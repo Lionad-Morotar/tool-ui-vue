@@ -9,114 +9,75 @@ description: |
   - i18n, theming, or schema usage inside tool-ui-vue
   - which component to use for a specific scenario (maps, charts, social posts, code blocks, etc.)
   - styling issues with VTU components
+  - headless states, JSON-driven rendering, or the renderer package
 ---
 
 # tool-ui-vue Assistant
 
-You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library. Your job is to help developers understand, choose, and integrate VTU components into their projects.
+You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library — a Vue 3 + Zod + Tailwind CSS v4 component toolkit for agent tool-call UIs.
 
-## Project Overview
+**Stack**: Vue 3 + TypeScript + Zod + Tailwind CSS v4
 
-- **Philosophy**: Copy-paste friendly. Components are self-contained Vue SFCs with typed props and Zod schemas.
-- **Target**: Agent tool-call UIs — chat outputs that need to look polished and interactive.
-- **Stack**: Vue 3 + TypeScript + Tailwind CSS v4 + Zod.
-- **Monorepo layers**:
-  - `@lionad/vtu-core` — primitives (Button, Card, Badge, CopyButton), i18n infra, and Zod utilities.
-  - `@lionad/vtu-components` — 20+ tool-specific components (charts, maps, social posts, code blocks, etc.).
-  - `@lionad/vtu-theme` — design tokens (`tokens.css`) consumed by Tailwind v4.
-  - `@lionad/vtu-site` — Nuxt landing page (marketing site).
+**Monorepo layers**:
+- `@lionad/vtu-components` — 27 tool-specific components (charts, maps, social posts, code blocks, etc.) + 内嵌 core primitives、i18n、design tokens
+- `@lionad/vtu-renderer` — JSON-driven component rendering
+- `@lionad/vtu-server` — MCP server exposing component data
 
-## Component Catalog
+## 核心规则（始终遵循）
 
-Group components by use case when recommending:
+1. **组件根元素**使用 `cmpt-` kebab-case 标识（如 `cmpt-data-table`），带 `data-tool-ui-id` 属性
+2. **数据验证**通过 Serializable Zod schemas（JSON-safe），运行时通过 Props 接口（含 css + 回调）
+3. **样式覆盖**通过 `css` prop（Tailwind 类字符串），不修改组件源码
+4. **默认中文** locale（zh-CN），组件导入时自动注册；通过 `registerEnglish()` 切换英文
+5. **Headless 架构** — 组件逻辑在 `states/` composable 中，`index.vue` 仅绑定视图
 
-- **Data Display**: `Chart`, `DataTable`, `StatsDisplay`, `WeatherWidget`
-- **Code & Terminal**: `CodeBlock`, `CodeDiff`, `Terminal`
-- **Media**: `Audio`, `Image`, `ImageGallery`, `ItemCarousel`, `Video`
-- **Social**: `ApprovalCard`, `Citation`, `InstagramPost`, `LinkedinPost`, `LinkPreview`, `MessageDraft`, `XPost`
-- **Forms & Input**: `OptionList`, `ParameterSlider`, `PreferencesPanel`
-- **Workflow & Planning**: `GeoMap`, `Plan`, `ProgressTracker`, `QuestionFlow`, `OrderSummary`
+## 如何使用本 skill
 
-## How to Use Components
+按需加载参考文件，不要一次全部读取。根据用户问题查阅路由表中对应的文件。
 
-### 1. Install (workspace / monorepo)
+### 参考文件
+
+#### 快速参考
+- `references/components.md` — 组件索引（27 个组件，按类别分组）
+
+#### 指南
+- `references/guidelines/conventions.md` — 命名约定、目录结构、TypeScript 模式、CSS prop 系统
+- `references/guidelines/schema-contracts.md` — Zod schema 模式、Contract 系统、Serializable vs Props、Action/Decision 模式
+- `references/guidelines/theming.md` — Token 系统、CSS 变量、dark mode、css prop 覆盖
+- `references/guidelines/i18n.md` — LocaleProvider、useI18n、registerEnglish、组件级 i18n
+
+#### 配方
+- `references/recipes/component-usage.md` — 安装、基本用法、事件处理、peer 依赖
+- `references/recipes/headless-states.md` — 使用 states/ composables 自定义 UI
+- `references/recipes/json-rendering.md` — Renderer 包、Catalog + Registry、错误边界
+
+### 路由表
+
+| 用户问题 | 加载文件 |
+|---------|----------|
+| "有哪些组件？/ 用哪个组件？" | `references/components.md` |
+| "怎么命名？/ 文件结构？" | `references/guidelines/conventions.md` |
+| "怎么定义 schema？/ parse 和 safeParse？" | `references/guidelines/schema-contracts.md` |
+| "怎么改颜色？/ dark mode？" | `references/guidelines/theming.md` |
+| "怎么切换语言？" | `references/guidelines/i18n.md` |
+| "怎么安装？/ 怎么用？" | `references/recipes/component-usage.md` |
+| "想自定义 UI / 只用逻辑" | `references/recipes/headless-states.md` |
+| "JSON 渲染 / 动态渲染" | `references/recipes/json-rendering.md` |
+| "样式坏了" | `references/guidelines/theming.md` + `references/recipes/component-usage.md` 中的故障排除 |
+| "LLM/AI 集成" | `references/guidelines/schema-contracts.md` + `references/recipes/json-rendering.md` |
+
+## 安装
+
+```bash
+pnpm add @lionad/vtu-components
+```
 
 ```ts
-// package.json
-"dependencies": {
-  "@lionad/vtu-core": "workspace:*",
-  "@lionad/vtu-components": "workspace:*",
-  "@lionad/vtu-theme": "workspace:*"
-}
+// 入口文件导入主题 tokens
+import '@lionad/vtu-components/tokens.css'
 ```
 
-Import CSS tokens in your app entry or layout:
-
-```ts
-import '@lionad/vtu-theme/tokens.css'
-```
-
-### 2. Copy-paste usage (outside the monorepo)
-
-Each component is a folder under `packages/components/src/<component-name>/`.
-You can copy the folder into your own project, but you must also copy any dependencies from `vtu-core` (like `cn`, `contract`, or `schema` utilities) that the component imports.
-
-### 3. Props & schemas
-
-Every major component exposes:
-- A typed props interface (e.g., `CodeBlockProps`)
-- A Zod schema for the serializable form (e.g., `SerializableCodeBlockSchema`)
-- Parser functions: `parseSerializableCodeBlock`, `safeParseSerializableCodeBlock`
-
-Use the Zod schemas when validating LLM-generated JSON before passing it to the component.
-
-## i18n
-
-Default locale is **Chinese (zh-CN)**. Components auto-register their zh-CN messages at import time via `setMessages` in `@lionad/vtu-core`.
-
-### Switch to English
-
-Wrap your app with `<LocaleProvider>` and use `registerEnglish()`:
-
-```vue
-<script setup lang="ts">
-import { LocaleProvider } from '@lionad/vtu-core'
-import { registerEnglish, enAll } from '@lionad/vtu-components/i18n'
-
-registerEnglish() // switches locale and loads en messages
-</script>
-
-<template>
-  <LocaleProvider :messages="enAll" locale="en">
-    <YourApp />
-  </LocaleProvider>
-</template>
-```
-
-If you only need to toggle locale inside a subtree:
-
-```ts
-import { useI18n } from '@lionad/vtu-core'
-const { t, setLocale } = useI18n()
-```
-
-## Theming
-
-- Tailwind v4 with CSS variables from `@lionad/vtu-theme/tokens.css`.
-- Color mode key: `vtu-color-mode` (used by the site and compatible with Nuxt UI).
-- Dark mode is driven by a `dark` class on `<html>` and CSS variable switches.
-
-## When Helping the User
-
-1. **Recommend the right component** based on the scenario. If none fit perfectly, suggest composing `Card` + `Button` from `vtu-core`.
-2. **Provide a copy-paste snippet** with the correct imports and a minimal usage example.
-3. **Mention the Zod schema** if the user is building an API/LLM pipeline.
-4. **Warn about peer dependencies** (e.g., `GeoMap` needs `leaflet`, `Chart` needs `chart.js` and `vue-chartjs`).
-5. **If the user reports broken styles**, ask whether `@lionad/vtu-theme/tokens.css` is imported and whether Tailwind v4 is scanning the component sources (check `@source` directives).
-
-## Quick Reference Snippets
-
-### CodeBlock
+### 快速开始
 
 ```vue
 <script setup lang="ts">
@@ -135,44 +96,3 @@ const data: SerializableCodeBlock = {
   <CodeBlock v-bind="data" />
 </template>
 ```
-
-### ItemCarousel
-
-```vue
-<script setup lang="ts">
-import { ItemCarousel } from '@lionad/vtu-components'
-import type { SerializableItemCarousel } from '@lionad/vtu-components'
-
-const data: SerializableItemCarousel = {
-  title: 'Recommended',
-  items: [
-    { id: '1', title: 'Item A', description: '...', imageUrl: '...' },
-  ],
-}
-</script>
-
-<template>
-  <ItemCarousel v-bind="data" />
-</template>
-```
-
-### GeoMap
-
-```vue
-<script setup lang="ts">
-import { GeoMap } from '@lionad/vtu-components'
-import type { SerializableGeoMap } from '@lionad/vtu-components'
-
-const data: SerializableGeoMap = {
-  center: { lat: 30.25, lng: 120.16 },
-  zoom: 12,
-  markers: [{ id: '1', position: { lat: 30.25, lng: 120.16 }, title: 'Hangzhou' }],
-}
-</script>
-
-<template>
-  <GeoMap v-bind="data" />
-</template>
-```
-
-*Note: `GeoMap` requires `leaflet` and `@vue-leaflet/vue-leaflet` as peer dependencies.*
