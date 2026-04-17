@@ -11,9 +11,8 @@ export function getSystemTheme(): 'light' | 'dark' {
 }
 
 /**
- * Detect theme from document attributes
- * Checks data-theme attribute and classList for 'dark' or 'light'
- * @returns 'light' | 'dark' | null
+ * Detect theme from document attributes and ancestor classes.
+ * Priority: data-theme on html → class on html → .dark ancestor in DOM
  */
 export function getDocumentTheme(): 'light' | 'dark' | null {
   if (typeof document === 'undefined') return null;
@@ -26,6 +25,9 @@ export function getDocumentTheme(): 'light' | 'dark' | null {
 
   if (root.classList.contains('dark')) return 'dark';
   if (root.classList.contains('light')) return 'light';
+
+  // Story environments: .dark on wrapper div instead of html
+  if (document.querySelector('.dark')) return 'dark';
 
   return null;
 }

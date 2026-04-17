@@ -36,8 +36,8 @@ function createEmojiIcon(
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon {
   const size = icon.size ?? 24;
-  const background = icon.bgColor ?? 'var(--card)';
-  const border = icon.borderColor ?? 'var(--border)';
+  const background = icon.bgColor ?? 'var(--color-card)';
+  const border = icon.borderColor ?? 'var(--color-border)';
 
   return leafletRuntime.divIcon({
     className: '', // Leaflet API - intentionally empty to avoid default styling
@@ -52,7 +52,7 @@ background:${background};
 border:1px solid ${border};
 font-size:${Math.round(size * 0.62)}px;
 line-height:1;
-box-shadow:0 1px 3px oklch(from var(--foreground) l c h / 0.22);
+box-shadow:0 1px 3px oklch(from var(--color-foreground) l c h / 0.22);
 ">${escapeHtml(icon.value)}</span>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
@@ -68,7 +68,7 @@ function createImageIcon(
   const width = icon.width ?? 28;
   const height = icon.height ?? 28;
   const borderRadius = icon.borderRadius ?? Math.min(width, height) / 2;
-  const border = icon.borderColor ?? 'var(--border)';
+  const border = icon.borderColor ?? 'var(--color-border)';
 
   return leafletRuntime.divIcon({
     className: '', // Leaflet API - intentionally empty to avoid default styling
@@ -79,8 +79,8 @@ height:${height}px;
 border-radius:${borderRadius}px;
 overflow:hidden;
 border:1px solid ${border};
-background:var(--card);
-box-shadow:0 1px 3px oklch(from var(--foreground) l c h / 0.22);
+background:var(--color-card);
+box-shadow:0 1px 3px oklch(from var(--color-foreground) l c h / 0.22);
 "><img src="${escapeHtml(icon.url)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" /></span>`,
     iconSize: [width, height],
     iconAnchor: [width / 2, height / 2],
@@ -94,8 +94,8 @@ export function createClusterIcon(
   leafletRuntime: LeafletIconRuntime
 ): LeafletIcon {
   const size = count >= 100 ? 42 : count >= 10 ? 38 : 34;
-  const background = 'var(--primary)';
-  const border = 'var(--background)';
+  const background = 'var(--color-primary)';
+  const border = 'var(--color-background)';
 
   return leafletRuntime.divIcon({
     className: '', // Leaflet API - intentionally empty to avoid default styling
@@ -108,11 +108,11 @@ height:${size}px;
 border-radius:999px;
 background:${background};
 border:2px solid ${border};
-color:var(--primary-foreground);
+color:var(--color-primary-foreground);
 font-size:12px;
 font-weight:700;
 line-height:1;
-box-shadow:0 2px 6px oklch(from var(--foreground) l c h / 0.25);
+box-shadow:0 2px 6px oklch(from var(--color-foreground) l c h / 0.25);
 ">${count}</span>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],

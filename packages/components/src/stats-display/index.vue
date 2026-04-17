@@ -76,7 +76,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
               <sparkline
                 v-if="stat.sparkline"
                 :data="stat.sparkline.data"
-                :color="stat.sparkline.color || 'var(--muted-foreground)'"
+                :color="stat.sparkline.color || 'currentColor'"
                 :show-fill="true"
                 :fill-opacity="0.09"
                 :css="css?.sparkline"

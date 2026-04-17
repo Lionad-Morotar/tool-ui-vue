@@ -16,7 +16,7 @@ import {
   computed,
   watch,
   onMounted,
-  onUnmounted,
+  onBeforeUnmount,
   nextTick,
 } from 'vue';
 import 'leaflet/dist/leaflet.css';
@@ -33,7 +33,7 @@ import type * as LeafletNS from 'leaflet';
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-const ROUTE_DEFAULT_COLOR = 'var(--primary)';
+const ROUTE_DEFAULT_COLOR = 'var(--color-primary)';
 const ROUTE_DEFAULT_WEIGHT = 3;
 const ROUTE_DEFAULT_OPACITY = 0.85;
 
@@ -100,15 +100,22 @@ const leafletRuntime = computed(() => {
   };
 });
 
+// Destruction guard — prevents async callbacks and vue-leaflet cleanup
+// from operating on a destroyed map
+const isDestroyed = ref(false);
+
 // Load Leaflet dynamically
 onMounted(async () => {
   const L = await import('leaflet');
+  if (isDestroyed.value) return;
   leafletModule.value = L;
   leafletReady.value = true;
   emit('ready', true);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
+  isDestroyed.value = true;
+
   resizeObserver?.disconnect();
   resizeObserver = null;
   emit('ready', false);
@@ -134,7 +141,7 @@ onMounted(() => {
     }
   };
   document.addEventListener('keydown', handleEscape);
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     document.removeEventListener('keydown', handleEscape);
   });
 });
@@ -384,11 +391,11 @@ function getDotRadius(icon: GeoMapMarker['icon']): number {
 }
 
 function getDotBorderColor(icon: GeoMapMarker['icon']): string {
-  return icon?.type === 'dot' ? icon.borderColor ?? 'var(--border)' : 'var(--border)';
+  return icon?.type === 'dot' ? icon.borderColor ?? 'var(--color-border)' : 'var(--color-border)';
 }
 
 function getDotFillColor(icon: GeoMapMarker['icon']): string {
-  return icon?.type === 'dot' ? icon.color ?? 'var(--primary)' : 'var(--primary)';
+  return icon?.type === 'dot' ? icon.color ?? 'var(--color-primary)' : 'var(--color-primary)';
 }
 
 // Computed values
@@ -558,6 +565,17 @@ function attachResizeObserver(container: HTMLElement) {
 
 // Map event handlers
 function handleMapReady(map: LeafletMap) {
+  if (isDestroyed.value) return;
+
+  // Monkey-patch removeLayer to guard against undefined layer refs.
+  // vue-leaflet's child components can pass undefined during unmount cleanup,
+  // which triggers Leaflet's stamp() → TypeError: Cannot use 'in' operator.
+  const originalRemoveLayer = map.removeLayer.bind(map);
+  (map as any).removeLayer = function(layer: any) {
+    if (layer == null) return map;
+    return originalRemoveLayer(layer);
+  };
+
   mapInstance.value = map;
 
   // Watch for container size changes (hidden→visible transitions, flex layout, etc.)
@@ -580,7 +598,7 @@ function handleMapReady(map: LeafletMap) {
 }
 
 function handleViewportChange() {
-  if (!mapInstance.value) return;
+  if (isDestroyed.value || !mapInstance.value) return;
   const nextState = readViewportState(mapInstance.value as LeafletMap);
   const normalized = normalizeViewportState(nextState);
 
@@ -593,7 +611,7 @@ function handleViewportChange() {
 watch(
   () => [props.viewport, props.markers, resolvedRoutes.value, mapInstance.value, leafletModule.value] as const,
   async ([viewport, markers, routes]) => {
-    if (!mapInstance.value || !leafletModule.value) return;
+    if (isDestroyed.value || !mapInstance.value || !leafletModule.value) return;
     await nextTick();
     applyViewportToMap(
       mapInstance.value,

@@ -89,7 +89,7 @@ export function useGeoMap(
   const resolvedTheme = computed(() => props.theme ?? inheritedTheme.value);
   const isMapReady = ref(false);
   const tileUrl = computed(() =>
-    resolvedTheme.value === 'dark' ? DARK_TILE_URL : LIGHT_TILE_URL
+    props.tileUrl ?? (resolvedTheme.value === 'dark' ? DARK_TILE_URL : LIGHT_TILE_URL)
   );
 
   const mapAriaLabel = computed(() => {
@@ -101,7 +101,7 @@ export function useGeoMap(
 
   const resolvedRootStyle = computed<GeoMapStyle>(() => ({
     '--geo-map-canvas-bg':
-      resolvedTheme.value === 'dark' ? 'var(--background)' : 'var(--muted)',
+      resolvedTheme.value === 'dark' ? 'var(--color-background)' : 'var(--color-muted)',
     ...props.style,
   }));
 

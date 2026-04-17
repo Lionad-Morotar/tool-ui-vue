@@ -115,7 +115,7 @@ const { t } = useI18n()
               />
               <span
                 v-else-if="todo.status === 'in_progress'"
-                class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
+                class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_oklch(from_var(--color-primary)_l_c_h_/_0.1)] motion-safe:transition-all motion-safe:duration-300"
                 aria-hidden="true"
               >
                 <svg
@@ -269,7 +269,7 @@ const { t } = useI18n()
                   />
                   <span
                     v-else-if="todo.status === 'in_progress'"
-                    class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] motion-safe:transition-all motion-safe:duration-300"
+                    class="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-[0_0_0_4px_oklch(from_var(--color-primary)_l_c_h_/_0.1)] motion-safe:transition-all motion-safe:duration-300"
                     aria-hidden="true"
                   >
                     <svg

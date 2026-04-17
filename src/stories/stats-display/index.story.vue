@@ -83,7 +83,7 @@ const props = [
 <template>
   <Story title="StatsDisplay/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-basic"
@@ -98,7 +98,7 @@ const props = [
     </Variant>
 
     <Variant :title="withTrends">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trends"
@@ -115,7 +115,7 @@ const props = [
     </Variant>
 
     <Variant :title="withSparklines">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-sparklines"
@@ -129,7 +129,7 @@ const props = [
               format: { kind: 'currency', currency: 'USD', decimals: 0 },
               sparkline: {
                 data: [72000, 68000, 74000, 81000, 78000, 85000, 89000, 91000, 86000, 94000, 97000, 102000],
-                color: 'var(--chart-1)',
+                color: 'var(--color-chart-1)',
               },
               diff: { value: 12.4, decimals: 1 },
             },
@@ -140,7 +140,7 @@ const props = [
               format: { kind: 'number', compact: true },
               sparkline: {
                 data: [18200, 19100, 19800, 20400, 21200, 21900, 22600, 23100, 23800, 24200, 24500, 24890],
-                color: 'var(--chart-3)',
+                color: 'var(--color-chart-3)',
               },
               diff: { value: 8.2, decimals: 1 },
             },
@@ -151,7 +151,7 @@ const props = [
               format: { kind: 'percent', decimals: 1, basis: 'unit' },
               sparkline: {
                 data: [3.2, 3.0, 2.8, 2.9, 2.7, 2.5, 2.4, 2.3, 2.2, 2.1, 2.1, 2.1],
-                color: 'var(--chart-4)',
+                color: 'var(--color-chart-4)',
               },
               diff: { value: -0.8, decimals: 1, upIsPositive: false },
             },
@@ -162,7 +162,7 @@ const props = [
               format: { kind: 'number' },
               sparkline: {
                 data: [58, 61, 64, 62, 65, 68, 66, 69, 70, 71, 71, 72],
-                color: 'var(--chart-5)',
+                color: 'var(--color-chart-5)',
               },
               diff: { value: 5.0, decimals: 0 },
             },
@@ -172,7 +172,7 @@ const props = [
     </Variant>
 
     <Variant :title="singleStat">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-sm">
         <stats-display
           id="stats-single"
@@ -184,7 +184,7 @@ const props = [
               format: { kind: 'number' },
               sparkline: {
                 data: [1420, 1380, 1510, 1620, 1580, 1690, 1720, 1780, 1810, 1847],
-                color: 'var(--chart-1)',
+                color: 'var(--color-chart-1)',
               },
               diff: { value: 12.3, decimals: 1 },
             },
@@ -194,7 +194,7 @@ const props = [
     </Variant>
 
     <Variant :title="currencyFormats">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-currency"
@@ -205,7 +205,7 @@ const props = [
     </Variant>
 
     <Variant :title="numberFormats">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-numbers"
@@ -221,7 +221,7 @@ const props = [
     </Variant>
 
     <Variant :title="percentFormats">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-percent"
@@ -237,7 +237,7 @@ const props = [
     </Variant>
 
     <Variant :title="trendIndicators">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trend-analysis"
@@ -253,9 +253,9 @@ const props = [
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
