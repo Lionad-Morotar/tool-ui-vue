@@ -18,7 +18,11 @@
     "build:site": "pnpm --filter @lionad/vtu-site generate",
     "build:story": "histoire build",
     "build:pages": "pnpm build:site && pnpm build:story",
-    "check": "pnpm lint && pnpm typecheck"
+    "check": "pnpm lint && pnpm typecheck",
+    "publish:components": "pnpm --filter @lionad/vtu-components publish --access public --no-git-checks",
+    "publish:renderer": "pnpm --filter @lionad/vtu-renderer publish --access public --no-git-checks",
+    "publish:server": "pnpm --filter @lionad/vtu-server publish --access public --no-git-checks",
+    "publish:all": "pnpm publish:components && pnpm publish:renderer && pnpm publish:server"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
