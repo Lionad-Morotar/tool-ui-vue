@@ -7,17 +7,37 @@ import LocaleToggle from './LocaleToggle.vue'
 
 console.log('[Histoire Setup] Tailwind CSS loaded');
 
-// Redirect root path to the branded landing story
-// This replaces the default Histoire HomeView with our custom landing page
+// Redirect root path to the site
 // Only run in the main window, not in sandbox iframes
 if (typeof window !== 'undefined' && typeof document !== 'undefined' && window.self === window.top) {
   const hash = window.location.hash;
   if (hash === '' || hash === '#' || hash === '#/') {
-    window.location.replace('#/story/src-stories-landing-index-story-vue');
+    window.location.replace('https://tool-ui-vue.vercel.app');
   }
 
   // Mount locale toggle button
   mountLocaleToggle();
+
+  // Workaround: Histoire beta grid-layout bug where variantId from a previous
+  // story leaks across navigation, causing stale variants to render.
+  // When the story path changes, strip the dangling variantId.
+  let lastStoryPath = '';
+  window.addEventListener('hashchange', () => {
+    const match = window.location.hash.match(/#\/story\/([^?]+)/);
+    if (!match) return;
+    const storyPath = match[1];
+    if (lastStoryPath && storyPath !== lastStoryPath) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('variantId')) {
+        url.searchParams.delete('variantId');
+        window.history.replaceState(null, '', url.href);
+      }
+    }
+    lastStoryPath = storyPath;
+  });
+  // Initialise lastStoryPath on load
+  const initMatch = window.location.hash.match(/#\/story\/([^?]+)/);
+  if (initMatch) lastStoryPath = initMatch[1];
 }
 
 /**

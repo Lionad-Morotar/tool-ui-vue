@@ -4,7 +4,6 @@ import { defineConfig } from 'histoire';
 import { resolve } from 'path';
 
 const storyGroups = [
-  { title: 'Getting Started', stories: ['landing'] },
   { title: 'Data Display', stories: ['chart', 'data-table', 'stats-display', 'weather-widget'] },
   { title: 'Code & Terminal', stories: ['code-block', 'code-diff', 'terminal'] },
   { title: 'Media', stories: ['audio', 'image', 'image-gallery', 'item-carousel', 'video'] },
@@ -22,7 +21,7 @@ export default defineConfig({
   routerMode: 'hash',
   theme: {
     title: 'tool-ui-vue',
-    logoHref: '/#/story/src-stories-landing-index-story-vue',
+    logoHref: 'https://tool-ui-vue.vercel.app',
   },
   defaultStoryProps: {
     layout: {
