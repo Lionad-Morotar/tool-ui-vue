@@ -52,24 +52,24 @@ const { t } = useSiteLocale()
       </div>
     </div>
 
-    <!-- 用户确认应用 -->
+    <!-- 用户确认应用 — 点击后 order 重置 -->
     <DemoChatMessage
       v-if="step >= 2"
       role="user"
       :content="t('demoCode.userApplied').value"
       :delay="0"
-      :order="2"
+      :order="0"
     />
 
-    <!-- Agent 最终确认 -->
+    <!-- Agent 确认 -->
     <div
       v-if="step >= 2"
       class="flex justify-start"
     >
       <div class="space-y-3 w-full max-w-[95%]">
-        <DemoChatMessage role="agent" :content="t('demoCode.agentConfirm').value" :delay="120" :order="3" />
+        <DemoChatMessage role="agent" :content="t('demoCode.agentConfirm').value" :delay="0" :order="1" />
 
-        <DemoDelayedShow :order="4">
+        <DemoDelayedShow :order="2">
           <div class="flex items-center gap-2">
             <button
               class="bg-background hover:bg-muted px-3 py-1.5 border border-border rounded-md font-medium text-foreground text-xs"
@@ -82,21 +82,21 @@ const { t } = useSiteLocale()
       </div>
     </div>
 
-    <!-- 合并成功 -->
+    <!-- 合并成功 — 点击后 order 重置 -->
     <DemoChatMessage
       v-if="step >= 3"
       role="user"
       :content="t('demoCode.userMerged').value"
       :delay="0"
-      :order="4"
+      :order="0"
     />
 
     <DemoChatMessage
       v-if="step >= 3"
       role="agent"
       :content="t('demoCode.agentDone').value"
-      :delay="120"
-      :order="5"
+      :delay="0"
+      :order="1"
     />
   </div>
 </template>

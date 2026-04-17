@@ -26,23 +26,23 @@
 <style scoped>
 .tech-grid {
   background-image:
-    linear-gradient(to right, hsl(var(--color-foreground)) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--color-foreground)) 1px, transparent 1px);
+    linear-gradient(to right, oklch(from var(--color-foreground) l c h) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(from var(--color-foreground) l c h) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
 .tech-orbs {
   background:
-    radial-gradient(circle at 20% 30%, hsl(var(--color-primary) / 0.06) 0%, transparent 25%),
-    radial-gradient(circle at 80% 70%, hsl(var(--color-primary) / 0.04) 0%, transparent 25%),
-    radial-gradient(circle at 50% 50%, hsl(var(--color-foreground) / 0.03) 0%, transparent 30%);
+    radial-gradient(circle at 20% 30%, oklch(from var(--color-primary) l c h / 0.06) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, oklch(from var(--color-primary) l c h / 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 50% 50%, oklch(from var(--color-foreground) l c h / 0.03) 0%, transparent 30%);
 }
 
 .tech-scanline {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    hsl(var(--color-primary) / 0.08) 50%,
+    oklch(from var(--color-primary) l c h / 0.08) 50%,
     transparent 100%
   );
   background-size: 100% 8px;

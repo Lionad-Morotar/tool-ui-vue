@@ -93,7 +93,7 @@ async function handlePanelAction(actionId: string, value: Record<string, string 
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto w-[70%] max-w-3xl">
+  <div class="space-y-4 mx-auto w-full max-w-3xl">
     <!-- 用户首轮 -->
     <DemoChatMessage role="user" :content="t('demoRestaurant.userIntro').value" :delay="0" :order="0" />
 
@@ -122,13 +122,13 @@ async function handlePanelAction(actionId: string, value: Record<string, string 
       </div>
     </div>
 
-    <!-- 用户选择 -->
+    <!-- 用户选择 — 点击后 order 重置 -->
     <DemoChatMessage
       v-if="step === 'panel' || step === 'done'"
       role="user"
       :content="t('demoRestaurant.userSelect', { name: selectedRestaurant }).value"
       :delay="0"
-      :order="2"
+      :order="0"
     />
 
     <!-- Agent 确认偏好 -->
@@ -137,9 +137,9 @@ async function handlePanelAction(actionId: string, value: Record<string, string 
       class="flex justify-start"
     >
       <div class="w-full max-w-[90%] space-y-3">
-        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" :delay="120" :order="3" />
+        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" :delay="0" :order="1" />
 
-        <DemoDelayedShow :order="4">
+        <DemoDelayedShow :order="2">
           <PreferencesPanel
             v-if="step === 'panel' || step === 'done'"
             id="demo-restaurant-panel"
@@ -180,19 +180,19 @@ async function handlePanelAction(actionId: string, value: Record<string, string 
           v-if="step === 'done'"
           role="agent"
           :content="t('demoRestaurant.agentDone').value"
-          :delay="120"
-          :order="4"
+          :delay="0"
+          :order="0"
         />
       </div>
     </div>
 
-    <!-- 用户确认 -->
+    <!-- 用户确认 — 点击后 order 重置 -->
     <DemoChatMessage
       v-if="step === 'done'"
       role="user"
       :content="t('demoRestaurant.userDone').value"
       :delay="0"
-      :order="5"
+      :order="1"
     />
   </div>
 </template>

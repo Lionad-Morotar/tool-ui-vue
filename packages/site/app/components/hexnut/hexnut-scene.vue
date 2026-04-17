@@ -77,21 +77,32 @@ function playClick() {
     audioCtx.resume()
   }
   const t = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  const gain = audioCtx.createGain()
 
-  osc.type = 'triangle'
-  osc.frequency.setValueAtTime(1200, t)
-  osc.frequency.exponentialRampToValueAtTime(300, t + 0.035)
+  // Percussive impact — square wave for metallic character
+  const impact = audioCtx.createOscillator()
+  const impactGain = audioCtx.createGain()
+  impact.type = 'square'
+  impact.frequency.setValueAtTime(100, t)
+  impact.frequency.exponentialRampToValueAtTime(200, t + 0.02)
+  impactGain.gain.setValueAtTime(0.14, t)
+  impactGain.gain.exponentialRampToValueAtTime(0.001, t + 0.025)
+  impact.connect(impactGain)
+  impactGain.connect(audioCtx.destination)
+  impact.start(t)
+  impact.stop(t + 0.03)
 
-  gain.gain.setValueAtTime(0.22, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035)
-
-  osc.connect(gain)
-  gain.connect(audioCtx.destination)
-
-  osc.start(t)
-  osc.stop(t + 0.04)
+  // Metallic ring — sine overtone for resonance
+  const ring = audioCtx.createOscillator()
+  const ringGain = audioCtx.createGain()
+  ring.type = 'sine'
+  ring.frequency.setValueAtTime(100, t)
+  ring.frequency.exponentialRampToValueAtTime(800, t + 0.06)
+  ringGain.gain.setValueAtTime(0.06, t)
+  ringGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06)
+  ring.connect(ringGain)
+  ringGain.connect(audioCtx.destination)
+  ring.start(t)
+  ring.stop(t + 0.07)
 }
 
 function handlePointerDown(e: PointerEvent) {
@@ -327,7 +338,7 @@ watch(() => config.value, updateTheme, { deep: true })
     ref="containerRef"
     class="relative w-full h-full overflow-hidden"
     :class="[dragState.isDragging ? 'cursor-grabbing' : 'cursor-grab']"
-    :style="{ touchAction: 'none', 'clip-path': 'polygon(100% 0px, 100% 100%, 100% 100%, 0px 82%, 0px 0px)' }"
+    :style="{ touchAction: 'none' }"
     @pointerdown="handlePointerDown"
     @pointerup="handlePointerUp"
     @pointerleave="handlePointerUp"

@@ -9,13 +9,13 @@ const docsUrl = computed(() => {
 </script>
 
 <template>
-  <section class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-0 max-w-7xl">
+  <section class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-4 max-w-7xl">
     <!-- Left: Copy -->
-    <div class="flex flex-col justify-center">
+    <div class="flex flex-col justify-center mt-12">
       <h1 class="flex flex-wrap items-center gap-2 font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl lg:leading-18 tracking-normal">
         <span class="inline-flex items-center gap-2">
-          <span class="lg:hidden inline-flex items-center justify-center text-primary">
-            <Icon name="lucide:nut" class="h-8 w-8" />
+          <span class="lg:hidden inline-flex justify-center items-center text-primary">
+            <Icon name="lucide:nut" class="w-8 h-8" />
           </span>
           {{ t('hero.h1').value }}
         </span>

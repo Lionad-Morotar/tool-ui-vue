@@ -10,6 +10,24 @@ const docsUrl = computed(() => {
   const base = config.app.baseURL
   return base === '/' ? '/docs/' : `${base}docs/`
 })
+
+function toggleTheme() {
+  const newPreference = colorMode.value === 'dark' ? 'light' : 'dark'
+
+  if (!document.startViewTransition) {
+    colorMode.preference = newPreference
+    return
+  }
+
+  document.documentElement.dataset.themeTransition = ''
+  const transition = document.startViewTransition(async () => {
+    colorMode.preference = newPreference
+    await nextTick()
+  })
+  transition.finished.then(() => {
+    delete document.documentElement.dataset.themeTransition
+  })
+}
 </script>
 
 <template>
@@ -52,7 +70,7 @@ const docsUrl = computed(() => {
           variant="ghost"
           :icon="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
           :aria-label="themeLabel"
-          @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+          @click="toggleTheme"
         />
       </nav>
     </div>

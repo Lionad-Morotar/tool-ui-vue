@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @import "@lionad/vtu-theme/tokens.css";
+@import "./theme-transition.css";
 
 /* Scan monorepo component sources for Tailwind classes */
 @source "../../../../components/src";
