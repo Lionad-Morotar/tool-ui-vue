@@ -1,26 +1,26 @@
 ---
-lang: en
+lang: zh-CN
 ---
 
-[中文](readme.zh.md)
+[English](readme.md)
 
-# tool-ui-vue (vtu)
+# tool-ui-vue（vtu）
 
-Vue 3 cmpts for interactive AI tool call widgets.
+Vue 3 组件库，用于 Agent 工具调用时的人机交互。
 
 ![Site](./assets/landing.jpg)
 
-Home: https://lionad-morotar.github.io/tool-ui-vue/
+首页：https://lionad-morotar.github.io/tool-ui-vue/
 
-## Quick Start
+## 快速开始
 
-If you use an agent, install in one prompt:
+如果你使用 Agent 可以一键安装：
 
 ```
-Install https://github.com/Lionad-Morotar/tool-ui-vue and create a /dev/tool-ui-vue page for development and debugging
+安装使用 https://github.com/Lionad-Morotar/tool-ui-vue，并创建 /dev/tool-ui-vue 页面供开发调试
 ```
 
-Or, if you prefer the traditional approach:
+或者，你倾向使用传统方法：
 
 ```bash
 pnpm add @lionad/vtu-components
@@ -48,7 +48,7 @@ import { Terminal } from '@lionad/vtu-components'
 npx skills add https://github.com/Lionad-Morotar/tool-ui-vue
 ```
 
-More about skills: [@lionad/vtu-skills](/packages/skills/tool-ui-vue/SKILL.md)
+了解更多 skills：[@lionad/vtu-skills](/packages/skills/tool-ui-vue/SKILL.md)
 
 ## MCP Server
 
@@ -63,4 +63,4 @@ More about skills: [@lionad/vtu-skills](/packages/skills/tool-ui-vue/SKILL.md)
 }
 ```
 
-More about MCP server: [@lionad/vtu-server](/packages/server/README.md)
+了解更多 MCP server：[@lionad/vtu-server](/packages/server/README.md)
