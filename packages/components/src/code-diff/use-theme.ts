@@ -6,7 +6,7 @@ import type { ComputedRef } from 'vue';
  * @returns 'light' | 'dark' based on system preference
  */
 export function getSystemTheme(): 'light' | 'dark' {
-  if (typeof window === 'undefined') return 'light';
+  if (import.meta.env.SSR) return 'light';
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
@@ -15,7 +15,7 @@ export function getSystemTheme(): 'light' | 'dark' {
  * Priority: data-theme on html → class on html → .dark ancestor in DOM
  */
 export function getDocumentTheme(): 'light' | 'dark' | null {
-  if (typeof document === 'undefined') return null;
+  if (import.meta.env.SSR) return null;
 
   const root = document.documentElement;
   const dataTheme = root.getAttribute('data-theme')?.toLowerCase();
@@ -47,7 +47,7 @@ export function useResolvedTheme(): ComputedRef<'light' | 'dark'> {
   const theme = ref<'light' | 'dark'>(getDocumentTheme() ?? getSystemTheme());
 
   onMounted(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
+    if (import.meta.env.SSR) {
       return;
     }
 
