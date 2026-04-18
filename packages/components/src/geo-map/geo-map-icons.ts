@@ -3,7 +3,7 @@ import type * as LeafletNS from 'leaflet';
 import type { DivIcon, Icon, IconOptions } from 'leaflet';
 
 type LeafletModule = typeof LeafletNS;
-type LeafletIconRuntime = Pick<LeafletModule, 'divIcon'>;
+export type LeafletIconRuntime = Pick<LeafletModule, 'divIcon'>;
 
 // Helper type to work around vue-leaflet's strict Icon typing
 // DivIcon is a subclass of Icon but the types don't fully align
