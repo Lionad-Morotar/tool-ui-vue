@@ -13,6 +13,8 @@ export const ALLOWED_PATTERNS: RegExp[] = [
   /\[vtu:i18n\] No LocaleProvider configured/,
   // Image component alt prop - expected when testing i18n fallback behavior
   /\[Vue warn\]: Missing required prop: "alt"/,
+  // Props validation warnings - expected when testing usePropsValidator
+  /\[\w+\] Props validation failed/,
 ];
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;

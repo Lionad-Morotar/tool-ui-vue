@@ -2,6 +2,8 @@
 // All business logic lives here, index.vue is UI-only
 
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { usePropsValidator } from '../../core';
+import { SerializableGeoMapSchema } from '../schema';
 import type { GeoMapProps, GeoMapMarker, GeoMapRoute, GeoMapStyle } from '../schema';
 import type { Ref, ComputedRef } from 'vue';
 
@@ -51,6 +53,8 @@ export function useGeoMap(
   props: GeoMapProps,
   emit: GeoMapEmit,
 ): GeoMapState {
+  usePropsValidator(SerializableGeoMapSchema, props, 'GeoMap');
+
   const inheritedTheme = ref<'light' | 'dark'>(
     getDocumentTheme() ?? getSystemTheme()
   );

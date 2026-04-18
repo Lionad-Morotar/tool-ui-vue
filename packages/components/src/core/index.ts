@@ -8,6 +8,7 @@ export * from './contract'
 export * from './schema'
 export * from './parse'
 export * from './media'
+export * from './usePropsValidator'
 
 // Export Button component and variants
 export { Button, buttonVariants } from './components/button'

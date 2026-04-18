@@ -108,6 +108,21 @@ HTMLDialogElement.prototype.close = vi.fn(function(this: HTMLDialogElement) {
   this.removeAttribute('open');
 });
 
+// getBoundingClientRect mock (for WeatherWidget, jsdom doesn't provide it on all elements)
+Element.prototype.getBoundingClientRect = vi.fn(function (this: Element) {
+  return {
+    width: 400,
+    height: 300,
+    top: 0,
+    left: 0,
+    bottom: 300,
+    right: 400,
+    x: 0,
+    y: 0,
+    toJSON: () => ({}),
+  };
+}) as unknown as typeof Element.prototype.getBoundingClientRect;
+
 // Popover API mocks (for citation popovers)
 HTMLElement.prototype.showPopover = vi.fn(function (this: HTMLElement) {
   this.setAttribute('popover-open', '');

@@ -2,6 +2,8 @@
 // All business logic lives here, cmpts/message-draft.vue is UI-only
 
 import { ref, computed, watch, onUnmounted, nextTick } from 'vue';
+import { usePropsValidator } from '../../core';
+import { SerializableMessageDraftSchema } from '../schema';
 import type {
   RuntimeMessageDraftProps,
   SerializableEmailDraft,
@@ -56,6 +58,8 @@ export function useMessageDraft(
   },
   emit: MessageDraftEmit,
 ): MessageDraftState {
+  usePropsValidator(SerializableMessageDraftSchema, props, 'MessageDraft');
+
   const undoGracePeriod = props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD;
 
   const state = ref<DraftState>(resolveStateFromOutcome(props.outcome));

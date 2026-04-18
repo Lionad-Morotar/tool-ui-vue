@@ -1,5 +1,7 @@
 import { usePreferredReducedMotion } from '@vueuse/core';
 import { type ComputedRef, computed } from 'vue';
+import { usePropsValidator } from '../../core';
+import { SerializableWeatherWidgetSchema } from '../schema';
 import { TUNED_WEATHER_EFFECTS_CHECKPOINT_OVERRIDES } from '../effects/generated/tuned-presets.generated';
 import { getSceneBrightnessFromTimeOfDay, getWeatherTheme } from '../effects/parameter-mapper';
 import { getNearestCheckpoint, type WeatherEffectsOverrides } from '../effects/tuning';
@@ -36,6 +38,8 @@ export interface WeatherWidgetState {
 }
 
 export function useWeatherWidget(options: UseWeatherWidgetOptions): WeatherWidgetState {
+  usePropsValidator(SerializableWeatherWidgetSchema, options, 'WeatherWidget');
+
   const preferredReducedMotion = usePreferredReducedMotion();
 
   const reducedMotion = computed(() => {

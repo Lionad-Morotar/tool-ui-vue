@@ -1,5 +1,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useSanitize } from '../../core/sanitize';
+import { usePropsValidator } from '../../core';
+import { SerializableCodeBlockSchema } from '../schema';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from '../schema';
 import type { Highlighter, ShikiTransformer } from 'shiki';
 import type { ComputedRef, Ref } from 'vue';
@@ -70,6 +72,8 @@ function getDocumentTheme(): 'light' | 'dark' | null {
 }
 
 export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
+  usePropsValidator(SerializableCodeBlockSchema, options, 'CodeBlock');
+
   const {
     code,
     language,

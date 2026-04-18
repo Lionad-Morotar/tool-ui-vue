@@ -50,6 +50,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-approval"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Test Approval');
   });
 
   test('Audio mounts with minimal props', async () => {
@@ -62,6 +64,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('audio').exists()).toBe(true);
+    expect(wrapper.find('audio').attributes('src')).toBe('https://example.com/audio.mp3');
   });
 
   test('Image mounts with minimal props', async () => {
@@ -75,6 +79,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('img').exists()).toBe(true);
+    expect(wrapper.find('img').attributes('src')).toBe('https://example.com/image.jpg');
   });
 
   test('Video mounts with minimal props', async () => {
@@ -87,6 +93,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('video').exists()).toBe(true);
+    expect(wrapper.find('video').attributes('src')).toBe('https://example.com/video.mp4');
   });
 
   test('CodeBlock mounts with minimal props', async () => {
@@ -98,6 +106,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="code-block"]').exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-code"]').exists()).toBe(true);
   });
 
   test('Terminal mounts with minimal props', async () => {
@@ -111,6 +121,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="terminal"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('ls -la');
   });
 
   test('Citation mounts with minimal props', async () => {
@@ -124,6 +136,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-citation"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Test Article');
   });
 
   test('LinkPreview mounts with minimal props', async () => {
@@ -135,6 +149,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-link"]').exists()).toBe(true);
+    expect(wrapper.find('[role="link"]').exists()).toBe(true);
   });
 
   test('OptionList mounts with minimal props', async () => {
@@ -149,6 +165,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.findAll('button[role="option"]').length).toBe(2);
+    expect(wrapper.text()).toContain('Option 1');
   });
 
   test('XPost mounts with minimal props', async () => {
@@ -167,6 +185,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="x-post"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Hello world');
   });
 
   test('InstagramPost mounts with minimal props', async () => {
@@ -185,6 +205,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="instagram-post"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Beautiful photo');
   });
 
   test('LinkedInPost mounts with minimal props', async () => {
@@ -203,6 +225,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="linkedin-post"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Professional update');
   });
 
   test('OrderSummary mounts with minimal props', async () => {
@@ -221,6 +245,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-order"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Item 1');
   });
 
   test('MessageDraft mounts with minimal props', async () => {
@@ -235,6 +261,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-draft"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Test Subject');
   });
 
   test('DataTable mounts with minimal props', async () => {
@@ -248,6 +276,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('table').exists()).toBe(true);
+    expect(wrapper.findAll('tbody tr').length).toBeGreaterThanOrEqual(1);
   });
 
   test('PreferencesPanel mounts with minimal props', async () => {
@@ -255,12 +285,18 @@ describe('E2E: Component Mounts', () => {
     const wrapper = mount(PreferencesPanel as Component, {
       props: {
         id: 'test-prefs',
-        preferences: [
-          { id: 'pref1', label: 'Preference 1', type: 'boolean', value: true },
+        sections: [
+          {
+            items: [
+              { id: 'pref1', label: 'Preference 1', type: 'switch', defaultChecked: true },
+            ],
+          },
         ],
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[role="switch"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Preference 1');
   });
 
   test('Plan mounts with minimal props', async () => {
@@ -275,6 +311,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-plan"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Todo item');
   });
 
   test('ProgressTracker mounts with minimal props', async () => {
@@ -286,6 +324,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-progress"]').exists()).toBe(true);
+    expect(wrapper.findAll('li').length).toBeGreaterThanOrEqual(1);
   });
 
   test('QuestionFlow mounts with minimal props', async () => {
@@ -303,6 +343,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-questions"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Question 1?');
   });
 
   test('ItemCarousel mounts with minimal props', async () => {
@@ -314,6 +356,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-carousel-item]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Item 1');
   });
 
   test('ImageGallery mounts with minimal props', async () => {
@@ -325,6 +369,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('img').exists()).toBe(true);
+    expect(wrapper.find('img').attributes('src')).toBe('https://example.com/img.jpg');
   });
 
   test('Chart mounts with minimal props (stub)', async () => {
@@ -339,6 +385,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('svg').exists()).toBe(true);
+    expect(wrapper.find('[data-slot="chart"]').exists()).toBe(true);
   });
 
   test('CodeDiff mounts with minimal props', async () => {
@@ -351,6 +399,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-slot="code-diff"]').exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-diff"]').exists()).toBe(true);
   });
 
   test('WeatherWidget mounts with minimal props', async () => {
@@ -371,6 +421,8 @@ describe('E2E: Component Mounts', () => {
         ],
       },
     });
+    // NOTE: WeatherWidget uses WebGL and component refs that call getBoundingClientRect
+    // on component instances (not DOM elements), which fails in jsdom. Keep assertion minimal.
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -383,6 +435,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('input[type="range"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Param 1');
   });
 
   test('StatsDisplay mounts with minimal props', async () => {
@@ -394,6 +448,8 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-stats"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('Stat 1');
   });
 
   test('GeoMap mounts with minimal props', async () => {
@@ -405,5 +461,6 @@ describe('E2E: Component Mounts', () => {
       },
     });
     expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('.mock-geo-map').exists()).toBe(true);
   });
 });

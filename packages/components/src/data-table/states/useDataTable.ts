@@ -2,6 +2,8 @@
 import { useFormat, type FormatOptions } from './useFormat';
 import { useLayout, type UseLayoutOptions } from './useLayout';
 import { useSort, type UseSortOptions } from './useSort';
+import { usePropsValidator } from '../../core';
+import { SerializableDataTableSchema } from '../schema';
 import type { DataTableProps } from '../schema';
 
 export type DataTableEmit = {
@@ -47,6 +49,8 @@ export function useDataTable(
   props: DataTableProps,
   emit: DataTableEmit,
 ): DataTableState {
+  usePropsValidator(SerializableDataTableSchema, props, 'DataTable');
+
   // useSort options
   const sortOptions: UseSortOptions = {
     sort: props.sort,
