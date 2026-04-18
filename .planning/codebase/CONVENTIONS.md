@@ -1,146 +1,382 @@
-# Coding Conventions
+# 编码约定
 
-**分析日期：** 2026-04-03
-
-## 代码风格
-
-**格式化工具/检查器：** `eslint` 配合 `typescript-eslint` + `eslint-plugin-vue` + `eslint-plugin-tailwindcss` + `eslint-plugin-import-x`
-
-**配置文件：** `eslint.config.mjs`
-
-**关键设置：**
-- 通过 `projectService: true` 对 `.vue` 文件启用类型感知检查
-- Vue 解析器：`vue-eslint-parser`，`<script>` 块使用 `typescript-eslint` 解析器
-- 强制使用单引号：`quotes: ['error', 'single', { avoidEscape: true }]`
-- 允许未使用变量前缀 `_`
-
-**运行命令：**
-```bash
-pnpm lint        # eslint . --fix
-pnpm check       # pnpm lint && pnpm typecheck
-```
+**分析日期:** 2026-04-18
 
 ## 命名规范
 
-**组件（导出）：**
-- 组件名使用 PascalCase：`Citation`、`Audio`、`MessageDraft`
-- 内部组件名通过 `defineOptions({ name: 'cmpt-citation' })` 设置，使用带 `cmpt-` 前缀的 kebab-case
-- 组件目录使用 kebab-case：`message-draft/`、`stats-display/`、`weather-widget/`
-- 子组件放在 `cmpts/` 目录：`cmpts/citation-list.vue`
+**文件:**
+- 组件主文件: `index.vue` — 放在以 kebab-case 组件名命名的目录下，如 `packages/components/src/code-block/index.vue`
+- Schema 文件: `schema.ts` — 每个组件目录下一个，如 `packages/components/src/code-block/schema.ts`
+- 状态逻辑: `states/useXxx.ts` — 以 `use` 前缀的 composable，如 `packages/components/src/code-block/states/useCodeBlock.ts`
+- 子组件: `cmpts/xxx.vue` — kebab-case 命名，如 `packages/components/src/weather-widget/cmpts/weather-data-overlay.vue`
+- 导出桶: `index.ts` — 每个组件目录、states、i18n 目录下各一个
+- i18n 消息: `i18n/zh-CN.ts` / `i18n/en.ts` — 固定文件名，导出 `zhCN` / `en` 常量
+- 测试文件: `__tests__/xxx.test.ts` — 每个组件目录下的 `__tests__` 子目录
 
-**文件：**
-- Vue SFC：`index.vue`（主组件）、`*.vue`（子组件）
-- Barrel 文件：`index.ts` 导出组件 + 类型 + schema 函数
-- Schema 文件：`schema.ts`（每个组件）
-- Story 文件：`src/stories/` 中的 `*.story.vue`
-- 测试文件：`__tests__/index.test.ts` 或 `__tests__/ComponentName.test.ts`
-- 工具文件：kebab-case `.ts` 文件
+**函数/Composable:**
+- 状态 composable: `useXxx` — 如 `useCodeBlock`、`useOptionList`、`useWeatherWidget`
+- 工具函数: camelCase — 如 `cn()`、`prefersReducedMotion()`、`formatZodError()`
+- 解析函数: `parseSerializableXxx` / `safeParseSerializableXxx` — 如 `parseSerializableCodeBlock`
 
-**函数：**
-- 函数使用 camelCase：`handleClick()`、`formatDate()`、`createProps()`
-- 事件处理函数前缀 `handle`：`handleMouseEnter`、`handleSeekStart`
-- Composables 前缀 `use`：`useAudio`、`useLocalAudio`、`useMediaControls`
-- Provider 函数前缀 `provide`：`provideAudio`
+**常量:**
+- Zod Schema: PascalCase + Schema 后缀 — 如 `CodeBlockPropsSchema`、`SerializableCodeBlockSchema`
+- TypeScript 类型: PascalCase — 如 `CodeBlockProps`、`SerializableCodeBlock`
+- CSS Schema: XxxCssSchema — 如 `CodeBlockCssSchema`
+- i18n 导出: `zhCN` / `en` / `zhCNAll` / `enAll`
 
-**变量：**
-- 变量使用 camelCase
-- 常量使用大写下划线（模块级常量）：`FALLBACK_LOCALE = 'en-US'`
-- Ref 使用纯 camelCase：`isPopoverOpen`、`audioRef`
+**组件注册名:**
+- 所有组件使用 `defineOptions({ name: 'CmptXxx', inheritAttrs: false })` 注册
+- 前缀 `Cmpt` + PascalCase 组件名，如 `CmptCodeBlock`、`CmptWeatherWidget`、`CmptItemCard`
+- 模板中使用 kebab-case 引用: `<effect-compositor>`、`<weather-data-overlay>`
 
-**类型：**
-- Props 接口：`XxxProps`（如 `CitationProps`、`AudioProps`）
-- Serializable schema 类型：`SerializableXxx`（如 `SerializableCitation`）
-- 变体/枚举类型使用 PascalCase：`CitationType`、`AudioVariant`
-- Zod schemas 使用 PascalCase + `Schema` 后缀：`CitationTypeSchema`、`SerializableAudioSchema`
-- Parser 函数使用 camelCase：`parseSerializableXxx`、`safeParseSerializableXxx`
+## 组件架构模式
 
-## TypeScript 使用
+### Headless Composable 分层
 
-**严格性：**
-- `tsconfig.json` 中 `strict: true`
-- `noUnusedLocals: true`
-- `noUnusedParameters: true`
-- `isolatedModules: true`
+每个组件严格遵循三层分离:
 
-**类型导入：**
-- 必须使用 `type` 导入（`@typescript-eslint/consistent-type-imports` 强制）
-- 类型导入通过 `import-x/order` 单独分组并放在最后
+```
+component-name/
+├── schema.ts          # 数据契约层：Zod Schema + TS 类型 + Props 接口
+├── states/            # 逻辑层：composable 封装所有业务逻辑
+│   ├── index.ts       # 桶导出
+│   └── useCodeBlock.ts
+├── i18n/              # 国际化：zh-CN.ts + en.ts
+│   ├── zh-CN.ts
+│   └── en.ts
+├── cmpts/             # 子组件（可选，仅复杂组件）
+│   └── xxx.vue
+├── __tests__/         # 测试
+│   └── index.test.ts
+├── index.vue          # 视图层：仅模板 + 最小绑定
+└── index.ts           # 导出桶
+```
 
-**Vue SFC script 块：**
-- 始终使用 `<script setup lang="ts">`
-- Props 使用 `defineProps<PropsType>()` 定义
-- Emits 使用 `defineEmits<{ eventName: [arg: Type] }>()` 定义
-- 组件选项通过 `defineOptions({ name: '...', inheritAttrs: false })` 设置
+**关键规则:**
+- `index.vue` 只做 `reactive(useXxx(props))` + 模板渲染，不含业务逻辑
+- 所有状态、computed、事件处理放在 `states/useXxx.ts`
+- Schema 和类型放在 `schema.ts`，不放在 composable 中
 
-**Schema-driven 契约：**
-- 每个组件都有一个 `schema.ts`，包含：
-  - Zod schema：`SerializableXxxSchema`
-  - 类型导出：`export type SerializableXxx = z.infer<typeof SerializableXxxSchema>`
-  - Parser：`parseSerializableXxx`
-  - Safe parser：`safeParseSerializableXxx`
-- 使用 `src/shared/contract.ts` 中的 `defineToolUiContract(componentName, schema)` 构建解析器
+### index.vue 标准结构
 
-## 注释和文档约定
+```vue
+<script setup lang="ts">
+import { cn } from '../core';
+import { useI18n } from '../core/i18n';
+import { reactive } from 'vue';
+import { useXxx } from './states';
+import type { XxxProps } from './schema';
 
-**JSDoc 使用：**
-- `schema.ts` 文件顶部的模块级注释解释 schema 用途
-- `src/shared/utils.ts` 中的公共工具函数有 JSDoc 块
-- 内联注释解释非明显的逻辑（如净化原理）
+defineOptions({ name: 'CmptXxx', inheritAttrs: false })
 
-**代码块标记：**
-- ESLint 配置中的节用 `// ========== Section ==========` 注释分隔
+const props = withDefaults(defineProps<XxxProps>(), {
+  css: () => ({}),
+})
 
-**测试注释：**
-- 测试使用带 ID 的块注释：`/** TEST-PLAYGROUND-01: Description */`
-- Story 变体在 Histoire `Variant` 组件中有描述性标题
+const emit = defineEmits<{
+  change: [value: XxxType];
+  action: [actionId: string, value: XxxType];
+}>()
 
-## 导入组织
+const { t } = useI18n()
 
-**顺序（`import-x/order` 强制）：**
-1. `builtin` + `external`
-2. `internal`（包括 `@/` 和 `~/` 别名）
-3. `parent`、`sibling`、`index`
-4. `type` 导入
+// 所有业务逻辑委托给 states 层
+const state = reactive(useXxx(props, emit))
+</script>
+```
 
-**组间无空行：** `newlines-between: 'never'`
+### 根元素属性约定
 
-**按字母排序：** 升序，每组内不区分大小写
+所有组件根元素必须包含:
+- `data-slot="xxx"` — 组件标识（kebab-case），如 `data-slot="code-block"`
+- `:data-tool-ui-id="id"` — 唯一实例标识
+- `v-bind="$attrs"` — 透传属性（配合 `inheritAttrs: false`）
 
-**别名：**
-- `@/` → `src/`（在 `vite.config.ts` 和 `vitest.config.ts` 中配置）
+## Zod Schema 约定
 
-## Vue 模板约定
+### 标准 Schema 结构
 
-**模板中的组件大小写：**
-- `vue/component-name-in-template-casing` 强制 kebab-case
-- 示例：`<audio id="audio-basic" src="..." />`
+每个组件的 `schema.ts` 包含:
 
-**Tailwind 类：**
-- 使用 `src/utils/index.ts` 中的 `cn()` 合并（使用 `clsx` + `tailwind-merge`）
-- 复杂情况优先多行 class 绑定
-- BEM 风格排序由自定义 `bem-order/bem-order` 规则强制执行（警告）
+```typescript
+// 1. CSS Schema（可选的样式覆盖）
+export const XxxCssSchema = z.object({
+  root: z.string().optional(),
+  header: z.string().optional(),
+  content: z.string().optional(),
+});
+export type XxxCss = z.infer<typeof XxxCssSchema>;
 
-**可访问性：**
-- 交互元素有 `type="button"`
-- 装饰图片使用 `alt=""` + `aria-hidden="true"`
-- 仅图标按钮的 ARIA 标签：`:aria-label="state.playing ? 'Pause' : 'Play'"`
+// 2. Props Schema（完整 props 验证）
+export const XxxPropsSchema = z.object({
+  id: ToolUIIdSchema,
+  role: ToolUIRoleSchema.optional(),
+  receipt: ToolUIReceiptSchema.optional(),
+  // ... 组件特有字段
+  css: XxxCssSchema.optional().default({}),
+});
+
+// 3. TypeScript Props 接口（手写，非 z.infer）
+export interface XxxProps {
+  id: string;
+  // ...
+  css?: XxxCss;
+}
+
+// 4. Serializable Schema（JSON 安全版本，排除 css）
+export const SerializableXxxSchema = XxxPropsSchema.omit({ css: true });
+
+// 5. 类型导出
+export type SerializableXxx = z.infer<typeof SerializableXxxSchema>;
+
+// 6. Contract + 解析函数
+const contract = defineToolUiContract('Xxx', SerializableXxxSchema);
+export const parseSerializableXxx = contract.parse;
+export const safeParseSerializableXxx = contract.safeParse;
+```
+
+### 核心共享 Schema
+
+来源: `packages/components/src/core/schema.ts`
+
+- `ToolUIIdSchema`: `z.string().min(1)` — 必需的唯一 ID
+- `ToolUIRoleSchema`: `z.enum(['information','decision','control','state','composite'])` — 可选角色
+- `ToolUIReceiptSchema`: `{ outcome, summary, identifiers?, at }` — 可选收据
+- `ActionSchema`: `{ id, label, sentence?, variant?, icon?, loading?, disabled? }`
+- `SerializableActionsConfigSchema`: `{ items: Action[], align?, confirmTimeout? }`
+
+### Schema 复杂验证
+
+使用 `superRefine` 进行跨字段验证:
+
+```typescript
+export const OptionListPropsSchema = OptionListPropsSchemaBase.superRefine(
+  validateOptionListInvariants,
+);
+```
+
+`validateOptionListInvariants` 检查: minSelections <= maxSelections、选项 ID 唯一、选中项在选项中存在。
+
+## CSS 样式约定
+
+### css prop 对象模式
+
+不使用 className prop，而是通过 `css` 对象传递样式覆盖:
+
+```typescript
+interface XxxCss {
+  root?: string;
+  header?: string;
+  content?: string;
+  copyButton?: string;
+}
+```
+
+模板中通过 `cn()` 合并:
+
+```vue
+:class="cn('base-classes', css?.root)"
+```
+
+### cn() 工具函数
+
+来源: `packages/components/src/core/utils.ts`
+
+```typescript
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(...inputs))
+}
+```
+
+所有 Tailwind CSS 类合并必须通过 `cn()` 处理，支持冲突解决和条件类。
+
+### Tailwind CSS v4 约定
+
+- 使用 `@container` 响应式前缀: `@container/option-list`、`@[240px]/actions`
+- 使用 `motion-safe:` 前缀处理动画降级: `motion-safe:animate-in`
+- 使用语义色彩 token: `bg-card`、`text-foreground`、`border-border`、`text-muted-foreground`
+- 暗色主题: `dark:text-green-400`
+
+## i18n 约定
+
+### 消息文件结构
+
+每个组件的 `i18n/zh-CN.ts`:
+
+```typescript
+export const zhCN = {
+  codeBlock: {
+    copied: '已复制',
+    copyCode: '复制代码',
+    showAllLines: '显示全部 {count} 行',
+    collapse: '收起',
+  },
+} as const
+```
+
+- 顶层 key 为组件名（camelCase）: `codeBlock`、`optionList`、`weatherWidget`
+- 支持 `{param}` 插值
+- 导出 `as const` 保证类型安全
+
+### useI18n 使用模式
+
+```typescript
+const { t } = useI18n()
+
+// 模板中（自动解包 ComputedRef）
+{{ t('codeBlock.showAllLines', { count: lineCount }) }}
+
+// 属性绑定中（需要 computed 解包）
+const ariaLabel = computed(() => t('codeBlock.copied').value)
+```
+
+- `t()` 返回 `ComputedRef<string>`，模板中自动解包
+- 属性绑定中需要 `.value` 访问或通过 `computed` 包装
+- 默认 locale: `zh-CN`
+- 测试中通过 `registerEnglish()` 切换到 `en`
+
+### 消息聚合
+
+来源: `packages/components/src/i18n/index.ts`
+
+- `zhCNAll` / `enAll` 合并所有组件消息（23 个组件各两份）
+- `registerEnglish()` 原子切换 locale + messages
+- 自动注册 zh-CN 为默认（非显式配置时）
+
+## 代码风格
+
+### 格式化工具
+- 无 Prettier，由 ESLint 规则控制格式
+
+### ESLint 规则
+
+来源: `eslint.config.mjs`
+
+**强制规则:**
+- 单引号: `quotes: ['error', 'single']`
+- 2 空格缩进（Vue HTML）: `vue/html-indent: ['error', 2]`
+- 单行最多 3 属性: `vue/max-attributes-per-line: ['error', { singleline: { max: 3 } }]`
+- 模板中 kebab-case 组件名: `vue/component-name-in-template-casing: ['error', 'kebab-case']`
+- Type import 分离: `@typescript-eslint/consistent-type-imports: ['error', { prefer: 'type-imports', fixStyle: 'separate-type-imports' }]`
+- 导入排序（字母升序）: `import-x/order` 按 `[builtin/external, internal, parent/sibling/index, type]` 分组
+
+**自定义插件:**
+- `bem-order/bem-order`: BEM CSS 类排序（warn）
+- `i18n/key-consistency`: i18n key 一致性检查（error）
+- `tailwindcss/classnames-order`: Tailwind 类名排序（warn）
+- `tailwindcss/no-contradicting-classname`: 矛盾类名检测（error）
+- `v-tw-merge/v-tw-merge`: 已关闭（项目未使用 vue directive 版本）
+
+### TypeScript
+
+- `no-explicit-any: 'warn'` — 允许但警告
+- `no-unused-vars: ['warn', { argsIgnorePattern: '^_' }]` — 下划线前缀忽略
+- Props 接口手写，不依赖 `z.infer`（保持灵活性）
+- 类型导入使用 `import type { ... }` 分离写法
+
+### Vue 特定
+
+- `<script setup lang="ts">` — 所有 SFC 使用 setup 语法
+- `defineOptions({ name: 'CmptXxx', inheritAttrs: false })` — 所有组件必须声明
+- `v-html` 允许使用（code-block/terminal 需要渲染原始 HTML）
+- `withDefaults(defineProps<XxxProps>(), { css: () => ({}) })` — css 默认空对象
 
 ## 错误处理
 
-**模式：**
-- 安全回退用空 catch 的 try/catch：`try { ... } catch { return undefined }`
-- 外部数据验证用 Zod `safeParse`
+### 解析层
+
+来源: `packages/components/src/core/parse.ts`
+
+```typescript
+// 抛出可读错误
+parseWithSchema(schema, input, 'ComponentName')
+// → Error: "Invalid ComponentName payload: path: message"
+
+// 安全解析（流式数据）
+safeParseWithSchema(schema, input)
+// → T | null
+```
+
+### Composable 层
+
+- 使用 `try/catch` 包裹异步操作，fallback 到降级状态
+- 不吞掉错误但也不中断渲染
+
+```typescript
+// packages/components/src/code-block/states/useCodeBlock.ts
+try {
+  const html = highlighter.codeToHtml(code, { ... });
+  setCachedHtml(cacheKey, html);
+  highlightedHtml.value = html;
+} catch {
+  // Fallback to escaped text
+  const escaped = code.replace(/&/g, '&amp;')...;
+  highlightedHtml.value = `<pre><code>${escaped}</code></pre>`;
+} finally {
+  isLoading.value = false;
+}
+```
+
+### i18n 回退
+
+- 缺少 key → 返回 key 字符串本身
+- 无 LocaleProvider → fallback 到内置 zh-CN
+- DEV 模式输出 `console.warn`
+
+## 导出约定
+
+### 组件导出桶 (index.ts)
+
+```typescript
+import CodeBlock from './index.vue'
+export { CodeBlock }
+export default CodeBlock
+
+export type {
+  CodeBlockProps,
+  SerializableCodeBlock,
+  CodeBlockLineNumbersMode,
+} from './schema';
+export {
+  CodeBlockPropsSchema,
+  SerializableCodeBlockSchema,
+  parseSerializableCodeBlock,
+  safeParseSerializableCodeBlock,
+} from './schema';
+```
+
+每个组件同时导出: Vue 组件 + Props 类型 + Serializable 类型 + Zod Schema + 解析函数
+
+## 导入组织
+
+**顺序（`import-x/order` 强制）:**
+1. `builtin` + `external`（vue、zod、第三方库）
+2. `internal`（`@/`、`~/**`、`#/**` 别名 + `../core`）
+3. `parent`、`sibling`、`index`（相对路径）
+4. `type` 导入（`import type { ... }`）
+
+**组间无空行:** `newlines-between: 'never'`
+
+**按字母排序:** 升序，每组内不区分大小写
+
+## 注释和文档约定
+
+**JSDoc 使用:**
+- `schema.ts` 文件顶部的模块级注释解释 schema 用途
+- 公共工具函数有 JSDoc 块
+- 内联注释解释非明显的逻辑
+
+**ESLint 配置中的节:**
+- 用 `// ========== Section ==========` 注释分隔
 
 ## 特殊目录
 
-**`src/components/.example/`：**
-- ESLint 忽略
-- 包含不属于构建的示例/参考组件
-
-**`src/stories/`：**
-- Histoire story 文件
-- ESLint 规则放宽：`no-export-in-script-setup`、`valid-template-root`、`multi-word-component-names`
+**`src/stories/`（Histoire story 文件）:**
+- ESLint 规则放宽: `no-export-in-script-setup`、`valid-template-root`、`multi-word-component-names`
 
 ---
 
-*约定分析：2026-04-03*
+*约定分析: 2026-04-18*
