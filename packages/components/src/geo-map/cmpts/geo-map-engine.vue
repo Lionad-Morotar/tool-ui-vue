@@ -18,6 +18,7 @@ import {
   onMounted,
   onBeforeUnmount,
   nextTick,
+  shallowRef,
 } from 'vue';
 import 'leaflet/dist/leaflet.css';
 import { createClusterIcon, resolveMarkerIcon } from '../geo-map-icons';
@@ -86,7 +87,7 @@ const emit = defineEmits<{
 
 // Reactive state
 const leafletReady = ref(false);
-const mapInstance = ref<LeafletMap | null>(null);
+const mapInstance = shallowRef<LeafletMap | null>(null);
 const viewportState = ref<MapViewportState | null>(null);
 type LeafletModule = typeof LeafletNS;
 const leafletModule = ref<LeafletModule | null>(null);
@@ -472,7 +473,7 @@ const clusteredFeatures = computed(() => {
 const lastAppliedViewportRef = ref<string | null>(null);
 
 function applyViewportToMap(
-  map: /* eslint-disable @typescript-eslint/no-explicit-any */ any,
+  map: LeafletMap,
   viewport: GeoMapViewport | undefined,
   markers: GeoMapMarker[],
   routes: GeoMapRoute[]
@@ -547,13 +548,14 @@ let resizeObserver: ResizeObserver | null = null;
 
 function attachResizeObserver(container: HTMLElement) {
   resizeObserver = new ResizeObserver(() => {
-    if (!mapInstance.value) return;
-    mapInstance.value.invalidateSize();
+    const map = mapInstance.value;
+    if (!map) return;
+    map.invalidateSize();
     // Re-apply viewport after size change so fitBounds uses correct dimensions
     lastAppliedViewportRef.value = null;
     if (leafletModule.value) {
       applyViewportToMap(
-        mapInstance.value,
+        map,
         props.viewport,
         props.markers,
         resolvedRoutes.value
@@ -571,7 +573,7 @@ function handleMapReady(map: LeafletMap) {
   // vue-leaflet's child components can pass undefined during unmount cleanup,
   // which triggers Leaflet's stamp() → TypeError: Cannot use 'in' operator.
   const originalRemoveLayer = map.removeLayer.bind(map);
-  (map as any).removeLayer = function(layer: any) {
+  (map as { removeLayer(layer: LeafletNS.Layer | null | undefined): LeafletMap }).removeLayer = function(layer) {
     if (layer == null) return map;
     return originalRemoveLayer(layer);
   };
@@ -613,8 +615,10 @@ watch(
   async ([viewport, markers, routes]) => {
     if (isDestroyed.value || !mapInstance.value || !leafletModule.value) return;
     await nextTick();
+    const map = mapInstance.value;
+    if (!map) return;
     applyViewportToMap(
-      mapInstance.value,
+      map,
       viewport,
       markers,
       routes
