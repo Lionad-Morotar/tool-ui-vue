@@ -623,12 +623,14 @@ export function useWeatherEffects(
     });
   });
 
-  // Watch for prop changes
+  // NOTE: This watch intentionally has no side-effect callback. It exists
+  // solely to register propsGetter() as a reactive dependency, ensuring
+  // Vue's reactivity system tracks all nested prop accesses for the render loop.
   watch(
     () => propsGetter(),
     () => {
-      // Props are accessed via propsGetter() in render loop
-      // No need to restart, just let next frame pick up new values
+      // Props are accessed via propsGetter() in render loop.
+      // No need to restart, just let next frame pick up new values.
     },
     { deep: true },
   );
