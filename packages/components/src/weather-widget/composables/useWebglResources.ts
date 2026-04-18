@@ -171,7 +171,125 @@ export function useWebglResources(
     return false;
   }
 
-  // Initialize WebGL
+  /** Programmatically generate a moon surface texture with craters and maria */
+function generateMoonTexture(gl: WebGL2RenderingContext): WebGLTexture {
+  const width = 128;
+  const height = 64;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    // Fallback: return a 1x1 gray texture
+    const tex = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([128, 128, 128, 255]));
+    return tex;
+  }
+
+  // Base gray background (lunar regolith)
+  ctx.fillStyle = '#a8a8a0';
+  ctx.fillRect(0, 0, width, height);
+
+  // Add subtle noise for surface texture
+  for (let i = 0; i < 800; i++) {
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+    const r = 0.3 + Math.random() * 0.7;
+    const brightness = 160 + Math.random() * 40;
+    ctx.fillStyle = `rgba(${brightness}, ${brightness - 4}, ${brightness - 8}, 0.15)`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Draw maria (dark lunar seas) - large irregular dark patches
+  const maria = [
+    { x: 0.25, y: 0.35, rx: 18, ry: 12, rot: 0.3 },
+    { x: 0.55, y: 0.25, rx: 14, ry: 10, rot: -0.2 },
+    { x: 0.70, y: 0.55, rx: 16, ry: 9, rot: 0.5 },
+    { x: 0.40, y: 0.65, rx: 12, ry: 8, rot: -0.4 },
+    { x: 0.15, y: 0.60, rx: 10, ry: 7, rot: 0.1 },
+  ];
+
+  for (const m of maria) {
+    ctx.save();
+    ctx.translate(m.x * width, m.y * height);
+    ctx.rotate(m.rot);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, m.rx, m.ry, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(75, 75, 78, 0.35)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Draw craters
+  const craters = [
+    // Large craters
+    { x: 0.30, y: 0.30, r: 6 },
+    { x: 0.60, y: 0.40, r: 5 },
+    { x: 0.45, y: 0.55, r: 7 },
+    { x: 0.75, y: 0.30, r: 4 },
+    { x: 0.20, y: 0.50, r: 5 },
+    // Medium craters
+    { x: 0.35, y: 0.45, r: 3 },
+    { x: 0.55, y: 0.60, r: 3.5 },
+    { x: 0.65, y: 0.25, r: 2.5 },
+    { x: 0.40, y: 0.20, r: 3 },
+    { x: 0.80, y: 0.50, r: 2.5 },
+    { x: 0.25, y: 0.70, r: 3 },
+    { x: 0.50, y: 0.35, r: 2 },
+    // Small craters
+    { x: 0.28, y: 0.38, r: 1.5 },
+    { x: 0.62, y: 0.48, r: 1.5 },
+    { x: 0.48, y: 0.62, r: 1.8 },
+    { x: 0.72, y: 0.42, r: 1.2 },
+    { x: 0.33, y: 0.58, r: 1.3 },
+    { x: 0.58, y: 0.28, r: 1.4 },
+    { x: 0.42, y: 0.48, r: 1 },
+    { x: 0.68, y: 0.60, r: 1.2 },
+    { x: 0.38, y: 0.25, r: 1 },
+  ];
+
+  for (const c of craters) {
+    const cx = c.x * width;
+    const cy = c.y * height;
+    const r = c.r;
+
+    // Crater floor (darker)
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(90, 90, 88, 0.4)';
+    ctx.fill();
+
+    // Crater rim highlight (brighter on top-left)
+    ctx.beginPath();
+    ctx.arc(cx - r * 0.15, cy - r * 0.15, r * 0.85, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(180, 178, 172, 0.25)';
+    ctx.lineWidth = r * 0.2;
+    ctx.stroke();
+
+    // Crater shadow (darker on bottom-right)
+    ctx.beginPath();
+    ctx.arc(cx + r * 0.1, cy + r * 0.1, r * 0.9, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(70, 70, 68, 0.2)';
+    ctx.lineWidth = r * 0.15;
+    ctx.stroke();
+  }
+
+  // Upload to WebGL
+  const texture = gl.createTexture()!;
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+  return texture;
+}
+
+// Initialize WebGL
   function initGL(): boolean {
     if (initFailedRef.value) return false;
 
@@ -274,26 +392,10 @@ export function useWebglResources(
     fbRef.value.a = fbA;
     fbRef.value.b = fbB;
 
-    // Create moon texture
-    const moonTexture = gl.createTexture();
-    if (moonTexture) {
-      gl.bindTexture(gl.TEXTURE_2D, moonTexture);
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        1,
-        1,
-        0,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        new Uint8Array([128, 128, 128, 255]),
-      );
-      moonTextureRef.value = moonTexture;
-
-      // Note: Moon texture loading would require the actual image asset.
-      // This is a placeholder (Unit 6.2 bug) — in production, load actual moon texture.
-    }
+    // Create moon texture (procedurally generated)
+    const moonTexture = generateMoonTexture(gl);
+    moonTextureRef.value = moonTexture;
+    moonTextureLoadedRef.value = true;
 
     // Create position buffer
     const positions = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);

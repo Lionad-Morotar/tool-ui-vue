@@ -170,6 +170,9 @@ const resolvedGlassStyles = computed<Record<string, string | undefined>>(() => {
     WebkitBackdropFilter: blur,
   };
 });
+
+// Silence noUnusedLocals — bound to template refs
+void cardRef, containerRef;
 </script>
 
 <template>

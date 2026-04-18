@@ -35,6 +35,7 @@ export function useRenderLoop(
   // Render loop refs
   const animationFrameRef = ref<number>(0);
   const startTimeRef = ref<number>(0);
+  const lastFrameTimeRef = ref<number>(0);
   const lastFlashTimeRef = ref<number>(-100);
   const nextFlashTimeRef = ref<number>(0);
   const strikeSeedRef = ref<number>(0);
@@ -102,6 +103,22 @@ export function useRenderLoop(
     }
 
     const time = (performance.now() - startTimeRef.value) / 1000;
+
+    // Frame-rate throttling: cap to ~30fps when no dynamic weather layers are active
+    const hasDynamicEffects =
+      runtimeProps.layers.clouds ||
+      runtimeProps.layers.rain ||
+      runtimeProps.layers.snow ||
+      (runtimeProps.layers.lightning &&
+        runtimeProps.lightning.enabled);
+    if (!hasDynamicEffects) {
+      const now = performance.now();
+      if (now - lastFrameTimeRef.value < 33) {
+        animationFrameRef.value = requestAnimationFrame(render);
+        return;
+      }
+      lastFrameTimeRef.value = now;
+    }
 
     const u = (program: WebGLProgram, name: string) =>
       getUniformLocationCached(gl, program, name);

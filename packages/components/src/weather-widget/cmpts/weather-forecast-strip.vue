@@ -16,6 +16,7 @@ import {
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import type { ForecastDay, WeatherConditionCode } from '../schema';
+import type { StyleValue } from 'vue';
 
 const conditionIcons: Record<WeatherConditionCode, typeof Sun> = {
   clear: Sun,
@@ -40,8 +41,8 @@ interface WeatherForecastStripProps {
   textSubtle: string;
   bgOpacity: number;
   resolvedGlassStyles: Record<string, string | number | undefined>;
-  edgeShineStyle: Record<string, string | number>;
-  innerGlowStyle: Record<string, string | number>;
+  edgeShineStyle: StyleValue;
+  innerGlowStyle: StyleValue;
   forecastTextShadow?: string;
   css?: {
     forecast?: string;

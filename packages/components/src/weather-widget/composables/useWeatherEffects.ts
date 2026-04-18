@@ -19,12 +19,9 @@ export function useWeatherEffects(
     fbRef,
     moonTextureRef,
     moonTextureLoadedRef,
-    positionBufferRef,
     uniformLocationCacheRef,
     isContextLostRef,
     initFailedRef,
-    hasWebglBudgetSlotRef,
-    getUniformLocationCached,
     disposeGL,
     initGL,
     releaseBudgetSlot,
@@ -32,11 +29,7 @@ export function useWeatherEffects(
 
   // Render loop sub-composable
   const {
-    animationFrameRef,
     startTimeRef,
-    lastFlashTimeRef,
-    nextFlashTimeRef,
-    strikeSeedRef,
     render,
     stopRenderLoop,
   } = useRenderLoop(

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptCitationItem', inheritAttrs: false })
 
-import { cn } from '../../core';
 import { typeIcons } from '../icons';
 import type { CitationType, SerializableCitation } from '../schema';
 
