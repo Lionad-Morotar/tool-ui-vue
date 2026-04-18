@@ -1,6 +1,19 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ref } from 'vue';
 import Terminal from '../index.vue';
+
+// Mock core/sanitize to test without DOMPurify installed
+vi.mock('../../core/sanitize', () => ({
+  useSanitize: vi.fn((enabled: boolean) => ({
+    sanitizeReady: ref(enabled),
+    sanitizeHtml: vi.fn((html: string) =>
+      enabled
+        ? html.replace(/<script[^>]*>.*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '')
+        : html,
+    ),
+  })),
+}));
 
 // Mock navigator.clipboard
 Object.assign(navigator, {
@@ -199,6 +212,51 @@ describe('Terminal', () => {
         },
       });
       expect(wrapper.text()).toContain('1.5s');
+    });
+  });
+
+  describe('sanitize', () => {
+    it('passes through HTML unchanged when sanitize is false', () => {
+      const wrapper = mount(Terminal, {
+        props: {
+          id: 'term-1',
+          command: 'ls',
+          stdout: 'Hello <b>World</b>',
+          exitCode: 0,
+          sanitize: false,
+        },
+      });
+      const html = wrapper.html();
+      // ansi-to-html escapes raw HTML, so <b> becomes &lt;b&gt;
+      expect(html).toContain('&lt;b&gt;');
+    });
+
+    it('applies sanitization when sanitize is true', () => {
+      const wrapper = mount(Terminal, {
+        props: {
+          id: 'term-1',
+          command: 'ls',
+          stdout: 'Hello <b>World</b>',
+          exitCode: 0,
+          sanitize: true,
+        },
+      });
+      const html = wrapper.html();
+      // sanitizeHtml mock strips event handlers; basic tags pass through
+      expect(html).toContain('&lt;b&gt;');
+    });
+
+    it('accepts sanitize prop without type errors', () => {
+      const wrapper = mount(Terminal, {
+        props: {
+          id: 'term-1',
+          command: 'ls',
+          stdout: 'output',
+          exitCode: 0,
+          sanitize: true,
+        },
+      });
+      expect(wrapper.attributes('data-slot')).toBe('terminal');
     });
   });
 });

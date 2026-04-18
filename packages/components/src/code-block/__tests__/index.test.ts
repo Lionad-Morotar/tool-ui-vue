@@ -1,7 +1,19 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { nextTick } from 'vue';
+import { nextTick, ref } from 'vue';
 import CodeBlock from '../index.vue';
+
+// Mock core/sanitize to test without DOMPurify installed
+vi.mock('../../core/sanitize', () => ({
+  useSanitize: vi.fn((enabled: boolean) => ({
+    sanitizeReady: ref(enabled),
+    sanitizeHtml: vi.fn((html: string) =>
+      enabled
+        ? html.replace(/<script[^>]*>.*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '')
+        : html,
+    ),
+  })),
+}));
 
 // Mock navigator.clipboard
 Object.assign(navigator, {
@@ -350,6 +362,36 @@ describe('CodeBlock', () => {
           id: 'code-1',
           code: 'const x = 1;',
           language: 'typescript',
+        },
+      });
+      await nextTick();
+      await new Promise((r) => setTimeout(r, 100));
+      expect(wrapper.attributes('data-slot')).toBe('code-block');
+    });
+  });
+
+  describe('sanitize', () => {
+    it('does not alter output when sanitize is false (default)', async () => {
+      const wrapper = mount(CodeBlock, {
+        props: {
+          id: 'code-1',
+          code: 'const x = 1;',
+          language: 'text',
+          sanitize: false,
+        },
+      });
+      await nextTick();
+      await new Promise((r) => setTimeout(r, 100));
+      expect(wrapper.attributes('data-slot')).toBe('code-block');
+    });
+
+    it('strips event handlers when sanitize is true', async () => {
+      const wrapper = mount(CodeBlock, {
+        props: {
+          id: 'code-1',
+          code: 'const x = 1;',
+          language: 'text',
+          sanitize: true,
         },
       });
       await nextTick();

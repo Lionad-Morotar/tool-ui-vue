@@ -21,7 +21,13 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.4.0",
+    "dompurify": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "dompurify": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@vue-leaflet/vue-leaflet": "^0.10.1",

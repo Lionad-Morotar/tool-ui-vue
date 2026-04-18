@@ -34,6 +34,7 @@ export const CodeBlockPropsSchema = z.object({
   filename: z.string().optional(),
   highlightLines: z.array(z.int().positive()).optional(),
   maxCollapsedLines: z.number().min(1).optional(),
+  sanitize: z.boolean().optional().default(false),
   css: CodeBlockCssSchema.optional().default({}),
 });
 
@@ -51,6 +52,7 @@ export interface CodeBlockProps {
   filename?: string;
   highlightLines?: number[];
   maxCollapsedLines?: number;
+  sanitize?: boolean;
   css?: CodeBlockCss;
 }
 

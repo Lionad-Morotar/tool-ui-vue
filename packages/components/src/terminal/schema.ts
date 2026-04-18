@@ -38,6 +38,7 @@ export const TerminalPropsSchema = z.object({
   cwd: z.string().optional(),
   truncated: z.boolean().optional(),
   maxCollapsedLines: z.number().min(1).optional(),
+  sanitize: z.boolean().optional().default(false),
   css: TerminalCssSchema.optional().default({}),
 });
 
@@ -54,6 +55,7 @@ export interface TerminalProps {
   cwd?: string;
   truncated?: boolean;
   maxCollapsedLines?: number;
+  sanitize?: boolean;
   css?: TerminalCss;
 }
 

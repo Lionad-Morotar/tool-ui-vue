@@ -1,5 +1,6 @@
 import AnsiToHtml from 'ansi-to-html';
 import { ref, computed, type Ref, type ComputedRef } from 'vue';
+import { useSanitize } from '../../core/sanitize';
 import type { TerminalProps } from '../schema';
 // Terminal component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
@@ -22,11 +23,14 @@ export interface TerminalState {
 }
 
 export function useTerminal(options: UseTerminalOptions): TerminalState {
-  const { stdout, stderr, durationMs, maxCollapsedLines } = options;
+  const { stdout, stderr, durationMs, maxCollapsedLines, sanitize } = options;
 
   // State
   const isCopied = ref(false);
   const isExpanded = ref(false);
+
+  // Sanitize
+  const { sanitizeHtml } = useSanitize(sanitize ?? false);
 
   // ANSI converter
   const ansiConverter = new AnsiToHtml({
@@ -35,13 +39,15 @@ export function useTerminal(options: UseTerminalOptions): TerminalState {
     stream: false,
   });
 
-  // Convert ANSI to HTML
+  // Convert ANSI to HTML (with optional sanitization)
   function ansiToHtml(text: string): string {
+    let html: string;
     try {
-      return ansiConverter.toHtml(text);
+      html = ansiConverter.toHtml(text);
     } catch {
-      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
+    return sanitizeHtml(html);
   }
 
   // Format duration

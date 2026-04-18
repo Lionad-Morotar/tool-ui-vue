@@ -1,4 +1,5 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useSanitize } from '../../core/sanitize';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from '../schema';
 import type { Highlighter, ShikiTransformer } from 'shiki';
 import type { ComputedRef, Ref } from 'vue';
@@ -51,12 +52,12 @@ async function loadShiki() {
 
 // Theme helpers
 function getSystemTheme(): 'light' | 'dark' {
-  if (typeof window === 'undefined') return 'light';
+  if (import.meta.env.SSR) return 'light';
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function getDocumentTheme(): 'light' | 'dark' | null {
-  if (typeof document === 'undefined') return null;
+  if (import.meta.env.SSR) return null;
   const root = document.documentElement;
   const dataTheme = root.getAttribute('data-theme')?.toLowerCase();
   if (dataTheme === 'dark') return 'dark';
@@ -75,10 +76,14 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
     lineNumbers,
     highlightLines,
     maxCollapsedLines,
+    sanitize,
   } = options;
 
   // State
   const highlightedHtml = ref<string | null>(null);
+
+  // Sanitize
+  const { sanitizeHtml } = useSanitize(sanitize ?? false);
   const isCopied = ref(false);
   const isExpanded = ref(false);
   const isLoading = ref(true);
@@ -211,8 +216,9 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
         ],
       });
 
-      setCachedHtml(cacheKey, html);
-      highlightedHtml.value = html;
+      const safeHtml = sanitizeHtml(html);
+      setCachedHtml(cacheKey, safeHtml);
+      highlightedHtml.value = safeHtml;
     } catch {
       // Fallback to escaped text
       const escaped = code
