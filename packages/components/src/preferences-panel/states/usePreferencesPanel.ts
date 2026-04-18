@@ -14,13 +14,19 @@ export type PreferencesPanelEmit = {
   (e: 'beforeAction', actionId: string, value: PreferencesValue): void;
 };
 
+function isReceiptProps(
+  props: PreferencesPanelProps & Partial<PreferencesPanelReceiptProps>
+): props is PreferencesPanelReceiptProps {
+  return props.choice !== undefined;
+}
+
 export function usePreferencesPanel(
   props: PreferencesPanelProps & Partial<PreferencesPanelReceiptProps> & { css?: { root?: string } },
   emit: PreferencesPanelEmit,
 ) {
 
   // Determine if we're in receipt mode
-  const isReceipt = computed(() => 'choice' in props && props.choice !== undefined);
+  const isReceipt = computed(() => isReceiptProps(props));
 
   // Get initial value for an item
   function getInitialValue(item: PreferenceItem): string | boolean {
@@ -65,8 +71,8 @@ export function usePreferencesPanel(
 
   // Get current value for an item (handles both controlled and uncontrolled modes)
   function getItemValue(item: PreferenceItem): string | boolean {
-    if (isReceipt.value) {
-      return ((props as unknown) as PreferencesPanelReceiptProps).choice[item.id] ?? getInitialValue(item);
+    if (isReceiptProps(props)) {
+      return props.choice[item.id] ?? getInitialValue(item);
     }
 
     // Controlled mode: use modelValue
@@ -130,9 +136,9 @@ export function usePreferencesPanel(
 
   // Normalize actions config
   const normalizedActions = computed(() => {
-    if (isReceipt.value) return null;
+    if (isReceiptProps(props)) return null;
 
-    const actionsProp = ((props as unknown) as PreferencesPanelProps).actions;
+    const actionsProp = props.actions;
     if (!actionsProp) {
       return {
         items: [
@@ -205,15 +211,15 @@ export function usePreferencesPanel(
 
   // Check if there are errors (receipt mode only)
   const hasErrors = computed(() => {
-    if (!isReceipt.value) return false;
-    const error = ((props as unknown) as PreferencesPanelReceiptProps).error;
+    if (!isReceiptProps(props)) return false;
+    const error = props.error;
     return error !== undefined && Object.keys(error).length > 0;
   });
 
   // Check if item has error (receipt mode only)
   function getItemError(item: PreferenceItem): string | undefined {
-    if (!isReceipt.value) return undefined;
-    const error = ((props as unknown) as PreferencesPanelReceiptProps).error;
+    if (!isReceiptProps(props)) return undefined;
+    const error = props.error;
     return error?.[item.id];
   }
 
