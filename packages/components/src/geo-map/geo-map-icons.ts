@@ -7,7 +7,7 @@ export type LeafletIconRuntime = Pick<LeafletModule, 'divIcon'>;
 
 // Helper type to work around vue-leaflet's strict Icon typing
 // DivIcon is a subclass of Icon but the types don't fully align
-type LeafletIcon = Icon<IconOptions> | DivIcon;
+export type LeafletIcon = Icon<IconOptions> | DivIcon;
 
 function isSafeHttpUrl(value: string | undefined): boolean {
   if (!value) {

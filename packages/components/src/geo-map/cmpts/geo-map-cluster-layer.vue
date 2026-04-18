@@ -10,7 +10,20 @@ import {
   getDotFillColor,
 } from '../utils';
 import type { GeoMapMarker } from '../schema';
-import type { Icon as LeafletIcon } from 'leaflet';
+import { computed } from 'vue';
+
+interface ResolvedFeature {
+  key: string;
+  lat: number;
+  lng: number;
+  isCluster: boolean;
+  clusterId?: number;
+  pointCount: number;
+  marker?: GeoMapMarker;
+  /** Cached icon to avoid repeated Map lookups in template; `any` avoids vue-leaflet DivIcon/Icon typing mismatch */
+  resolvedIcon?: any;
+  ariaLabel?: string;
+}
 
 defineOptions({ name: 'CmptGeoMapClusterLayer', inheritAttrs: false });
 
@@ -41,69 +54,78 @@ function handleMarkerClick(marker: GeoMapMarker) {
 function handleClusterClick(lat: number, lng: number, clusterId: number) {
   emit('cluster-click', lat, lng, clusterId);
 }
+
+const resolvedFeatures = computed<ResolvedFeature[]>(() => {
+  const runtime = props.leafletRuntime;
+  if (!runtime) return [];
+
+  return props.features.map((feature, index): ResolvedFeature => {
+    const isCluster = feature.properties?.cluster === true;
+    const lat = feature.geometry.coordinates[1];
+    const lng = feature.geometry.coordinates[0];
+
+    if (isCluster) {
+      return {
+        key: `cluster-${feature.properties?.cluster_id}`,
+        lat,
+        lng,
+        isCluster: true,
+        clusterId: feature.properties?.cluster_id,
+        pointCount: feature.properties?.point_count ?? 0,
+        ariaLabel: `Cluster containing ${feature.properties?.point_count ?? 0} locations`,
+      };
+    }
+
+    const markerId = feature.properties?.markerId ?? '';
+    const marker = props.markerById.get(markerId);
+    const resolvedIcon = marker?.icon ? resolveMarkerIcon(marker.icon, runtime) : null;
+
+    return {
+      key: `marker-${markerId ?? index}`,
+      lat,
+      lng,
+      isCluster: false,
+      pointCount: 0,
+      marker,
+      resolvedIcon,
+      ariaLabel: marker ? resolveMarkerAriaLabel(marker) : undefined,
+    };
+  });
+});
 </script>
 
 <template>
   <template
-    v-for="(feature, index) in features"
-    :key="
-      feature.properties?.cluster
-        ? `cluster-${feature.properties.cluster_id}`
-        : `marker-${feature.properties?.markerId ?? index}`
-    "
+    v-for="feature in resolvedFeatures"
+    :key="feature.key"
   >
     <!-- Cluster -->
     <l-marker
-      v-if="feature.properties?.cluster && typeof feature.properties.cluster_id === 'number'"
-      :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
+      v-if="feature.isCluster"
+      :lat-lng="[feature.lat, feature.lng]"
       :icon="
         leafletRuntime
-          ? (createClusterIcon(feature.properties.point_count ?? 0, leafletRuntime) as LeafletIcon)
+          ? (createClusterIcon(feature.pointCount, leafletRuntime) as any)
           : undefined
       "
-      :title="`Cluster containing ${feature.properties.point_count ?? 0} locations`"
-      @click="
-        handleClusterClick(
-          feature.geometry.coordinates[1],
-          feature.geometry.coordinates[0],
-          feature.properties.cluster_id!
-        )
-      "
+      :title="feature.ariaLabel"
+      @click="handleClusterClick(feature.lat, feature.lng, feature.clusterId!)"
     />
 
     <!-- Individual Marker from Cluster -->
     <template v-else>
       <!-- Custom Icon Marker -->
       <l-marker
-        v-if="
-          leafletRuntime &&
-            markerById.get(feature.properties?.markerId ?? '')?.icon &&
-            resolveMarkerIcon(
-              markerById.get(feature.properties?.markerId ?? '')?.icon,
-              leafletRuntime
-            )
-        "
-        :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
-        :icon="
-          resolveMarkerIcon(
-            markerById.get(feature.properties?.markerId ?? '')?.icon,
-            leafletRuntime!
-          )! as LeafletIcon "
-        :title="
-          resolveMarkerAriaLabel(
-            markerById.get(feature.properties?.markerId ?? '')!
-          )
-        "
-        @click="
-          handleMarkerClick(
-            markerById.get(feature.properties?.markerId ?? '')!
-          )
-        "
+        v-if="feature.resolvedIcon"
+        :lat-lng="[feature.lat, feature.lng]"
+        :icon="feature.resolvedIcon"
+        :title="feature.ariaLabel"
+        @click="handleMarkerClick(feature.marker!)"
       >
         <geo-map-marker-popup
-          :tooltip="markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover'"
-          :label="markerById.get(feature.properties?.markerId ?? '')?.label"
-          :description="markerById.get(feature.properties?.markerId ?? '')?.description"
+          :tooltip="feature.marker?.tooltip ?? 'hover'"
+          :label="feature.marker?.label"
+          :description="feature.marker?.description"
           :tooltip-class-name="tooltipClassName"
           :popup-class-name="popupClassName"
         />
@@ -112,24 +134,20 @@ function handleClusterClick(lat: number, lng: number, clusterId: number) {
       <!-- Circle Marker (default) -->
       <l-circle-marker
         v-else
-        :lat-lng="[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]"
-        :radius="getDotRadius(markerById.get(feature.properties?.markerId ?? '')?.icon)"
+        :lat-lng="[feature.lat, feature.lng]"
+        :radius="getDotRadius(feature.marker?.icon)"
         :path-options="{
-          color: getDotBorderColor(markerById.get(feature.properties?.markerId ?? '')?.icon),
-          fillColor: getDotFillColor(markerById.get(feature.properties?.markerId ?? '')?.icon),
+          color: getDotBorderColor(feature.marker?.icon),
+          fillColor: getDotFillColor(feature.marker?.icon),
           fillOpacity: 0.95,
           weight: 2,
         }"
-        @click="
-          handleMarkerClick(
-            markerById.get(feature.properties?.markerId ?? '')!
-          )
-        "
+        @click="handleMarkerClick(feature.marker!)"
       >
         <geo-map-marker-popup
-          :tooltip="markerById.get(feature.properties?.markerId ?? '')?.tooltip ?? 'hover'"
-          :label="markerById.get(feature.properties?.markerId ?? '')?.label"
-          :description="markerById.get(feature.properties?.markerId ?? '')?.description"
+          :tooltip="feature.marker?.tooltip ?? 'hover'"
+          :label="feature.marker?.label"
+          :description="feature.marker?.description"
           :tooltip-class-name="tooltipClassName"
           :popup-class-name="popupClassName"
         />
