@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '../core';
+import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
 import { useLinkPreview } from './states';
 import type { LinkPreviewProps } from './schema';
@@ -14,6 +15,8 @@ const emit = defineEmits<{
   navigate: [href: string];
 }>()
 
+const { locale } = useI18n();
+
 // All business logic delegated to states layer
 const state = reactive(useLinkPreview(props, emit));
 </script>
@@ -22,7 +25,7 @@ const state = reactive(useLinkPreview(props, emit));
   <article
     v-bind="$attrs"
     :class="cn('relative w-full max-w-md min-w-80', css?.root)"
-    lang="en"
+    :lang="locale"
     :data-tool-ui-id="id"
     data-slot="link-preview"
   >

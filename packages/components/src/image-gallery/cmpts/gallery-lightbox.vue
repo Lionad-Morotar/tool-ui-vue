@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '../../core';
+import { useI18n } from '../../core/i18n';
 import {
   useMagicKeys,
   useSwipe,
@@ -91,6 +92,8 @@ const hasMultipleImages = computed(() => images.value.length > 1);
 const currentIndexDisplay = computed(() =>
   activeIndex.value !== null ? activeIndex.value + 1 : 0
 );
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -104,7 +107,7 @@ const currentIndexDisplay = computed(() =>
         'focus-visible:outline-none',
         css?.root
       )"
-      aria-label="Image lightbox"
+      :aria-label="t('imageGallery.lightboxTitle').value"
       @click="handleBackdropClick"
       @cancel="handleCancel"
     >
@@ -120,7 +123,7 @@ const currentIndexDisplay = computed(() =>
               'transition-colors duration-200',
               css?.close
             )"
-            aria-label="Close"
+            :aria-label="t('imageGallery.close').value"
             @click="closeLightbox"
           >
             <x class="h-5 w-5" />
@@ -139,7 +142,7 @@ const currentIndexDisplay = computed(() =>
               'transition-colors duration-200',
               'focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none'
             )"
-            aria-label="Previous image"
+            :aria-label="t('imageGallery.previousImage').value"
             @click="prevImage"
           >
             <svg
@@ -166,7 +169,7 @@ const currentIndexDisplay = computed(() =>
               'transition-colors duration-200',
               'focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none'
             )"
-            aria-label="Next image"
+            :aria-label="t('imageGallery.nextImage').value"
             @click="nextImage"
           >
             <svg

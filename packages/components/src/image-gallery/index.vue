@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cn } from '../core';
+import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';
@@ -16,6 +17,8 @@ const emit = defineEmits<{
   imageClick: [imageId: string, image: ImageGalleryItem];
 }>()
 
+const { locale } = useI18n();
+
 // All business logic delegated to states layer
 const galleryState = reactive(useGallery(props, emit));
 </script>
@@ -26,7 +29,7 @@ const galleryState = reactive(useGallery(props, emit));
     :class="cn('relative w-full max-w-lg min-w-80', css?.root)"
     data-slot="image-gallery"
     :data-tool-ui-id="id"
-    lang="en"
+    :lang="locale"
     :aria-busy="false"
   >
     <div
