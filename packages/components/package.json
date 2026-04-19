@@ -1,10 +1,12 @@
 {
   "name": "@lionad/vtu-components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tool call UI components for tool-ui-vue",
   "license": "MIT",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
