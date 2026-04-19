@@ -50,6 +50,7 @@ You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library — a Vue 3
 - `references/recipes/component-usage.md` — 安装、基本用法、事件处理、peer 依赖
 - `references/recipes/headless-states.md` — 使用 states/ composables 自定义 UI
 - `references/recipes/json-rendering.md` — Renderer 包、Catalog + Registry、错误边界
+- `references/recipes/mcp-server.md` — MCP Server 安装（Claude Code / Cursor / Windsurf）
 
 ### 路由表
 
@@ -65,6 +66,7 @@ You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library — a Vue 3
 | "JSON 渲染 / 动态渲染" | `references/recipes/json-rendering.md` |
 | "样式坏了" | `references/guidelines/theming.md` + `references/recipes/component-usage.md` 中的故障排除 |
 | "LLM/AI 集成" | `references/guidelines/schema-contracts.md` + `references/recipes/json-rendering.md` |
+| "MCP server / 安装 server" | `references/recipes/mcp-server.md` |
 
 ## 安装
 
