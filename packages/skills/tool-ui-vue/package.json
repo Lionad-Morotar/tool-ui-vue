@@ -1,6 +1,6 @@
 {
   "name": "@lionad/vtu-skill",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Claude skill for tool-ui-vue component library",
   "license": "MIT",
   "type": "module",

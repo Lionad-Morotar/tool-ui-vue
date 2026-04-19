@@ -2,15 +2,16 @@
 
 ## Token 系统
 
-主题通过 `@lionad/vtu-components/tokens.css` 提供 CSS 自定义属性。文件包含两个等价声明块：
+主题通过 `@lionad/vtu-components/style.css` 提供，包含 CSS 自定义属性和 `@source` 指令：
 
+- `@source "."` — 自动触发 Tailwind v4 扫描组件 JS bundle 中的 class 名
 - `:root { }` — 无 Tailwind 环境的兜底
 - `@theme { }` — Tailwind CSS v4 主题注册
 
 导入方式：
 
-```ts
-import '@lionad/vtu-components/tokens.css'
+```css
+@import "@lionad/vtu-components/style.css";
 ```
 
 ## 颜色 Token

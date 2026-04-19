@@ -6,10 +6,10 @@
 pnpm add @lionad/vtu-components
 ```
 
-导入主题 tokens：
+导入样式：
 
-```ts
-import '@lionad/vtu-components/tokens.css'
+```css
+@import "@lionad/vtu-components/style.css";
 ```
 
 ## 基本用法
@@ -137,6 +137,6 @@ import { DataTable } from 'tool-ui-vue'
 
 ## 样式故障排除
 
-1. 确认 `@lionad/vtu-components/tokens.css` 已导入
-2. 确认 Tailwind v4 扫描到组件源码（检查 `@source` 指令或 `content` 配置）
+1. 确认 `@import "@lionad/vtu-components/style.css"` 已添加在 `@import "tailwindcss"` 之后
+2. 确认 Tailwind v4 扫描到组件源码（`style.css` 内置 `@source "."` 指令，无需手动配置）
 3. 确认 `data-theme="dark"` 已设置（如需 dark mode）
