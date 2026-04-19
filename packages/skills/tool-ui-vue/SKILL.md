@@ -72,10 +72,13 @@ You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library — a Vue 3
 pnpm add @lionad/vtu-components
 ```
 
-```ts
-// 入口文件导入主题 tokens
-import '@lionad/vtu-components/tokens.css'
+在入口 CSS 文件中，添加在 `@import "tailwindcss"` 之后：
+
+```css
+@import "@lionad/vtu-components/style.css";
 ```
+
+不使用 Tailwind 的项目暂不支持（组件依赖 Tailwind utility classes 生成布局样式）。
 
 ### 快速开始
 

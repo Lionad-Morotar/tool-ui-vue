@@ -14,10 +14,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./tokens.css": "./dist/tokens.css"
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build && cp ../theme/dist/tokens.css dist/tokens.css",
+    "build": "vue-tsc --noEmit && vite build && cp ../theme/dist/tokens.css dist/tokens.css && node post-build.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {
