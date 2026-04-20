@@ -26,6 +26,7 @@
     "@lionad/vtu-components": "workspace:*"
   },
   "devDependencies": {
+    "@lionad/vtu-components": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/test-utils": "^2.4.6",
     "typescript": "^6.0.2",
