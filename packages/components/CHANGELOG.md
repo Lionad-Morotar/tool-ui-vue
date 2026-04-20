@@ -1,5 +1,18 @@
 # @lionad/vtu-components
 
+## 0.1.2
+
+### Patch Changes
+
+- fix(geo-map): 新增 tileSubdomains prop 修复高德地图瓦片加载失败
+
+  高德地图瓦片 URL `webrd0{s}.is.autonavi.com` 使用数字子域 `1,2,3,4`，
+  但 Leaflet 默认使用字母子域 `a,b,c`，导致瓦片请求到无效域名。
+
+  - `GeoMapProps` schema: 新增 `tileSubdomains?: string | string[]`
+  - `geo-map-engine.vue`: 将 `tileSubdomains` 透传给 `l-tile-layer` 的 `subdomains` prop
+  - `demo-travel.vue`: 传入 `['1','2','3','4']` 匹配高德瓦片子域
+
 ## 0.1.0
 
 首次发布。Vue 3 tool call UI 组件库，从 React 版本 `@assistant-ui/tool-ui` 重构为 headless 架构。

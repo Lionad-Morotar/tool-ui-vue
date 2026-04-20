@@ -1,12 +1,15 @@
 {
   "name": "@lionad/vtu-server",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "MCP server for tool-ui-vue component library",
   "license": "MIT",
   "type": "module",
   "main": "./dist/mcp/index.js",
   "types": "./dist/mcp/index.d.ts",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "bin": {
     "vtu-mcp-server": "./dist/mcp/index.js"
   },
