@@ -243,9 +243,6 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      '@lionad/vtu-renderer':
-        specifier: workspace:*
-        version: link:../renderer
       '@lionad/vtu-theme':
         specifier: workspace:*
         version: link:../theme
