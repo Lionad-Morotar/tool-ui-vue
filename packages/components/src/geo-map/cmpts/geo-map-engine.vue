@@ -53,6 +53,7 @@ const props = withDefaults(defineProps<{
   viewport?: GeoMapViewport;
   showZoomControl: boolean;
   tileUrl: string;
+  tileSubdomains?: string | string[];
   mapAriaLabel: string;
   tooltipClassName?: string;
   popupClassName?: string;
@@ -217,7 +218,7 @@ function handleRouteClick(route: GeoMapRoute) {
     @moveend="handleViewportChange"
     @zoomend="handleViewportChange"
   >
-    <l-tile-layer :attribution="TILE_ATTRIBUTION" :url="tileUrl" />
+    <l-tile-layer :attribution="TILE_ATTRIBUTION" :url="tileUrl" :subdomains="tileSubdomains" />
     <l-control-zoom v-if="showZoomControl" position="topright" />
 
     <!-- Routes -->

@@ -17,7 +17,7 @@ Home: https://lionad-morotar.github.io/tool-ui-vue/
 If you use an agent, install in one prompt:
 
 ```
-Install https://github.com/Lionad-Morotar/tool-ui-vue and create a /dev/tool-ui-vue page for development and debugging
+Install github.com/Lionad-Morotar/tool-ui-vue and create a /dev/tool-ui-vue page for development and debugging
 ```
 
 Or, if you prefer the traditional approach:

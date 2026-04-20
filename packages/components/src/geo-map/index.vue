@@ -44,6 +44,7 @@ const { t } = useI18n();
         :viewport="viewport"
         :show-zoom-control="showZoomControl ?? true"
         :tile-url="state.tileUrl"
+        :tile-subdomains="tileSubdomains"
         :map-aria-label="state.mapAriaLabel"
         :tooltip-class-name="tooltipClassName"
         :popup-class-name="popupClassName"

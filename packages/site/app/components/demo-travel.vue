@@ -32,6 +32,7 @@ const tileUrl = computed(() => isEn.value ? undefined : ZH_TILE_URL)
               id="demo-travel-map"
               :title="t('demoTravel.mapTitle').value"
               :tile-url="tileUrl"
+              :tile-subdomains="['1', '2', '3', '4']"
               :markers="[
                 { id: 'm1', lat: 30.2489, lng: 120.1460, label: t('demoTravel.markerWestLake').value, description: t('demoTravel.markerWestLakeDesc').value },
                 { id: 'm2', lat: 30.2406, lng: 120.0986, label: t('demoTravel.markerLingyin').value, description: t('demoTravel.markerLingyinDesc').value }

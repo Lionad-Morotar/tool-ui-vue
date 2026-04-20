@@ -18,6 +18,7 @@
     "build:site": "pnpm --filter @lionad/vtu-site generate",
     "build:story": "histoire build",
     "build:pages": "pnpm build:site && pnpm build:story",
+    "clean": "rm -rf packages/*/dist packages/*/.nuxt .serve dist-histoire",
     "check": "pnpm lint && pnpm typecheck",
     "publish:components": "pnpm --filter @lionad/vtu-components publish --access public --no-git-checks",
     "publish:renderer": "pnpm --filter @lionad/vtu-renderer publish --access public --no-git-checks",
