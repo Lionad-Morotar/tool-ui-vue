@@ -21,7 +21,7 @@ export default defineConfig({
   routerMode: 'hash',
   theme: {
     title: 'tool-ui-vue',
-    logoHref: 'https://tool-ui-vue.vercel.app',
+    logoHref: 'https://lionad-morotar.github.io/tool-ui-vue/',
   },
   defaultStoryProps: {
     layout: {
