@@ -7,14 +7,8 @@ import LocaleToggle from './LocaleToggle.vue'
 
 console.log('[Histoire Setup] Tailwind CSS loaded');
 
-// Redirect root path to the site
 // Only run in the main window, not in sandbox iframes
 if (typeof window !== 'undefined' && typeof document !== 'undefined' && window.self === window.top) {
-  const hash = window.location.hash;
-  if (hash === '' || hash === '#' || hash === '#/') {
-    window.location.replace('https://lionad-morotar.github.io/tool-ui-vue/');
-  }
-
   // Mount locale toggle button
   mountLocaleToggle();
 
