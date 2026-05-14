@@ -1,4 +1,4 @@
-import { inject, computed, ref, type Ref, type ComputedRef } from 'vue'
+import { inject, computed, ref, unref, type Ref, type ComputedRef } from 'vue'
 import { en } from './locales/en'
 import { zhCN } from './locales/zh-CN'
 import type { DeepKeyPath, ParamValue, I18nContext, I18nReturn } from './types'
@@ -54,9 +54,11 @@ function interpolate(template: string, params?: Record<string, ParamValue>): str
 }
 
 export function useI18n<TMessages extends Record<string, unknown>>(): I18nReturn<TMessages> {
-  const context = inject<I18nContext<TMessages> | null>(i18nInjectionKey, null)
+  // LocaleProvider injects a ComputedRef<I18nContext>, not a plain I18nContext.
+  // We must unwrap it with unref() inside computed getters to maintain reactivity.
+  const injected = inject<ComputedRef<I18nContext<TMessages>> | null>(i18nInjectionKey, null)
 
-  if (!context && !_messages.value) {
+  if (!injected && !_messages.value) {
     // No LocaleProvider and no global messages -- fallback to zh-CN built-in messages
     if ((import.meta as any).env?.DEV) {
       console.warn('[vtu:i18n] No LocaleProvider configured. Using built-in zh-CN messages as fallback.')
@@ -83,6 +85,9 @@ export function useI18n<TMessages extends Record<string, unknown>>(): I18nReturn
   ): ComputedRef<string> => {
     return computed(() => {
       const keyStr = key as string
+      // Unwrap injected ComputedRef each time to maintain reactivity
+      const context = injected ? unref(injected) : null
+      // When injected context exists, use it exclusively (SSR isolation)
       const messages = context?.messages ?? _messages.value ?? {}
 
       // Try current locale first (messages are the current locale's messages from LocaleProvider)
@@ -105,7 +110,10 @@ export function useI18n<TMessages extends Record<string, unknown>>(): I18nReturn
 
   return {
     t: t as I18nReturn<TMessages>['t'],
-    locale: computed(() => _locale.value),
+    locale: computed(() => {
+      const context = injected ? unref(injected) : null
+      return context?.locale ?? _locale.value
+    }),
     setLocale,
   }
 }

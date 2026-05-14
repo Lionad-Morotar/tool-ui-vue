@@ -17,15 +17,20 @@ defineOptions({
   inheritAttrs: false,
 })
 
-// Sync messages and locale to module-level refs so useI18n consumers can react
-watch(
-  [() => props.messages, () => props.locale],
-  ([msgs, loc]) => {
-    setMessages(msgs as Record<string, unknown>)
-    setLocale(loc)
-  },
-  { immediate: true }
-)
+const isSSR = typeof window === 'undefined'
+
+// Sync messages and locale to module-level refs for copy-paste consumers.
+// Skip in SSR to prevent cross-request state pollution (shared module-level refs).
+if (!isSSR) {
+  watch(
+    [() => props.messages, () => props.locale],
+    ([msgs, loc]) => {
+      setMessages(msgs as Record<string, unknown>)
+      setLocale(loc)
+    },
+    { immediate: true }
+  )
+}
 
 const context = computed<I18nContext<TMessages>>(() => ({
   messages: props.messages,

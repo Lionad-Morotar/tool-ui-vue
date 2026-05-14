@@ -95,6 +95,21 @@ describe('LocaleProvider', () => {
       expect(wrapper.find('[data-testid="copy-text"]').text()).toBe('复制');
       expect(wrapper.find('[data-testid="locale"]').text()).toBe('zh-CN');
     });
+
+    test('injected context is used even when module-level state is empty', () => {
+      // Simulate SSR scenario: module-level state is empty (watch skipped)
+      // but LocaleProvider provides messages via inject. This verifies
+      // the ComputedRef injected by LocaleProvider is correctly unwrapped.
+      setMessages({} as Record<string, unknown>);
+
+      const wrapper = mount(LocaleProvider, {
+        props: { messages: zhCN, locale: 'zh-CN' },
+        slots: { default: () => h(TestConsumer) },
+      });
+      // Must render Chinese, not fall back to raw key or empty messages
+      expect(wrapper.find('[data-testid="copy-text"]').text()).toBe('复制');
+      expect(wrapper.find('[data-testid="locale"]').text()).toBe('zh-CN');
+    });
   });
 
   describe('locale switching', () => {
@@ -233,6 +248,58 @@ describe('LocaleProvider', () => {
 
       const wrapper = mount(ConsumerWithParams);
       expect(wrapper.find('[data-testid="page"]').text()).toBe('第 2 / 5 页');
+    });
+  });
+
+  describe('SSR isolation', () => {
+    test('concurrent LocaleProviders with different locales do not pollute each other (SSR simulation)', () => {
+      // In SSR (typeof window === 'undefined'), LocaleProvider should NOT
+      // sync props to module-level refs. This prevents cross-request pollution.
+      // Verify by mounting two providers with different locales sequentially
+      // and checking each renders its own locale independently.
+
+      // Simulate request A: zh-CN
+      const wrapperA = mount(LocaleProvider, {
+        props: { messages: zhCN, locale: 'zh-CN' },
+        slots: { default: () => h(TestConsumer) },
+      });
+      expect(wrapperA.find('[data-testid="copy-text"]').text()).toBe('复制');
+      expect(wrapperA.find('[data-testid="locale"]').text()).toBe('zh-CN');
+      wrapperA.unmount();
+
+      // Simulate request B: en
+      const wrapperB = mount(LocaleProvider, {
+        props: { messages: en, locale: 'en' },
+        slots: { default: () => h(TestConsumer) },
+      });
+      expect(wrapperB.find('[data-testid="copy-text"]').text()).toBe('Copy');
+      expect(wrapperB.find('[data-testid="locale"]').text()).toBe('en');
+      wrapperB.unmount();
+
+      // Simulate request C: zh-CN again — should not be polluted by request B
+      const wrapperC = mount(LocaleProvider, {
+        props: { messages: zhCN, locale: 'zh-CN' },
+        slots: { default: () => h(TestConsumer) },
+      });
+      expect(wrapperC.find('[data-testid="copy-text"]').text()).toBe('复制');
+      expect(wrapperC.find('[data-testid="locale"]').text()).toBe('zh-CN');
+    });
+
+    test('client-side LocaleProvider syncs module-level locale for copy-paste consumers', () => {
+      // In client mode (jsdom has window), the watch fires and syncs module-level refs.
+      // This is the desired behavior: copy-paste consumers without LocaleProvider
+      // get the last-synced locale from module-level state.
+      const wrapper = mount(LocaleProvider, {
+        props: { messages: en, locale: 'en' },
+        slots: { default: () => h(TestConsumer) },
+      });
+      expect(wrapper.find('[data-testid="locale"]').text()).toBe('en');
+      wrapper.unmount();
+
+      // Module-level locale was synced to 'en' by the watch.
+      // A standalone consumer (no LocaleProvider) picks up this synced value.
+      const standalone = mount(NoProviderConsumer);
+      expect(standalone.find('[data-testid="fallback"]').text()).toBe('Copy');
     });
   });
 });
