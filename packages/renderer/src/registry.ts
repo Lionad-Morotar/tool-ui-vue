@@ -33,6 +33,7 @@ import {
 import { catalog } from './catalog';
 import type { AppCatalog } from './catalog';
 import { createRenderer, withErrorBoundary } from './with-error-boundary';
+import { primitivesComponents } from './primitives';
 
 const rawComponents: Components<AppCatalog> = {
   ApprovalCard: createRenderer(ApprovalCard),
@@ -63,6 +64,14 @@ const rawComponents: Components<AppCatalog> = {
   Video: createRenderer(Video),
   WeatherWidget: createRenderer(WeatherWidget),
   XPost: createRenderer(XPost),
+  // ---- Layout Primitives ----
+  Stack: primitivesComponents.Stack,
+  Card: primitivesComponents.Card,
+  Text: primitivesComponents.Text,
+  Button: primitivesComponents.Button,
+  Badge: primitivesComponents.Badge,
+  ListItem: primitivesComponents.ListItem,
+  Input: primitivesComponents.Input,
 };
 
 export const components = Object.fromEntries(

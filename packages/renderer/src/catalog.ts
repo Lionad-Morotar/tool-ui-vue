@@ -29,6 +29,7 @@ import {
   SerializableWeatherWidgetSchema,
   SerializableXPostSchema,
 } from '@lionad/vtu-components';
+import { primitiveEntries } from './primitives/catalog';
 
 export const catalog = schema.createCatalog({
   components: {
@@ -172,6 +173,8 @@ export const catalog = schema.createCatalog({
       slots: [],
       description: 'X (Twitter) post preview card',
     },
+    // ---- Layout Primitives ----
+    ...primitiveEntries,
   },
   actions: {},
 });
