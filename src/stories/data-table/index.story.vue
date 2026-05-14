@@ -13,6 +13,7 @@ const emptyState = useStoryLocale('content.emptyState', messages)
 const withDefaultSort = useStoryLocale('content.withDefaultSort', messages)
 const controlledSort = useStoryLocale('content.controlledSort', messages)
 const withMaxHeight = useStoryLocale('content.withMaxHeight', messages)
+const withArrayOverflow = useStoryLocale('content.withArrayOverflow', messages)
 const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPlayground', messages)
 const colName = useStoryLocale('content.colName', messages)
 const colStatus = useStoryLocale('content.colStatus', messages)
@@ -33,6 +34,7 @@ const colOwner = useStoryLocale('content.colOwner', messages)
 const colBudget = useStoryLocale('content.colBudget', messages)
 const colDeadline = useStoryLocale('content.colDeadline', messages)
 const colNotes = useStoryLocale('content.colNotes', messages)
+const colTags = useStoryLocale('content.colTags', messages)
 const colScore = useStoryLocale('content.colScore', messages)
 const colGrade = useStoryLocale('content.colGrade', messages)
 const statusCompleted = useStoryLocale('content.statusCompleted', messages)
@@ -131,6 +133,12 @@ const playgroundColumns = computed<any[]>(() => [
   { key: 'notes', label: colNotes.value, hideOnMobile: true },
 ])
 
+// Array overflow columns
+const arrayColumns = computed<any[]>(() => [
+  { key: 'project', label: colProject.value },
+  { key: 'tags', label: colTags.value, format: { kind: 'array', maxVisible: 2 } },
+])
+
 // Props documentation
 const props = [
   { name: 'id', type: 'string', required: true, description: { zh: '表格的唯一标识符', en: 'Unique identifier for the data table' } },
@@ -156,7 +164,7 @@ const propsTitle = Props
 <template>
   <Story title="DataTable/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-basic"
@@ -171,7 +179,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withFormatting">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-formatted"
@@ -186,7 +194,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withStatusBadges">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-badges"
@@ -201,7 +209,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withColumnAlignment">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-align"
@@ -216,7 +224,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="emptyState">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-empty"
@@ -227,25 +235,9 @@ const propsTitle = Props
       </div>
     </Variant>
 
-    <Variant :title="withDefaultSort">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
-      <div class="w-full max-w-2xl">
-        <data-table
-          id="data-table-sorted"
-          :columns="defaultSortColumns"
-          :data="[
-            { name: 'Alice', score: 85 },
-            { name: 'Bob', score: 92 },
-            { name: 'Charlie', score: 78 },
-          ]"
-          :default-sort="{ by: 'score', direction: 'desc' }"
-        />
-      </div>
-    </Variant>
-
     <Variant :title="controlledSort" auto-props-disabled>
-      <div class="w-full max-w-2xl space-y-4">
-        <div class="text-sm text-muted-foreground">
+      <div class="space-y-4 w-full max-w-2xl">
+        <div class="text-muted-foreground text-sm">
           Current sort: {{ sortableState.sort.by }} {{ sortableState.sort.direction }}
         </div>
         <data-table
@@ -263,7 +255,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withMaxHeight">
-      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-scroll"
@@ -283,9 +275,24 @@ const propsTitle = Props
       </div>
     </Variant>
 
+    <Variant :title="withArrayOverflow">
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <div class="w-full max-w-2xl">
+        <data-table
+          id="data-table-array"
+          :columns="arrayColumns"
+          :data="[
+            { project: 'Website Redesign', tags: ['Vue', 'Tailwind', 'TypeScript', 'Vite'] },
+            { project: 'Mobile App', tags: ['React Native', 'Expo'] },
+            { project: 'API Migration', tags: ['Go', 'gRPC', 'PostgreSQL', 'Docker', 'K8s'] },
+          ]"
+        />
+      </div>
+    </Variant>
+
     <Variant :title="interactiveLayoutPlayground" auto-props-disabled>
-      <div class="w-full max-w-2xl space-y-4">
-        <p class="text-sm text-muted-foreground">
+      <div class="space-y-4 w-full max-w-2xl">
+        <p class="text-muted-foreground text-sm">
           Use the right panel to change <code>layout</code>. Default is <code>cards</code> (accordion view).
           This demo combines primary, secondary, tertiary, and hideOnMobile columns.
         </p>
@@ -304,9 +311,9 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ DataTableProps }}</h2>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ DataTableProps }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>

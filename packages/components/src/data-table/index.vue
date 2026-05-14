@@ -203,9 +203,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         </span>
                         <span
                           v-if="state.getArrayItems(row[column.key], column.format.maxVisible).remaining > 0"
-                          class="text-xs text-muted-foreground"
+                          class="relative group/more text-xs text-muted-foreground cursor-default"
                         >
                           {{ t('dataTable.moreCount', { count: state.getArrayItems(row[column.key], column.format.maxVisible).remaining }) }}
+                          <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-popover px-3 py-1.5 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/more:opacity-100">
+                            {{ state.getArrayItems(row[column.key], column.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ') }}
+                          </span>
                         </span>
                       </span>
                     </template>
@@ -414,9 +417,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         </span>
                         <span
                           v-if="state.getArrayItems(row[col.key], col.format.maxVisible).remaining > 0"
-                          class="text-xs text-muted-foreground"
+                          class="relative group/more text-xs text-muted-foreground cursor-default"
                         >
                           {{ t('dataTable.moreCount', { count: state.getArrayItems(row[col.key], col.format.maxVisible).remaining }) }}
+                          <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-popover px-3 py-1.5 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/more:opacity-100">
+                            {{ state.getArrayItems(row[col.key], col.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ') }}
+                          </span>
                         </span>
                       </span>
                     </template>

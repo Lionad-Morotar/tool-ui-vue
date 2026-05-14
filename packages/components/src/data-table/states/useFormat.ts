@@ -15,7 +15,7 @@ export interface FormatReturns {
   getBadgeTone: (value: unknown, column: Column) => string | null;
   getToneClasses: (tone: string | null) => string;
   getDeltaClasses: (value: unknown, column: Column) => string;
-  getArrayItems: (value: unknown, maxVisible?: number) => { items: (string | number | boolean | null)[]; remaining: number };
+  getArrayItems: (value: unknown, maxVisible?: number) => { items: (string | number | boolean | null)[]; remaining: number; hidden: (string | number | boolean | null)[] };
 }
 
 export function useFormat(options: FormatOptions): FormatReturns {
@@ -206,7 +206,7 @@ export function useFormat(options: FormatOptions): FormatReturns {
     return '';
   }
 
-  function getArrayItems(value: unknown, maxVisible?: number): { items: (string | number | boolean | null)[]; remaining: number } {
+  function getArrayItems(value: unknown, maxVisible?: number): { items: (string | number | boolean | null)[]; remaining: number; hidden: (string | number | boolean | null)[] } {
     const items: (string | number | boolean | null)[] = Array.isArray(value)
       ? value
       : typeof value === 'string'
@@ -214,8 +214,9 @@ export function useFormat(options: FormatOptions): FormatReturns {
         : [];
     const max = maxVisible ?? 3;
     const visible = items.slice(0, max);
+    const hidden = items.slice(max);
     const remaining = items.length - max;
-    return { items: visible, remaining: remaining > 0 ? remaining : 0 };
+    return { items: visible, remaining: remaining > 0 ? remaining : 0, hidden };
   }
 
   return {

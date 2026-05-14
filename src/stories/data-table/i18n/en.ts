@@ -38,6 +38,8 @@ export default {
     withFormatting: 'With Formatting',
     withMaxHeight: 'With Max Height',
     withStatusBadges: 'With Status Badges',
+    withArrayOverflow: 'Array Overflow',
+    colTags: 'Tags',
   },
   data: {
     colItem: 'Item',

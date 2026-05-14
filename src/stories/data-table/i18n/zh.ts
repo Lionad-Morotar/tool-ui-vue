@@ -38,6 +38,8 @@ export default {
     withFormatting: '格式化显示',
     withMaxHeight: '最大高度',
     withStatusBadges: '状态徽标',
+    withArrayOverflow: '数组溢出',
+    colTags: '标签',
   },
   data: {
     colItem: '商品',
