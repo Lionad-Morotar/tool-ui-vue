@@ -1,6 +1,6 @@
 {
   "name": "@lionad/vtu-components",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Tool call UI components for tool-ui-vue",
   "license": "MIT",
   "type": "module",

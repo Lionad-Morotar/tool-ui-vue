@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - 2025-05-14
+## [0.2.1] - 2025-05-15
+
+### Added
+
+- DataTable 数组溢出项增加 hover tooltip，显示被截断的具体内容
+- PreferencesPanel 新增 `input` 类型偏好项，支持 text/tel/email/url/number 输入
 
 ### Added
 
