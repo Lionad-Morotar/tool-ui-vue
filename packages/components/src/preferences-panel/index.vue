@@ -44,21 +44,21 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
     :aria-busy="false"
     :aria-label="receiptAriaLabel"
   >
-    <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 opacity-95 shadow-xs">
+    <div class="flex flex-col bg-card/60 opacity-95 shadow-xs border border-border rounded-2xl w-full overflow-hidden">
       <!-- Header -->
       <template v-if="props.title">
-        <div class="flex items-center justify-between gap-3 px-5 py-4">
-          <h2 class="text-base leading-none font-semibold">{{ props.title }}</h2>
+        <div class="flex justify-between items-center gap-3 px-5 py-4">
+          <h2 class="font-semibold text-base leading-none">{{ props.title }}</h2>
           <span
             v-if="state.hasErrors"
-            class="flex items-center gap-1.5 text-xs font-medium text-destructive"
+            class="flex items-center gap-1.5 font-medium text-destructive text-xs"
           >
             <alert-circle class="size-3.5" />
             {{ t('preferencesPanel.error') }}
           </span>
           <span
             v-else
-            class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500"
+            class="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-500 text-xs"
           >
             <check class="size-3.5" />
             {{ t('preferencesPanel.saved') }}
@@ -71,7 +71,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
           <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
-            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
+            <legend class="pb-1 text-muted-foreground text-xs uppercase tracking-widest">
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
@@ -79,22 +79,22 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                 <hr v-if="itemIndex > 0" class="my-1 border-border" />
                 <div :class="cn('flex items-start justify-between gap-4 py-3', props.css?.item)">
                   <div class="flex flex-col gap-1">
-                    <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
+                    <span class="font-medium text-sm text-pretty leading-6">{{ item.label }}</span>
                     <span
                       v-if="state.getItemError(item)"
-                      class="text-sm font-normal text-pretty text-destructive"
+                      class="font-normal text-destructive text-sm text-pretty"
                     >
                       {{ state.getItemError(item) }}
                     </span>
                     <span
                       v-else-if="item.description"
-                      class="text-sm font-normal text-pretty text-muted-foreground"
+                      class="font-normal text-muted-foreground text-sm text-pretty"
                     >
                       {{ item.description }}
                     </span>
                   </div>
-                  <div class="flex shrink-0 items-center gap-2">
-                    <span class="text-sm font-medium text-muted-foreground">
+                  <div class="flex items-center gap-2 shrink-0">
+                    <span class="font-medium text-muted-foreground text-sm">
                       {{ state.formatDisplayValue(item, state.getItemValue(item)) }}
                     </span>
                     <alert-circle
@@ -124,22 +124,22 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                 )"
               >
                 <div class="flex flex-col gap-1">
-                  <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
+                  <span class="font-medium text-sm text-pretty leading-6">{{ item.label }}</span>
                   <span
                     v-if="state.getItemError(item)"
-                    class="text-sm font-normal text-pretty text-destructive"
+                    class="font-normal text-destructive text-sm text-pretty"
                   >
                     {{ state.getItemError(item) }}
                   </span>
                   <span
                     v-else-if="item.description"
-                    class="text-sm font-normal text-pretty text-muted-foreground"
+                    class="font-normal text-muted-foreground text-sm text-pretty"
                   >
                     {{ item.description }}
                   </span>
                 </div>
-                <div class="flex shrink-0 items-center gap-2">
-                  <span class="text-sm font-medium text-muted-foreground">
+                <div class="flex items-center gap-2 shrink-0">
+                  <span class="font-medium text-muted-foreground text-sm">
                     {{ state.formatDisplayValue(item, state.getItemValue(item)) }}
                   </span>
                   <alert-circle
@@ -170,11 +170,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
     lang="en"
     :aria-busy="false"
   >
-    <div class="flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+    <div class="flex flex-col bg-card shadow-xs border border-border rounded-2xl w-full overflow-hidden">
       <!-- Header -->
       <template v-if="props.title">
         <div class="px-5 py-4">
-          <h2 class="text-base leading-none font-semibold">{{ props.title }}</h2>
+          <h2 class="font-semibold text-base leading-none">{{ props.title }}</h2>
         </div>
         <hr class="border-border" />
       </template>
@@ -183,7 +183,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
           <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
-            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
+            <legend class="pb-1 text-muted-foreground text-xs uppercase tracking-widest">
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
@@ -193,25 +193,25 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   :class="cn(
                     'flex items-start justify-between gap-4',
                     'py-3',
-                    item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
+                    item.type === 'input' ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
                     props.css?.item
                   )"
                 >
                   <div class="flex flex-col gap-1">
                     <label
                       :for="`preference-${item.id}`"
-                      class="leading-6 font-medium text-pretty"
+                      class="font-medium text-pretty leading-6"
                     >
                       {{ item.label }}
                     </label>
                     <p
                       v-if="item.description"
-                      class="text-sm font-normal text-pretty text-muted-foreground"
+                      class="font-normal text-muted-foreground text-sm text-pretty"
                     >
                       {{ item.description }}
                     </p>
                   </div>
-                  <div class="flex shrink-0">
+                  <div :class="cn('flex', item.type === 'input' && 'w-full', item.type !== 'input' && 'shrink-0')">
                     <!-- Switch -->
                     <button
                       v-if="item.type === 'switch'"
@@ -274,6 +274,20 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                         {{ option.label }}
                       </option>
                     </select>
+
+                    <!-- Input -->
+                    <input
+                      v-else-if="item.type === 'input'"
+                      :id="`preference-${item.id}`"
+                      :type="item.inputType ?? 'text'"
+                      :placeholder="item.placeholder ?? ''"
+                      :value="String(state.getItemValue(item))"
+                      :class="cn(
+                        'h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
+                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
+                      )"
+                      @input="state.updateValue(item.id, ($event.target as HTMLInputElement).value)"
+                    />
                   </div>
                 </div>
               </template>
@@ -289,25 +303,25 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                 :class="cn(
                   'flex items-start justify-between gap-4',
                   itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
-                  item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
+                    item.type === 'input' ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
                   props.css?.item
                 )"
               >
                 <div class="flex flex-col gap-1">
                   <label
                     :for="`preference-${item.id}`"
-                    class="leading-6 font-medium text-pretty"
+                    class="font-medium text-pretty leading-6"
                   >
                     {{ item.label }}
                   </label>
                   <p
                     v-if="item.description"
-                    class="text-sm font-normal text-pretty text-muted-foreground"
+                    class="font-normal text-muted-foreground text-sm text-pretty"
                   >
                     {{ item.description }}
                   </p>
                 </div>
-                <div class="flex shrink-0">
+                <div :class="cn('flex', item.type !== 'input' && 'shrink-0')">
                   <!-- Switch -->
                   <button
                     v-if="item.type === 'switch'"
@@ -370,6 +384,20 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                       {{ option.label }}
                     </option>
                   </select>
+
+                  <!-- Input -->
+                  <input
+                    v-else-if="item.type === 'input'"
+                    :id="`preference-${item.id}`"
+                    :type="item.inputType ?? 'text'"
+                    :placeholder="item.placeholder ?? ''"
+                    :value="String(state.getItemValue(item))"
+                    :class="cn(
+                      'h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
+                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
+                    )"
+                    @input="state.updateValue(item.id, ($event.target as HTMLInputElement).value)"
+                  />
                 </div>
               </div>
             </template>
