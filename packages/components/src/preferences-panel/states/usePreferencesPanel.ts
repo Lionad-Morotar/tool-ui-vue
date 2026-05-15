@@ -37,6 +37,8 @@ export function usePreferencesPanel(
         return item.defaultValue ?? item.options?.[0]?.value ?? '';
       case 'select':
         return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? '';
+      case 'input':
+        return item.defaultValue ?? '';
     }
   }
 
@@ -128,6 +130,9 @@ export function usePreferencesPanel(
     }
 
     const stringValue = typeof value === 'string' ? value : '';
+
+    if (item.type === 'input') return stringValue;
+
     const options = item.type === 'toggle' ? item.options : item.selectOptions;
     const option = options?.find((opt) => opt.value === stringValue);
 

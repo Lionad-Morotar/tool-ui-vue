@@ -50,10 +50,19 @@ const PreferenceSelectSchema = PreferenceItemBaseSchema.extend({
   defaultSelected: z.string().optional(),
 });
 
+const PreferenceInputSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('input'),
+  inputType: z.enum(['text', 'tel', 'email', 'url', 'number']).optional(),
+  required: z.boolean().optional(),
+  placeholder: z.string().optional(),
+  defaultValue: z.string().optional(),
+});
+
 const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
   PreferenceSelectSchema,
+  PreferenceInputSchema,
 ]);
 
 const PreferenceSectionSchema = z.object({
