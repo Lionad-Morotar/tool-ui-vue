@@ -67,6 +67,16 @@ const featureOneLabel = useStoryLocale('content.featureOneLabel', messages)
 const featureOneDesc = useStoryLocale('content.featureOneDesc', messages)
 const featureTwoLabel = useStoryLocale('content.featureTwoLabel', messages)
 const togglesHeading = useStoryLocale('content.togglesHeading', messages)
+const inputsHeading = useStoryLocale('content.inputsHeading', messages)
+const nameLabel = useStoryLocale('content.nameLabel', messages)
+const namePlaceholder = useStoryLocale('content.namePlaceholder', messages)
+const phoneLabel = useStoryLocale('content.phoneLabel', messages)
+const phonePlaceholder = useStoryLocale('content.phonePlaceholder', messages)
+const emailInputLabel = useStoryLocale('content.emailInputLabel', messages)
+const emailInputPlaceholder = useStoryLocale('content.emailInputPlaceholder', messages)
+const companyLabel = useStoryLocale('content.companyLabel', messages)
+const companyDesc = useStoryLocale('content.companyDesc', messages)
+const companyPlaceholder = useStoryLocale('content.companyPlaceholder', messages)
 const itemSizeLabel = useStoryLocale('content.itemSizeLabel', messages)
 const smallOpt = useStoryLocale('content.smallOpt', messages)
 const mediumOpt = useStoryLocale('content.mediumOpt', messages)
@@ -196,7 +206,7 @@ const prefs = ref({
 <template>
   <Story title="PreferencesPanel/All Variants">
     <Variant :title="notificationSettings">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-notifications"
@@ -232,7 +242,7 @@ const prefs = ref({
     </Variant>
 
     <Variant :title="appearanceSettings">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-appearance"
@@ -279,7 +289,7 @@ const prefs = ref({
     </Variant>
 
     <Variant :title="withCustomActions">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-actions"
@@ -313,7 +323,7 @@ const prefs = ref({
     </Variant>
 
     <Variant :title="allControlTypes">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
       <div class="w-full max-w-md">
         <preferences-panel
           id="preferences-panel-all-types"
@@ -370,6 +380,19 @@ const prefs = ref({
                   ],
                   defaultSelected: 'utc',
                 },
+              ],
+            },
+            {
+              heading: inputsHeading,
+              items: [
+                {
+                  id: 'name',
+                  label: nameLabel,
+                  type: 'input',
+                  inputType: 'text',
+                  required: true,
+                  placeholder: namePlaceholder,
+                }
               ],
             },
           ]"
@@ -511,9 +534,9 @@ const prefs = ref({
       </div>
     </Variant>
     <Variant :title="propsTitle">
-      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
-      <div class="w-full max-w-4xl p-6">
-        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <div class="p-6 w-full max-w-4xl">
+        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>
