@@ -39,7 +39,11 @@ export default {
     withMaxHeight: '最大高度',
     withStatusBadges: '状态徽标',
     withArrayOverflow: '数组溢出',
-    colTags: '标签',
+    withTextOverflow: '文本溢出与 Tooltip',
+    colCountry: '国家',
+    colKeyPolicy: '核心政策方向',
+    colLocalization: '关键本土化要求',
+    colTarget: '核心目标',
   },
   data: {
     colItem: '商品',

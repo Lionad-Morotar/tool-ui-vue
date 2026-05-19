@@ -39,7 +39,12 @@ export default {
     withMaxHeight: 'With Max Height',
     withStatusBadges: 'With Status Badges',
     withArrayOverflow: 'Array Overflow',
+    withTextOverflow: 'Text Overflow Tooltip',
     colTags: 'Tags',
+    colCountry: 'Country',
+    colKeyPolicy: 'Key Policy',
+    colLocalization: 'Localization Requirements',
+    colTarget: 'Target',
   },
   data: {
     colItem: 'Item',

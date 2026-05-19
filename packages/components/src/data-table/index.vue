@@ -229,8 +229,14 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
                     <!-- Default -->
                     <template v-else>
-                      <span :class="cn(state.isNumericFormat(column.format) && 'tabular-nums')">
-                        {{ state.formatCellValue(row[column.key], column) }}
+                      <span class="relative group/cell inline-block max-w-[280px]">
+                        <span :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')">
+                          {{ state.formatCellValue(row[column.key], column) }}
+                        </span>
+                        <!-- Tooltip: hover 显示完整内容 -->
+                        <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 whitespace-normal rounded-md bg-popover px-3 py-1.5 text-xs text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/cell:opacity-100 max-w-[320px]">
+                          {{ state.formatCellValue(row[column.key], column) }}
+                        </span>
                       </span>
                     </template>
                   </td>

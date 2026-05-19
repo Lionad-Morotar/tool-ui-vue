@@ -14,6 +14,7 @@ const withDefaultSort = useStoryLocale('content.withDefaultSort', messages)
 const controlledSort = useStoryLocale('content.controlledSort', messages)
 const withMaxHeight = useStoryLocale('content.withMaxHeight', messages)
 const withArrayOverflow = useStoryLocale('content.withArrayOverflow', messages)
+const withTextOverflow = useStoryLocale('content.withTextOverflow', messages)
 const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPlayground', messages)
 const colName = useStoryLocale('content.colName', messages)
 const colStatus = useStoryLocale('content.colStatus', messages)
@@ -35,6 +36,10 @@ const colBudget = useStoryLocale('content.colBudget', messages)
 const colDeadline = useStoryLocale('content.colDeadline', messages)
 const colNotes = useStoryLocale('content.colNotes', messages)
 const colTags = useStoryLocale('content.colTags', messages)
+const colCountry = useStoryLocale('content.colCountry', messages)
+const colKeyPolicy = useStoryLocale('content.colKeyPolicy', messages)
+const colLocalization = useStoryLocale('content.colLocalization', messages)
+const colTarget = useStoryLocale('content.colTarget', messages)
 const colScore = useStoryLocale('content.colScore', messages)
 const colGrade = useStoryLocale('content.colGrade', messages)
 const statusCompleted = useStoryLocale('content.statusCompleted', messages)
@@ -137,6 +142,14 @@ const playgroundColumns = computed<any[]>(() => [
 const arrayColumns = computed<any[]>(() => [
   { key: 'project', label: colProject.value },
   { key: 'tags', label: colTags.value, format: { kind: 'array', maxVisible: 2 } },
+])
+
+// Text overflow columns
+const textOverflowColumns = computed<any[]>(() => [
+  { key: 'country', label: colCountry.value, width: '80px' },
+  { key: 'key_policy', label: colKeyPolicy.value },
+  { key: 'localization', label: colLocalization.value },
+  { key: 'target', label: colTarget.value },
 ])
 
 // Props documentation
@@ -275,18 +288,36 @@ const propsTitle = Props
       </div>
     </Variant>
 
-    <Variant :title="withArrayOverflow">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
-      <div class="w-full max-w-2xl">
-        <data-table
-          id="data-table-array"
-          :columns="arrayColumns"
-          :data="[
-            { project: 'Website Redesign', tags: ['Vue', 'Tailwind', 'TypeScript', 'Vite'] },
-            { project: 'Mobile App', tags: ['React Native', 'Expo'] },
-            { project: 'API Migration', tags: ['Go', 'gRPC', 'PostgreSQL', 'Docker', 'K8s'] },
-          ]"
-        />
+    <Variant :title="withTextOverflow">
+      <p class="mb-3 text-muted-foreground text-xs">Array overflow and text truncation with tooltip</p>
+      <div class="space-y-6 w-full max-w-3xl">
+        <div>
+          <p class="mb-2 text-sm font-medium">Array Overflow</p>
+          <data-table
+            id="data-table-array"
+            :columns="arrayColumns"
+            :data="[
+              { project: 'Website Redesign', tags: ['Vue', 'Tailwind', 'TypeScript', 'Vite'] },
+              { project: 'Mobile App', tags: ['React Native', 'Expo'] },
+              { project: 'API Migration', tags: ['Go', 'gRPC', 'PostgreSQL', 'Docker', 'K8s'] },
+            ]"
+          />
+        </div>
+        <div>
+          <p class="mb-2 text-sm font-medium">Text Truncation + Tooltip</p>
+          <data-table
+            id="data-table-text-overflow"
+            :columns="textOverflowColumns"
+            :data="[
+              { country: 'Thailand', key_policy: 'EV3.5 Policy: Pure EV consumption tax reduced to 2%, but requires local battery manufacturing', localization: 'Core components such as batteries must be produced locally; for every 1 imported vehicle, 2-3 must be produced locally.', target: 'Produce 300,000 EVs by 2030, establishing Thailand as ASEAN EV production hub.' },
+              { country: 'Indonesia', key_policy: 'Leveraging nickel resources to build full industrial chain from nickel to battery to vehicle', localization: 'Localization rate reaches 40% by 2026; power battery local content no less than 60%.', target: 'Ban ICE vehicle sales by 2040, becoming a global power battery manufacturing center.' },
+              { country: 'Vietnam', key_policy: 'High purchase tax reduction and consumption tax incentives; Hanoi to phase out motorcycles from July 2026', localization: 'Localization rate threshold set at 30% by 2028.', target: 'Electric two-wheelers account for 25% of sales by 2030; ban ICE vehicles by 2040.' },
+              { country: 'Malaysia', key_policy: 'Ending import EV road tax exemption, implementing tiered road tax; CKD models exempt from consumption tax', localization: 'Local assembly EV parts exempt from import duties until 2027; long-term guidance for local production.', target: 'EV penetration reaches 15% by 2030, 38% by 2040.' },
+            ]"
+            row-id-key="country"
+            max-height="400px"
+          />
+        </div>
       </div>
     </Variant>
 

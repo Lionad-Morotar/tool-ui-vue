@@ -324,8 +324,8 @@ describe('DataTable', () => {
         }),
       });
       const cells = wrapper.findAll('td');
-      expect(cells[1].text()).toBe('2');
-      expect(cells[3].text()).toBe('10');
+      expect(cells[1].find('span span').text()).toBe('2');
+      expect(cells[3].find('span span').text()).toBe('10');
     });
 
     test('has aria-sort attribute on sorted column', () => {
