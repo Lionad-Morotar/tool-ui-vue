@@ -82,11 +82,11 @@ const copyButtonAriaLabel = computed(() =>
           >
             <check
               v-if="state.hasOutput && isCopied"
-              class="h-4 w-4 text-green-700 dark:text-green-400"
+              class="shrink-0 h-4 w-4 text-green-700 dark:text-green-400"
             />
             <copy
               v-else
-              class="h-4 w-4 text-muted-foreground"
+              class="shrink-0 h-4 w-4 text-muted-foreground"
             />
           </button>
         </div>
@@ -140,11 +140,11 @@ const copyButtonAriaLabel = computed(() =>
           @click="state.toggleExpanded"
         >
           <template v-if="state.isCollapsed">
-            <chevron-down class="mr-1 size-4" />
+            <chevron-down class="mr-1 shrink-0 size-4" />
             {{ t('terminal.showAllLines', { count: state.lineCount }) }}
           </template>
           <template v-else>
-            <chevron-up class="mr-1 size-4" />
+            <chevron-up class="mr-1 shrink-0 size-4" />
             {{ t('terminal.collapse') }}
           </template>
         </button>

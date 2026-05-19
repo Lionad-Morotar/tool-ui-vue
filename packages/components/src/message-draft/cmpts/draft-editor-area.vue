@@ -154,7 +154,7 @@ const gradientClass = computed(() =>
       data-slot="header"
     >
       <!-- Slack Logo -->
-      <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="shrink-0 size-4" viewBox="0 0 24 24" aria-hidden="true">
         <path
           fill="#E01E5A"
           d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"

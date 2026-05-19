@@ -173,7 +173,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
 
           <!-- Source -->
           <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 px-4 pb-3 text-xs text-muted-foreground', css?.source)">
-            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="size-3 rounded-sm" />
+            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="shrink-0 size-3 rounded-sm" />
             <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
             <span v-else>{{ source.label }}</span>
           </div>
@@ -273,7 +273,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
 
           <!-- Source -->
           <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 text-xs text-muted-foreground', css?.source)">
-            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="size-3 rounded-sm" />
+            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="shrink-0 size-3 rounded-sm" />
             <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
             <span v-else>{{ source.label }}</span>
           </div>
