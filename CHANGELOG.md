@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-19
+
+### Added
+
+- 异步 Lucide 图标加载机制，修复 OptionList "lucide:xxx" 图标显示为首字母的问题
+- DataTable 默认文本单元格截断 + hover tooltip 显示完整内容
+
 ## [0.2.2] - 2025-05-15
 
 ### Fixed
