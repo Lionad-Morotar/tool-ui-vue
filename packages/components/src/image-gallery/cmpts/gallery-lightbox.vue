@@ -126,7 +126,7 @@ const { t } = useI18n();
             :aria-label="t('imageGallery.close').value"
             @click="closeLightbox"
           >
-            <x class="h-5 w-5" />
+            <x class="shrink-0 h-5 w-5" />
           </button>
         </div>
 

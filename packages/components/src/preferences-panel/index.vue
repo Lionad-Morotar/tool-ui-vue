@@ -53,14 +53,14 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
             v-if="state.hasErrors"
             class="flex items-center gap-1.5 font-medium text-destructive text-xs"
           >
-            <alert-circle class="size-3.5" />
+            <alert-circle class="shrink-0 size-3.5" />
             {{ t('preferencesPanel.error') }}
           </span>
           <span
             v-else
             class="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-500 text-xs"
           >
-            <check class="size-3.5" />
+            <check class="shrink-0 size-3.5" />
             {{ t('preferencesPanel.saved') }}
           </span>
         </div>
@@ -99,11 +99,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                     </span>
                     <alert-circle
                       v-if="state.getItemError(item)"
-                      class="size-3.5 text-destructive"
+                      class="shrink-0 size-3.5 text-destructive"
                     />
                     <check
                       v-else-if="!state.hasErrors"
-                      class="size-3.5 text-emerald-600 dark:text-emerald-500"
+                      class="shrink-0 size-3.5 text-emerald-600 dark:text-emerald-500"
                     />
                   </div>
                 </div>
@@ -144,11 +144,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   </span>
                   <alert-circle
                     v-if="state.getItemError(item)"
-                    class="size-3.5 text-destructive"
+                    class="shrink-0 size-3.5 text-destructive"
                   />
                   <check
                     v-else-if="!state.hasErrors"
-                    class="size-3.5 text-emerald-600 dark:text-emerald-500"
+                    class="shrink-0 size-3.5 text-emerald-600 dark:text-emerald-500"
                   />
                 </div>
               </div>

@@ -107,7 +107,7 @@ const forecastCardStyle = computed(() => ({
               :is="conditionIcons[day.conditionCode]"
               :class="
                 cn(
-                  'my-0.5 size-5',
+                  'my-0.5 shrink-0 size-5',
                   textPrimary,
                   index === 0 ? 'opacity-100' : 'opacity-70',
                   'weather-forecast-icon hidden'

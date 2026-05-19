@@ -54,7 +54,7 @@ onUnmounted(() => {
         css?.error
       )"
     >
-      <image-off class="h-8 w-8 text-muted-foreground" />
+      <image-off class="shrink-0 h-8 w-8 text-muted-foreground" />
       <span class="line-clamp-2 text-center text-xs text-muted-foreground">
         {{ image.alt }}
       </span>

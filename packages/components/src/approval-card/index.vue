@@ -59,7 +59,7 @@ const IconComponent = toRef(state, 'IconComponent');
       >
         <component
           :is="choice === 'approved' ? Check : X"
-          class="size-4"
+          class="shrink-0 size-4"
         />
       </span>
       <div class="flex flex-col">
@@ -106,7 +106,7 @@ const IconComponent = toRef(state, 'IconComponent');
             )
           "
         >
-          <component :is="IconComponent" class="size-5" />
+          <component :is="IconComponent" class="shrink-0 size-5" />
         </span>
         <div class="flex flex-1 flex-col gap-1">
           <h2
