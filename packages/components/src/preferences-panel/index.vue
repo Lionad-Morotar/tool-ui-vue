@@ -197,7 +197,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                     props.css?.item
                   )"
                 >
-                  <div class="flex flex-col gap-1">
+                  <div class="flex flex-col gap-1 shrink-0">
                     <label
                       :for="`preference-${item.id}`"
                       class="font-medium text-pretty leading-6"

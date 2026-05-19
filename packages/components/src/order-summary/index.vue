@@ -113,29 +113,29 @@ const { t } = useI18n()
         <!-- Pricing -->
         <dl :class="cn('flex flex-col gap-2 text-sm', css?.pricing)">
           <div class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
-            <dt>{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
+            <dt class="shrink-0">{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
             <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
             <dd class="tabular-nums">
               {{ pricing.shipping === 0 ? t('orderSummary.free') : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
-            <dt class="font-medium">{{ t('orderSummary.total') }}</dt>
+            <dt class="shrink-0 font-medium">{{ t('orderSummary.total') }}</dt>
             <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>
@@ -202,29 +202,29 @@ const { t } = useI18n()
         <!-- Pricing -->
         <dl :class="cn('flex flex-col gap-2 text-sm', css?.pricing)">
           <div class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ t('orderSummary.subtotal') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.subtotal, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.discount !== undefined && pricing.discount > 0" class="flex justify-between gap-4 text-green-600 dark:text-green-500">
-            <dt>{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
+            <dt class="shrink-0">{{ pricing.discountLabel || t('orderSummary.discount') }}</dt>
             <dd class="tabular-nums">-{{ state.formatCurrency(pricing.discount, pricing.currency) }}</dd>
           </div>
 
           <div v-if="pricing.shipping !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ t('orderSummary.shipping') }}</dt>
             <dd class="tabular-nums">
               {{ pricing.shipping === 0 ? t('orderSummary.free') : state.formatCurrency(pricing.shipping, pricing.currency) }}
             </dd>
           </div>
 
           <div v-if="pricing.tax !== undefined" class="flex justify-between gap-4">
-            <dt class="text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
+            <dt class="shrink-0 text-muted-foreground">{{ pricing.taxLabel || t('orderSummary.tax') }}</dt>
             <dd class="tabular-nums">{{ state.formatCurrency(pricing.tax, pricing.currency) }}</dd>
           </div>
 
           <div class="flex justify-between gap-4">
-            <dt class="font-medium">{{ t('orderSummary.total') }}</dt>
+            <dt class="shrink-0 font-medium">{{ t('orderSummary.total') }}</dt>
             <dd class="font-semibold tabular-nums">{{ state.formatCurrency(pricing.total, pricing.currency) }}</dd>
           </div>
         </dl>

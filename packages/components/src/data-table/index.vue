@@ -313,7 +313,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   <span
                     v-for="col in primaryColumns.slice(1)"
                     :key="col.key"
-                    class="flex min-w-0 gap-1 font-normal"
+                    class="flex shrink-0 min-w-[8em] gap-1 font-normal"
                   >
                     <span class="sr-only">{{ col.label }}:</span>
                     <span aria-hidden="true">{{ col.label }}:</span>
@@ -476,7 +476,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
               :key="col.key"
               class="flex items-start justify-between gap-4"
             >
-              <span class="text-muted-foreground">
+              <span class="shrink-0 min-w-[8em] text-muted-foreground">
                 {{ col.label }}:
               </span>
               <span
