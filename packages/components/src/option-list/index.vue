@@ -66,10 +66,8 @@ const state = reactive(useOptionList(props, emit));
             <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
               <component
                 :is="state.getIconComponent(option.icon)"
-                v-if="state.getIconComponent(option.icon)"
                 class="size-4"
               />
-              <span v-else class="text-xs">{{ option.icon.charAt(0).toUpperCase() }}</span>
             </span>
           </span>
           <div class="flex flex-col text-left">
@@ -180,10 +178,8 @@ const state = reactive(useOptionList(props, emit));
               <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted">
                 <component
                   :is="state.getIconComponent(option.icon)"
-                  v-if="state.getIconComponent(option.icon)"
                   class="size-4"
                 />
-                <span v-else class="text-xs">{{ option.icon.charAt(0).toUpperCase() }}</span>
               </span>
             </span>
 

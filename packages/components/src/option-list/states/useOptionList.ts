@@ -1,4 +1,5 @@
 import { computed, ref, watch } from 'vue';
+import { resolveLucideIcon } from '../../shared/resolve-lucide-icon';
 import type { OptionListProps, OptionListSelection, OptionListOption } from '../schema';
 
 export type OptionListEmit = {
@@ -307,19 +308,22 @@ export function useOptionList(
   const isConfirmDisabled = computed(() => selectedCount.value < minSelections.value || selectedCount.value === 0);
   const hasNothingToClear = computed(() => selectedCount.value === 0);
 
-  // Simple SVG icons matching Lucide style
   const CheckIcon = {
     template: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
   };
 
-  // Icon mapping for common icons
   const iconMap: Record<string, typeof CheckIcon> = {
     check: CheckIcon,
   };
 
+  /** Resolve icon — custom SVGs first, then async Lucide lookup with first-char fallback */
   function getIconComponent(iconName: string | undefined) {
     if (!iconName) return null;
-    return iconMap[iconName] ?? null;
+
+    // Inline icon map takes priority (custom SVGs like "check")
+    if (iconMap[iconName]) return iconMap[iconName];
+
+    return resolveLucideIcon(iconName);
   }
 
   return {

@@ -2,7 +2,7 @@
 // All business logic lives here, index.vue is UI-only
 
 import { useI18n } from '../../core/i18n';
-import { icons } from 'lucide-vue-next';
+import { resolveLucideIcon } from '../../shared/resolve-lucide-icon';
 import { computed, type ComputedRef, type Component } from 'vue';
 import type { ApprovalCardBaseProps } from '../schema';
 
@@ -33,19 +33,8 @@ export function useApprovalCard(
   const resolvedCancelLabel = computed(() => props.cancelLabel ?? t('approvalCard.reject').value);
   const isDestructive = computed(() => resolvedVariant.value === 'destructive');
 
-  // Dynamic icon lookup using lucide-vue-next
-  const IconComponent = computed(() => {
-    if (!props.icon) return null;
-
-    // Convert kebab-case to PascalCase for icon lookup
-    const pascalName = props.icon
-      .split('-')
-      .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join('');
-
-    const Icon = icons[pascalName as keyof typeof icons];
-    return Icon ?? null;
-  });
+  // Async icon lookup — unused icons are never bundled
+  const IconComponent = computed(() => resolveLucideIcon(props.icon));
 
   // Receipt display label
   const receiptLabel = computed(() => {
