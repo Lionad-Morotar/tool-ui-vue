@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { ref, computed } from 'vue';
 
@@ -95,24 +95,27 @@ describe('ApprovalCard', () => {
       expect(wrapper.text()).toContain('Pending');
     });
 
-    test('renders icon when provided', () => {
+    test('renders icon when provided', async () => {
       const wrapper = mount(ApprovalCard, {
         props: createProps({ icon: 'check' }),
       });
+      await flushPromises();
       expect(wrapper.find('svg').exists()).toBe(true);
     });
 
-    test('renders trash icon', () => {
+    test('renders trash icon', async () => {
       const wrapper = mount(ApprovalCard, {
         props: createProps({ icon: 'trash', variant: 'destructive' }),
       });
+      await flushPromises();
       expect(wrapper.find('svg').exists()).toBe(true);
     });
 
-    test('renders file-text icon', () => {
+    test('renders file-text icon', async () => {
       const wrapper = mount(ApprovalCard, {
         props: createProps({ icon: 'file-text' }),
       });
+      await flushPromises();
       expect(wrapper.find('svg').exists()).toBe(true);
     });
 

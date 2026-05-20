@@ -30,11 +30,19 @@ const EXPECTED_COMPONENTS = [
   'Video',
   'WeatherWidget',
   'XPost',
+  // Layout Primitives
+  'Stack',
+  'Card',
+  'Text',
+  'Button',
+  'Badge',
+  'ListItem',
+  'Input',
 ];
 
 describe('catalog', () => {
-  test('contains all 28 expected components', () => {
-    expect(catalog.componentNames).toHaveLength(28);
+  test('contains all 35 expected components', () => {
+    expect(catalog.componentNames).toHaveLength(35);
     for (const name of EXPECTED_COMPONENTS) {
       expect(catalog.componentNames).toContain(name);
     }
