@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-05-20
+
+### Fixed
+
+- 为 label/dt 元素添加 `shrink-0` 防止 flex 收缩截断
+- 为所有 icon 添加 `shrink-0` 防止 flex 收缩变形
+- 修复 approval-card icon 异步加载测试 + catalog 组件数量断言
+
 ## [0.3.0] - 2026-05-19
 
 ### Added
