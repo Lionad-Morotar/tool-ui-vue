@@ -7,6 +7,7 @@ import {
   SerializableCitationListSchema,
   SerializableCodeBlockSchema,
   SerializableCodeDiffSchema,
+  SerializableContactCardSchema,
   SerializableDataTableSchema,
   SerializableGeoMapSchema,
   SerializableImageSchema,
@@ -67,6 +68,11 @@ export const catalog = schema.createCatalog({
       props: SerializableCodeDiffSchema,
       slots: [],
       description: 'Side-by-side or inline code diff',
+    },
+    ContactCard: {
+      props: SerializableContactCardSchema,
+      slots: [],
+      description: 'Contact information card with click-to-call, email, or copy',
     },
     DataTable: {
       props: SerializableDataTableSchema,

@@ -9,6 +9,7 @@ const EXPECTED_COMPONENTS = [
   'CitationList',
   'CodeBlock',
   'CodeDiff',
+  'ContactCard',
   'DataTable',
   'GeoMap',
   'Image',
@@ -41,8 +42,8 @@ const EXPECTED_COMPONENTS = [
 ];
 
 describe('catalog', () => {
-  test('contains all 35 expected components', () => {
-    expect(catalog.componentNames).toHaveLength(35);
+  test('contains all 36 expected components', () => {
+    expect(catalog.componentNames).toHaveLength(36);
     for (const name of EXPECTED_COMPONENTS) {
       expect(catalog.componentNames).toContain(name);
     }
