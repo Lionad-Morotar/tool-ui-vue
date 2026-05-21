@@ -237,7 +237,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                     <!-- Toggle -->
                     <div
                       v-else-if="item.type === 'toggle' && item.options"
-                      class="flex items-center gap-1"
+                      class="flex flex-wrap items-center justify-end gap-1"
                     >
                       <button
                         v-for="option in item.options"
@@ -347,7 +347,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   <!-- Toggle -->
                   <div
                     v-else-if="item.type === 'toggle' && item.options"
-                    class="flex items-center gap-1"
+                    class="flex flex-wrap items-center justify-end gap-1"
                   >
                     <button
                       v-for="option in item.options"
