@@ -29,12 +29,17 @@ export function usePreferencesPanel(
   const isReceipt = computed(() => isReceiptProps(props));
 
   // Get initial value for an item
-  function getInitialValue(item: PreferenceItem): string | boolean {
+  function getInitialValue(item: PreferenceItem): string | string[] | boolean {
     switch (item.type) {
       case 'switch':
         return item.defaultChecked ?? false;
-      case 'toggle':
-        return item.defaultValue ?? item.options?.[0]?.value ?? '';
+      case 'toggle': {
+        if (item.multiple) {
+          if (item.defaultValue === undefined) return [];
+          return Array.isArray(item.defaultValue) ? item.defaultValue : [item.defaultValue];
+        }
+        return typeof item.defaultValue === 'string' ? item.defaultValue : (item.options?.[0]?.value ?? '');
+      }
       case 'select':
         return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? '';
       case 'input':
@@ -72,7 +77,7 @@ export function usePreferencesPanel(
   });
 
   // Get current value for an item (handles both controlled and uncontrolled modes)
-  function getItemValue(item: PreferenceItem): string | boolean {
+  function getItemValue(item: PreferenceItem): string | string[] | boolean {
     if (isReceiptProps(props)) {
       return props.choice[item.id] ?? getInitialValue(item);
     }
@@ -102,7 +107,7 @@ export function usePreferencesPanel(
   });
 
   // Update value (only in interactive mode)
-  function updateValue(itemId: string, value: string | boolean) {
+  function updateValue(itemId: string, value: string | string[] | boolean) {
     if (isReceipt.value) return;
 
     if (controlledValue.value !== undefined) {
@@ -115,27 +120,55 @@ export function usePreferencesPanel(
     }
   }
 
+  // Toggle an option in a multi-select toggle
+  function toggleOption(item: PreferenceItem, optionValue: string) {
+    if (item.type !== 'toggle' || !item.multiple) return;
+
+    const currentValue = getItemValue(item);
+    const currentArray = Array.isArray(currentValue) ? currentValue : [];
+    const newArray = currentArray.includes(optionValue)
+      ? currentArray.filter((v) => v !== optionValue)
+      : [...currentArray, optionValue];
+
+    updateValue(item.id, newArray);
+  }
+
   // Check if dirty (has changes from initial)
   const isDirty = computed(() => {
     if (isReceipt.value) return false;
-    return Object.keys(currentValues.value).some(
-      (key) => currentValues.value[key] !== initialValues.value[key]
-    );
+    return Object.keys(currentValues.value).some((key) => {
+      const current = currentValues.value[key];
+      const initial = initialValues.value[key];
+      if (Array.isArray(current) && Array.isArray(initial)) {
+        if (current.length !== initial.length) return true;
+        return current.some((v, i) => v !== initial[i]);
+      }
+      return current !== initial;
+    });
   });
 
   // Format display value
-  function formatDisplayValue(item: PreferenceItem, value: string | boolean): string {
+  function formatDisplayValue(item: PreferenceItem, value: string | string[] | boolean): string {
     if (item.type === 'switch') {
       return typeof value === 'boolean' && value ? 'On' : 'Off';
     }
 
-    const stringValue = typeof value === 'string' ? value : '';
-
-    if (item.type === 'input') return stringValue;
+    if (item.type === 'input') {
+      return typeof value === 'string' ? value : '';
+    }
 
     const options = item.type === 'toggle' ? item.options : item.selectOptions;
-    const option = options?.find((opt) => opt.value === stringValue);
 
+    // Multi-select toggle: join selected option labels with comma
+    if (Array.isArray(value)) {
+      const labels = value
+        .map((v) => options?.find((opt) => opt.value === v)?.label ?? v)
+        .filter(Boolean);
+      return labels.join(', ') || '-';
+    }
+
+    const stringValue = typeof value === 'string' ? value : '';
+    const option = options?.find((opt) => opt.value === stringValue);
     return option?.label ?? stringValue;
   }
 
@@ -210,8 +243,18 @@ export function usePreferencesPanel(
   }
 
   // Check if switch is on
-  function isSwitchValue(value: string | boolean): boolean {
+  function isSwitchValue(value: string | string[] | boolean): boolean {
     return typeof value === 'boolean' ? value : value === 'true';
+  }
+
+  // Check if a toggle option is selected (handles both single and multi-select)
+  function isToggleOptionSelected(item: PreferenceItem, optionValue: string): boolean {
+    if (item.type !== 'toggle') return false;
+    const value = getItemValue(item);
+    if (Array.isArray(value)) {
+      return value.includes(optionValue);
+    }
+    return value === optionValue;
   }
 
   // Check if there are errors (receipt mode only)
@@ -244,12 +287,14 @@ export function usePreferencesPanel(
     getItemValue,
     currentValues,
     updateValue,
+    toggleOption,
     isDirty,
     formatDisplayValue,
     normalizedActions,
     actionsWithState,
     handleAction,
     isSwitchValue,
+    isToggleOptionSelected,
     hasErrors,
     getItemError,
   };

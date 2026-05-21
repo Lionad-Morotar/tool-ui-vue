@@ -16,10 +16,10 @@ const props = withDefaults(defineProps<PreferencesPanelProps & Partial<Preferenc
 })
 
 const emit = defineEmits<{
-  change: [value: Record<string, string | boolean>];
-  action: [actionId: string, value: Record<string, string | boolean>];
-  beforeAction: [actionId: string, value: Record<string, string | boolean>];
-  'update:value': [value: Record<string, string | boolean>];
+  change: [value: Record<string, string | string[] | boolean>];
+  action: [actionId: string, value: Record<string, string | string[] | boolean>];
+  beforeAction: [actionId: string, value: Record<string, string | string[] | boolean>];
+  'update:value': [value: Record<string, string | string[] | boolean>];
 }>()
 
 // All business logic delegated to states layer
@@ -245,11 +245,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                         type="button"
                         :class="cn(
                           'rounded-full px-3 py-1.5 text-sm transition-colors',
-                          state.getItemValue(item) === option.value
+                          state.isToggleOptionSelected(item, option.value)
                             ? 'bg-primary text-primary-foreground'
                             : 'hover:bg-accent'
                         )"
-                        @click="state.updateValue(item.id, option.value)"
+                        @click="item.multiple ? state.toggleOption(item, option.value) : state.updateValue(item.id, option.value)"
                       >
                         {{ option.label }}
                       </button>
@@ -355,11 +355,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                       type="button"
                       :class="cn(
                         'rounded-full px-3 py-1.5 text-sm transition-colors',
-                        state.getItemValue(item) === option.value
+                        state.isToggleOptionSelected(item, option.value)
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:bg-accent'
                       )"
-                      @click="state.updateValue(item.id, option.value)"
+                      @click="item.multiple ? state.toggleOption(item, option.value) : state.updateValue(item.id, option.value)"
                     >
                       {{ option.label }}
                     </button>

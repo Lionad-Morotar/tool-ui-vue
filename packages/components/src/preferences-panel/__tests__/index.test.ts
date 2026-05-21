@@ -226,6 +226,173 @@ describe('PreferencesPanel', () => {
     });
   });
 
+  describe('interactions - multi-toggle', () => {
+    function createMultiToggleProps(overrides: Record<string, unknown> = {}) {
+      return createProps({
+        sections: [
+          {
+            heading: 'Products',
+            items: [
+              {
+                id: 'products',
+                type: 'toggle' as const,
+                label: 'Select Products',
+                multiple: true,
+                options: [
+                  { value: 'power', label: 'Power Battery' },
+                  { value: 'ebike', label: 'E-bike Battery' },
+                  { value: 'storage', label: 'Energy Storage' },
+                  { value: 'consumer', label: 'Consumer' },
+                ],
+              },
+            ],
+          },
+        ],
+        ...overrides,
+      });
+    }
+
+    test('renders multi-toggle options with none selected by default', () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+      expect(buttons.length).toBe(4);
+      // None should have bg-primary class initially
+      expect(buttons.every((b) => !b.classes().includes('bg-primary'))).toBe(true);
+    });
+
+    test('selects multiple options in multi-toggle', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+
+      await buttons[0].trigger('click');
+      await buttons[2].trigger('click');
+
+      expect(wrapper.emitted('change')).toBeTruthy();
+      const lastChange = (wrapper.emitted('change')!.pop() as unknown[])[0] as Record<string, unknown>;
+      expect(lastChange.products).toEqual(['power', 'storage']);
+    });
+
+    test('deselects an already selected option in multi-toggle', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+
+      await buttons[0].trigger('click');
+      await buttons[2].trigger('click');
+      // Deselect the first one
+      await buttons[0].trigger('click');
+
+      const lastChange = (wrapper.emitted('change')!.pop() as unknown[])[0] as Record<string, unknown>;
+      expect(lastChange.products).toEqual(['storage']);
+    });
+
+    test('multi-toggle shows selected state visually', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+
+      await buttons[0].trigger('click');
+      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[1].classes()).not.toContain('bg-primary');
+
+      await buttons[1].trigger('click');
+      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[1].classes()).toContain('bg-primary');
+    });
+
+    test('multi-toggle respects defaultValue array', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createMultiToggleProps({
+          value: { products: ['power', 'consumer'] },
+        }),
+      });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[3].classes()).toContain('bg-primary');
+      expect(buttons[1].classes()).not.toContain('bg-primary');
+      expect(buttons[2].classes()).not.toContain('bg-primary');
+    });
+
+    test('multi-toggle with string defaultValue wraps to array', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'tech',
+                  type: 'toggle' as const,
+                  label: 'Tech',
+                  multiple: true,
+                  options: [
+                    { value: 'lfp', label: 'LFP' },
+                    { value: 'ncm', label: 'NCM' },
+                  ],
+                  defaultValue: 'lfp',
+                },
+              ],
+            },
+          ],
+        }),
+      });
+      const buttons = wrapper.findAll('button').filter((b) => ['LFP', 'NCM'].includes(b.text()));
+      expect(buttons[0].classes()).toContain('bg-primary');
+    });
+
+    test('isDirty detects multi-toggle changes', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const saveBtn = wrapper.findAll('button').find((b) => b.text().includes('Save'));
+      expect(saveBtn!.attributes('disabled')).toBeDefined();
+
+      const productButtons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+      await productButtons[0].trigger('click');
+      expect(saveBtn!.attributes('disabled')).toBeUndefined();
+    });
+
+    test('formatDisplayValue joins multi-toggle labels with comma', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createMultiToggleProps({
+          choice: { products: ['power', 'storage'] },
+        }),
+      });
+      expect(wrapper.text()).toContain('Power Battery, Energy Storage');
+    });
+
+    test('formatDisplayValue shows dash for empty multi-toggle', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createMultiToggleProps({
+          choice: { products: [] },
+        }),
+      });
+      expect(wrapper.text()).toContain('-');
+    });
+
+    test('cancel resets multi-toggle to initial', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createMultiToggleProps() });
+      const buttons = wrapper.findAll('button').filter((b) =>
+        ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
+      );
+      await buttons[0].trigger('click');
+      await buttons[1].trigger('click');
+
+      const cancelBtn = wrapper.findAll('button').find((b) => b.text().includes('Cancel'));
+      await cancelBtn!.trigger('click');
+
+      const lastChange = (wrapper.emitted('change')!.pop() as unknown[])[0] as Record<string, unknown>;
+      expect(lastChange.products).toEqual([]);
+    });
+  });
+
   describe('interactions - select', () => {
     test('changes select and emits change', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });

@@ -34,7 +34,8 @@ const PreferenceToggleSchema = PreferenceItemBaseSchema.extend({
       }),
     )
     .min(2),
-  defaultValue: z.string().optional(),
+  defaultValue: z.union([z.string(), z.array(z.string())]).optional(),
+  multiple: z.boolean().optional(),
 });
 
 const PreferenceSelectSchema = PreferenceItemBaseSchema.extend({
@@ -97,7 +98,7 @@ export const SerializablePreferencesPanelSchema =
  */
 export const SerializablePreferencesPanelReceiptSchema =
   z.strictObject(PreferencesPanelBaseSchema.extend({
-        choice: z.record(z.string(), z.union([z.string(), z.boolean()])),
+        choice: z.record(z.string(), z.union([z.string(), z.boolean(), z.array(z.string())])),
         error: z.record(z.string(), z.string()).optional(),
       }).shape);
 
@@ -151,7 +152,7 @@ export const safeParseSerializablePreferencesPanelReceipt: (
  * 偏好设置值类型
  */
 export interface PreferencesValue {
-  [itemId: string]: string | boolean;
+  [itemId: string]: string | string[] | boolean;
 }
 
 /**
@@ -194,7 +195,7 @@ export interface PreferencesPanelReceiptProps {
   receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
-  choice: Record<string, string | boolean>;
+  choice: Record<string, string | boolean | string[]>;
   error?: Record<string, string>;
   css?: PreferencesPanelCss;
 }

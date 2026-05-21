@@ -106,6 +106,36 @@ const soundFxDesc = useStoryLocale('content.soundFxDesc', messages)
 const autoSaveLabel = useStoryLocale('content.autoSaveLabel', messages)
 const autoSaveDesc = useStoryLocale('content.autoSaveDesc', messages)
 
+const multiToggleTitle = useStoryLocale('content.multiToggleTitle', messages)
+const productInfoHeading = useStoryLocale('content.productInfoHeading', messages)
+const batterySegmentLabel = useStoryLocale('content.batterySegmentLabel', messages)
+const batterySegmentDesc = useStoryLocale('content.batterySegmentDesc', messages)
+const powerBatteryOpt = useStoryLocale('content.powerBatteryOpt', messages)
+const ebikeBatteryOpt = useStoryLocale('content.ebikeBatteryOpt', messages)
+const energyStorageOpt = useStoryLocale('content.energyStorageOpt', messages)
+const consumerBatteryOpt = useStoryLocale('content.consumerBatteryOpt', messages)
+const techRouteLabel = useStoryLocale('content.techRouteLabel', messages)
+const techRouteDesc = useStoryLocale('content.techRouteDesc', messages)
+const lfpOpt = useStoryLocale('content.lfpOpt', messages)
+const ncmOpt = useStoryLocale('content.ncmOpt', messages)
+const solidStateOpt = useStoryLocale('content.solidStateOpt', messages)
+const sodiumIonOpt = useStoryLocale('content.sodiumIonOpt', messages)
+const targetMarketsHeading = useStoryLocale('content.targetMarketsHeading', messages)
+const targetCountriesLabel = useStoryLocale('content.targetCountriesLabel', messages)
+const targetCountriesDesc = useStoryLocale('content.targetCountriesDesc', messages)
+const indonesiaOpt = useStoryLocale('content.indonesiaOpt', messages)
+const vietnamOpt = useStoryLocale('content.vietnamOpt', messages)
+const thailandOpt = useStoryLocale('content.thailandOpt', messages)
+const malaysiaOpt = useStoryLocale('content.malaysiaOpt', messages)
+const multiCountryOpt = useStoryLocale('content.multiCountryOpt', messages)
+const submitAnalysis = useStoryLocale('content.submitAnalysis', messages)
+
+const batteryPrefs = ref<Record<string, string | string[] | boolean>>({
+  batterySegment: [],
+  techRoute: 'lfp',
+  targetCountries: [],
+})
+
 const prefs = ref({
   email: true,
   frequency: 'daily',
@@ -317,6 +347,72 @@ const prefs = ref({
           :actions="[
             { id: 'reset', label: resetDefaults },
             { id: 'save', label: saveChanges, variant: 'default' },
+          ]"
+        />
+      </div>
+    </Variant>
+
+    <Variant :title="multiToggleTitle">
+      <p class="mb-3 text-muted-foreground text-xs">多选 Toggle（multi-toggle）示例 / Multi-select toggle example</p>
+      <div class="w-full max-w-md">
+        <preferences-panel
+          id="preferences-panel-multi-toggle"
+          v-model="batteryPrefs"
+          :title="multiToggleTitle"
+          :sections="[
+            {
+              heading: productInfoHeading,
+              items: [
+                {
+                  id: 'batterySegment',
+                  label: batterySegmentLabel,
+                  description: batterySegmentDesc,
+                  type: 'toggle',
+                  multiple: true,
+                  options: [
+                    { value: 'power-battery', label: powerBatteryOpt },
+                    { value: 'ebike-battery', label: ebikeBatteryOpt },
+                    { value: 'energy-storage', label: energyStorageOpt },
+                    { value: 'consumer-battery', label: consumerBatteryOpt },
+                  ],
+                },
+                {
+                  id: 'techRoute',
+                  label: techRouteLabel,
+                  description: techRouteDesc,
+                  type: 'toggle',
+                  options: [
+                    { value: 'lfp', label: lfpOpt },
+                    { value: 'ncm', label: ncmOpt },
+                    { value: 'solid-state', label: solidStateOpt },
+                    { value: 'sodium-ion', label: sodiumIonOpt },
+                  ],
+                  defaultValue: 'lfp',
+                },
+              ],
+            },
+            {
+              heading: targetMarketsHeading,
+              items: [
+                {
+                  id: 'targetCountries',
+                  label: targetCountriesLabel,
+                  description: targetCountriesDesc,
+                  type: 'toggle',
+                  multiple: true,
+                  options: [
+                    { value: 'indonesia', label: indonesiaOpt },
+                    { value: 'vietnam', label: vietnamOpt },
+                    { value: 'thailand', label: thailandOpt },
+                    { value: 'malaysia-philippines', label: malaysiaOpt },
+                    { value: 'multi-country', label: multiCountryOpt },
+                  ],
+                },
+              ],
+            },
+          ]"
+          :actions="[
+            { id: 'submit', label: submitAnalysis, variant: 'default' },
           ]"
         />
       </div>
