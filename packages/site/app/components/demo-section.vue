@@ -7,7 +7,8 @@ const { t } = useSiteLocale()
 const tabs = computed(() => [
   { id: 'restaurant', label: t('demo.tabRestaurant').value },
   { id: 'travel', label: t('demo.tabTravel').value },
-  { id: 'code', label: t('demo.tabCode').value }
+  { id: 'code', label: t('demo.tabCode').value },
+  { id: 'contact', label: t('demo.tabContact').value }
 ])
 
 const activeTab = ref('restaurant')
@@ -79,14 +80,16 @@ watch(activeTab, () => {
         >
           <DemoRestaurant v-if="activeTab === 'restaurant'" />
           <DemoTravel v-else-if="activeTab === 'travel'" />
-          <DemoCodeReview v-else />
+          <DemoCodeReview v-else-if="activeTab === 'code'" />
+          <DemoContactCard v-else />
           <div class="h-30 for-padding" />
         </OverlayScrollbarsComponent>
         <template #fallback>
           <div class="flex-1 grid bg-background p-6">
             <DemoRestaurant v-if="activeTab === 'restaurant'" />
             <DemoTravel v-else-if="activeTab === 'travel'" />
-            <DemoCodeReview v-else />
+            <DemoCodeReview v-else-if="activeTab === 'code'" />
+            <DemoContactCard v-else />
           </div>
         </template>
       </ClientOnly>
