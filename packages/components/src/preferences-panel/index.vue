@@ -53,14 +53,14 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
             v-if="state.hasErrors"
             class="flex items-center gap-1.5 font-medium text-destructive text-xs"
           >
-            <alert-circle class="shrink-0 size-3.5" />
+            <alert-circle class="size-3.5 shrink-0" />
             {{ t('preferencesPanel.error') }}
           </span>
           <span
             v-else
             class="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-500 text-xs"
           >
-            <check class="shrink-0 size-3.5" />
+            <check class="size-3.5 shrink-0" />
             {{ t('preferencesPanel.saved') }}
           </span>
         </div>
@@ -99,11 +99,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                     </span>
                     <alert-circle
                       v-if="state.getItemError(item)"
-                      class="shrink-0 size-3.5 text-destructive"
+                      class="size-3.5 text-destructive shrink-0"
                     />
                     <check
                       v-else-if="!state.hasErrors"
-                      class="shrink-0 size-3.5 text-emerald-600 dark:text-emerald-500"
+                      class="size-3.5 text-emerald-600 dark:text-emerald-500 shrink-0"
                     />
                   </div>
                 </div>
@@ -144,11 +144,11 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   </span>
                   <alert-circle
                     v-if="state.getItemError(item)"
-                    class="shrink-0 size-3.5 text-destructive"
+                    class="size-3.5 text-destructive shrink-0"
                   />
                   <check
                     v-else-if="!state.hasErrors"
-                    class="shrink-0 size-3.5 text-emerald-600 dark:text-emerald-500"
+                    class="size-3.5 text-emerald-600 dark:text-emerald-500 shrink-0"
                   />
                 </div>
               </div>
@@ -237,7 +237,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                     <!-- Toggle -->
                     <div
                       v-else-if="item.type === 'toggle' && item.options"
-                      class="flex flex-wrap items-center justify-end gap-1"
+                      class="flex flex-wrap justify-end items-center gap-1 w-full"
                     >
                       <button
                         v-for="option in item.options"
@@ -347,7 +347,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   <!-- Toggle -->
                   <div
                     v-else-if="item.type === 'toggle' && item.options"
-                    class="flex flex-wrap items-center justify-end gap-1"
+                    class="flex flex-wrap justify-end items-center gap-1"
                   >
                     <button
                       v-for="option in item.options"
