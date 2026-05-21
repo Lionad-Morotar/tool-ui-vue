@@ -67,6 +67,13 @@ function createProps(overrides: Record<string, unknown> = {}) {
             ],
             defaultSelected: 'en',
           },
+          {
+            id: 'bio',
+            type: 'textarea' as const,
+            label: 'Bio',
+            placeholder: 'Tell us about yourself',
+            rows: 4,
+          },
         ],
       },
     ],
@@ -427,6 +434,87 @@ describe('PreferencesPanel', () => {
       });
       const select = wrapper.find('select');
       expect((select.element as HTMLSelectElement).value).toBe('opt1');
+    });
+  });
+
+  describe('interactions - textarea', () => {
+    test('renders textarea item', () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const textarea = wrapper.find('textarea');
+      expect(textarea.exists()).toBe(true);
+      expect(textarea.attributes('rows')).toBe('4');
+      expect(textarea.attributes('placeholder')).toBe('Tell us about yourself');
+    });
+
+    test('textarea emits change on input', async () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const textarea = wrapper.find('textarea');
+      await textarea.setValue('Hello world');
+      expect(wrapper.emitted('change')).toBeTruthy();
+      expect((wrapper.emitted('change')![0] as unknown[])[0]).toMatchObject({ bio: 'Hello world' });
+    });
+
+    test('textarea respects defaultValue', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'bio',
+                  type: 'textarea' as const,
+                  label: 'Bio',
+                  defaultValue: 'Default bio text',
+                },
+              ],
+            },
+          ],
+        }),
+      });
+      const textarea = wrapper.find('textarea');
+      expect((textarea.element as HTMLTextAreaElement).value).toBe('Default bio text');
+    });
+
+    test('textarea shows value in receipt mode', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          choice: { bio: 'My biography' },
+          sections: [
+            {
+              items: [
+                {
+                  id: 'bio',
+                  type: 'textarea' as const,
+                  label: 'Bio',
+                },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('My biography');
+      expect(wrapper.find('textarea').exists()).toBe(false);
+    });
+
+    test('textarea respects rows attribute', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'bio',
+                  type: 'textarea' as const,
+                  label: 'Bio',
+                  rows: 6,
+                },
+              ],
+            },
+          ],
+        }),
+      });
+      const textarea = wrapper.find('textarea');
+      expect(textarea.attributes('rows')).toBe('6');
     });
   });
 
