@@ -1,6 +1,6 @@
 {
   "name": "tool-ui-vue",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Vue 3 component library for tool call widgets (copy-paste style)",
   "license": "MIT",
   "type": "module",

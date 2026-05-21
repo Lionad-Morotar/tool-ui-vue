@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-05-21
+
+### Fixed
+
+- PreferencesPanel toggle 选项容器支持 `flex-wrap` 自动换行与 `justify-end` 右对齐
+- PreferencesPanel toggle 布局与 input 保持一致：纵向排列，label/description 独占一行，按钮组独占一行
+
 ## [0.3.1] - 2026-05-20
 
 ### Fixed
