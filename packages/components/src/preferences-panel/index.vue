@@ -193,7 +193,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   :class="cn(
                     'flex items-start justify-between gap-4',
                     'py-3',
-                    item.type === 'input' ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
+                    (item.type === 'input' || item.type === 'toggle') ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
                     props.css?.item
                   )"
                 >
@@ -211,7 +211,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                       {{ item.description }}
                     </p>
                   </div>
-                  <div :class="cn('flex', item.type === 'input' && 'w-full', item.type !== 'input' && 'shrink-0')">
+                  <div :class="cn('flex', (item.type === 'input' || item.type === 'toggle') && 'w-full', item.type !== 'input' && item.type !== 'toggle' && 'shrink-0')">
                     <!-- Switch -->
                     <button
                       v-if="item.type === 'switch'"
@@ -303,7 +303,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                 :class="cn(
                   'flex items-start justify-between gap-4',
                   itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
-                    item.type === 'input' ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
+                    (item.type === 'input' || item.type === 'toggle') ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
                   props.css?.item
                 )"
               >
