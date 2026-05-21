@@ -325,7 +325,7 @@ const CheckIcon = {
       </div>
 
       <!-- Actions -->
-      <div :class="cn('flex items-center justify-between pt-2', props.css?.actions)">
+      <div :class="cn('flex items-center justify-between gap-x-3 pt-2', props.css?.actions)">
         <button
           v-if="state.showBack"
           type="button"

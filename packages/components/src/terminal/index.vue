@@ -43,7 +43,7 @@ const copyButtonAriaLabel = computed(() =>
   >
     <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
       <!-- Header -->
-      <div :class="cn('flex items-center justify-between border-b border-border bg-card px-4 py-2', css?.header)">
+      <div :class="cn('flex items-center justify-between gap-x-3 border-b border-border bg-card px-4 py-2', css?.header)">
         <div class="flex items-center gap-2 overflow-hidden">
           <terminal-icon class="h-4 w-4 shrink-0 text-muted-foreground" />
           <code class="truncate font-mono text-xs text-foreground">

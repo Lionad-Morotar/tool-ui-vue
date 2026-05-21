@@ -96,7 +96,7 @@ const { t } = useI18n()
             </div>
             <div class="flex min-w-0 flex-1 items-center justify-between">
               <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-x-2">
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
                   <span class="truncate text-sm tabular-nums">{{ state.formatCurrency(state.getItemTotal(item), pricing.currency) }}</span>
                 </div>
@@ -185,7 +185,7 @@ const { t } = useI18n()
             </div>
             <div class="flex min-w-0 flex-1 items-center justify-between">
               <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-x-2">
                   <span class="truncate text-sm font-medium">{{ item.name }}</span>
                   <span class="truncate text-sm tabular-nums">{{ state.formatCurrency(state.getItemTotal(item), pricing.currency) }}</span>
                 </div>

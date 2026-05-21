@@ -43,7 +43,7 @@ const formatElapsedTimeDateTime = (ms: number) => trackerState.value.formatElaps
     :aria-label="choice.summary"
   >
     <div class="flex w-full flex-col gap-4 rounded-2xl border border-border bg-card/60 p-5 shadow-xs">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-x-4">
         <!-- Elapsed Time -->
         <div v-if="elapsedTime" class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
           <svg
