@@ -435,6 +435,23 @@ export {
   safeParseSerializableCodeDiff,
 } from './code-diff'
 
+// ContactCard
+export { ContactCard, useContactCard } from './contact-card'
+export type {
+  ContactCardProps,
+  SerializableContactCard,
+  ContactKind,
+  ContactCardCss,
+  ContactCardState,
+} from './contact-card'
+export {
+  ContactKindSchema,
+  SerializableContactCardSchema,
+  ContactCardCssSchema,
+  parseSerializableContactCard,
+  safeParseSerializableContactCard,
+} from './contact-card'
+
 // WeatherWidget
 export { WeatherWidget, WeatherDataOverlay, EffectCompositor } from './weather-widget'
 export type {
