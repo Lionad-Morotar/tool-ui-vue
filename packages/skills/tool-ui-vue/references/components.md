@@ -44,6 +44,12 @@
 | `MessageDraft` | 邮件或 Slack 消息草稿预览（discriminated union） |
 | `XPost` | X/Twitter 帖子预览卡片，支持引用帖子 |
 
+## 联系信息（Contact）
+
+| Component | 用途 |
+|-----------|------|
+| `ContactCard` | 联系方式卡片，支持电话、邮箱、地址、WhatsApp、微信、网址等，含一键复制和链接跳转 |
+
 ## 表单与输入（Forms & Input）
 
 | Component | 用途 |
