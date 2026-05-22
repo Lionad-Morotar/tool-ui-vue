@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cn } from '../core';
 import { useI18n } from '../core/i18n';
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import { useDataTable } from './states';
 import type { DataTableProps } from './schema';
 
@@ -21,6 +21,21 @@ const state = reactive(useDataTable(props, emit));
 
 // i18n
 const { t } = useI18n()
+
+// Overflow detection for text tooltips (only show when text is truncated)
+const overflowSet = ref(new Set<string>())
+function checkTextOverflow(el: HTMLElement | null, index: number, columnKey: string) {
+  const key = `${index}-${columnKey}`
+  if (!el) {
+    overflowSet.value.delete(key)
+    return
+  }
+  if (el.scrollWidth > el.clientWidth) {
+    overflowSet.value.add(key)
+  } else {
+    overflowSet.value.delete(key)
+  }
+}
 
 // Column categorization for mobile view
 const categorizedColumns = computed(() => state.categorizeColumns(props.columns));
@@ -230,11 +245,17 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     <!-- Default -->
                     <template v-else>
                       <span class="group/cell inline-block relative max-w-[280px]">
-                        <span :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')">
+                        <span
+                          :ref="(el) => checkTextOverflow(el as HTMLElement, index, column.key)"
+                          :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')"
+                        >
                           {{ state.formatCellValue(row[column.key], column) }}
                         </span>
-                        <!-- Tooltip: hover 显示完整内容 -->
-                        <span class="bottom-full left-1/2 z-50 absolute bg-popover opacity-0 group-hover/cell:opacity-100 shadow-md mb-1 px-3 py-1.5 rounded-md max-w-[320px] text-popover-foreground text-xs whitespace-normal transition-opacity -translate-x-1/2 pointer-events-none">
+                        <!-- Tooltip: hover 显示完整内容（仅溢出时） -->
+                        <span
+                          v-if="overflowSet.has(`${index}-${column.key}`)"
+                          class="bottom-full left-1/2 z-50 absolute bg-popover opacity-0 group-hover/cell:opacity-100 shadow-md mb-1 px-3 py-1.5 rounded-md max-w-[320px] text-popover-foreground text-xs whitespace-normal transition-opacity -translate-x-1/2 pointer-events-none"
+                        >
                           {{ state.formatCellValue(row[column.key], column) }}
                         </span>
                       </span>
