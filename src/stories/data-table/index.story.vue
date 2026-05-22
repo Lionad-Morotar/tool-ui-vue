@@ -282,6 +282,13 @@ const propsTitle = Props
             { id: 6, name: 'Item 6', status: 'Pending' },
             { id: 7, name: 'Item 7', status: 'Active' },
             { id: 8, name: 'Item 8', status: 'Completed' },
+            { id: 9, name: 'Item 9', status: 'Active' },
+            { id: 10, name: 'Item 10', status: 'Pending' },
+            { id: 11, name: 'Item 11', status: 'Active' },
+            { id: 12, name: 'Item 12', status: 'Completed' },
+            { id: 13, name: 'Item 13', status: 'Active' },
+            { id: 14, name: 'Item 14', status: 'Pending' },
+            { id: 15, name: 'Item 15', status: 'Active' },
           ]"
           max-height="200px"
         />

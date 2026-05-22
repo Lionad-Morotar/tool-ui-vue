@@ -68,6 +68,9 @@ const featureOneDesc = useStoryLocale('content.featureOneDesc', messages)
 const featureTwoLabel = useStoryLocale('content.featureTwoLabel', messages)
 const togglesHeading = useStoryLocale('content.togglesHeading', messages)
 const inputsHeading = useStoryLocale('content.inputsHeading', messages)
+const textareasHeading = useStoryLocale('content.textareasHeading', messages)
+const bioLabel = useStoryLocale('content.bioLabel', messages)
+const bioPlaceholder = useStoryLocale('content.bioPlaceholder', messages)
 const nameLabel = useStoryLocale('content.nameLabel', messages)
 const namePlaceholder = useStoryLocale('content.namePlaceholder', messages)
 const phoneLabel = useStoryLocale('content.phoneLabel', messages)
@@ -488,6 +491,18 @@ const prefs = ref({
                   inputType: 'text',
                   required: true,
                   placeholder: namePlaceholder,
+                }
+              ],
+            },
+            {
+              heading: textareasHeading,
+              items: [
+                {
+                  id: 'bio',
+                  label: bioLabel,
+                  type: 'textarea',
+                  placeholder: bioPlaceholder,
+                  rows: 4,
                 }
               ],
             },

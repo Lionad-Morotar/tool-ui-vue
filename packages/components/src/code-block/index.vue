@@ -85,8 +85,8 @@ const copyButtonAriaLabel = computed(() =>
       <!-- Content -->
       <div
         :class="cn(
-          'overflow-x-auto overflow-y-clip text-[13px] leading-[1.4] [&_code]:block [&_code]:w-full [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4',
-          codeBlockState.isCollapsed && 'max-h-[200px]',
+          'overflow-x-auto text-[13px] leading-[1.4] [&_code]:block [&_code]:w-full [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4',
+          codeBlockState.isCollapsed && 'max-h-[200px] overflow-y-auto',
           css?.content,
         )"
       >

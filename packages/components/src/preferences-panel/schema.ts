@@ -59,11 +59,20 @@ const PreferenceInputSchema = PreferenceItemBaseSchema.extend({
   defaultValue: z.string().optional(),
 });
 
+const PreferenceTextareaSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('textarea'),
+  required: z.boolean().optional(),
+  placeholder: z.string().optional(),
+  defaultValue: z.string().optional(),
+  rows: z.number().min(1).optional(),
+});
+
 const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
   PreferenceSelectSchema,
   PreferenceInputSchema,
+  PreferenceTextareaSchema,
 ]);
 
 const PreferenceSectionSchema = z.object({

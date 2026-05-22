@@ -43,6 +43,7 @@ export function usePreferencesPanel(
       case 'select':
         return item.defaultSelected ?? item.selectOptions?.[0]?.value ?? '';
       case 'input':
+      case 'textarea':
         return item.defaultValue ?? '';
     }
   }
@@ -153,7 +154,7 @@ export function usePreferencesPanel(
       return typeof value === 'boolean' && value ? 'On' : 'Off';
     }
 
-    if (item.type === 'input') {
+    if (item.type === 'input' || item.type === 'textarea') {
       return typeof value === 'string' ? value : '';
     }
 

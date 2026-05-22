@@ -71,6 +71,96 @@ const wordDiffExample = {
   new: 'if (!res) return null;'
 };
 
+const longOldCode = `// User service with caching and rate limiting
+import { Redis } from 'ioredis';
+import { LRUCache } from 'lru-cache';
+
+const redis = new Redis(process.env.REDIS_URL);
+const localCache = new LRUCache({ max: 500, ttl: 1000 * 60 * 5 });
+
+export class UserService {
+  private async getFromCache(key: string) {
+    const local = localCache.get(key);
+    if (local) return local;
+    const remote = await redis.get(key);
+    if (remote) {
+      localCache.set(key, remote);
+      return remote;
+    }
+    return null;
+  }
+
+  private async setCache(key: string, value: string) {
+    localCache.set(key, value);
+    await redis.setex(key, 300, value);
+  }
+
+  async findById(id: string) {
+    const cacheKey = \`user:\${id}\`;
+    const cached = await this.getFromCache(cacheKey);
+    if (cached) return JSON.parse(cached);
+    const user = await db.users.findUnique({ where: { id } });
+    if (user) await this.setCache(cacheKey, JSON.stringify(user));
+    return user;
+  }
+
+  async findMany(ids: string[]) {
+    const results = await Promise.all(ids.map(id => this.findById(id)));
+    return results.filter(Boolean);
+  }
+}`;
+
+const longNewCode = `// User service with caching, rate limiting, and event streaming
+import { Redis } from 'ioredis';
+import { LRUCache } from 'lru-cache';
+import { EventEmitter } from 'events';
+
+const redis = new Redis(process.env.REDIS_URL);
+const localCache = new LRUCache({ max: 1000, ttl: 1000 * 60 * 10 });
+const eventBus = new EventEmitter();
+
+export class UserService {
+  private async getFromCache(key: string) {
+    const local = localCache.get(key);
+    if (local) return local;
+    const remote = await redis.get(key);
+    if (remote) {
+      localCache.set(key, remote);
+      return remote;
+    }
+    return null;
+  }
+
+  private async setCache(key: string, value: string, ttl = 600) {
+    localCache.set(key, value);
+    await redis.setex(key, ttl, value);
+  }
+
+  async findById(id: string) {
+    const cacheKey = \`user:\${id}\`;
+    const cached = await this.getFromCache(cacheKey);
+    if (cached) return JSON.parse(cached);
+    const user = await db.users.findUnique({ where: { id } });
+    if (user) {
+      await this.setCache(cacheKey, JSON.stringify(user));
+      eventBus.emit('user:found', { id, source: 'database' });
+    }
+    return user;
+  }
+
+  async findMany(ids: string[]) {
+    const results = await Promise.all(ids.map(id => this.findById(id)));
+    return results.filter(Boolean);
+  }
+
+  async invalidateCache(id: string) {
+    const cacheKey = \`user:\${id}\`;
+    localCache.delete(cacheKey);
+    await redis.del(cacheKey);
+    eventBus.emit('user:cache:invalidated', { id });
+  }
+}`;
+
 const diffState = reactive({
   style: 'unified' as 'unified' | 'split',
   showLines: true
@@ -209,6 +299,21 @@ const darkThemeSplit = DarkThemeSplit
           :old-code="modifyExample.old"
           :new-code="modifyExample.new"
           diff-style="unified"
+        />
+      </div>
+    </Variant>
+
+    <Variant title="折叠长差异 / Collapsed Long Diff">
+      <p class="mb-3 text-xs text-muted-foreground">验证折叠后 overflow-y-auto 可滚动 / Verify scrollable after collapse</p>
+      <div class="w-full max-w-3xl">
+        <code-diff
+          id="diff-collapsed"
+          language="typescript"
+          filename="user-service.ts"
+          :old-code="longOldCode"
+          :new-code="longNewCode"
+          diff-style="unified"
+          :max-collapsed-lines="10"
         />
       </div>
     </Variant>
