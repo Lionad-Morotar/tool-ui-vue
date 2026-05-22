@@ -44,12 +44,19 @@ console.log(greet(user));`;
 
 const longCode = `// This is a longer code example to demonstrate
 // the maxCollapsedLines feature
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 export function useCounter(initial = 0) {
   const count = ref(initial);
+  const history = ref<number[]>([]);
 
   const doubled = computed(() => count.value * 2);
+  const tripled = computed(() => count.value * 3);
+
+  watch(count, (newVal, oldVal) => {
+    history.value.push(newVal);
+    console.log(\`Count changed from \${oldVal} to \${newVal}\`);
+  });
 
   function increment() {
     count.value++;
@@ -61,14 +68,31 @@ export function useCounter(initial = 0) {
 
   function reset() {
     count.value = initial;
+    history.value = [];
   }
+
+  function incrementBy(n: number) {
+    count.value += n;
+  }
+
+  function decrementBy(n: number) {
+    count.value -= n;
+  }
+
+  onMounted(() => {
+    console.log("Counter initialized with value:", initial);
+  });
 
   return {
     count,
     doubled,
+    tripled,
+    history,
     increment,
     decrement,
     reset,
+    incrementBy,
+    decrementBy,
   };
 }`;
 

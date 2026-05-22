@@ -70,7 +70,7 @@ const copyButtonAriaLabel = computed(() =>
 
       <!-- Content -->
       <div
-        :class="cn('overflow-x-auto overflow-y-clip text-sm', states.isCollapsed && 'max-h-[200px]', css?.content)"
+        :class="cn('overflow-x-auto text-sm', states.isCollapsed && 'max-h-[200px] overflow-y-auto', css?.content)"
       >
         <!-- Unified Diff Mode -->
         <template v-if="!states.isSplitMode">
