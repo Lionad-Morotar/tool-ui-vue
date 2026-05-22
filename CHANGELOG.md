@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-05-22
+
+### Added
+
+- PreferencesPanel 新增 `textarea` 类型偏好项，支持多行文本输入
+
+### Fixed
+
+- DataTable 文本 tooltip 仅在内容溢出时显示，避免无截断单元格误触发 tooltip
+- DataTable maxHeight 与折叠状态下的 overflow 行为
+
 ## [0.3.2] - 2026-05-21
 
 ### Fixed
