@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.4] - 2026-05-22
+
+### Added
+
+- Article 组件：支持 Markdown/HTML 渲染（marked + DOMPurify）、封面图、作者信息、标签、星级评分与可折叠内容
+
 ## [0.3.3] - 2026-05-22
 
 ### Added
