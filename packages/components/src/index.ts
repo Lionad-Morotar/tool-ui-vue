@@ -452,6 +452,23 @@ export {
   safeParseSerializableContactCard,
 } from './contact-card'
 
+// Article
+export { Article, useArticle } from './article'
+export type {
+  ArticleProps,
+  SerializableArticle,
+  ArticleType,
+  ArticleCss,
+  ArticleState,
+} from './article'
+export {
+  ArticleTypeSchema,
+  SerializableArticleSchema,
+  ArticleCssSchema,
+  parseSerializableArticle,
+  safeParseSerializableArticle,
+} from './article'
+
 // WeatherWidget
 export { WeatherWidget, WeatherDataOverlay, EffectCompositor } from './weather-widget'
 export type {

@@ -22,6 +22,7 @@ export const siteZhCN = {
     tabTravel: '旅行规划',
     tabCode: '代码审查',
     tabContact: '联系卡片',
+    tabArticle: '文章展示',
     addressBar: 'chat.example.com'
   },
   demoRestaurant: {
@@ -103,6 +104,7 @@ export const siteEn = {
     tabTravel: 'Travel',
     tabCode: 'Code Review',
     tabContact: 'Contact Card',
+    tabArticle: 'Article',
     addressBar: 'chat.example.com'
   },
   demoRestaurant: {

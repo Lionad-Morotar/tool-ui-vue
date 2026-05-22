@@ -2,6 +2,7 @@ import type { Components } from '@json-render/vue';
 import { defineRegistry } from '@json-render/vue';
 import {
   ApprovalCard,
+  Article,
   Audio,
   Chart,
   Citation,
@@ -38,6 +39,7 @@ import { primitivesComponents } from './primitives';
 
 const rawComponents: Components<AppCatalog> = {
   ApprovalCard: createRenderer(ApprovalCard),
+  Article: createRenderer(Article),
   Audio: createRenderer(Audio),
   Chart: createRenderer(Chart),
   Citation: createRenderer(Citation),

@@ -3,6 +3,7 @@ import { catalog } from '../catalog';
 
 const EXPECTED_COMPONENTS = [
   'ApprovalCard',
+  'Article',
   'Audio',
   'Chart',
   'Citation',
@@ -42,8 +43,8 @@ const EXPECTED_COMPONENTS = [
 ];
 
 describe('catalog', () => {
-  test('contains all 36 expected components', () => {
-    expect(catalog.componentNames).toHaveLength(36);
+  test('contains all 37 expected components', () => {
+    expect(catalog.componentNames).toHaveLength(37);
     for (const name of EXPECTED_COMPONENTS) {
       expect(catalog.componentNames).toContain(name);
     }

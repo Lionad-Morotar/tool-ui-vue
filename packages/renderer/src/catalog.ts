@@ -1,6 +1,7 @@
 import { schema } from '@json-render/vue/schema';
 import {
   SerializableApprovalCardSchema,
+  SerializableArticleSchema,
   SerializableAudioSchema,
   SerializableChartSchema,
   SerializableCitationSchema,
@@ -38,6 +39,11 @@ export const catalog = schema.createCatalog({
       props: SerializableApprovalCardSchema,
       slots: [],
       description: 'A card for approval decisions with confirm/cancel actions',
+    },
+    Article: {
+      props: SerializableArticleSchema,
+      slots: [],
+      description: 'Article display with markdown or HTML content, author info, and rating',
     },
     Audio: {
       props: SerializableAudioSchema,
