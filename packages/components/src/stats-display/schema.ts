@@ -21,6 +21,7 @@ const NumberFormatSchema = z.object({
   kind: z.literal('number'),
   decimals: z.int().min(0).optional(),
   compact: z.boolean().optional(),
+  unit: z.string().optional(),
 });
 
 const CurrencyFormatSchema = z.object({
@@ -35,6 +36,14 @@ const PercentFormatSchema = z.object({
   basis: z.enum(['fraction', 'unit']).optional(),
 });
 
+const BooleanFormatSchema = z.object({
+  kind: z.literal('boolean'),
+  labels: z.object({
+    true: z.string(),
+    false: z.string(),
+  }),
+});
+
 /**
  * 统计格式 Schema 定义
  */
@@ -43,6 +52,7 @@ export const StatFormatSchema = z.discriminatedUnion('kind', [
   NumberFormatSchema,
   CurrencyFormatSchema,
   PercentFormatSchema,
+  BooleanFormatSchema,
 ]);
 
 /**
@@ -87,7 +97,7 @@ export type StatSparkline = z.infer<typeof StatSparklineSchema>;
 export const StatItemSchema = z.object({
   key: z.string().min(1),
   label: z.string().min(1),
-  value: z.union([z.string(), z.number()]),
+  value: z.union([z.string(), z.number(), z.boolean()]),
   format: StatFormatSchema.optional(),
   diff: StatDiffSchema.optional(),
   sparkline: StatSparklineSchema.optional(),

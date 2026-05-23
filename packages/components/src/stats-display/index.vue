@@ -122,6 +122,13 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
                       </span>
                       <span v-else>{{ part.value }}</span>
                     </template>
+                    <span
+                      v-if="stat.format.unit"
+                      class="ml-0.5 text-[0.65em] opacity-80"
+                      aria-hidden="true"
+                    >
+                      {{ stat.format.unit }}
+                    </span>
                   </span>
 
                   <!-- currency -->
@@ -143,10 +150,25 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
                     <span class="ml-0.5 text-[0.65em] opacity-80" aria-hidden="true">%</span>
                   </span>
 
+                  <!-- boolean -->
+                  <span
+                    v-else-if="stat.format?.kind === 'boolean'"
+                    class="font-light"
+                  >
+                    {{ state.formatBoolean(stat.value, stat.format.labels) }}
+                  </span>
+
                   <!-- default text / number -->
                   <span v-else class="font-light tabular-nums">
                     <template v-if="stat.format?.kind === 'number'">
                       {{ state.formatNumber(Number(stat.value), stat.format.decimals ?? 0) }}
+                      <span
+                        v-if="stat.format.unit"
+                        class="ml-0.5 text-[0.65em] opacity-80"
+                        aria-hidden="true"
+                      >
+                        {{ stat.format.unit }}
+                      </span>
                     </template>
                     <template v-else>
                       {{ String(stat.value) }}

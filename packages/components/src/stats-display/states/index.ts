@@ -20,6 +20,7 @@ export interface StatsDisplayState {
   formatCurrencySpoken: (value: number, currency: string, decimals: number) => string;
   formatNumber: (value: number, decimals: number) => string;
   formatPercent: (value: number, decimals: number, basis: 'fraction' | 'unit') => string;
+  formatBoolean: (value: unknown, labels: { true: string; false: string }) => string;
 }
 
 function getDeltaMeta(diff: StatDiff) {
@@ -119,6 +120,16 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
     return numeric.toFixed(decimals);
   }
 
+  function formatBoolean(value: unknown, labels: { true: string; false: string }) {
+    const isTruthy =
+      typeof value === 'boolean'
+        ? value
+        : typeof value === 'number'
+          ? value !== 0
+          : Boolean(value);
+    return isTruthy ? labels.true : labels.false;
+  }
+
   return {
     locale: locale.value,
     hasHeader: hasHeader.value,
@@ -133,5 +144,6 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
     formatCurrencySpoken,
     formatNumber,
     formatPercent,
+    formatBoolean,
   };
 }

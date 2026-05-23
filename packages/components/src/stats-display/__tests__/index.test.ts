@@ -101,6 +101,71 @@ describe('StatsDisplay', () => {
       expect(suffix.text()).toBe('%');
     });
 
+    test('renders number format with unit suffix', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: [
+            {
+              key: 'items',
+              label: 'Items',
+              value: 42,
+              format: { kind: 'number', decimals: 0, unit: '个' },
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('42');
+      expect(wrapper.text()).toContain('个');
+    });
+
+    test('renders compact number format with unit suffix', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: [
+            {
+              key: 'users',
+              label: 'Users',
+              value: 2420,
+              format: { kind: 'number', compact: true, unit: '人' },
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('人');
+    });
+
+    test('renders boolean format with true label', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: [
+            {
+              key: 'active',
+              label: 'Active',
+              value: true,
+              format: { kind: 'boolean', labels: { true: '是', false: '否' } },
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('是');
+    });
+
+    test('renders boolean format with false label', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: [
+            {
+              key: 'active',
+              label: 'Active',
+              value: false,
+              format: { kind: 'boolean', labels: { true: '是', false: '否' } },
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('否');
+    });
+
     test('renders multiple stats', () => {
       const wrapper = mount(StatsDisplay, {
         props: createProps({

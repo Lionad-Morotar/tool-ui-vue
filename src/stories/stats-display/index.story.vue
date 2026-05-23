@@ -28,6 +28,13 @@ const currencyFormats = useStoryLocale('content.currencyFormats', messages)
 const numberFormats = useStoryLocale('content.numberFormats', messages)
 const percentFormats = useStoryLocale('content.percentFormats', messages)
 const trendIndicators = useStoryLocale('content.trendIndicators', messages)
+const booleanFormat = useStoryLocale('content.booleanFormat', messages)
+const hoursLabel = useStoryLocale('content.hoursLabel', messages)
+const itemsLabel = useStoryLocale('content.itemsLabel', messages)
+const distanceLabel = useStoryLocale('content.distanceLabel', messages)
+const isActiveLabel = useStoryLocale('content.isActiveLabel', messages)
+const isEnabledLabel = useStoryLocale('content.isEnabledLabel', messages)
+const serverStatusLabel = useStoryLocale('content.serverStatusLabel', messages)
 const revenueLabel = useStoryLocale('content.revenueLabel', messages)
 const usersLabel = useStoryLocale('content.usersLabel', messages)
 const churnLabel = useStoryLocale('content.churnLabel', messages)
@@ -213,8 +220,10 @@ const props = [
           :stats="[
             { key: 'total', label: totalUsersLabel, value: 2458901, format: { kind: 'number', compact: true } },
             { key: 'daily', label: dailyActiveLabel, value: 45230, format: { kind: 'number', decimals: 0 } },
-            { key: 'avg', label: avgSessionLabel, value: 12.5, format: { kind: 'number', decimals: 1 } },
-            { key: 'score', label: scoreLabel, value: 98.6, format: { kind: 'number', decimals: 2 } },
+            { key: 'items', label: itemsLabel, value: 1520, format: { kind: 'number', compact: true, unit: '个' } },
+            { key: 'distance', label: distanceLabel, value: 42.5, format: { kind: 'number', decimals: 1, unit: 'km' } },
+            { key: 'hours', label: hoursLabel, value: 24, format: { kind: 'number', decimals: 0, unit: 'h' } },
+            { key: 'score', label: scoreLabel, value: 98.6, format: { kind: 'number', decimals: 2, unit: '分' } },
           ]"
         />
       </div>
@@ -231,6 +240,22 @@ const props = [
             { key: 'bounce', label: bounceRateLabel, value: 0.42, format: { kind: 'percent', decimals: 1 } },
             { key: 'retention', label: retentionLabel, value: 85, format: { kind: 'percent', decimals: 0, basis: 'unit' } },
             { key: 'engagement', label: engagementLabel, value: 0.678, format: { kind: 'percent', decimals: 1 } },
+          ]"
+        />
+      </div>
+    </Variant>
+
+    <Variant :title="booleanFormat">
+      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <div class="w-full max-w-2xl">
+        <stats-display
+          id="stats-boolean"
+          :title="trendAnalysisTitle"
+          :stats="[
+            { key: 'active', label: isActiveLabel, value: true, format: { kind: 'boolean', labels: { true: '是', false: '否' } } },
+            { key: 'enabled', label: isEnabledLabel, value: false, format: { kind: 'boolean', labels: { true: '已启用', false: '已禁用' } } },
+            { key: 'status', label: serverStatusLabel, value: 1, format: { kind: 'boolean', labels: { true: '在线', false: '离线' } } },
+            { key: 'neutral', label: neutralChangeLabel, value: 0, format: { kind: 'boolean', labels: { true: '有变化', false: '无变化' } } },
           ]"
         />
       </div>
