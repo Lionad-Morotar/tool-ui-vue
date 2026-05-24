@@ -71,7 +71,7 @@ const state = reactive(useOptionList(props, emit));
             </span>
           </span>
           <div class="flex flex-col text-left">
-            <span class="text-base leading-6 font-medium text-pretty @md/option-list:text-sm">{{ option.label }}</span>
+            <span class="text-center text-base leading-6 font-medium text-pretty @md/option-list:text-sm">{{ option.label }}</span>
             <span v-if="option.description" class="text-sm font-normal text-pretty text-muted-foreground">
               {{ option.description }}
             </span>
