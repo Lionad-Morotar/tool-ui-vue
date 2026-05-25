@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.6] - 2026-05-26
+
+### Fixed
+
+- OptionList label 文本居中对齐
+
 ## [0.3.5] - 2026-05-23
 
 ### Added
