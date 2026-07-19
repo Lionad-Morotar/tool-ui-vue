@@ -4,10 +4,10 @@ import { defineConfig } from 'histoire';
 import { resolve } from 'path';
 
 const storyGroups = [
-  { title: 'Data Display', stories: ['chart', 'data-table', 'stats-display', 'weather-widget'] },
+  { title: 'Data Display', stories: ['article', 'chart', 'data-table', 'stats-display', 'weather-widget'] },
   { title: 'Code & Terminal', stories: ['code-block', 'code-diff', 'terminal'] },
   { title: 'Media', stories: ['audio', 'image', 'image-gallery', 'item-carousel', 'video'] },
-  { title: 'Social', stories: ['approval-card', 'citation', 'instagram-post', 'linkedin-post', 'link-preview', 'message-draft', 'x-post'] },
+  { title: 'Social', stories: ['approval-card', 'citation', 'contact-card', 'instagram-post', 'linkedin-post', 'link-preview', 'message-draft', 'x-post'] },
   { title: 'Forms & Input', stories: ['option-list', 'parameter-slider', 'preferences-panel'] },
   { title: 'Workflow', stories: ['geo-map', 'plan', 'progress-tracker', 'question-flow', 'order-summary'] },
 ];
