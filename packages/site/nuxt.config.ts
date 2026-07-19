@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
+    '@nuxt/eslint',
     '@tresjs/nuxt',
     '@vueuse/nuxt'
   ],

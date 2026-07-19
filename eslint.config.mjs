@@ -3,20 +3,19 @@ import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import { importX } from 'eslint-plugin-import-x'
-import tailwind from 'eslint-plugin-tailwindcss'
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import vueParser from 'vue-eslint-parser'
 
 import vTwMergePlugin from './lib/eslint-plugin-v-tw-merge.mjs'
-import bemOrderPlugin from './lib/eslint-plugin-bem-order.mjs'
 import i18nPlugin from './lib/eslint-plugin-i18n.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default tseslint.config(
   // ========== 全局忽略 ==========
-  { ignores: ['dist', '**/dist/**', 'node_modules', '.histoire', '.vite', 'coverage', 'src/components/.example'] },
+  { ignores: ['dist', '**/dist/**', 'node_modules', '.histoire', '.vite', 'coverage', 'src/components/.example', '**/.serve/**', '**/.nuxt/**', 'dist-histoire', 'dist-histoire-backup'] },
 
   // ========== Vue 推荐规则 ==========
   ...pluginVue.configs['flat/recommended'],
@@ -44,8 +43,7 @@ export default tseslint.config(
     plugins: {
       'v-tw-merge': vTwMergePlugin,
       'import-x': importX,
-      'tailwindcss': tailwind,
-      'bem-order': bemOrderPlugin,
+      'better-tailwindcss': eslintPluginBetterTailwindcss,
       'i18n': i18nPlugin
     },
     settings: {
@@ -55,9 +53,8 @@ export default tseslint.config(
           project: './tsconfig.json'
         })
       ],
-      'tailwindcss': {
-        callees: ['classnames', 'clsx', 'ctl', 'cva', 'cn'],
-        config: resolve(__dirname, './src/stories/_shared/tailwind.css')
+      'better-tailwindcss': {
+        entryPoint: resolve(__dirname, './src/stories/_shared/tailwind.css')
       }
     },
     rules: {
@@ -143,19 +140,23 @@ export default tseslint.config(
       // 禁止重复导入
       'import-x/no-duplicates': 'error',
 
-      // ========== BEM 排序规则 ==========
-      'bem-order/bem-order': 'warn',
-
       // ========== i18n ==========
       'i18n/key-consistency': 'error',
 
-      // ========== tailwindcss 规则 ==========
-      'tailwindcss/classnames-order': 'warn',
-      'tailwindcss/enforces-shorthand': 'warn',
-      'tailwindcss/enforces-negative-arbitrary-values': 'off',
-      'tailwindcss/no-contradicting-classname': 'error',
-      'tailwindcss/no-unnecessary-arbitrary-value': 'off',
-      'tailwindcss/no-custom-classname': 'off'
+      // ========== better-tailwindcss 规则 ==========
+      // 类排序：Tailwind 类按官方语义序；layout-/page-/cmpt- 等未知类自动排最前且保持原相对顺序
+      'better-tailwindcss/enforce-consistent-class-order': ['warn', {
+        order: 'official',
+        unknownClassPosition: 'start',
+        unknownClassOrder: 'preserve'
+      }],
+      // unknown 检查保持关闭（对齐旧 no-custom-classname: off）：
+      // stories 残留 animate-in 等未安装插件的死类，开启会产生大量噪音
+      'better-tailwindcss/no-unknown-classes': 'off',
+      'better-tailwindcss/no-conflicting-classes': 'error',
+      'better-tailwindcss/no-duplicate-classes': 'warn',
+      'better-tailwindcss/enforce-shorthand-classes': 'warn',
+      'better-tailwindcss/no-unnecessary-whitespace': 'warn'
     }
   },
 
