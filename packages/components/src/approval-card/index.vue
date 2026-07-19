@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { cn } from '../core';
 import { Check, X } from 'lucide-vue-next';
 import { reactive, toRef } from 'vue';
+import { cn } from '../core';
 import { useApprovalCard } from './states';
 import type { ApprovalCardBaseProps } from './schema';
 
@@ -59,7 +59,7 @@ const IconComponent = toRef(state, 'IconComponent');
       >
         <component
           :is="choice === 'approved' ? Check : X"
-          class="shrink-0 size-4"
+          class="size-4 shrink-0"
         />
       </span>
       <div class="flex flex-col">
@@ -106,7 +106,7 @@ const IconComponent = toRef(state, 'IconComponent');
             )
           "
         >
-          <component :is="IconComponent" class="shrink-0 size-5" />
+          <component :is="IconComponent" class="size-5 shrink-0" />
         </span>
         <div class="flex flex-1 flex-col gap-1">
           <h2

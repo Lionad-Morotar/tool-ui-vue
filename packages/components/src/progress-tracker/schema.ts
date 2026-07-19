@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
 /**
  * ProgressTracker 组件的数据契约定义
@@ -13,7 +14,6 @@ import {
   ToolUISurfaceSchema,
   ToolUIReceiptSchema,
   type ToolUIReceipt,} from '../core';
-import { z } from 'zod';
 
 /**
  * ProgressTracker 选择类型

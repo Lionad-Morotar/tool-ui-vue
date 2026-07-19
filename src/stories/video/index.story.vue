@@ -122,9 +122,9 @@ function clearNavigateLog() {
 <template>
   <Story title="Video/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-basic"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           asset-id="demo-video-1"
@@ -133,9 +133,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="withPoster">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-poster"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           asset-id="demo-video-2"
@@ -146,9 +146,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="withDescription">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-description"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
           asset-id="demo-video-3"
@@ -161,9 +161,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="withNavigation">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-lg">
-        <Video
+        <video
           id="video-nav"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-nav"
@@ -178,9 +178,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="squareFormat">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-sm">
-        <Video
+        <video
           id="video-square"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
           asset-id="demo-video-4"
@@ -191,9 +191,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="verticalFormat">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-xs">
-        <Video
+        <video
           id="video-vertical"
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
           asset-id="demo-video-5"
@@ -204,10 +204,10 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="withEventLogging" auto-props-disabled>
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-events"
             src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             asset-id="demo-video-events"
@@ -219,18 +219,18 @@ function clearNavigateLog() {
           />
         </div>
 
-        <div class="bg-card p-4 border border-border rounded-lg w-full max-w-lg">
-          <div class="flex justify-between items-center mb-2">
-            <h4 class="font-semibold text-sm">{{ eventLogHeading }}</h4>
+        <div class="w-full max-w-lg rounded-lg border border-border bg-card p-4">
+          <div class="mb-2 flex items-center justify-between">
+            <h4 class="text-sm font-semibold">{{ eventLogHeading }}</h4>
             <button
               type="button"
-              class="text-muted-foreground hover:text-foreground text-xs"
+              class="text-xs text-muted-foreground hover:text-foreground"
               @click="clearEvents"
             >
               {{ clearButton }}
             </button>
           </div>
-          <div class="bg-muted/50 p-2 rounded h-24 overflow-y-auto font-mono text-xs">
+          <div class="h-24 overflow-y-auto rounded bg-muted/50 p-2 font-mono text-xs">
             <div v-if="eventLog.length === 0" class="text-muted-foreground italic">
               {{ noEventsYet }}
             </div>
@@ -245,7 +245,7 @@ function clearNavigateLog() {
     <Variant :title="interactive" auto-props-disabled>
       <div class="flex flex-col gap-4">
         <div class="w-full max-w-lg">
-          <Video
+          <video
             id="video-interactive"
             v-bind="interactiveState"
             @media-event="handleMediaEvent"
@@ -253,15 +253,15 @@ function clearNavigateLog() {
           />
         </div>
 
-        <div class="space-y-3 bg-card p-4 border border-border rounded-lg w-full max-w-lg">
-          <h4 class="font-semibold text-sm">{{ controlsHeading }}</h4>
+        <div class="w-full max-w-lg space-y-3 rounded-lg border border-border bg-card p-4">
+          <h4 class="text-sm font-semibold">{{ controlsHeading }}</h4>
           <div class="space-y-2">
             <label class="flex items-center gap-2 text-sm">
               <span class="w-20">{{ formTitle }}</span>
               <input
                 v-model="interactiveState.title"
                 type="text"
-                class="flex-1 bg-background px-2 py-1 border border-border rounded text-sm"
+                class="flex-1 rounded border border-border bg-background px-2 py-1 text-sm"
               />
             </label>
             <label class="flex items-center gap-2 text-sm">
@@ -269,14 +269,14 @@ function clearNavigateLog() {
               <input
                 v-model="interactiveState.description"
                 type="text"
-                class="flex-1 bg-background px-2 py-1 border border-border rounded text-sm"
+                class="flex-1 rounded border border-border bg-background px-2 py-1 text-sm"
               />
             </label>
             <label class="flex items-center gap-2 text-sm">
               <span class="w-20">{{ formRatio }}</span>
               <select
                 v-model="interactiveState.ratio"
-                class="bg-background px-2 py-1 border border-border rounded text-sm"
+                class="rounded border border-border bg-background px-2 py-1 text-sm"
               >
                 <option value="16:9">16:9</option>
                 <option value="4:3">4:3</option>
@@ -294,18 +294,18 @@ function clearNavigateLog() {
           </div>
         </div>
 
-        <div v-if="navigateLog.length > 0" class="bg-card p-4 border border-border rounded-lg w-full max-w-lg">
-          <div class="flex justify-between items-center mb-2">
-            <h4 class="font-semibold text-sm">{{ navLogHeading }}</h4>
+        <div v-if="navigateLog.length > 0" class="w-full max-w-lg rounded-lg border border-border bg-card p-4">
+          <div class="mb-2 flex items-center justify-between">
+            <h4 class="text-sm font-semibold">{{ navLogHeading }}</h4>
             <button
               type="button"
-              class="text-muted-foreground hover:text-foreground text-xs"
+              class="text-xs text-muted-foreground hover:text-foreground"
               @click="clearNavigateLog"
             >
               {{ clearButton }}
             </button>
           </div>
-          <div class="bg-muted/50 p-2 rounded h-20 overflow-y-auto font-mono text-xs">
+          <div class="h-20 overflow-y-auto rounded bg-muted/50 p-2 font-mono text-xs">
             <div v-for="(log, index) in navigateLog" :key="index" class="py-0.5">
               {{ log }}
             </div>
@@ -315,9 +315,9 @@ function clearNavigateLog() {
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>

@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { ToolDefinition } from '../../src/types.js'
 import { listDocumentationPages } from '../../src/utils.js'
+import type { ToolDefinition } from '../../src/types.js'
 
 const inputSchema = z.object({
   search: z.string().optional().describe('Search term to filter pages by title'),

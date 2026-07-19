@@ -1,5 +1,5 @@
-import type { z } from 'zod'
 import { formatZodError } from './parse'
+import type { z } from 'zod'
 
 /**
  * 开发模式下对组件 props 进行运行时 Zod schema 验证。

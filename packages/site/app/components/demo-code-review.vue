@@ -8,13 +8,13 @@ const { t } = useSiteLocale()
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto max-w-3xl">
+  <div class="mx-auto max-w-3xl space-y-4">
     <!-- 用户首轮 -->
     <DemoChatMessage role="user" :content="t('demoCode.userIntro').value" :delay="0" :order="0" />
 
     <!-- Agent 回复审查结果 -->
     <div class="flex justify-start">
-      <div class="space-y-3 w-full max-w-[95%]">
+      <div class="w-full max-w-[95%] space-y-3">
         <DemoChatMessage
           role="agent"
           :content="t('demoCode.agentReview', { file: 'utils/formatDate.ts', fn: 'toLocaleDateString()' }).value"
@@ -40,9 +40,9 @@ const { t } = useSiteLocale()
 }"
           />
 
-          <div class="flex items-center gap-2 mt-2">
+          <div class="mt-2 flex items-center gap-2">
             <button
-              class="bg-primary px-3 py-1.5 rounded-md font-medium text-primary-foreground text-xs"
+              class="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
               @click="step = 2"
             >
               {{ t('demoCode.actionApply').value }}
@@ -66,13 +66,13 @@ const { t } = useSiteLocale()
       v-if="step >= 2"
       class="flex justify-start"
     >
-      <div class="space-y-3 w-full max-w-[95%]">
+      <div class="w-full max-w-[95%] space-y-3">
         <DemoChatMessage role="agent" :content="t('demoCode.agentConfirm').value" :delay="0" :order="1" />
 
         <DemoDelayedShow :order="2">
           <div class="flex items-center gap-2">
             <button
-              class="bg-background hover:bg-muted px-3 py-1.5 border border-border rounded-md font-medium text-foreground text-xs"
+              class="rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
               @click="step = 3"
             >
               {{ t('demoCode.actionMerge').value }}

@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/plan/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 
 /**
  * 计划待办事项状态的 Schema 定义

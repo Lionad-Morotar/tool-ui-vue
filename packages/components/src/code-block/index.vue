@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-vue-next';
 import { computed, reactive, toRefs } from 'vue';
+import { cn } from '../core';
 import { useCodeBlock } from './states';
+import { useI18n } from '../core/i18n';
 import type { CodeBlockProps } from './schema';
 
 defineOptions({ name: 'CmptCodeBlock', inheritAttrs: false })
@@ -63,7 +63,7 @@ const copyButtonAriaLabel = computed(() =>
         <button
           type="button"
           :class="cn(
-            'inline-flex h-7 w-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
+            'inline-flex size-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
             'hover:bg-accent hover:text-accent-foreground',
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
             css?.copyButton,
@@ -73,11 +73,11 @@ const copyButtonAriaLabel = computed(() =>
         >
           <check
             v-if="isCopied"
-            class="shrink-0 h-4 w-4 text-green-700 dark:text-green-400"
+            class="size-4 shrink-0 text-green-700 dark:text-green-400"
           />
           <copy
             v-else
-            class="shrink-0 h-4 w-4 text-muted-foreground"
+            class="size-4 shrink-0 text-muted-foreground"
           />
         </button>
       </div>
@@ -85,7 +85,7 @@ const copyButtonAriaLabel = computed(() =>
       <!-- Content -->
       <div
         :class="cn(
-          'overflow-x-auto text-[13px] leading-[1.4] [&_code]:block [&_code]:w-full [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4',
+          'overflow-x-auto text-[13px] leading-[1.4] [&_code]:block [&_code]:w-full [&_pre]:bg-transparent [&_pre]:p-4',
           codeBlockState.isCollapsed && 'max-h-[200px] overflow-y-auto',
           css?.content,
         )"
@@ -109,11 +109,11 @@ const copyButtonAriaLabel = computed(() =>
         @click="codeBlockState.toggleExpanded"
       >
         <template v-if="codeBlockState.isCollapsed">
-          <chevron-down class="mr-1 shrink-0 size-4" />
+          <chevron-down class="mr-1 size-4 shrink-0" />
           {{ t('codeBlock.showAllLines', { count: codeBlockState.lineCount }) }}
         </template>
         <template v-else>
-          <chevron-up class="mr-1 shrink-0 size-4" />
+          <chevron-up class="mr-1 size-4 shrink-0" />
           {{ t('codeBlock.collapse') }}
         </template>
       </button>

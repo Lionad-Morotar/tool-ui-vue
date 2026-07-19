@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { ToolDefinition } from '../../src/types.js'
 import { componentData } from '../../src/data.js'
+import type { ToolDefinition } from '../../src/types.js'
 
 const inputSchema = z.object({
   search: z.string().optional().describe('Search term to filter composables by name'),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Spec } from '@json-render/core';
 import { VtuRenderer } from '@lionad/vtu-renderer';
+import type { Spec } from '@json-render/core';
 
 const approvalCardSpec: Spec = {
   root: 'card',
@@ -198,11 +198,11 @@ const demos = [
         :key="demo.title"
         class="mb-12 rounded-xl border border-border bg-card p-6 shadow-sm"
       >
-        <h2 class="mb-4 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+        <h2 class="mb-4 text-sm font-medium tracking-wider text-muted-foreground uppercase">
           {{ demo.title }}
         </h2>
         <div class="rounded-lg border border-dashed border-border bg-background/50 p-4">
-          <VtuRenderer :spec="demo.spec" />
+          <vtu-renderer :spec="demo.spec" />
         </div>
       </section>
     </main>

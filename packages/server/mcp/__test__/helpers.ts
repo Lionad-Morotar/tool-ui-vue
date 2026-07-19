@@ -106,12 +106,12 @@ export function runClaudeTask(
   )
 
   const evalPrompt =
-    `You are a strict test evaluator.\n\n` +
+    'You are a strict test evaluator.\n\n' +
     `Task: ${taskPrompt}\n\n` +
     `MCP Server Output:\n${taskOutput}\n\n` +
     `Evaluation Criteria: ${evalCriteria}\n\n` +
-    `Return ONLY a JSON object with this exact shape: {"pass": boolean, "reason": "string"}. ` +
-    `No markdown code blocks, no explanation.`
+    'Return ONLY a JSON object with this exact shape: {"pass": boolean, "reason": "string"}. ' +
+    'No markdown code blocks, no explanation.'
 
   const evalArgs = [
     '-p',

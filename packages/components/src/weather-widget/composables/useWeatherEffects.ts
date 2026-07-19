@@ -1,8 +1,8 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import type { ResolvedWeatherEffectsCanvasProps } from '../effects/weather-effects-types';
-import type { Ref } from 'vue';
 import { useRenderLoop } from './useRenderLoop';
 import { useWebglResources } from './useWebglResources';
+import type { ResolvedWeatherEffectsCanvasProps } from '../effects/weather-effects-types';
+import type { Ref } from 'vue';
 
 export function useWeatherEffects(
   canvasRef: Ref<HTMLCanvasElement | null>,

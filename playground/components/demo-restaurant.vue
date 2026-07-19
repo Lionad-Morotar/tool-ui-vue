@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ItemCarousel, PreferencesPanel } from '@lionad/vtu-components'
 import { computed, ref } from 'vue'
+import { ItemCarousel, PreferencesPanel } from '@lionad/vtu-components'
 import DemoChatMessage from './demo-chat-message.vue'
 import DemoDelayedShow from './demo-delayed-show.vue'
 import { useSiteLocale } from '../composables/use-site-locale'
@@ -60,29 +60,29 @@ function handlePanelAction(actionId: string) {
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto w-[70%] max-w-3xl">
+  <div class="mx-auto w-[70%] max-w-3xl space-y-4">
     <!-- 用户首轮 -->
-    <DemoChatMessage role="user" :content="t('demoRestaurant.userIntro').value" />
+    <demo-chat-message role="user" :content="t('demoRestaurant.userIntro').value" />
 
     <!-- Agent 推荐 -->
     <div class="flex justify-start">
       <div class="w-full max-w-[90%] space-y-3">
-        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentIntro').value" />
-        <DemoDelayedShow :order="2">
+        <demo-chat-message role="agent" :content="t('demoRestaurant.agentIntro').value" />
+        <demo-delayed-show :order="2">
           <div v-show="step === 'intro' || step === 'carousel'">
-            <ItemCarousel
+            <item-carousel
               id="demo-restaurant-carousel"
               :title="t('demoRestaurant.carouselTitle').value"
               :items="restaurants"
               @item-action="handleItemAction"
             />
           </div>
-        </DemoDelayedShow>
+        </demo-delayed-show>
       </div>
     </div>
 
     <!-- 用户选择 -->
-    <DemoChatMessage
+    <demo-chat-message
       v-if="step === 'panel' || step === 'done'"
       role="user"
       :content="t('demoRestaurant.userSelect', { name: selectedRestaurant }).value"
@@ -94,10 +94,10 @@ function handlePanelAction(actionId: string) {
       class="flex justify-start"
     >
       <div class="w-full max-w-[90%] space-y-3">
-        <DemoChatMessage role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" />
-        <DemoDelayedShow :order="4">
+        <demo-chat-message role="agent" :content="t('demoRestaurant.agentPanel', { name: selectedRestaurant }).value" />
+        <demo-delayed-show :order="4">
           <div v-show="step === 'panel'">
-            <PreferencesPanel
+            <preferences-panel
               id="demo-restaurant-panel"
               :title="t('demoRestaurant.panelTitle').value"
               :sections="[
@@ -131,8 +131,8 @@ function handlePanelAction(actionId: string) {
               @action="handlePanelAction"
             />
           </div>
-        </DemoDelayedShow>
-        <DemoChatMessage
+        </demo-delayed-show>
+        <demo-chat-message
           v-if="step === 'done'"
           role="agent"
           :content="t('demoRestaurant.agentDone').value"
@@ -141,7 +141,7 @@ function handlePanelAction(actionId: string) {
     </div>
 
     <!-- 用户确认 -->
-    <DemoChatMessage
+    <demo-chat-message
       v-if="step === 'done'"
       role="user"
       :content="t('demoRestaurant.userDone').value"

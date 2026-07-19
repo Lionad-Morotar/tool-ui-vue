@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../core';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import EffectCompositor from './cmpts/effect-compositor.vue';
 import WeatherDataOverlay from './cmpts/weather-data-overlay.vue';
 import { useWeatherWidget } from './states';

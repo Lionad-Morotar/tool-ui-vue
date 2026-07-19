@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive, computed, ref } from 'vue';
+import { cn } from '../core';
 import { useDataTable } from './states';
+import { useI18n } from '../core/i18n';
 import type { DataTableProps } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
@@ -73,7 +73,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Empty State -->
             <tbody v-if="data.length === 0">
-              <tr class="bg-card h-24 text-center">
+              <tr class="h-24 bg-card text-center">
                 <td
                   :colspan="columns.length"
                   role="status"
@@ -127,7 +127,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <template v-if="column.abbr">
                           <abbr
                             :title="column.label"
-                            class="border-current border-b border-dotted no-underline cursor-help"
+                            class="cursor-help border-b border-dotted border-current no-underline"
                           >
                             {{ column.abbr }}
                           </abbr>
@@ -197,12 +197,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :href="state.resolveSafeNavigationHref(column.format.hrefKey ? String(row[column.format.hrefKey]) : String(row[column.key])) || undefined"
                         :target="column.format.external ? '_blank' : undefined"
                         :rel="column.format.external ? 'noopener noreferrer' : undefined"
-                        class="inline-block hover:opacity-90 max-w-full text-primary underline underline-offset-2 break-words"
+                        class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
                         :aria-label="column.format.external ? t('dataTable.opensInNewTab', { label: state.formatCellValue(row[column.key], column) }).value : undefined"
                         @click.stop
                       >
                         {{ state.formatCellValue(row[column.key], column) }}
-                        <span v-if="column.format.external" class="inline-block ml-1" aria-hidden="true">&#x2197;</span>
+                        <span v-if="column.format.external" class="ml-1 inline-block" aria-hidden="true">&#x2197;</span>
                       </a>
                     </template>
 
@@ -212,16 +212,16 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <span
                           v-for="(item, i) in state.getArrayItems(row[column.key], column.format.maxVisible).items"
                           :key="i"
-                          class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
+                          class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
                         >
                           {{ item === null ? t('dataTable.nullLabel') : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[column.key], column.format.maxVisible).remaining > 0"
-                          class="group/more relative text-muted-foreground text-xs cursor-default"
+                          class="group/more relative cursor-default text-xs text-muted-foreground"
                         >
                           {{ t('dataTable.moreCount', { count: state.getArrayItems(row[column.key], column.format.maxVisible).remaining }) }}
-                          <span class="bottom-full left-1/2 z-50 absolute bg-popover opacity-0 group-hover/more:opacity-100 shadow-md mb-1 px-3 py-1.5 rounded-md text-popover-foreground text-xs whitespace-nowrap transition-opacity -translate-x-1/2 pointer-events-none">
+                          <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 rounded-md bg-popover px-3 py-1.5 text-xs whitespace-nowrap text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/more:opacity-100">
                             {{ state.getArrayItems(row[column.key], column.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ') }}
                           </span>
                         </span>
@@ -244,7 +244,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
                     <!-- Default -->
                     <template v-else>
-                      <span class="group/cell inline-block relative max-w-[280px]">
+                      <span class="group/cell relative inline-block max-w-[280px]">
                         <span
                           :ref="(el) => checkTextOverflow(el as HTMLElement, index, column.key)"
                           :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')"
@@ -254,7 +254,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <!-- Tooltip: hover 显示完整内容（仅溢出时） -->
                         <span
                           v-if="overflowSet.has(`${index}-${column.key}`)"
-                          class="bottom-full left-1/2 z-50 absolute bg-popover opacity-0 group-hover/cell:opacity-100 shadow-md mb-1 px-3 py-1.5 rounded-md max-w-[320px] text-popover-foreground text-xs whitespace-normal transition-opacity -translate-x-1/2 pointer-events-none"
+                          class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 max-w-[320px] -translate-x-1/2 rounded-md bg-popover px-3 py-1.5 text-xs whitespace-normal text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/cell:opacity-100"
                         >
                           {{ state.formatCellValue(row[column.key], column) }}
                         </span>
@@ -283,13 +283,13 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
         </template>
       </div>
 
-      <div v-if="data.length === 0" class="py-8 text-muted-foreground text-center">
+      <div v-if="data.length === 0" class="py-8 text-center text-muted-foreground">
         {{ emptyMessage || t('dataTable.noDataAvailable') }}
       </div>
 
       <div
         v-else
-        class="flex flex-col bg-card shadow-xs border border-border rounded-2xl overflow-hidden"
+        class="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs"
       >
         <div
           v-for="(row, index) in state.sortedData"
@@ -317,11 +317,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
               :aria-controls="`row-details-${state.getDataTableRowDomId(state.getRowId(row, index))}`"
               @click="state.toggleRowExpansion(state.getRowId(row, index))"
             >
-              <div class="flex flex-col flex-1 gap-2 min-w-0">
+              <div class="flex min-w-0 flex-1 flex-col gap-2">
                 <!-- Primary Column -->
                 <div
                   v-if="primaryColumns[0]"
-                  class="font-medium truncate"
+                  class="truncate font-medium"
                 >
                   {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
                 </div>
@@ -329,12 +329,12 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                 <!-- Remaining Primary Columns Summary -->
                 <div
                   v-if="primaryColumns.slice(1).length > 0"
-                  class="flex flex-wrap gap-x-4 gap-y-0.5 w-full text-muted-foreground"
+                  class="flex w-full flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground"
                 >
                   <span
                     v-for="col in primaryColumns.slice(1)"
                     :key="col.key"
-                    class="flex gap-1 min-w-[8em] font-normal shrink-0"
+                    class="flex min-w-[8em] shrink-0 gap-1 font-normal"
                   >
                     <span class="sr-only">{{ col.label }}:</span>
                     <span aria-hidden="true">{{ col.label }}:</span>
@@ -377,9 +377,9 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                 <div
                   v-for="col in secondaryColumns"
                   :key="col.key"
-                  class="flex justify-between items-start gap-4"
+                  class="flex items-start justify-between gap-4"
                 >
-                  <dt class="text-muted-foreground shrink-0">
+                  <dt class="shrink-0 text-muted-foreground">
                     {{ col.label }}
                   </dt>
                   <dd
@@ -424,11 +424,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :href="state.resolveSafeNavigationHref(col.format.hrefKey ? String(row[col.format.hrefKey]) : String(row[col.key])) || undefined"
                         :target="col.format.external ? '_blank' : undefined"
                         :rel="col.format.external ? 'noopener noreferrer' : undefined"
-                        class="inline-block hover:opacity-90 max-w-full text-primary underline underline-offset-2 break-words"
+                        class="inline-block max-w-full break-words text-primary underline underline-offset-2 hover:opacity-90"
                         @click.stop
                       >
                         {{ state.formatCellValue(row[col.key], col) }}
-                        <span v-if="col.format.external" class="inline-block ml-1">&#x2197;</span>
+                        <span v-if="col.format.external" class="ml-1 inline-block">&#x2197;</span>
                       </a>
                     </template>
 
@@ -438,16 +438,16 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         <span
                           v-for="(item, i) in state.getArrayItems(row[col.key], col.format.maxVisible).items"
                           :key="i"
-                          class="inline-flex items-center bg-muted px-2 py-0.5 rounded-md text-muted-foreground text-xs"
+                          class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
                         >
                           {{ item === null ? t('dataTable.nullLabel') : String(item) }}
                         </span>
                         <span
                           v-if="state.getArrayItems(row[col.key], col.format.maxVisible).remaining > 0"
-                          class="group/more relative text-muted-foreground text-xs cursor-default"
+                          class="group/more relative cursor-default text-xs text-muted-foreground"
                         >
                           {{ t('dataTable.moreCount', { count: state.getArrayItems(row[col.key], col.format.maxVisible).remaining }) }}
-                          <span class="bottom-full left-1/2 z-50 absolute bg-popover opacity-0 group-hover/more:opacity-100 shadow-md mb-1 px-3 py-1.5 rounded-md text-popover-foreground text-xs whitespace-nowrap transition-opacity -translate-x-1/2 pointer-events-none">
+                          <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 rounded-md bg-popover px-3 py-1.5 text-xs whitespace-nowrap text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/more:opacity-100">
                             {{ state.getArrayItems(row[col.key], col.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ') }}
                           </span>
                         </span>
@@ -495,9 +495,9 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
             <div
               v-for="col in primaryColumns.slice(1)"
               :key="col.key"
-              class="flex justify-between items-start gap-4"
+              class="flex items-start justify-between gap-4"
             >
-              <span class="min-w-[8em] text-muted-foreground shrink-0">
+              <span class="min-w-[8em] shrink-0 text-muted-foreground">
                 {{ col.label }}:
               </span>
               <span

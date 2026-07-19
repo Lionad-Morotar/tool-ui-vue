@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../../core';
 import { LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
+import { cn } from '../../core';
 
 defineOptions({ name: 'CmptGeoMapMarkerPopup', inheritAttrs: false });
 

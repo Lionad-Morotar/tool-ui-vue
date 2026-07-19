@@ -49,7 +49,7 @@ function isPortraitImage(image: ImageGalleryItem): boolean {
     >
       <button
         type="button"
-        class="absolute inset-0 z-20 h-full w-full rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        class="absolute inset-0 z-20 size-full rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         :aria-label="image.alt"
         @click="handleOpen(index)"
       />

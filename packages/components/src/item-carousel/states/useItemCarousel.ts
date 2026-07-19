@@ -1,5 +1,5 @@
-import { prefersReducedMotion } from '../../core';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { prefersReducedMotion } from '../../core';
 import type { ItemCarouselProps } from '../schema';
 import type { ComputedRef, Ref } from 'vue';
 

@@ -59,11 +59,11 @@ const handlers = {
 </script>
 
 <template>
-  <ActionProvider :handlers="handlers">
-    <VisibilityProvider>
-      <ValidationProvider>
-        <Renderer :spec="demoSpec" :registry="registry" />
-      </ValidationProvider>
-    </VisibilityProvider>
-  </ActionProvider>
+  <action-provider :handlers="handlers">
+    <visibility-provider>
+      <validation-provider>
+        <renderer :spec="demoSpec" :registry="registry" />
+      </validation-provider>
+    </visibility-provider>
+  </action-provider>
 </template>

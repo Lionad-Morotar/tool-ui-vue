@@ -1,6 +1,6 @@
+import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeEach } from 'vitest';
 import { nextTick, defineComponent } from 'vue';
-import { mount } from '@vue/test-utils';
 import {
   useStoryLocale,
   toggleLocale,

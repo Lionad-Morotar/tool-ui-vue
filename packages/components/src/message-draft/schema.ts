@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/message-draft/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 
 /**
  * 消息草稿渠道的 Schema 定义

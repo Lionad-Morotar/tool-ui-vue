@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import { cn } from '../core';
 import { useI18n } from '../core/i18n';
-import { reactive } from 'vue';
 import GeoMapEngine from './cmpts/geo-map-engine.vue';
 import styles from './geo-map-theme.module.css';
 import { useGeoMap } from './states';

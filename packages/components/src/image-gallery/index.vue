@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import { cn } from '../core';
 import { useI18n } from '../core/i18n';
-import { reactive } from 'vue';
 import GalleryGrid from './cmpts/gallery-grid.vue';
 import GalleryLightbox from './cmpts/gallery-lightbox.vue';
 import { useGallery } from './states';

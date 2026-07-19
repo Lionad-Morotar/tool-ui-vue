@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { ToolDefinition } from '../../src/types.js'
 import { findComponent } from '../../src/data.js'
+import type { ToolDefinition } from '../../src/types.js'
 
 const inputSchema = z.object({
   componentName: z.string().describe('The name of the component (PascalCase)'),

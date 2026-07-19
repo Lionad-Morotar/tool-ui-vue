@@ -1,9 +1,9 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptCitationOverflowPopover', inheritAttrs: false })
 
+import CitationItem from './citation-item.vue';
 import { cn } from '../../core';
 import { usePopover } from '../states/usePopover';
-import CitationItem from './citation-item.vue';
 import type { SerializableCitation } from '../schema';
 
 interface CitationOverflowPopoverProps {
@@ -71,7 +71,7 @@ const popoverClass = props.placement === 'bottom'
       @keydown="popover.handlePopoverKeyDown"
     >
       <div class="flex max-h-72 flex-col overflow-y-auto">
-        <CitationItem
+        <citation-item
           v-for="(citation, index) in citations"
           :key="citation.id"
           :citation="citation"

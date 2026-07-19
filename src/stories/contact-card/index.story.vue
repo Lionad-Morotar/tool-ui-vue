@@ -45,7 +45,7 @@ const props = [
     <Variant :title="phone">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-phone"
           kind="phone"
           value="+86 138-0000-0000"
@@ -57,7 +57,7 @@ const props = [
     <Variant :title="email">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-email"
           kind="email"
           value="hello@example.com"
@@ -68,7 +68,7 @@ const props = [
     <Variant :title="address">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-address"
           kind="address"
           :value="'上海市浦东新区\n陆家嘴环路 1000 号\n恒生银行大厦 28 楼'"
@@ -79,7 +79,7 @@ const props = [
     <Variant :title="whatsapp">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-whatsapp"
           kind="whatsapp"
           value="8613800000000"
@@ -90,7 +90,7 @@ const props = [
     <Variant :title="wechat">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-wechat"
           kind="wechat"
           value="wxid_hello_world"
@@ -101,7 +101,7 @@ const props = [
     <Variant :title="website">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-website"
           kind="website"
           value="https://lionad.art"
@@ -113,7 +113,7 @@ const props = [
     <Variant :title="copyable">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-copyable"
           kind="wechat"
           value="wxid_copy_me"
@@ -125,7 +125,7 @@ const props = [
     <Variant :title="customLabel">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-custom"
           kind="other"
           value="custom info"
@@ -137,7 +137,7 @@ const props = [
     <Variant :title="other">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-md">
-        <ContactCard
+        <contact-card
           id="story-other"
           kind="other"
           value="Skype: my_skype_id"

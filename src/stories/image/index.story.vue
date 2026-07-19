@@ -87,9 +87,9 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 <template>
   <Story title="Image/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-basic"
           asset-id="image-basic-asset"
           src="https://picsum.photos/400/300?random=1"
@@ -100,7 +100,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withTitle">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-title"
           asset-id="image-title-asset"
           src="https://picsum.photos/400/300?random=2"
@@ -112,7 +112,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="squareRatio">
       <div class="w-full max-w-sm">
-        <Image
+        <image
           id="image-square"
           asset-id="image-square-asset"
           src="https://picsum.photos/400/400?random=3"
@@ -124,7 +124,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="videoRatio">
       <div class="w-full max-w-lg">
-        <Image
+        <image
           id="image-video"
           asset-id="image-video-asset"
           src="https://picsum.photos/640/360?random=4"
@@ -136,7 +136,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withLink">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-link"
           asset-id="image-link-asset"
           src="https://picsum.photos/400/300?random=5"
@@ -149,7 +149,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="withSource">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-source"
           asset-id="image-source-asset"
           src="https://picsum.photos/400/300?random=6"
@@ -162,7 +162,7 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="objectFitContain">
       <div class="w-full max-w-md">
-        <Image
+        <image
           id="image-contain"
           asset-id="image-contain-asset"
           src="https://picsum.photos/200/400?random=7"
@@ -176,16 +176,16 @@ watch(currentLocale, () => { Object.assign(interactiveState, currentLocale.value
 
     <Variant :title="interactive" auto-props-disabled>
       <div class="w-full max-w-md">
-        <Image
+        <image
           v-bind="interactiveState"
         />
       </div>
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>

@@ -1,6 +1,6 @@
 import { h } from 'vue';
-import type { VNode, Component } from 'vue';
 import ErrorBoundary from './error-boundary.vue';
+import type { VNode, Component } from 'vue';
 
 export function withErrorBoundary<
   T extends (...args: any[]) => VNode | VNode[] | null | string,

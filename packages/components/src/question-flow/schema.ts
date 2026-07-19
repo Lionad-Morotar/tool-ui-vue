@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/question-flow/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 
 /**
  * 问题流程选项的 Schema 定义

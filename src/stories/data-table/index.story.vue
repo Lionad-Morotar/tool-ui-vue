@@ -177,7 +177,7 @@ const propsTitle = Props
 <template>
   <Story title="DataTable/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-basic"
@@ -192,7 +192,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withFormatting">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-formatted"
@@ -207,7 +207,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withStatusBadges">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-badges"
@@ -222,7 +222,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withColumnAlignment">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-align"
@@ -237,7 +237,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="emptyState">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-empty"
@@ -249,8 +249,8 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="controlledSort" auto-props-disabled>
-      <div class="space-y-4 w-full max-w-2xl">
-        <div class="text-muted-foreground text-sm">
+      <div class="w-full max-w-2xl space-y-4">
+        <div class="text-sm text-muted-foreground">
           Current sort: {{ sortableState.sort.by }} {{ sortableState.sort.direction }}
         </div>
         <data-table
@@ -268,7 +268,7 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withMaxHeight">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <data-table
           id="data-table-scroll"
@@ -296,8 +296,8 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="withTextOverflow">
-      <p class="mb-3 text-muted-foreground text-xs">Array overflow and text truncation with tooltip</p>
-      <div class="space-y-6 w-full max-w-3xl">
+      <p class="mb-3 text-xs text-muted-foreground">Array overflow and text truncation with tooltip</p>
+      <div class="w-full max-w-3xl space-y-6">
         <div>
           <p class="mb-2 text-sm font-medium">Array Overflow</p>
           <data-table
@@ -329,8 +329,8 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="interactiveLayoutPlayground" auto-props-disabled>
-      <div class="space-y-4 w-full max-w-2xl">
-        <p class="text-muted-foreground text-sm">
+      <div class="w-full max-w-2xl space-y-4">
+        <p class="text-sm text-muted-foreground">
           Use the right panel to change <code>layout</code>. Default is <code>cards</code> (accordion view).
           This demo combines primary, secondary, tertiary, and hideOnMobile columns.
         </p>
@@ -349,9 +349,9 @@ const propsTitle = Props
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">组件说明 / Component description</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ DataTableProps }}</h2>
+      <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ DataTableProps }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>

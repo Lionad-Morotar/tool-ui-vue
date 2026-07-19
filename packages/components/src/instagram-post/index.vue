@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { computed, reactive } from 'vue';
+import { cn } from '../core';
 import { useInstagramPost } from './states';
+import { useI18n } from '../core/i18n';
 import type { InstagramPostProps, InstagramPostData } from './schema';
 
 defineOptions({ name: 'CmptInstagramPost', inheritAttrs: false })
@@ -221,7 +221,7 @@ const instagramLogoAriaLabel = computed(() => t('instagramPost.logo').value)
           <div
             v-for="(item, index) in post.media.slice(0, 4)"
             :key="index"
-            class="relative h-full w-full"
+            class="relative size-full"
           >
             <button
               type="button"

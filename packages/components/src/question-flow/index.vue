@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { computed, reactive } from 'vue';
+import { cn } from '../core';
 import { useQuestionFlow } from './states';
+import { useI18n } from '../core/i18n';
 import type { QuestionFlowCss, QuestionFlowProps } from './schema';
 
 defineOptions({ name: 'CmptQuestionFlow', inheritAttrs: false })
@@ -65,7 +65,7 @@ const CheckIcon = {
       <div :class="cn('flex items-center justify-between gap-3', props.css?.header)">
         <span class="text-base font-medium">{{ state.receiptProps.choice?.title ?? t('questionFlow.completed') }}</span>
         <span class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-500">
-          <component :is="CheckIcon" class="shrink-0 size-3.5" />
+          <component :is="CheckIcon" class="size-3.5 shrink-0" />
           {{ t('questionFlow.complete') }}
         </span>
       </div>
@@ -340,7 +340,7 @@ const CheckIcon = {
           "
           @click="state.handleBack"
         >
-          <component :is="ChevronLeftIcon" class="shrink-0 size-4" />
+          <component :is="ChevronLeftIcon" class="size-4 shrink-0" />
           {{ t('questionFlow.back') }}
         </button>
         <div v-else />

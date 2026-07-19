@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import {
   RATIO_CLASS_MAP,
   getFitClass,
   OVERLAY_GRADIENT,
   formatDuration, cn
 } from '../core';
-import { useI18n } from '../core/i18n';
-import { reactive } from 'vue';
 import { useVideo } from './states';
+import { useI18n } from '../core/i18n';
 import type { VideoProps } from './schema';
 
 defineOptions({ name: 'CmptVideo', inheritAttrs: false })
@@ -111,7 +111,7 @@ const { t } = useI18n();
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="mr-1 h-4 w-4"
+                  class="mr-1 size-4"
                   aria-hidden="true"
                 >
                   <path d="M15 3h6v6" />
@@ -135,7 +135,7 @@ const { t } = useI18n();
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="mr-1 h-4 w-4"
+                  class="mr-1 size-4"
                   aria-hidden="true"
                 >
                   <path

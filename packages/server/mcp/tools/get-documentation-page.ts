@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { ToolDefinition } from '../../src/types.js'
 import { readDocumentationPage } from '../../src/utils.js'
+import type { ToolDefinition } from '../../src/types.js'
 
 const inputSchema = z.object({
   path: z.string().describe('The path to the documentation page (e.g., /README.md or /.planning/codebase/STACK.md)'),

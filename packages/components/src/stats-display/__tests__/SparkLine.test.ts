@@ -170,15 +170,15 @@ describe('SparkLine', () => {
       expect(svg.attributes('style')).toContain('opacity: 0.5');
     });
 
-    test('has h-full and w-full classes', () => {
+    test('has size-full class covering both dimensions', () => {
       const wrapper = mount(SparkLine, {
         props: {
           data: [10, 20, 30],
         },
       });
       const svg = wrapper.find('svg');
-      expect(svg.classes()).toContain('h-full');
-      expect(svg.classes()).toContain('w-full');
+      // size-full 等价于 h-full + w-full（enforce-shorthand-classes 合并结果）
+      expect(svg.classes()).toContain('size-full');
     });
   });
 

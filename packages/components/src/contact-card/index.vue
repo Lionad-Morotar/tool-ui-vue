@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useContactCard } from './states';
+import { useI18n } from '../core/i18n';
 import type { ContactCardProps } from './schema';
 
 defineOptions({ name: 'CmptContactCard', inheritAttrs: false })
@@ -116,7 +116,12 @@ const kindLabelKey = (kind: string): string => `contactCard.${kind}`;
         >
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
           <polyline points="15 3 21 3 21 9" />
-          <line x1="10" x2="21" y1="14" y2="3" />
+          <line
+            x1="10"
+            x2="21"
+            y1="14"
+            y2="3"
+          />
         </svg>
 
         <!-- Copy icon -->
@@ -133,7 +138,14 @@ const kindLabelKey = (kind: string): string => `contactCard.${kind}`;
           stroke-linejoin="round"
           class="size-3.5 text-muted-foreground"
         >
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <rect
+            x="9"
+            y="9"
+            width="13"
+            height="13"
+            rx="2"
+            ry="2"
+          />
           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
         </svg>
       </div>

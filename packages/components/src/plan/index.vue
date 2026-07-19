@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { usePlan } from './states';
+import { useI18n } from '../core/i18n';
 import type { PlanProps } from './schema';
 
 defineOptions({ name: 'CmptPlan', inheritAttrs: false })

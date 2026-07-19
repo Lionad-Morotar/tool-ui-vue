@@ -1,7 +1,7 @@
-import { h } from 'vue';
-import type { Components } from '@json-render/vue';
 import { useBoundProp } from '@json-render/vue';
+import { h } from 'vue';
 import type { AppCatalog } from './catalog';
+import type { Components } from '@json-render/vue';
 
 export const components: Components<AppCatalog> = {
   Stack: ({ props, children }) => {

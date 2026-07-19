@@ -336,7 +336,7 @@ watch(() => config.value, updateTheme, { deep: true })
 <template>
   <div
     ref="containerRef"
-    class="relative w-full h-full overflow-hidden"
+    class="relative h-full w-full overflow-hidden"
     :class="[dragState.isDragging ? 'cursor-grabbing' : 'cursor-grab']"
     :style="{ touchAction: 'none' }"
     @pointerdown="handlePointerDown"
@@ -346,7 +346,7 @@ watch(() => config.value, updateTheme, { deep: true })
   >
     <canvas
       ref="canvasRef"
-      class="block z-10 relative w-full h-full"
+      class="relative z-10 block h-full w-full"
     />
   </div>
 </template>

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { components, registry } from '../registry';
 import { catalog } from '../catalog';
+import { components, registry } from '../registry';
 import type { VNode } from 'vue';
 
 const EXPECTED_COMPONENTS = catalog.componentNames;

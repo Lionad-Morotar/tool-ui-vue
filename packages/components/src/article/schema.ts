@@ -4,8 +4,8 @@
  * @module tool-ui-vue/vtu-components/article/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema, ToolUIReceiptSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema, ToolUIReceiptSchema } from '../core';
 
 /**
  * 文章内容类型 Schema

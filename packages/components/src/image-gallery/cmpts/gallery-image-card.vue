@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { cn } from '../../core';
 import { ImageOff } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
+import { cn } from '../../core';
 import { useImageGallery } from '../states';
 import type { ImageGalleryItem, GalleryImageCardCss } from '../schema';
 
@@ -41,7 +41,7 @@ onUnmounted(() => {
   <div
     ref="wrapperRef"
     :class="cn(
-      'relative h-full w-full overflow-hidden rounded-lg bg-muted',
+      'relative size-full overflow-hidden rounded-lg bg-muted',
       'transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]',
       'group-hover:scale-[1.02] group-active:scale-[0.98]',
       css?.root
@@ -54,7 +54,7 @@ onUnmounted(() => {
         css?.error
       )"
     >
-      <image-off class="shrink-0 h-8 w-8 text-muted-foreground" />
+      <image-off class="size-8 shrink-0 text-muted-foreground" />
       <span class="line-clamp-2 text-center text-xs text-muted-foreground">
         {{ image.alt }}
       </span>
@@ -68,7 +68,7 @@ onUnmounted(() => {
       loading="lazy"
       decoding="async"
       draggable="false"
-      :class="cn('h-full w-full object-cover', css?.image)"
+      :class="cn('size-full object-cover', css?.image)"
       @error="hasError = true"
     />
   </div>

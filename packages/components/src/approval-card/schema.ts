@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/approval-card/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 
 /**
  * 元数据项的 Schema 定义

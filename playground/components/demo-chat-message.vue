@@ -18,8 +18,8 @@ withDefaults(defineProps<Props>(), {
     <div
       :class="[
         role === 'user'
-          ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm'
-          : 'bg-muted text-muted-foreground rounded-2xl rounded-tl-sm',
+          ? 'rounded-2xl rounded-tr-sm bg-primary text-primary-foreground'
+          : 'rounded-2xl rounded-tl-sm bg-muted text-muted-foreground',
         'max-w-[85%] px-4 py-2.5 text-sm',
       ]"
     >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../core';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useChart } from './states';
 import type { ChartProps } from './schema';
 

@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/linkedin-post/schema
  */
-import { defineToolUiContract } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract } from '../core';
 
 /**
  * LinkedIn 帖子作者的 Schema 定义

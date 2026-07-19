@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/terminal/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema } from '../core';
 import type { ToolUIReceipt } from '../core';
 
 /**

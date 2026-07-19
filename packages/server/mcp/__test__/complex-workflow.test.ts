@@ -12,10 +12,10 @@ describe('complex multi-tool workflow', () => {
 ` +
         `3. Use get_example on that component with index 0 to retrieve a usage example.
 ` +
-        `Return a concise summary including: the component name, its main props, and whether it has examples.`,
-      `The output must mention the "Video" component. ` +
-        `It should reference props (e.g., "id", "src", "title") and confirm that at least one usage example exists. ` +
-        `The presence of schema names like "SerializableVideoSchema" or "VideoProps" is a plus.`,
+        'Return a concise summary including: the component name, its main props, and whether it has examples.',
+      'The output must mention the "Video" component. ' +
+        'It should reference props (e.g., "id", "src", "title") and confirm that at least one usage example exists. ' +
+        'The presence of schema names like "SerializableVideoSchema" or "VideoProps" is a plus.',
       'complex-workflow-video',
     )
 
@@ -32,10 +32,10 @@ describe('complex multi-tool workflow', () => {
 ` +
         `3. Compare the two components based on their schemas, types, and state composables.
 ` +
-        `Return a brief comparison in plain text.`,
-      `The output must reference both "Audio" and "Terminal" components. ` +
-        `It should mention at least one schema or composable for each (e.g., "useAudio" for Audio, "useTerminal" or "SerializableTerminalSchema" for Terminal). ` +
-        `A meaningful comparison point (e.g., different media types, different state exports) should be present.`,
+        'Return a brief comparison in plain text.',
+      'The output must reference both "Audio" and "Terminal" components. ' +
+        'It should mention at least one schema or composable for each (e.g., "useAudio" for Audio, "useTerminal" or "SerializableTerminalSchema" for Terminal). ' +
+        'A meaningful comparison point (e.g., different media types, different state exports) should be present.',
       'complex-workflow-compare',
     )
 

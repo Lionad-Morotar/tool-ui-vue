@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { Package, CheckCircle } from 'lucide-vue-next';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useOrderSummary } from './states';
+import { useI18n } from '../core/i18n';
 import type { OrderSummaryProps } from './schema';
 
 defineOptions({ name: 'CmptOrderSummary', inheritAttrs: false })
@@ -62,7 +62,7 @@ const { t } = useI18n()
             class="flex items-center gap-2 text-base font-semibold"
           >
             <check-circle
-              class="shrink-0 h-5 w-5 text-green-600 dark:text-green-500"
+              class="size-5 shrink-0 text-green-600 dark:text-green-500"
               aria-hidden="true"
               :focusable="undefined"
             />
@@ -85,11 +85,11 @@ const { t } = useI18n()
               :alt="item.name"
               width="48"
               height="48"
-              class="h-12 w-12 shrink-0 rounded-md object-cover"
+              class="size-12 shrink-0 rounded-md object-cover"
             />
-            <div v-else class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-muted">
+            <div v-else class="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted">
               <package
-                class="shrink-0 h-5 w-5 text-muted-foreground"
+                class="size-5 shrink-0 text-muted-foreground"
                 aria-hidden="true"
                 :focusable="undefined"
               />
@@ -174,11 +174,11 @@ const { t } = useI18n()
               :alt="item.name"
               width="48"
               height="48"
-              class="h-12 w-12 shrink-0 rounded-md object-cover"
+              class="size-12 shrink-0 rounded-md object-cover"
             />
-            <div v-else class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-muted">
+            <div v-else class="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted">
               <package
-                class="shrink-0 h-5 w-5 text-muted-foreground"
+                class="size-5 shrink-0 text-muted-foreground"
                 aria-hidden="true"
                 :focusable="undefined"
               />

@@ -3,26 +3,26 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
 // Tools
-import searchComponents from './tools/search-components.js'
-import searchComposables from './tools/search-composables.js'
-import searchDocumentation from './tools/search-documentation.js'
-import searchIcons from './tools/search-icons.js'
-import getComponent from './tools/get-component.js'
-import getComponentMetadata from './tools/get-component-metadata.js'
-import getDocumentationPage from './tools/get-documentation-page.js'
-import getExample from './tools/get-example.js'
-import listExamples from './tools/list-examples.js'
-
-// Resources
+import promptFindComponent from './prompts/find-component-for-usecase.js'
+import promptImplementComponent from './prompts/implement-component-with-props.js'
+import promptSetupProject from './prompts/setup-project-with-template.js'
 import resourceComponents from './resources/components.js'
 import resourceComposables from './resources/composables.js'
 import resourceDocumentationPages from './resources/documentation-pages.js'
 import resourceExamples from './resources/examples.js'
+import getComponentMetadata from './tools/get-component-metadata.js'
+import getComponent from './tools/get-component.js'
+import getDocumentationPage from './tools/get-documentation-page.js'
+import searchComponents from './tools/search-components.js'
+import searchComposables from './tools/search-composables.js'
+import searchDocumentation from './tools/search-documentation.js'
+import searchIcons from './tools/search-icons.js'
+import getExample from './tools/get-example.js'
+import listExamples from './tools/list-examples.js'
+
+// Resources
 
 // Prompts
-import promptFindComponent from './prompts/find-component-for-usecase.js'
-import promptImplementComponent from './prompts/implement-component-with-props.js'
-import promptSetupProject from './prompts/setup-project-with-template.js'
 
 const server = new McpServer({
   name: 'tool-ui-vue-mcp-server',

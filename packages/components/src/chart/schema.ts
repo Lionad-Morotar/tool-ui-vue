@@ -8,13 +8,11 @@
  *
  * @module tool-ui-vue/vtu-components/chart/schema
  */
-import { defineToolUiContract } from '../core';
-import {
+import { z } from 'zod';
+import { defineToolUiContract,
   ToolUIIdSchema,
   ToolUIReceiptSchema,
-  ToolUIRoleSchema,
-} from '../core';
-import { z } from 'zod';
+  ToolUIRoleSchema } from '../core';
 import type { ToolUIReceipt } from '../core';
 
 /**

@@ -1,4 +1,3 @@
-import type { Components } from '@json-render/vue';
 import { defineRegistry } from '@json-render/vue';
 import {
   ApprovalCard,
@@ -33,9 +32,10 @@ import {
   XPost,
 } from '@lionad/vtu-components';
 import { catalog } from './catalog';
-import type { AppCatalog } from './catalog';
-import { createRenderer, withErrorBoundary } from './with-error-boundary';
 import { primitivesComponents } from './primitives';
+import { createRenderer, withErrorBoundary } from './with-error-boundary';
+import type { AppCatalog } from './catalog';
+import type { Components } from '@json-render/vue';
 
 const rawComponents: Components<AppCatalog> = {
   ApprovalCard: createRenderer(ApprovalCard),

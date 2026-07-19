@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/weather-widget/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema  } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema  } from '../core';
 
 /** WeatherConditionCodeSchema Zod Schema */
 export const WeatherConditionCodeSchema = z.enum([

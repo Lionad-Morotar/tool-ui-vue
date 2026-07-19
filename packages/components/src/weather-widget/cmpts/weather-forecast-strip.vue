@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptWeatherForecastStrip', inheritAttrs: false })
 
-import { cn } from '../../core';
 import {
   Sun,
   Cloud,
@@ -15,6 +14,7 @@ import {
   Wind,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { cn } from '../../core';
 import type { ForecastDay, WeatherConditionCode } from '../schema';
 import type { StyleValue } from 'vue';
 
@@ -107,7 +107,7 @@ const forecastCardStyle = computed(() => ({
               :is="conditionIcons[day.conditionCode]"
               :class="
                 cn(
-                  'my-0.5 shrink-0 size-5',
+                  'my-0.5 size-5 shrink-0',
                   textPrimary,
                   index === 0 ? 'opacity-100' : 'opacity-70',
                   'weather-forecast-icon hidden'

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptWeatherDataOverlay', inheritAttrs: false })
 
-import { cn } from '../../core';
 import { computed } from 'vue';
+import WeatherCurrentDisplay from './weather-current-display.vue';
+import WeatherForecastStrip from './weather-forecast-strip.vue';
+import { cn } from '../../core';
 import { useGlassStyles } from '../composables/useGlassStyles';
 import { useGlowEffect } from '../composables/useGlowEffect';
 import {
@@ -11,8 +13,6 @@ import {
   getWeatherTheme,
   type WeatherTheme,
 } from '../effects/parameter-mapper';
-import WeatherCurrentDisplay from './weather-current-display.vue';
-import WeatherForecastStrip from './weather-forecast-strip.vue';
 import type {
   ForecastDay,
   TemperatureUnit,
@@ -186,7 +186,7 @@ void cardRef, containerRef;
       )
     "
   >
-    <WeatherCurrentDisplay
+    <weather-current-display
       :location="location"
       :temperature="temperature"
       :temp-high="tempHigh"
@@ -205,18 +205,18 @@ void cardRef, containerRef;
     <div class="flex-1" />
 
     <div ref="cardRef">
-      <WeatherForecastStrip
+      <weather-forecast-strip
         :forecast="forecast"
-      :is-dark="isDark"
-      :text-primary="textPrimary"
-      :text-subtle="textSubtle"
-      :bg-opacity="bgOpacity"
-      :resolved-glass-styles="resolvedGlassStyles"
-      :edge-shine-style="edgeShineStyle"
-      :inner-glow-style="innerGlowStyle"
-      :forecast-text-shadow="forecastTextShadow"
-      :css="{ forecast: props.css?.forecast }"
-    />
-  </div>
+        :is-dark="isDark"
+        :text-primary="textPrimary"
+        :text-subtle="textSubtle"
+        :bg-opacity="bgOpacity"
+        :resolved-glass-styles="resolvedGlassStyles"
+        :edge-shine-style="edgeShineStyle"
+        :inner-glow-style="innerGlowStyle"
+        :forecast-text-shadow="forecastTextShadow"
+        :css="{ forecast: props.css?.forecast }"
+      />
+    </div>
   </div>
 </template>

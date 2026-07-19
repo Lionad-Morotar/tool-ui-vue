@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/contact-card/schema
  */
 
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 
 /**
  * 联系方式类型的 Schema 定义

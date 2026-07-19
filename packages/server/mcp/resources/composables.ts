@@ -1,5 +1,5 @@
-import type { ResourceDefinition } from '../../src/types.js'
 import { componentData } from '../../src/data.js'
+import type { ResourceDefinition } from '../../src/types.js'
 
 const resource: ResourceDefinition = {
   uri: 'resource://vtu/composables',

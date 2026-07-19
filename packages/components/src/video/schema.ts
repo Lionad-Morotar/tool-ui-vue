@@ -9,11 +9,11 @@
  * @module tool-ui-vue/vtu-components/video/schema
  */
 
+import { z } from 'zod';
 import { defineToolUiContract,
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema } from '../core';
-import { z } from 'zod';
 
 export const AspectRatioSchema = z
   .enum(['auto', '1:1', '4:3', '16:9', '9:16'])

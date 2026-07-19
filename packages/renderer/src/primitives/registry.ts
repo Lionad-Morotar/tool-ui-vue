@@ -1,7 +1,7 @@
-import { h } from 'vue';
-import type { Components } from '@json-render/vue';
 import { useBoundProp } from '@json-render/vue';
+import { h } from 'vue';
 import type { PrimitivesCatalog } from './catalog';
+import type { Components } from '@json-render/vue';
 
 /**
  * 布局原语的 Registry 定义

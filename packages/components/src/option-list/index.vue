@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useOptionList } from './states';
+import { useI18n } from '../core/i18n';
 import type { OptionListProps, OptionListSelection } from './schema';
 
 defineOptions({ name: 'CmptOptionList', inheritAttrs: false })

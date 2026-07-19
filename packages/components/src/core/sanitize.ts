@@ -24,7 +24,7 @@ export async function loadDOMPurify(): Promise<DOMPurifyModule | null> {
       return mod;
     } catch {
       if ((import.meta as any).env?.DEV) {
-        // eslint-disable-next-line no-console
+         
         console.warn(
           '[vtu-components] DOMPurify is not installed. ' +
             'Install "dompurify" to enable HTML sanitization.',

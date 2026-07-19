@@ -1,4 +1,5 @@
-import { Component, createApp } from 'vue';
+import { createApp } from 'vue';
+import type { Component} from 'vue';
 
 const pages = import.meta.glob<true, string, () => Promise<{ default: Component }>>(
   ['./pages/*.vue', './*.vue']
@@ -6,7 +7,7 @@ const pages = import.meta.glob<true, string, () => Promise<{ default: Component 
 
 (async () => {
   const name = location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'App';
-  let file = pages[`./pages/${name}.vue`] ?? pages[`./${name}.vue`];
+  const file = pages[`./pages/${name}.vue`] ?? pages[`./${name}.vue`];
 
   if (!file) {
     location.pathname = '/';

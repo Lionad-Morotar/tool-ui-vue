@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/parameter-slider/schema
  */
 
-import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIRoleSchema,  } from '../core';
 import type { Action, SerializableActionsConfig } from '../core';
 
 /**

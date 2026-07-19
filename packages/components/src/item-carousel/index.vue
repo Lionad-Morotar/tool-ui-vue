@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { computed, ref, watchEffect } from 'vue';
 import { cn } from '../core';
 import { useI18n } from '../core/i18n';
-import { computed, ref, watchEffect } from 'vue';
 import ItemCard from './cmpts/item-card.vue';
 import { useItemCarousel } from './states';
 import type { ItemCarouselProps } from './schema';
@@ -132,7 +132,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="h-4 w-4"
+          class="size-4"
         >
           <path d="m15 18-6-6 6-6" />
         </svg>
@@ -164,7 +164,7 @@ defineExpose({
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="h-4 w-4"
+          class="size-4"
         >
           <path d="m9 18 6-6-6-6" />
         </svg>

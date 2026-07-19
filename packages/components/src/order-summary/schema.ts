@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/order-summary/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
 
 /**
  * 订单项的 Schema 定义

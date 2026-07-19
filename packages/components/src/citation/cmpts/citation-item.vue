@@ -29,7 +29,7 @@ function handleClick() {
 <template>
   <button
     type="button"
-    class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+    class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md p-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
     @click="handleClick"
   >
     <img

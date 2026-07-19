@@ -1,5 +1,3 @@
-import { describe, expect, test, afterEach, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
 import {
   parseSerializableContactCard,
   safeParseSerializableContactCard,
@@ -8,6 +6,8 @@ import {
   ContactCard,
   type ContactKind,
 } from '@lionad/vtu-components';
+import { mount } from '@vue/test-utils';
+import { describe, expect, test, afterEach, vi } from 'vitest';
 
 describe('ContactCard schema', () => {
   test('parses valid contact card with all fields', () => {

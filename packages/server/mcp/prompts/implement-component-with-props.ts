@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { PromptDefinition } from '../../src/types.js'
 import { findComponent } from '../../src/data.js'
+import type { PromptDefinition } from '../../src/types.js'
 
 const argsSchema = z.object({
   component: z.string().describe('Component name (PascalCase)'),

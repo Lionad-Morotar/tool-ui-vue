@@ -1,24 +1,24 @@
 <template>
   <div
-    class="fixed inset-0 -z-10 pointer-events-none overflow-hidden"
+    class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     aria-hidden="true"
   >
     <!-- Subtle grid -->
     <div
-      class="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] tech-grid"
+      class="tech-grid absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
     />
 
     <!-- Slow drifting orbs -->
     <div
-      class="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] animate-drift tech-orbs"
+      class="animate-drift tech-orbs absolute -top-1/2 -left-1/2 h-[200%] w-[200%]"
     />
 
     <!-- Slow scanline -->
-    <div class="absolute inset-0 tech-scanline opacity-[0.03] dark:opacity-[0.05]" />
+    <div class="tech-scanline absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" />
 
     <!-- Fine noise texture overlay for grain -->
     <div
-      class="absolute inset-0 opacity-[0.04] dark:opacity-[0.06] tech-noise"
+      class="tech-noise absolute inset-0 opacity-[0.04] dark:opacity-[0.06]"
     />
   </div>
 </template>

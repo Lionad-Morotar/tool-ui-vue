@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { LMarker, LCircleMarker } from '@vue-leaflet/vue-leaflet';
 import { resolveMarkerIcon } from '../geo-map-icons';
-import type { LeafletIconRuntime } from '../geo-map-icons';
 import GeoMapMarkerPopup from './geo-map-marker-popup.vue';
 import {
   resolveMarkerAriaLabel,
@@ -9,6 +8,7 @@ import {
   getDotBorderColor,
   getDotFillColor,
 } from '../utils';
+import type { LeafletIconRuntime } from '../geo-map-icons';
 import type { GeoMapMarker } from '../schema';
 import type { Icon as LeafletIcon } from 'leaflet';
 

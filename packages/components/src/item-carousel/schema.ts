@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/item-carousel/schema
  */
-import { defineToolUiContract, ActionSchema, SerializableActionSchema, ToolUIIdSchema, type Action } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ActionSchema, SerializableActionSchema, ToolUIIdSchema, type Action } from '../core';
 
 /**
  * 轮播项的 Schema 定义

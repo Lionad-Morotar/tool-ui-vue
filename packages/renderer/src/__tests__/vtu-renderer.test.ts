@@ -1,5 +1,3 @@
-import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
 import {
   ActionProvider,
   Renderer,
@@ -7,6 +5,8 @@ import {
   ValidationProvider,
   VisibilityProvider,
 } from '@json-render/vue';
+import { mount } from '@vue/test-utils';
+import { describe, expect, test } from 'vitest';
 import { VtuRenderer } from '../index';
 
 function createMinimalSpec() {

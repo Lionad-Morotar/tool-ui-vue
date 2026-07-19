@@ -16,9 +16,9 @@ import {
   shallowRef,
 } from 'vue';
 import 'leaflet/dist/leaflet.css';
-import GeoMapMarkerPopup from './geo-map-marker-popup.vue';
-import GeoMapMarkerLayer from './geo-map-marker-layer.vue';
 import GeoMapClusterLayer from './geo-map-cluster-layer.vue';
+import GeoMapMarkerLayer from './geo-map-marker-layer.vue';
+import GeoMapMarkerPopup from './geo-map-marker-popup.vue';
 import { useGeoMapCluster } from './use-geo-map-cluster';
 import { useGeoMapViewport } from './use-geo-map-viewport';
 import {
@@ -206,13 +206,13 @@ function handleRouteClick(route: GeoMapRoute) {
 </script>
 
 <template>
-  <div v-if="!leafletReady" :class="cn('h-full w-full', css?.root)" />
+  <div v-if="!leafletReady" :class="cn('size-full', css?.root)" />
   <l-map
     v-else
     :center="mapCenter"
     :zoom="mapZoom"
     :options="{ zoomControl: false }"
-    :class="cn('h-full w-full', css?.root)"
+    :class="cn('size-full', css?.root)"
     :use-global-leaflet="false"
     @ready="handleMapReady"
     @moveend="handleViewportChange"
@@ -246,12 +246,12 @@ function handleRouteClick(route: GeoMapRoute) {
     <!-- Clustered Markers -->
     <geo-map-cluster-layer
       v-if="clusterConfig.enabled && clusterIndex && viewportState"
+      :id="id"
       :features="clusteredFeatures"
       :marker-by-id="markerById"
       :leaflet-runtime="leafletRuntime"
       :tooltip-class-name="tooltipClassName"
       :popup-class-name="popupClassName"
-      :id="id"
       @marker-click="handleMarkerClick"
       @cluster-click="handleClusterClick"
     />
@@ -259,12 +259,12 @@ function handleRouteClick(route: GeoMapRoute) {
     <!-- Non-clustered Markers -->
     <geo-map-marker-layer
       v-else
+      :id="id"
       :markers="markers"
       :marker-by-id="markerById"
       :leaflet-runtime="leafletRuntime"
       :tooltip-class-name="tooltipClassName"
       :popup-class-name="popupClassName"
-      :id="id"
       @marker-click="handleMarkerClick"
     />
   </l-map>

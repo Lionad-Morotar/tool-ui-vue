@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import { cn } from '../core';
 import { useI18n } from '../core/i18n';
-import { reactive } from 'vue';
 import Sparkline from './cmpts/sparkline.vue';
 import { useStatsDisplay } from './states';
 import type { StatsDisplayProps } from './schema';

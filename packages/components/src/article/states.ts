@@ -84,7 +84,7 @@ function parseContent(type: 'md' | 'html', content: string, marked: any): string
     return marked.parse(content, { async: false }) as string
   } catch (err) {
     if ((import.meta as any).env?.DEV) {
-      // eslint-disable-next-line no-console
+       
       console.error('[Article] Markdown parsing failed:', err)
     }
     return `<pre>${content}</pre>`

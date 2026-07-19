@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../../core';
 import { computed } from 'vue';
+import { cn } from '../../core';
 import { typeIcons } from '../icons';
 import Citation from '../index.vue';
 import CitationOverflowPopover from './citation-overflow-popover.vue';
@@ -158,7 +158,7 @@ function getTypeIcon(type: CitationType | undefined) {
           v-for="citation in citations"
           :key="citation.id"
           type="button"
-          class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+          class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md p-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
           @click="handleStackedClick(citation)"
         >
           <img
@@ -234,7 +234,7 @@ function getTypeIcon(type: CitationType | undefined) {
       @navigate="(href: string, cit: SerializableCitation) => emit('navigate', href, cit)"
     />
     <!-- Overflow for default variant -->
-    <CitationOverflowPopover
+    <citation-overflow-popover
       v-if="shouldTruncate"
       :id="id"
       :citations="overflowCitations"
@@ -270,7 +270,7 @@ function getTypeIcon(type: CitationType | undefined) {
       @navigate="(href: string, cit: SerializableCitation) => emit('navigate', href, cit)"
     />
     <!-- Overflow for inline variant -->
-    <CitationOverflowPopover
+    <citation-overflow-popover
       v-if="shouldTruncate"
       :id="id"
       :citations="overflowCitations"

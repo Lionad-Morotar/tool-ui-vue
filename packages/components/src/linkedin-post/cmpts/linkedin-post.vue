@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { computed, reactive, toRef } from 'vue';
 import { cn } from '../../core';
 import { useI18n } from '../../core/i18n';
-import { computed, reactive, toRef } from 'vue';
 import { useLinkedinPost } from '../states';
 import type { LinkedInPostProps, LinkedInPostCss, LinkedInPostData } from '../schema';
 

@@ -6,8 +6,8 @@ import {
   VisibilityProvider,
   StateProvider,
 } from '@json-render/vue';
-import type { Spec } from '@json-render/core';
 import { registry } from './registry';
+import type { Spec } from '@json-render/core';
 
 interface Props {
   spec: Spec;
@@ -19,13 +19,13 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <StateProvider :initial-state="props.initialState ?? {}">
-    <ActionProvider :handlers="props.handlers ?? {}">
-      <VisibilityProvider>
-        <ValidationProvider>
-          <Renderer :spec="props.spec" :registry="registry" />
-        </ValidationProvider>
-      </VisibilityProvider>
-    </ActionProvider>
-  </StateProvider>
+  <state-provider :initial-state="props.initialState ?? {}">
+    <action-provider :handlers="props.handlers ?? {}">
+      <visibility-provider>
+        <validation-provider>
+          <renderer :spec="props.spec" :registry="registry" />
+        </validation-provider>
+      </visibility-provider>
+    </action-provider>
+  </state-provider>
 </template>

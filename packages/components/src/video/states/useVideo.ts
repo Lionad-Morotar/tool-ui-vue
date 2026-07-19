@@ -1,7 +1,7 @@
-import { openSafeNavigationHref } from '../../core';
 import { computed, type ComputedRef } from 'vue';
 import { useEvents, createDomEventHandlers } from './useEvents';
 import { usePlayback } from './usePlayback';
+import { openSafeNavigationHref } from '../../core';
 import { resolveVideoNavigation } from '../video-helpers';
 import type { VideoProps, AspectRatio, MediaFit } from '../schema';
 import type { EventEmits } from './useEvents';

@@ -1,6 +1,6 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useSanitize } from '../../core/sanitize';
 import { usePropsValidator } from '../../core';
+import { useSanitize } from '../../core/sanitize';
 import { SerializableCodeBlockSchema } from '../schema';
 import type { CodeBlockProps, CodeBlockLineNumbersMode } from '../schema';
 import type { Highlighter, ShikiTransformer } from 'shiki';

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cn } from '../core'
-import { useI18n } from '../core/i18n'
-import { reactive } from 'vue'
 import { Star } from 'lucide-vue-next'
+import { reactive } from 'vue'
+import { cn } from '../core'
 import { useArticle } from './states'
+import { useI18n } from '../core/i18n'
 import type { ArticleProps } from './schema'
 
 defineOptions({ name: 'CmptArticle', inheritAttrs: false })
@@ -38,7 +38,7 @@ const { t } = useI18n()
       <img
         :src="coverImage"
         alt=""
-        class="rounded-xl w-full object-cover"
+        class="w-full rounded-xl object-cover"
         loading="lazy"
         @error="($event.target as HTMLElement).style.display = 'none'"
       >
@@ -79,7 +79,7 @@ const { t } = useI18n()
         <span v-if="author" class="flex items-center gap-1">
           <span
             v-if="author.avatarUrl"
-            class="inline-block shrink-0 bg-secondary rounded-full size-7 overflow-hidden"
+            class="inline-block size-7 shrink-0 overflow-hidden rounded-full bg-secondary"
           >
             <img
               :src="author.avatarUrl"
@@ -89,7 +89,7 @@ const { t } = useI18n()
               @error="($event.target as HTMLElement).style.display = 'none'"
             >
           </span>
-          <span v-else class="inline-flex shrink-0 justify-center items-center bg-secondary rounded-full size-7 font-medium text-secondary-foreground text-xs">
+          <span v-else class="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-medium text-secondary-foreground">
             {{ author.name.charAt(0).toUpperCase() }}
           </span>
           <span>{{ author.name }}</span>
@@ -103,7 +103,7 @@ const { t } = useI18n()
           v-if="state.starOpacities"
           class="inline-flex items-center gap-0.5"
         >
-          <Star
+          <star
             v-for="(opacity, i) in state.starOpacities"
             :key="i"
             data-slot="star"
@@ -122,7 +122,7 @@ const { t } = useI18n()
         <span
           v-for="tag in tags"
           :key="tag"
-          class="inline-flex shrink-0 items-center bg-transparent hover:bg-secondary px-2 py-0.5 border border-border/60 rounded-full text-muted-foreground text-xs transition-colors"
+          class="inline-flex shrink-0 items-center rounded-full border border-border/60 bg-transparent px-2 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-secondary"
         >
           {{ tag }}
         </span>
@@ -143,7 +143,7 @@ const { t } = useI18n()
       <div
         v-if="state.isEmptyContent"
         data-slot="empty-placeholder"
-        class="py-8 text-muted-foreground text-sm text-center"
+        class="py-8 text-center text-sm text-muted-foreground"
       >
         {{ t('article.noContent').value }}
       </div>

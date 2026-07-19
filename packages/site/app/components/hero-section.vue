@@ -9,25 +9,25 @@ const docsUrl = computed(() => {
 </script>
 
 <template>
-  <section class="relative gap-12 grid lg:grid-cols-2 mx-auto px-6 py-16 lg:py-24 lg:pt-4 max-w-7xl">
+  <section class="relative mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-2 lg:py-24 lg:pt-4">
     <!-- Left: Copy -->
-    <div class="flex flex-col justify-center mt-12">
-      <h1 class="flex flex-wrap items-center gap-2 font-bold text-foreground text-4xl sm:text-5xl lg:text-6xl lg:leading-18 tracking-normal">
+    <div class="mt-12 flex flex-col justify-center">
+      <h1 class="flex flex-wrap items-center gap-2 text-4xl font-bold tracking-normal text-foreground sm:text-5xl lg:text-6xl lg:leading-18">
         <span class="inline-flex items-center gap-2">
-          <span class="lg:hidden inline-flex justify-center items-center text-primary">
-            <Icon name="lucide:nut" class="w-8 h-8" />
+          <span class="inline-flex items-center justify-center text-primary lg:hidden">
+            <Icon name="lucide:nut" class="h-8 w-8" />
           </span>
           {{ t('hero.h1').value }}
         </span>
         <span>{{ t('hero.h1SubMain').value }}</span>
-        <span class="font-medium text-muted-foreground text-sm sm:text-base lg:text-base align-middle">
+        <span class="align-middle text-sm font-medium text-muted-foreground sm:text-base lg:text-base">
           {{ t('hero.h1SubNote').value }}
         </span>
       </h1>
-      <p class="mt-6 max-w-lg text-muted-foreground text-lg">
+      <p class="mt-6 max-w-lg text-lg text-muted-foreground">
         {{ t('hero.description').value }}
       </p>
-      <div class="flex flex-wrap gap-4 mt-8">
+      <div class="mt-8 flex flex-wrap gap-4">
         <UButton
           :to="docsUrl"
           external
@@ -51,19 +51,19 @@ const docsUrl = computed(() => {
     </div>
 
     <!-- Right: Hexnut -->
-    <div class="hidden relative lg:flex justify-center items-center w-full lg:max-w-full max-w-md aspect-square">
+    <div class="relative hidden aspect-square w-full max-w-md items-center justify-center lg:flex lg:max-w-full">
       <!-- Subtle ambient glow behind hexnut -->
       <div
-        class="absolute inset-0 opacity-40 dark:opacity-50 rounded-full animate-pulse-glow"
+        class="animate-pulse-glow absolute inset-0 rounded-full opacity-40 dark:opacity-50"
         :style="{
           background: 'radial-gradient(circle, color-mix(in oklab, var(--ui-primary) 25%, transparent) 0%, transparent 70%)',
           filter: 'blur(48px)'
         }"
       />
       <ClientOnly>
-        <HexnutScene class="relative w-full h-full" />
+        <HexnutScene class="relative h-full w-full" />
         <template #fallback>
-          <div class="w-full h-full" />
+          <div class="h-full w-full" />
         </template>
       </ClientOnly>
     </div>

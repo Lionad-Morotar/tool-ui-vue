@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { PromptDefinition } from '../../src/types.js'
 import { readDocumentationPage } from '../../src/utils.js'
+import type { PromptDefinition } from '../../src/types.js'
 
 const argsSchema = z.object({
   framework: z.string().optional().describe('Target framework (e.g., vue, nuxt)'),

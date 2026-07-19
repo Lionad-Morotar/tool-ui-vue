@@ -1,5 +1,5 @@
-import { computed } from 'vue';
 import Supercluster from 'supercluster';
+import { computed } from 'vue';
 import { splitDatelineBbox } from '../utils';
 import type { GeoMapMarker, GeoMapClustering } from '../schema';
 

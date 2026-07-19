@@ -1,5 +1,8 @@
 import { ref } from 'vue';
 import {
+  resizeFramebuffer,
+} from '../effects/weather-effect-gl';
+import {
   clearOffscreenPass,
   isLightningPassActive,
   renderCelestialPass,
@@ -9,13 +12,10 @@ import {
   renderRainPass,
   renderSnowPass,
 } from '../effects/weather-effect-render-passes';
-import {
-  resizeFramebuffer,
-} from '../effects/weather-effect-gl';
+import type { WeatherEffectsPrograms } from './useWebglResources';
 import type { Framebuffer } from '../effects/weather-effect-gl';
 import type { ResolvedWeatherEffectsCanvasProps } from '../effects/weather-effects-types';
 import type { Ref } from 'vue';
-import type { WeatherEffectsPrograms } from './useWebglResources';
 
 export function useRenderLoop(
   canvasRef: Ref<HTMLCanvasElement | null>,

@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/code-diff/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 
 /**
  * CodeDiffCssSchema Zod Schema

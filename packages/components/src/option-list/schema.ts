@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/option-list/schema
  */
 
-import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ActionSchema, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import type { Action, SerializableActionsConfig } from '../core';
 
 /**

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { reactive, toRef } from 'vue';
 import { cn } from '../../core';
 import { useI18n } from '../../core/i18n';
-import { reactive, toRef } from 'vue';
 import { useMessageDraft } from '../states';
 import DraftEditorArea from './draft-editor-area.vue';
 import type { RuntimeMessageDraftProps } from '../schema';
@@ -95,7 +95,7 @@ const undoButtonRef = toRef(state, 'undoButtonRef');
       <div
         class="flex w-full flex-col gap-3 rounded-2xl border border-border bg-card px-5 pt-3 pb-5 shadow-xs transition-none"
       >
-        <DraftEditorArea
+        <draft-editor-area
           :is-email-draft="state.isEmailDraft"
           :is-slack-draft="state.isSlackDraft"
           :email-props="state.emailProps"

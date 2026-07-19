@@ -90,7 +90,7 @@ const props = [
 <template>
   <Story title="StatsDisplay/All Variants">
     <Variant :title="basic">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-basic"
@@ -105,7 +105,7 @@ const props = [
     </Variant>
 
     <Variant :title="withTrends">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trends"
@@ -122,7 +122,7 @@ const props = [
     </Variant>
 
     <Variant :title="withSparklines">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-sparklines"
@@ -179,7 +179,7 @@ const props = [
     </Variant>
 
     <Variant :title="singleStat">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-sm">
         <stats-display
           id="stats-single"
@@ -201,7 +201,7 @@ const props = [
     </Variant>
 
     <Variant :title="currencyFormats">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-currency"
@@ -212,7 +212,7 @@ const props = [
     </Variant>
 
     <Variant :title="numberFormats">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-numbers"
@@ -230,7 +230,7 @@ const props = [
     </Variant>
 
     <Variant :title="percentFormats">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-percent"
@@ -246,7 +246,7 @@ const props = [
     </Variant>
 
     <Variant :title="booleanFormat">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-boolean"
@@ -262,7 +262,7 @@ const props = [
     </Variant>
 
     <Variant :title="trendIndicators">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
       <div class="w-full max-w-2xl">
         <stats-display
           id="stats-trend-analysis"
@@ -278,9 +278,9 @@ const props = [
     </Variant>
 
     <Variant :title="propsTitle">
-      <p class="mb-3 text-muted-foreground text-xs">{{ subtitle }}</p>
-      <div class="p-6 w-full max-w-4xl">
-        <h2 class="mb-4 font-bold text-2xl">{{ componentPropsTitle }}</h2>
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <div class="w-full max-w-4xl p-6">
+        <h2 class="mb-4 text-2xl font-bold">{{ componentPropsTitle }}</h2>
         <div class="overflow-x-auto">
           <table class="story-table">
             <thead>

@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
 /**
  * Audio 组件的数据契约定义
@@ -14,7 +15,6 @@ import {
   ToolUIReceiptSchema,
   ToolUIRoleSchema,
 } from '../core';
-import { z } from 'zod';
 
 /**
  * 音频来源的 Schema 定义

@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/x-post/schema
  */
 
-import { defineToolUiContract } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract } from '../core';
 
 /** XPostAuthorSchema Zod Schema */
 export const XPostAuthorSchema = z.object({

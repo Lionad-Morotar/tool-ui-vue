@@ -9,8 +9,8 @@
  * @module tool-ui-vue/vtu-components/preferences-panel/schema
  */
 
-import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import type { Action, SerializableActionsConfig, ToolUIReceipt } from '../core';
 
 const PreferenceItemBaseSchema = z.object({

@@ -12,19 +12,19 @@ const tileUrl = computed(() => isEn.value ? undefined : ZH_TILE_URL)
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto max-w-3xl">
+  <div class="mx-auto max-w-3xl space-y-4">
     <!-- 用户首轮 -->
     <DemoChatMessage role="user" :content="t('demoTravel.userIntro').value" :delay="0" :order="0" />
 
     <!-- Agent 回复路线 -->
     <div class="flex justify-start">
-      <div class="space-y-4 w-full max-w-[95%]">
+      <div class="w-full max-w-[95%] space-y-4">
         <DemoChatMessage role="agent" :content="t('demoTravel.agentMap').value" :delay="120" :order="1" />
 
         <DemoDelayedShow :order="2">
           <ClientOnly>
             <template #fallback>
-              <div class="flex justify-center items-center bg-muted/30 border border-border rounded-lg h-48 text-muted-foreground text-sm">
+              <div class="flex h-48 items-center justify-center rounded-lg border border-border bg-muted/30 text-sm text-muted-foreground">
                 {{ isEn ? 'Loading map...' : '加载地图中...' }}
               </div>
             </template>
@@ -61,7 +61,7 @@ const tileUrl = computed(() => isEn.value ? undefined : ZH_TILE_URL)
 
     <!-- Agent 给出行程 -->
     <div class="flex justify-start">
-      <div class="space-y-4 w-full max-w-[95%]">
+      <div class="w-full max-w-[95%] space-y-4">
         <DemoChatMessage role="agent" :content="t('demoTravel.agentPlan').value" :delay="120" :order="3" />
 
         <DemoDelayedShow :order="4">
@@ -80,7 +80,7 @@ const tileUrl = computed(() => isEn.value ? undefined : ZH_TILE_URL)
 
           <div class="flex items-center gap-2">
             <button
-              class="bg-primary mt-2 px-3 py-1.5 rounded-md font-medium text-primary-foreground text-xs"
+              class="mt-2 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
               @click="step = 2"
             >
               {{ t('demoTravel.actionAddTodo').value }}

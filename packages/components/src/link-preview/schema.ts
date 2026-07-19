@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
 /**
  * LinkPreview 组件的数据契约定义
@@ -13,7 +14,6 @@ import {
   ToolUIIdSchema,
   ToolUIReceiptSchema,
   ToolUIRoleSchema,} from '../core';
-import { z } from 'zod';
 
 /**
  * 宽高比的 Schema 定义

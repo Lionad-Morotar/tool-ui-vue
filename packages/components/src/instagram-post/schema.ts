@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/instagram-post/schema
  */
-import { defineToolUiContract } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract } from '../core';
 
 /**
  * Instagram 帖子作者的 Schema 定义

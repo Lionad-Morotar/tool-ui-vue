@@ -1,5 +1,3 @@
-import { describe, expect, test } from 'vitest';
-import { mount } from '@vue/test-utils';
 import {
   parseSerializableArticle,
   safeParseSerializableArticle,
@@ -7,6 +5,8 @@ import {
   useArticle,
   Article,
 } from '@lionad/vtu-components';
+import { mount } from '@vue/test-utils';
+import { describe, expect, test } from 'vitest';
 
 describe('Article schema', () => {
   test('parses valid article with all fields', () => {

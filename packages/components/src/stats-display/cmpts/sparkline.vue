@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../../core';
 import { computed } from 'vue';
+import { cn } from '../../core';
 import type { SparklineProps } from '../schema';
 
 defineOptions({ name: 'CmptSparkline', inheritAttrs: false })
@@ -77,7 +77,7 @@ const secondaryAnimationDelay = computed(() => `calc(${baseAnimationDelay.value}
     v-bind="$attrs"
     :viewBox="`0 0 ${width} ${height}`"
     aria-hidden="true"
-    :class="cn('h-full w-full shrink-0', css?.root)"
+    :class="cn('size-full shrink-0', css?.root)"
     :style="style"
     preserveAspectRatio="none"
   >

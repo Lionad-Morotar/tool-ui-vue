@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { computed } from 'vue';
+import { cn } from '../core';
 import { useAudio } from './states';
+import { useI18n } from '../core/i18n';
 import type { AudioProps } from './schema';
 
 defineOptions({ name: 'CmptAudio', inheritAttrs: false })
@@ -71,7 +71,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
               aria-hidden="true"
               loading="lazy"
               decoding="async"
-              class="absolute inset-0 h-full w-full object-cover"
+              class="absolute inset-0 size-full object-cover"
             />
           </div>
 
@@ -102,14 +102,14 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
                     :value="currentTime || 0"
                     :max="duration || 100"
                     step="0.1"
-                    class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    class="absolute inset-0 size-full cursor-pointer opacity-0"
                     :aria-label="progressAriaLabel"
                     @input="handleSeek"
                     @pointerdown="handleSeekStart"
                     @pointerup="handleSeekEnd"
                   />
                   <div
-                    class="pointer-events-none absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-background bg-foreground transition-transform"
+                    class="pointer-events-none absolute top-1/2 size-3 -translate-y-1/2 rounded-full border-2 border-background bg-foreground transition-transform"
                     :style="{ left: `calc(${progress}% - 6px)` }"
                   />
                 </div>
@@ -173,8 +173,19 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
 
           <!-- Source -->
           <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 px-4 pb-3 text-xs text-muted-foreground', css?.source)">
-            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="shrink-0 size-3 rounded-sm" />
-            <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
+            <img
+              v-if="source.iconUrl"
+              :src="source.iconUrl"
+              alt=""
+              class="size-3 shrink-0 rounded-sm"
+            />
+            <a
+              v-if="source.url"
+              :href="source.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline underline-offset-2 hover:text-foreground"
+            >{{ source.label }}</a>
             <span v-else>{{ source.label }}</span>
           </div>
         </div>
@@ -200,7 +211,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
               aria-hidden="true"
               loading="lazy"
               decoding="async"
-              class="absolute inset-0 h-full w-full object-cover"
+              class="absolute inset-0 size-full object-cover"
             />
           </div>
 
@@ -273,8 +284,19 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
 
           <!-- Source -->
           <div v-if="source" data-slot="source" :class="cn('flex items-center gap-1.5 text-xs text-muted-foreground', css?.source)">
-            <img v-if="source.iconUrl" :src="source.iconUrl" alt="" class="shrink-0 size-3 rounded-sm" />
-            <a v-if="source.url" :href="source.url" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-foreground">{{ source.label }}</a>
+            <img
+              v-if="source.iconUrl"
+              :src="source.iconUrl"
+              alt=""
+              class="size-3 shrink-0 rounded-sm"
+            />
+            <a
+              v-if="source.url"
+              :href="source.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline underline-offset-2 hover:text-foreground"
+            >{{ source.label }}</a>
             <span v-else>{{ source.label }}</span>
           </div>
         </div>

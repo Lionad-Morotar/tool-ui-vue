@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { ToolDefinition } from '../../src/types.js'
 import { componentData, findComponent } from '../../src/data.js'
+import type { ToolDefinition } from '../../src/types.js'
 
 const inputSchema = z.object({
   component: z.string().optional().describe('Filter examples by component name (PascalCase). Omit to list all.'),

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { computed, reactive } from 'vue';
+import { cn } from '../core';
 import { useImage } from './states';
+import { useI18n } from '../core/i18n';
 import type { ImageProps } from './schema';
 
 defineOptions({ name: 'CmptImage', inheritAttrs: false })
@@ -60,7 +60,7 @@ const state = reactive(useImage(props, emit));
           :alt="imageAlt"
           loading="lazy"
           decoding="async"
-          :class="cn('absolute inset-0 h-full w-full', state.fitClassMap[state.resolvedFit])"
+          :class="cn('absolute inset-0 size-full', state.fitClassMap[state.resolvedFit])"
         />
       </div>
 

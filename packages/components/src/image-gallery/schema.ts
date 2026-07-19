@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/image-gallery/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 
 /**
  * 图片画廊来源的 Schema 定义

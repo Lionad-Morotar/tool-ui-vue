@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../core';
 import { computed } from 'vue';
+import { cn } from '../core';
 import { useProgressTracker } from './states';
 import type { ProgressTrackerProps } from './schema';
 

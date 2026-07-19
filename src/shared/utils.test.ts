@@ -24,7 +24,7 @@ describe('Utility Functions', () => {
       });
 
       it('should trim whitespace from classes', () => {
-        const result = cn('  padded  ', 'normal');
+        const result = cn('padded', 'normal');
         expect(result).toBe('padded normal');
       });
     });

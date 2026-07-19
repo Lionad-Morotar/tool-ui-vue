@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { Copy, Check, ChevronDown, ChevronUp, Terminal as TerminalIcon } from 'lucide-vue-next';
 import { computed, reactive, toRef } from 'vue';
+import { cn } from '../core';
 import { useTerminal } from './states';
+import { useI18n } from '../core/i18n';
 import type { TerminalProps } from './schema';
 
 defineOptions({ name: 'CmptTerminal', inheritAttrs: false })
@@ -45,7 +45,7 @@ const copyButtonAriaLabel = computed(() =>
       <!-- Header -->
       <div :class="cn('flex items-center justify-between gap-x-3 border-b border-border bg-card px-4 py-2', css?.header)">
         <div class="flex items-center gap-2 overflow-hidden">
-          <terminal-icon class="h-4 w-4 shrink-0 text-muted-foreground" />
+          <terminal-icon class="size-4 shrink-0 text-muted-foreground" />
           <code class="truncate font-mono text-xs text-foreground">
             <span v-if="cwd" class="text-muted-foreground">{{ cwd }}$ </span>
             {{ command }}
@@ -72,7 +72,7 @@ const copyButtonAriaLabel = computed(() =>
             type="button"
             :disabled="!state.hasOutput"
             :class="cn(
-              'inline-flex h-7 w-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
+              'inline-flex size-7 items-center justify-center rounded-md p-0 text-sm font-medium transition-colors',
               'hover:bg-accent hover:text-accent-foreground',
               'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
               !state.hasOutput && 'cursor-not-allowed opacity-50',
@@ -82,11 +82,11 @@ const copyButtonAriaLabel = computed(() =>
           >
             <check
               v-if="state.hasOutput && isCopied"
-              class="shrink-0 h-4 w-4 text-green-700 dark:text-green-400"
+              class="size-4 shrink-0 text-green-700 dark:text-green-400"
             />
             <copy
               v-else
-              class="shrink-0 h-4 w-4 text-muted-foreground"
+              class="size-4 shrink-0 text-muted-foreground"
             />
           </button>
         </div>
@@ -140,11 +140,11 @@ const copyButtonAriaLabel = computed(() =>
           @click="state.toggleExpanded"
         >
           <template v-if="state.isCollapsed">
-            <chevron-down class="mr-1 shrink-0 size-4" />
+            <chevron-down class="mr-1 size-4 shrink-0" />
             {{ t('terminal.showAllLines', { count: state.lineCount }) }}
           </template>
           <template v-else>
-            <chevron-up class="mr-1 shrink-0 size-4" />
+            <chevron-up class="mr-1 size-4 shrink-0" />
             {{ t('terminal.collapse') }}
           </template>
         </button>

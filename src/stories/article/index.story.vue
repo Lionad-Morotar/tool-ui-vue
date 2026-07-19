@@ -56,7 +56,7 @@ const props = [
     <Variant :title="markdownVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
-        <Article
+        <article
           id="story-md"
           type="md"
           :content="mdContent"
@@ -68,7 +68,7 @@ const props = [
     <Variant :title="htmlVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
-        <Article
+        <article
           id="story-html"
           type="html"
           :content="htmlContent"
@@ -80,7 +80,7 @@ const props = [
     <Variant :title="fullArticleVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
-        <Article
+        <article
           id="story-full"
           type="md"
           :content="mdContent"
@@ -101,7 +101,7 @@ const props = [
     <Variant :title="collapsibleVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
-        <Article
+        <article
           id="story-collapsible"
           type="md"
           :content="mdContent"
@@ -115,7 +115,7 @@ const props = [
     <Variant :title="emptyContentVariant">
       <p class="mb-3 text-xs text-muted-foreground">组件说明 / Component description</p>
       <div class="w-full max-w-2xl">
-        <Article
+        <article
           id="story-empty"
           type="md"
           content=""

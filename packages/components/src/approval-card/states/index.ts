@@ -1,9 +1,9 @@
 // ApprovalCard component state layer - Headless architecture
 // All business logic lives here, index.vue is UI-only
 
+import { computed, type ComputedRef, type Component } from 'vue';
 import { useI18n } from '../../core/i18n';
 import { resolveLucideIcon } from '../../shared/resolve-lucide-icon';
-import { computed, type ComputedRef, type Component } from 'vue';
 import type { ApprovalCardBaseProps } from '../schema';
 
 export type ApprovalCardEmit = {

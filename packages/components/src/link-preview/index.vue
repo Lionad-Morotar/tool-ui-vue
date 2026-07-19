@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useLinkPreview } from './states';
+import { useI18n } from '../core/i18n';
 import type { LinkPreviewProps } from './schema';
 
 defineOptions({ name: 'CmptLinkPreview', inheritAttrs: false })
@@ -56,7 +56,7 @@ const state = reactive(useLinkPreview(props, emit));
             loading="lazy"
             decoding="async"
             :class="cn(
-              'absolute inset-0 h-full w-full',
+              'absolute inset-0 size-full',
               state.fitClassMap[state.resolvedFit],
               'object-center transition-transform duration-200 group-hover:scale-[1.01]',
             )"
@@ -92,7 +92,7 @@ const state = reactive(useLinkPreview(props, emit));
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="h-2.5 w-2.5"
+                class="size-2.5"
                 aria-hidden="true"
               >
                 <circle cx="12" cy="12" r="10" />

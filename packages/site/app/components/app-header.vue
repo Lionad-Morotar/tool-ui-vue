@@ -31,13 +31,13 @@ function toggleTheme() {
 </script>
 
 <template>
-  <header class="top-0 z-50 sticky bg-background/80 backdrop-blur-md border-border border-b w-full">
-    <div class="flex justify-between items-center mx-auto px-6 max-w-7xl h-10">
+  <header class="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
+    <div class="mx-auto flex h-10 max-w-7xl items-center justify-between px-6">
       <NuxtLink
         to="/"
-        class="flex items-center gap-2 font-semibold text-base"
+        class="flex items-center gap-2 text-base font-semibold"
       >
-        <span class="inline-flex justify-center items-center bg-primary rounded-lg w-6 h-6 text-primary-foreground">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-primary text-primary-foreground">
           V
         </span>
         <span>Tool-UI（Vue）</span>
@@ -46,7 +46,7 @@ function toggleTheme() {
       <nav class="flex items-center gap-4">
         <a
           :href="docsUrl"
-          class="font-medium text-muted-foreground hover:text-foreground text-sm transition-colors"
+          class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           {{ t('header.docs') }}
         </a>
@@ -54,14 +54,14 @@ function toggleTheme() {
           to="https://github.com/Lionad-Morotar/tool-ui-vue"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-medium text-muted-foreground hover:text-foreground text-sm transition-colors"
+          class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           {{ t('header.github') }}
         </NuxtLink>
         <UButton
           color="neutral"
           variant="ghost"
-          class="uppercase text-xs"
+          class="text-xs uppercase"
           :label="locale"
           @click="toggleLocale"
         />

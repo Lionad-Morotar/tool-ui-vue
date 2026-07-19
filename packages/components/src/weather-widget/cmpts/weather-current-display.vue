@@ -1,9 +1,9 @@
 <script setup lang="ts">
 defineOptions({ name: 'CmptWeatherCurrentDisplay', inheritAttrs: false })
 
+import { computed } from 'vue';
 import { cn } from '../../core';
 import { useI18n } from '../../core/i18n';
-import { computed } from 'vue';
 import type { TemperatureUnit } from '../schema';
 
 interface WeatherCurrentDisplayProps {

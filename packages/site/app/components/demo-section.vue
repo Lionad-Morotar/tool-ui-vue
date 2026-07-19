@@ -24,39 +24,39 @@ watch(activeTab, () => {
 </script>
 
 <template>
-  <section class="mx-auto px-6 py-16 w-full max-w-7xl h-screen">
+  <section class="mx-auto h-screen w-full max-w-7xl px-6 py-16">
     <!-- Browser Mockup -->
     <div
-      class="flex flex-col bg-card shadow-xl border border-border rounded-xl h-[70vh] h-full min-h-120 lg:min-h-150 overflow-hidden"
+      class="flex h-[70vh] h-full min-h-120 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xl lg:min-h-150"
     >
       <!-- Browser Chrome -->
-      <div class="flex items-center gap-2 bg-muted/50 px-4 py-3 border-border border-b">
+      <div class="flex items-center gap-2 border-b border-border bg-muted/50 px-4 py-3">
         <div class="flex gap-1.5">
-          <span class="bg-red-400 rounded-full w-3 h-3" />
-          <span class="bg-amber-400 rounded-full w-3 h-3" />
-          <span class="bg-emerald-400 rounded-full w-3 h-3" />
+          <span class="h-3 w-3 rounded-full bg-red-400" />
+          <span class="h-3 w-3 rounded-full bg-amber-400" />
+          <span class="h-3 w-3 rounded-full bg-emerald-400" />
         </div>
-        <div class="flex-1 ml-4">
-          <div class="bg-background mx-auto px-3 py-1 rounded-md max-w-md text-muted-foreground text-xs text-center">
+        <div class="ml-4 flex-1">
+          <div class="mx-auto max-w-md rounded-md bg-background px-3 py-1 text-center text-xs text-muted-foreground">
             {{ t('demo.addressBar').value }}
           </div>
         </div>
       </div>
 
       <!-- Tabs -->
-      <div class="bg-muted/30 px-2 pt-1 border-border border-b">
+      <div class="border-b border-border bg-muted/30 px-2 pt-1">
         <div class="flex gap-2">
           <button
             v-for="tab in tabs"
             :key="tab.id"
-            class="relative px-4 py-2 font-medium text-sm transition-colors"
+            class="relative px-4 py-2 text-sm font-medium transition-colors"
             :class="activeTab === tab.id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'"
             @click="activeTab = tab.id"
           >
             {{ tab.label }}
             <span
               v-if="activeTab === tab.id"
-              class="bottom-0 absolute inset-x-0 bg-primary h-0.5"
+              class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"
             />
           </button>
         </div>
@@ -67,7 +67,7 @@ watch(activeTab, () => {
         <OverlayScrollbarsComponent
           ref="osRef"
           :defer="true"
-          class="flex-1 grid bg-background p-6"
+          class="grid flex-1 bg-background p-6"
           :options="{
             scrollbars: {
               autoHide: 'move',
@@ -84,10 +84,10 @@ watch(activeTab, () => {
           <DemoCodeReview v-else-if="activeTab === 'code'" />
           <DemoContactCard v-else-if="activeTab === 'contact'" />
           <DemoArticle v-else />
-          <div class="h-30 for-padding" />
+          <div class="for-padding h-30" />
         </OverlayScrollbarsComponent>
         <template #fallback>
-          <div class="flex-1 grid bg-background p-6">
+          <div class="grid flex-1 bg-background p-6">
             <DemoRestaurant v-if="activeTab === 'restaurant'" />
             <DemoTravel v-else-if="activeTab === 'travel'" />
             <DemoCodeReview v-else-if="activeTab === 'code'" />

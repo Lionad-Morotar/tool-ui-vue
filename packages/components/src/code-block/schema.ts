@@ -8,8 +8,8 @@
  *
  * @module tool-ui-vue/vtu-components/code-block/schema
  */
-import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 import { z } from 'zod';
+import { defineToolUiContract, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema, type ToolUIReceipt } from '../core';
 
 /**
  * CodeBlock 的可序列化数据 Schema

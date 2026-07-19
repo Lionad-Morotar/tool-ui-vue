@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { cn } from '../../core';
-import { useI18n } from '../../core/i18n';
 import {
   useMagicKeys,
   useSwipe,
@@ -8,6 +6,8 @@ import {
 } from '@vueuse/core';
 import { X } from 'lucide-vue-next';
 import { ref, watch, computed } from 'vue';
+import { cn } from '../../core';
+import { useI18n } from '../../core/i18n';
 import { useImageGallery } from '../states';
 import type { GalleryLightboxCss } from '../schema';
 
@@ -101,7 +101,7 @@ const { t } = useI18n();
     <dialog
       ref="dialogRef"
       :class="cn(
-        'm-0 h-full max-h-full w-full max-w-full',
+        'm-0 size-full max-h-full max-w-full',
         'overflow-hidden p-0',
         'bg-transparent backdrop:bg-black/95 dark:backdrop:bg-black/90',
         'focus-visible:outline-none',
@@ -111,14 +111,14 @@ const { t } = useI18n();
       @click="handleBackdropClick"
       @cancel="handleCancel"
     >
-      <div class="relative h-full w-full">
+      <div class="relative size-full">
         <!-- Close Button -->
         <div class="absolute top-4 right-4 z-20">
           <button
             type="button"
             :class="cn(
               'inline-flex items-center justify-center rounded-md',
-              'h-10 w-10',
+              'size-10',
               'text-white/80 hover:bg-white/10 hover:text-white',
               'transition-colors duration-200',
               css?.close
@@ -126,7 +126,7 @@ const { t } = useI18n();
             :aria-label="t('imageGallery.close').value"
             @click="closeLightbox"
           >
-            <x class="shrink-0 h-5 w-5" />
+            <x class="size-5 shrink-0" />
           </button>
         </div>
 
@@ -137,7 +137,7 @@ const { t } = useI18n();
             :class="cn(
               'absolute top-1/2 left-4 z-20 -translate-y-1/2',
               'inline-flex items-center justify-center rounded-md',
-              'h-12 w-12',
+              'size-12',
               'text-white/80 hover:bg-white/10 hover:text-white',
               'transition-colors duration-200',
               'focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none'
@@ -164,7 +164,7 @@ const { t } = useI18n();
             :class="cn(
               'absolute top-1/2 right-4 z-20 -translate-y-1/2',
               'inline-flex items-center justify-center rounded-md',
-              'h-12 w-12',
+              'size-12',
               'text-white/80 hover:bg-white/10 hover:text-white',
               'transition-colors duration-200',
               'focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none'
@@ -191,14 +191,14 @@ const { t } = useI18n();
         <!-- Content -->
         <div
           ref="contentRef"
-          :class="cn('relative z-10 flex h-full w-full flex-col items-center justify-center gap-4 p-8', css?.content)"
+          :class="cn('relative z-10 flex size-full flex-col items-center justify-center gap-4 p-8', css?.content)"
         >
           <div
             v-if="currentImage"
             :class="cn(
               'pointer-events-auto relative w-fit max-w-full overflow-hidden rounded-lg shadow-2xl',
               '[&>img]:block [&>img]:max-h-[80vh] [&>img]:max-w-full',
-              '[&>img]:h-auto [&>img]:w-auto [&>img]:object-contain [&>img]:select-none'
+              '[&>img]:size-auto [&>img]:object-contain [&>img]:select-none'
             )"
           >
             <img

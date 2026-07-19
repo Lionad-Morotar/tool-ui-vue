@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { cn } from '../core';
-import { useI18n } from '../core/i18n';
 import { reactive } from 'vue';
+import { cn } from '../core';
 import { useCitation } from './states';
+import { useI18n } from '../core/i18n';
 import { usePopover } from './states/usePopover';
 import type { CitationProps } from './schema';
 
@@ -211,15 +211,15 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
         </div>
 
         <div :class="cn('flex flex-col gap-2', css?.body)">
-        <h3 class="text-[15px] leading-snug font-medium text-pretty text-foreground">
-          <span class="line-clamp-2 group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
-            {{ title }}
-          </span>
-        </h3>
+          <h3 class="text-[15px] leading-snug font-medium text-pretty text-foreground">
+            <span class="line-clamp-2 group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+              {{ title }}
+            </span>
+          </h3>
 
-        <p v-if="snippet" class="text-[13px] leading-relaxed text-pretty text-muted-foreground">
-          <span class="line-clamp-3">{{ snippet }}</span>
-        </p>
+          <p v-if="snippet" class="text-[13px] leading-relaxed text-pretty text-muted-foreground">
+            <span class="line-clamp-3">{{ snippet }}</span>
+          </p>
         </div>
       </div>
     </div>

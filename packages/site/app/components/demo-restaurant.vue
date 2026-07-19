@@ -93,7 +93,7 @@ async function handlePanelAction(actionId: string, value: Record<string, string 
 </script>
 
 <template>
-  <div class="space-y-4 mx-auto w-full max-w-3xl">
+  <div class="mx-auto w-full max-w-3xl space-y-4">
     <!-- 用户首轮 -->
     <DemoChatMessage role="user" :content="t('demoRestaurant.userIntro').value" :delay="0" :order="0" />
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '../../core';
 import { computed } from 'vue';
+import { cn } from '../../core';
 import type { Item, ItemCardCss } from '../schema';
 
 interface ItemCardProps {
@@ -62,14 +62,14 @@ function handleActionClick(actionId: string, event: Event) {
         decoding="async"
         draggable="false"
         :class="cn(
-          'h-full w-full object-cover transition-transform duration-200',
+          'size-full object-cover transition-transform duration-200',
           isCardInteractive && 'group-hover:scale-105'
         )"
       />
       <div
         v-else
         :class="cn(
-          'h-full w-full transition-transform duration-200',
+          'size-full transition-transform duration-200',
           isCardInteractive && 'group-hover:scale-105'
         )"
         :style="item.color ? { backgroundColor: item.color } : undefined"

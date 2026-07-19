@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { StateProvider } from '@json-render/vue';
-import { demoSpec } from '../json-render/spec';
 import DemoRenderer from '../json-render/demo-renderer.vue';
+import { demoSpec } from '../json-render/spec';
 
 const initialState = demoSpec.state ?? {};
 </script>
 
 <template>
-  <StateProvider :initial-state="initialState">
-    <DemoRenderer />
-  </StateProvider>
+  <state-provider :initial-state="initialState">
+    <demo-renderer />
+  </state-provider>
 </template>

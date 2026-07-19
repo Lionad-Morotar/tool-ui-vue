@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import type { PromptDefinition } from '../../src/types.js'
 import { componentData } from '../../src/data.js'
+import type { PromptDefinition } from '../../src/types.js'
 
 const argsSchema = z.object({
   usecase: z.string().describe('Describe what you want to build'),
