@@ -50,6 +50,8 @@ npx skills add https://github.com/Lionad-Morotar/tool-ui-vue
 
 More about skills: [@lionad/vtu-skills](/packages/skills/tool-ui-vue/SKILL.md)
 
+**For Agent**: read skills to understand how to install vtu in a project.
+
 ## MCP Server
 
 ```json
