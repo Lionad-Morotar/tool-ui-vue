@@ -82,6 +82,8 @@ pnpm add @lionad/vtu-components
 
 不使用 Tailwind 的项目暂不支持（组件依赖 Tailwind utility classes 生成布局样式）。
 
+> **Monorepo / pnpm 严格模式**：上条 `@import` 走 node 解析；若 vtu 是传递依赖（不在当前包 `node_modules`）会解析失败，需把 `@lionad/vtu-components` 提升为直接依赖或 hoist。**样式坏了**（边框发黑 / 颜色丢失，通常是 `style.css` 没进 Tailwind 入口致 `@theme` 未生效）见 `references/recipes/component-usage.md`「样式故障排除」。
+
 ### 快速开始
 
 ```vue

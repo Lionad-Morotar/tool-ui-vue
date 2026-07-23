@@ -14,6 +14,8 @@
 @import "@lionad/vtu-components/style.css";
 ```
 
+> **样式坏了（边框发黑 / 颜色丢失）？** 多半是 `style.css` 没被 `@import` 进**含 `@import "tailwindcss"` 的入口**，致 `@theme` 未生效、颜色工具类不生成、边框回退 `currentColor`。务必放在 `@import "tailwindcss"` 之后、且不要当并行样式表注入或单独扫描。Monorepo / pnpm 严格模式下若 vtu 是传递依赖，该 `@import` 还会解析失败，需提升为直接依赖或 hoist。完整排查见 `recipes/component-usage.md`「样式故障排除」。
+
 ## 颜色 Token
 
 所有颜色提供 light/dark 两套值：
