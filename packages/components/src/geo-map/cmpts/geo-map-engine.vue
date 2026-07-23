@@ -73,7 +73,11 @@ const leafletReady = ref(false);
 const mapInstance = shallowRef<LeafletMap | null>(null);
 const viewportState = ref<ReturnType<typeof readViewportState> | null>(null);
 type LeafletModule = typeof LeafletNS;
-const leafletModule = ref<LeafletModule | null>(null);
+// 必须用 shallowRef：动态 import 返回的模块对象经 Vite/esbuild 的 CJS interop 包装后，
+// 其 default 是 writable:false + configurable:false 的数据属性。deep ref 会把模块对象
+// 转成 reactive 代理，下方 deep watch 遍历时 get 陷阱返回重包装对象，违反 Proxy invariant
+// 直接抛 TypeError。leaflet 模块与地图实例一样是外部库对象，本身也不需要深层响应性
+const leafletModule = shallowRef<LeafletModule | null>(null);
 
 const leafletRuntime = computed(() => {
   if (!leafletModule.value) return null;
