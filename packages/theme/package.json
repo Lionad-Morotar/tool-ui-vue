@@ -16,6 +16,10 @@
     },
     "./tokens.css": "./dist/tokens.css"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "vite build && cp src/tokens.css dist/tokens.css",
     "typecheck": "vue-tsc --noEmit"

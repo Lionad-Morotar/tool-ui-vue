@@ -13,6 +13,10 @@
   "bin": {
     "vtu-mcp-server": "./dist/mcp/index.js"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "tsc && node scripts/copy-sources.mjs",
     "typecheck": "tsc --noEmit",
