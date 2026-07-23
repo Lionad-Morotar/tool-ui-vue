@@ -1,5 +1,15 @@
 # @lionad/vtu-components
 
+## 0.3.7
+
+### Patch Changes
+
+- fix(geo-map): 以 shallowRef 存储 leaflet 模块对象，修复深响应式包装导致的页面崩溃
+
+  leaflet 为 CJS 包，Vite/esbuild 的 interop 包装对象上 default 是只读不可配置属性；
+  深 ref 会把模块对象转成 reactive 代理，deep watch 遍历时违反 Proxy invariant 抛 TypeError，
+  导致依赖方（如 cx-components-vtu 的 cx-vtu-geo-map 物料）渲染即崩溃
+
 ## 0.1.2
 
 ### Patch Changes

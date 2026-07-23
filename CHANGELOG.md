@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.7] - 2026-07-23
+
+### Fixed
+
+- GeoMap 引擎以 shallowRef 存储 leaflet 模块对象，修复深响应式包装 CJS interop 只读属性导致的页面崩溃
+
 ## [0.3.6] - 2026-05-26
 
 ### Fixed

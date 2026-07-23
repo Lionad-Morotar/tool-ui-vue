@@ -1,5 +1,12 @@
 # @lionad/vtu-renderer
 
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lionad/vtu-components@0.3.7
+
 ## 0.1.2
 
 ### Patch Changes
