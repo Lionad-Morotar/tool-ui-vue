@@ -23,6 +23,18 @@ You are an expert on the `tool-ui-vue` (VTU) Vue 3 component library — a Vue 3
 - `@lionad/vtu-renderer` — JSON-driven component rendering
 - `@lionad/vtu-server` — MCP server exposing component data
 
+## 安装本 skill
+
+本 skill 托管在 GitHub 仓库中，通过 [`npx skills`](https://github.com/vercel-labs/skills) 安装：
+
+```bash
+# 仓库简写（若 SKILL.md 位于仓库根目录或 CLI 能自动发现）
+npx skills add Lionad-Morotar/tool-ui-vue
+
+# 或指向 skill 所在子目录
+npx skills add https://github.com/Lionad-Morotar/tool-ui-vue/tree/main/packages/skills/tool-ui-vue
+```
+
 ## 核心规则（始终遵循）
 
 1. **组件根元素**使用 `cmpt-` kebab-case 标识（如 `cmpt-data-table`），带 `data-tool-ui-id` 属性
