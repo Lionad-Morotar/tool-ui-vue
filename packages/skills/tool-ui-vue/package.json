@@ -1,14 +1,40 @@
 {
   "name": "@lionad/vtu-skill",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Claude skill for tool-ui-vue component library",
+  "author": "仿生狮子 <tangnad@qq.com> (https://github.com/Lionad-Morotar)",
   "license": "MIT",
   "type": "module",
+  "keywords": [
+    "claude-skill",
+    "tool-ui-vue",
+    "vtu",
+    "vue",
+    "component-library",
+    "ai",
+    "tool-call"
+  ],
   "files": [
+    "CHANGELOG.md",
     "SKILL.md",
     "references/"
   ],
   "main": "SKILL.md",
-  "scripts": {},
-  "packageManager": "pnpm@10.33.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lionad-Morotar/tool-ui-vue.git",
+    "directory": "packages/skills/tool-ui-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/Lionad-Morotar/tool-ui-vue/issues"
+  },
+  "homepage": "https://github.com/Lionad-Morotar/tool-ui-vue/tree/main/packages/skills/tool-ui-vue#readme",
+  "scripts": {
+    "release": "pnpm publish --access public --no-git-checks"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
