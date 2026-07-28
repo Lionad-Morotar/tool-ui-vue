@@ -1,5 +1,12 @@
 # @lionad/vtu-renderer
 
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`7416664`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/74166648937f60b8f9f40a00d5669b77843e3330)]:
+  - @lionad/vtu-components@0.3.8
+
 ## 0.3.7
 
 ### Patch Changes

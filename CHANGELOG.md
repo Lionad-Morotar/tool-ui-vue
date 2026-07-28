@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.8] - 2026-07-28
+
+### Fixed
+
+- 修复 11 个组件 states 层 props 首帧固化：setup 同步作用域以值/解构/`.value` 快照接收 props，父层以新引用更新数据（如流式增量渲染逐帧灌入）时组件固化在挂载首帧；聚合层统一改 getter 传参，并补 props-reactivity 回归测试
+
 ## [0.3.7] - 2026-07-23
 
 ### Fixed
