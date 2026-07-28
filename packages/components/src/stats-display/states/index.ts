@@ -3,13 +3,14 @@
 
 import { computed } from 'vue';
 import type { StatsDisplayProps, StatDiff } from '../schema';
+import type { ComputedRef } from 'vue';
 
 export type UseStatsDisplayOptions = StatsDisplayProps;
 
 export interface StatsDisplayState {
-  locale: string;
-  hasHeader: boolean;
-  isSingle: boolean;
+  locale: ComputedRef<string>;
+  hasHeader: ComputedRef<boolean>;
+  isSingle: ComputedRef<boolean>;
   deltaColorClasses: (diff: StatDiff) => string;
   deltaBgClasses: (diff: StatDiff) => string;
   deltaDisplay: (diff: StatDiff) => string;
@@ -35,13 +36,13 @@ function getDeltaMeta(diff: StatDiff) {
 }
 
 export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplayState {
-  const { locale: localeProp, title, description } = options;
-
+  // 经 options 动态读取而非解构：解构会在 setup 同步作用域固化首帧值；
+  // 返回值保留 computed 引用（外层 reactive() 解包后消费），.value 快照会丢响应式
   const locale = computed(() => {
-    return localeProp ?? (typeof navigator !== 'undefined' ? navigator.language : 'en');
+    return options.locale ?? (typeof navigator !== 'undefined' ? navigator.language : 'en');
   });
 
-  const hasHeader = computed(() => Boolean(title || description));
+  const hasHeader = computed(() => Boolean(options.title || options.description));
   const isSingle = computed(() => options.stats.length === 1);
 
   function deltaColorClasses(diff: StatDiff): string {
@@ -131,9 +132,9 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
   }
 
   return {
-    locale: locale.value,
-    hasHeader: hasHeader.value,
-    isSingle: isSingle.value,
+    locale,
+    hasHeader,
+    isSingle,
     deltaColorClasses,
     deltaBgClasses,
     deltaDisplay,

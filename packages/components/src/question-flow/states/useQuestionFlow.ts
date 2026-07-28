@@ -371,7 +371,8 @@ export function useQuestionFlow(
   }
 
   const currentStepKey = computed(() => currentStep.value?.id ?? 'current');
-  const { titleId, descriptionId } = getStepIds(currentStepKey.value);
+  const titleId = computed(() => getStepIds(currentStepKey.value).titleId);
+  const descriptionId = computed(() => getStepIds(currentStepKey.value).descriptionId);
 
   return {
     isProgressive,

@@ -66,15 +66,9 @@ const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
 };
 
 export function useCodeDiff(options: UseCodeDiffOptions): CodeDiffReturns {
-  const {
-    oldCode,
-    newCode,
-    patch,
-    language,
-    filename,
-    maxCollapsedLines,
-    diffStyle,
-  } = options;
+  // 不解构 options：在 computed getter 内按需读取 options.xxx，
+  // Vue 才能收集 props 依赖；setup 同步作用域解构会得到首帧快照，
+  // 父层 setProps 新引用后组件不更新。
 
   // Theme detection
   const resolvedTheme = useResolvedTheme();
@@ -86,34 +80,34 @@ export function useCodeDiff(options: UseCodeDiffOptions): CodeDiffReturns {
   // Language display name
   const languageDisplayName = computed(() => {
     return (
-      LANGUAGE_DISPLAY_NAMES[language?.toLowerCase() ?? 'text'] ||
-      (language?.toUpperCase() ?? 'Text')
+      LANGUAGE_DISPLAY_NAMES[options.language?.toLowerCase() ?? 'text'] ||
+      (options.language?.toUpperCase() ?? 'Text')
     );
   });
 
   // Mode detection
-  const isPatchMode = computed(() => !!patch);
+  const isPatchMode = computed(() => !!options.patch);
 
   // Compute diff using the diff library
   const fileDiff = computed(() => {
     if (isPatchMode.value) {
-      return parsePatchToUnifiedDiff(patch ?? '');
+      return parsePatchToUnifiedDiff(options.patch ?? '');
     }
     return computeUnifiedDiff(
-      oldCode ?? '',
-      newCode ?? '',
-      filename ?? 'file',
+      options.oldCode ?? '',
+      options.newCode ?? '',
+      options.filename ?? 'file',
     );
   });
 
   const splitDiff = computed(() => {
     if (isPatchMode.value) {
-      return parsePatchToSplitDiff(patch ?? '');
+      return parsePatchToSplitDiff(options.patch ?? '');
     }
     return computeSplitDiff(
-      oldCode ?? '',
-      newCode ?? '',
-      filename ?? 'file',
+      options.oldCode ?? '',
+      options.newCode ?? '',
+      options.filename ?? 'file',
     );
   });
 
@@ -141,8 +135,8 @@ export function useCodeDiff(options: UseCodeDiffOptions): CodeDiffReturns {
 
   const shouldCollapse = computed(() => {
     return (
-      maxCollapsedLines !== undefined &&
-      lineCount.value > maxCollapsedLines
+      options.maxCollapsedLines !== undefined &&
+      lineCount.value > options.maxCollapsedLines
     );
   });
 
@@ -153,8 +147,8 @@ export function useCodeDiff(options: UseCodeDiffOptions): CodeDiffReturns {
   // Copy functionality
   const copyableCode = computed(() => {
     return isPatchMode.value
-      ? (patch ?? '')
-      : (newCode ?? oldCode ?? '');
+      ? (options.patch ?? '')
+      : (options.newCode ?? options.oldCode ?? '');
   });
 
   async function copyCode() {
@@ -178,18 +172,18 @@ export function useCodeDiff(options: UseCodeDiffOptions): CodeDiffReturns {
     if (!shouldCollapse.value || isExpanded.value) {
       return unifiedLines.value;
     }
-    return unifiedLines.value.slice(0, maxCollapsedLines ?? 12);
+    return unifiedLines.value.slice(0, options.maxCollapsedLines ?? 12);
   });
 
   const displaySplitLines = computed(() => {
     if (!shouldCollapse.value || isExpanded.value) {
       return splitDiff.value.lines;
     }
-    return splitDiff.value.lines.slice(0, maxCollapsedLines ?? 12);
+    return splitDiff.value.lines.slice(0, options.maxCollapsedLines ?? 12);
   });
 
   // Check if diff style is split
-  const isSplitMode = computed(() => diffStyle === 'split');
+  const isSplitMode = computed(() => options.diffStyle === 'split');
 
   // Theme-based colors
   const additionBgColor = computed(() =>

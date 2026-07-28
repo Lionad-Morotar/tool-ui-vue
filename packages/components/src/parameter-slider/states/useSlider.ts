@@ -1,13 +1,15 @@
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, toValue } from 'vue';
 import {
   createSliderSignature,
   createSliderValueSnapshot,
   sliderRangeToPercent,
 } from '../math';
-import type { ParameterSliderProps, SliderValue } from '../schema';
-import type { ComputedRef, Ref } from 'vue';
+import type { SliderConfig, SliderValue } from '../schema';
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue';
 
-export interface UseSliderOptions extends Pick<ParameterSliderProps, 'sliders' | 'values'> {
+export interface UseSliderOptions {
+  sliders: MaybeRefOrGetter<SliderConfig[]>;
+  values?: MaybeRefOrGetter<SliderValue[] | undefined>;
   emit: {
     change: (values: SliderValue[]) => void;
     commit: (values: SliderValue[]) => void;
@@ -41,13 +43,19 @@ export interface SliderReturns {
 }
 
 export function useSlider(options: UseSliderOptions): SliderReturns {
-  const { sliders, values, emit } = options;
+  const { emit } = options;
+
+  // sliders/values 以 MaybeRefOrGetter 接收：setup 同步作用域里直接解构会把 props
+  // 数组固化在挂载首帧；computed + toValue 让读取发生在消费方的活跃 effect 内，
+  // 父层 setProps 新引用后组件才能跟随更新。
+  const sliders = computed(() => toValue(options.sliders));
+  const values = computed(() => toValue(options.values));
 
   // Controllable state implementation
-  const slidersSignature = computed(() => createSliderSignature(sliders));
-  const sliderSnapshot = computed(() => createSliderValueSnapshot(sliders));
+  const slidersSignature = computed(() => createSliderSignature(sliders.value));
+  const sliderSnapshot = computed(() => createSliderValueSnapshot(sliders.value));
 
-  const isControlled = computed(() => values !== undefined);
+  const isControlled = computed(() => values.value !== undefined);
   const localValues = ref<Record<string, number>>({});
 
   // Reset when sliders change
@@ -58,8 +66,8 @@ export function useSlider(options: UseSliderOptions): SliderReturns {
   });
 
   const currentValues = computed<SliderValue[]>(() => {
-    return sliders.map((slider) => {
-      const fromProp = values?.find((v) => v.id === slider.id)?.value;
+    return sliders.value.map((slider) => {
+      const fromProp = values.value?.find((v) => v.id === slider.id)?.value;
       const fromLocal = localValues.value[slider.id];
       return {
         id: slider.id,
@@ -73,7 +81,7 @@ export function useSlider(options: UseSliderOptions): SliderReturns {
   }
 
   function updateSliderValue(sliderId: string, newValue: number, isCommit = false) {
-    const slider = sliders.find((s) => s.id === sliderId);
+    const slider = sliders.value.find((s) => s.id === sliderId);
     if (!slider) return;
 
     // Clamp to range

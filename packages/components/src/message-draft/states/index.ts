@@ -60,10 +60,14 @@ export function useMessageDraft(
 ): MessageDraftState {
   usePropsValidator(SerializableMessageDraftSchema, props, 'MessageDraft');
 
-  const undoGracePeriod = props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD;
+  // undoGracePeriod 在使用点通过 computed 读取：props 以新引用更新时倒计时启动
+  // 能拿到最新配置；运行中的倒计时不要求中途变更。
+  const undoGracePeriod = computed(
+    () => props.undoGracePeriod ?? DEFAULT_UNDO_GRACE_PERIOD,
+  );
 
   const state = ref<DraftState>(resolveStateFromOutcome(props.outcome));
-  const countdown = ref(Math.ceil(undoGracePeriod / 1000));
+  const countdown = ref(Math.ceil(undoGracePeriod.value / 1000));
   const sentAt = ref<Date | null>(props.outcome === 'sent' ? new Date() : null);
   const isExpanded = ref(false);
   const needsExpansion = ref(false);
@@ -126,7 +130,7 @@ export function useMessageDraft(
 
       clearTimers();
       state.value = nextState;
-      countdown.value = Math.ceil(undoGracePeriod / 1000);
+      countdown.value = Math.ceil(undoGracePeriod.value / 1000);
       sentAt.value = nextState === 'sent' ? new Date() : null;
     }
   );
@@ -139,7 +143,7 @@ export function useMessageDraft(
         await nextTick();
         undoButtonRef.value?.focus();
 
-        countdown.value = Math.ceil(undoGracePeriod / 1000);
+        countdown.value = Math.ceil(undoGracePeriod.value / 1000);
 
         countdownInterval = setInterval(() => {
           if (countdown.value <= 1) {
@@ -159,7 +163,7 @@ export function useMessageDraft(
           emit('send');
           sentAt.value = new Date();
           state.value = 'sent';
-        }, undoGracePeriod);
+        }, undoGracePeriod.value);
       }
     }
   );

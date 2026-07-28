@@ -58,8 +58,6 @@ export function useItemCarousel(
   options: UseItemCarouselOptions,
   emit: ItemCarouselEmits
 ): ItemCarouselReturns {
-  const { items, interactive } = options;
-
   // Refs
   const scrollRef = ref<HTMLDivElement | null>(null);
   const containerRef = ref<HTMLDivElement | null>(null);
@@ -75,8 +73,8 @@ export function useItemCarousel(
   const touchStartTime = ref(0);
   const isSwiping = ref(false);
 
-  const hasItems = computed(() => items.length > 0);
-  const isInteractive = computed(() => interactive || false);
+  const hasItems = computed(() => options.items.length > 0);
+  const isInteractive = computed(() => options.interactive || false);
 
   function updateCurrentIndex() {
     const container = scrollRef.value;
@@ -358,7 +356,7 @@ export function useItemCarousel(
       scrollToIndex(0);
     } else if (event.key === 'End') {
       event.preventDefault();
-      scrollToIndex(items.length - 1);
+      scrollToIndex(options.items.length - 1);
     }
   }
 
@@ -386,7 +384,7 @@ export function useItemCarousel(
   });
 
   // Watch for items changes
-  watch(() => items, () => {
+  watch(() => options.items, () => {
     nextTick(() => {
       updateScrollState();
     });

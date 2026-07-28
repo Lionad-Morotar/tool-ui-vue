@@ -18,30 +18,28 @@ export interface OrderSummaryState {
 }
 
 export function useOrderSummary(options: UseOrderSummaryOptions): OrderSummaryState {
-  const { variant, choice, items, pricing } = options;
-
   // Auto-resolve variant based on choice prop
   const resolvedVariant = computed(() => {
-    if (variant) return variant;
-    return choice === undefined ? 'summary' : 'receipt';
+    if (options.variant) return options.variant;
+    return options.choice === undefined ? 'summary' : 'receipt';
   });
 
   const isReceipt = computed(() => resolvedVariant.value === 'receipt');
 
   // Malformed payload detection
   const isMalformedPayload = computed(() => {
-    const hasNoItems = !Array.isArray(items) || items.length === 0;
-    const hasNoPricing = pricing == null;
-    const isReceiptWithoutChoice = isReceipt.value && choice === undefined;
+    const hasNoItems = !Array.isArray(options.items) || options.items.length === 0;
+    const hasNoPricing = options.pricing == null;
+    const isReceiptWithoutChoice = isReceipt.value && options.choice === undefined;
     return hasNoItems || hasNoPricing || isReceiptWithoutChoice;
   });
 
   // Receipt badge text
   const receiptBadgeText = computed(() => {
-    if (!choice) return '';
+    if (!options.choice) return '';
     const parts = [
-      choice.orderId && `#${choice.orderId}`,
-      choice.confirmedAt && formatDate(choice.confirmedAt),
+      options.choice.orderId && `#${options.choice.orderId}`,
+      options.choice.confirmedAt && formatDate(options.choice.confirmedAt),
     ].filter(Boolean);
     return parts.join(' · ');
   });

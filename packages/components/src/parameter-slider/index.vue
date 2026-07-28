@@ -58,8 +58,8 @@ const normalizedActions = computed(() => {
 
 // Slider state management
 const sliderState = useSlider({
-  sliders: props.sliders,
-  values: props.values,
+  sliders: () => props.sliders,
+  values: () => props.values,
   emit: {
     change: (values) => emit('change', values),
     commit: (values) => emit('commit', values),
@@ -68,7 +68,7 @@ const sliderState = useSlider({
 
 // Layout management
 const layoutState = useLayout({
-  sliders: props.sliders,
+  sliders: () => props.sliders,
   getSliderValue: sliderState.getSliderValue,
   getSliderRowState: sliderState.getSliderRowState,
   currentValues: sliderState.currentValues,
@@ -76,7 +76,7 @@ const layoutState = useLayout({
 
 // Drag handling
 const dragState = useDrag({
-  sliders: props.sliders,
+  sliders: () => props.sliders,
   trackRefs: layoutState.trackRefs,
   getSliderValue: sliderState.getSliderValue,
   updateSliderValue: sliderState.updateSliderValue,

@@ -23,14 +23,16 @@ export interface TerminalState {
 }
 
 export function useTerminal(options: UseTerminalOptions): TerminalState {
-  const { stdout, stderr, durationMs, maxCollapsedLines, sanitize } = options;
+  // 不解构 options：在 computed getter 内按需读取 options.xxx，
+  // Vue 才能收集 props 依赖；setup 同步作用域解构会得到首帧快照，
+  // 父层 setProps 新引用后组件不更新。
 
   // State
   const isCopied = ref(false);
   const isExpanded = ref(false);
 
   // Sanitize
-  const { sanitizeHtml } = useSanitize(sanitize ?? false);
+  const { sanitizeHtml } = useSanitize(options.sanitize ?? false);
 
   // ANSI converter
   const ansiConverter = new AnsiToHtml({
@@ -57,7 +59,7 @@ export function useTerminal(options: UseTerminalOptions): TerminalState {
     return `${(durationMs / 1000).toFixed(1)}s`;
   }
 
-  const formattedDuration = computed(() => formatDuration(durationMs));
+  const formattedDuration = computed(() => formatDuration(options.durationMs));
 
   // Count output lines
   function countOutputLines(output: string): number {
@@ -66,13 +68,13 @@ export function useTerminal(options: UseTerminalOptions): TerminalState {
     return trimmedTrailingNewlines.split('\n').length;
   }
 
-  const fullOutput = computed(() => [stdout, stderr].filter(Boolean).join('\n'));
-  const hasOutput = computed(() => Boolean(stdout || stderr));
+  const fullOutput = computed(() => [options.stdout, options.stderr].filter(Boolean).join('\n'));
+  const hasOutput = computed(() => Boolean(options.stdout || options.stderr));
   const lineCount = computed(() => countOutputLines(fullOutput.value));
 
   // Collapse logic
   const shouldCollapse = computed(() => {
-    return maxCollapsedLines !== undefined && lineCount.value > maxCollapsedLines;
+    return options.maxCollapsedLines !== undefined && lineCount.value > options.maxCollapsedLines;
   });
   const isCollapsed = computed(() => shouldCollapse.value && !isExpanded.value);
 

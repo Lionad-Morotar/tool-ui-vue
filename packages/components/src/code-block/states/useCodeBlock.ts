@@ -74,20 +74,15 @@ function getDocumentTheme(): 'light' | 'dark' | null {
 export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
   usePropsValidator(SerializableCodeBlockSchema, options, 'CodeBlock');
 
-  const {
-    code,
-    language,
-    lineNumbers,
-    highlightLines,
-    maxCollapsedLines,
-    sanitize,
-  } = options;
+  // 不解构 options：在 computed/watch getter 与异步高亮函数内按需读取
+  // options.xxx，Vue 才能收集 props 依赖；setup 同步作用域解构会得到首帧
+  // 快照，父层 setProps 新引用后组件不更新。
 
   // State
   const highlightedHtml = ref<string | null>(null);
 
   // Sanitize
-  const { sanitizeHtml } = useSanitize(sanitize ?? false);
+  const { sanitizeHtml } = useSanitize(options.sanitize ?? false);
   const isCopied = ref(false);
   const isExpanded = ref(false);
   const isLoading = ref(true);
@@ -157,11 +152,11 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
     const version = ++highlightVersion;
     const theme = resolvedTheme.value === 'dark' ? 'pierre-dark' : 'pierre-light';
     const cacheKey = getCacheKey(
-      code ?? '',
-      language ?? 'text',
+      options.code ?? '',
+      options.language ?? 'text',
       theme,
-      lineNumbers ?? 'visible',
-      highlightLines,
+      options.lineNumbers ?? 'visible',
+      options.highlightLines,
     );
 
     const cached = htmlCache.get(cacheKey);
@@ -171,7 +166,7 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
       return;
     }
 
-    if (!code) {
+    if (!options.code) {
       highlightedHtml.value = '';
       isLoading.value = false;
       return;
@@ -182,23 +177,23 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
       // Discard result if a newer highlight call started while we awaited
       if (version !== highlightVersion) return;
       const loadedLangs = highlighter.getLoadedLanguages();
-      const lang = language ?? 'text';
+      const lang = options.language ?? 'text';
 
       if (!loadedLangs.includes(lang)) {
         await highlighter.loadLanguage(lang as Parameters<typeof highlighter.loadLanguage>[0]);
       }
 
-      const showLineNumbers = lineNumbers !== 'hidden';
+      const showLineNumbers = options.lineNumbers !== 'hidden';
       const lineNumberWidth = `${String(lineCount.value).length + 0.5}ch`;
 
-      const html = highlighter.codeToHtml(code, {
+      const html = highlighter.codeToHtml(options.code, {
         lang,
         theme,
         transformers: [
           {
             line(node: { properties: Record<string, unknown>; children: unknown[] }, line: number) {
               node.properties['data-line'] = line;
-              if (highlightLines?.includes(line)) {
+              if (options.highlightLines?.includes(line)) {
                 const highlightBg = resolvedTheme.value === 'dark'
                   ? 'rgba(255,255,255,0.1)'
                   : 'rgba(0,0,0,0.05)';
@@ -225,7 +220,7 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
       highlightedHtml.value = safeHtml;
     } catch {
       // Fallback to escaped text
-      const escaped = code
+      const escaped = options.code
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
@@ -238,7 +233,7 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
   // Copy functionality
   async function copyCode() {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(options.code);
       isCopied.value = true;
       setTimeout(() => {
         isCopied.value = false;
@@ -254,16 +249,16 @@ export function useCodeBlock(options: UseCodeBlockOptions): CodeBlockReturns {
 
   // Computed values
   const languageDisplayName = computed(() => {
-    return LANGUAGE_DISPLAY_NAMES[language?.toLowerCase() ?? 'text'] || (language?.toUpperCase() ?? 'Text');
+    return LANGUAGE_DISPLAY_NAMES[options.language?.toLowerCase() ?? 'text'] || (options.language?.toUpperCase() ?? 'Text');
   });
 
-  const lineCount = computed(() => code.split('\n').length);
-  const shouldCollapse = computed(() => !!maxCollapsedLines && lineCount.value > maxCollapsedLines);
+  const lineCount = computed(() => options.code.split('\n').length);
+  const shouldCollapse = computed(() => !!options.maxCollapsedLines && lineCount.value > options.maxCollapsedLines);
   const isCollapsed = computed(() => shouldCollapse.value && !isExpanded.value);
 
   // Watch for changes
   watch(
-    () => [code, language, lineNumbers, highlightLines, resolvedTheme.value],
+    () => [options.code, options.language, options.lineNumbers, options.highlightLines, resolvedTheme.value],
     () => {
       isLoading.value = true;
       highlightCode();

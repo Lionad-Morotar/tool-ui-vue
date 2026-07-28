@@ -11,7 +11,7 @@ export interface GalleryReturns {
 }
 
 export function useGallery(props: ImageGalleryProps, emit: EmitFn): GalleryReturns {
-  provideImageGallery({ images: props.images });
+  provideImageGallery({ images: () => props.images });
 
   const hasHeader = computed(() => Boolean(props.title || props.description));
 

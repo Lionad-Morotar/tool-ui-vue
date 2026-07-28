@@ -1,8 +1,8 @@
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted, computed, toValue } from 'vue';
 import { sliderRangeToPercent } from '../math';
 import type { SliderConfig } from '../schema';
 import type { SliderState } from './useSlider';
-import type { Ref } from 'vue';
+import type { MaybeRefOrGetter, Ref } from 'vue';
 
 // Constants for layout calculations
 const TICK_COUNT = 16;
@@ -22,7 +22,7 @@ const OUTER_EDGE_RADIUS_FACTOR = 0.3;
 export { THUMB_WIDTH, TEXT_VERTICAL_OFFSET, TRACK_EDGE_INSET };
 
 export interface UseLayoutOptions {
-  sliders: SliderConfig[];
+  sliders: MaybeRefOrGetter<SliderConfig[]>;
   getSliderValue: (sliderId: string) => number;
   getSliderRowState: (sliderId: string) => SliderState;
   currentValues: Ref<{ id: string; value: number }[]>;
@@ -165,7 +165,10 @@ function calculateGap(
 }
 
 export function useLayout(options: UseLayoutOptions): LayoutReturns {
-  const { sliders, getSliderValue, getSliderRowState, currentValues } = options;
+  const { getSliderValue, getSliderRowState, currentValues } = options;
+
+  // sliders 以 MaybeRefOrGetter 接收，避免 props 新引用时 layout 仍使用首帧快照。
+  const sliders = computed(() => toValue(options.sliders));
 
   const trackRefs = ref<Map<string, HTMLElement>>(new Map());
   const labelRefs = ref<Map<string, HTMLElement>>(new Map());
@@ -185,7 +188,7 @@ export function useLayout(options: UseLayoutOptions): LayoutReturns {
 
   function updateLayout(sliderId: string) {
     const state = getSliderRowState(sliderId);
-    const slider = sliders.find((s) => s.id === sliderId);
+    const slider = sliders.value.find((s) => s.id === sliderId);
     if (!slider) return;
 
     const track = trackRefs.value.get(sliderId);
@@ -265,7 +268,7 @@ export function useLayout(options: UseLayoutOptions): LayoutReturns {
     currentValues,
     () => {
       nextTick(() => {
-        sliders.forEach((slider) => updateLayout(slider.id));
+        sliders.value.forEach((slider) => updateLayout(slider.id));
       });
     },
     { deep: true },
@@ -276,19 +279,19 @@ export function useLayout(options: UseLayoutOptions): LayoutReturns {
 
   onMounted(() => {
     nextTick(() => {
-      sliders.forEach((slider) => updateLayout(slider.id));
+      sliders.value.forEach((slider) => updateLayout(slider.id));
     });
 
     if (typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => {
-        sliders.forEach((slider) => {
+        sliders.value.forEach((slider) => {
           const state = getSliderRowState(slider.id);
           state.layoutVersion++;
           updateLayout(slider.id);
         });
       });
 
-      sliders.forEach((slider) => {
+      sliders.value.forEach((slider) => {
         const track = trackRefs.value.get(slider.id);
         const labelEl = labelRefs.value.get(slider.id);
         const valueEl = valueRefs.value.get(slider.id);
@@ -307,7 +310,7 @@ export function useLayout(options: UseLayoutOptions): LayoutReturns {
   });
 
   function handleWindowResize() {
-    sliders.forEach((slider) => {
+    sliders.value.forEach((slider) => {
       const state = getSliderRowState(slider.id);
       state.layoutVersion++;
       updateLayout(slider.id);

@@ -51,13 +51,15 @@ export function useDataTable(
 ): DataTableState {
   usePropsValidator(SerializableDataTableSchema, props, 'DataTable');
 
-  // useSort options
+  // 子 composable 的字段类型是 MaybeRefOrGetter：以 getter 传参，
+  // toValue 才能在 computed/watch 的活跃 effect 内读 props 并收集依赖；
+  // 值传参会在 setup 同步作用域固化成挂载首帧快照，父层后续换引用不重渲染
   const sortOptions: UseSortOptions = {
-    sort: props.sort,
-    defaultSort: props.defaultSort,
-    columns: props.columns,
-    data: props.data,
-    locale: props.locale,
+    sort: () => props.sort,
+    defaultSort: () => props.defaultSort,
+    columns: () => props.columns,
+    data: () => props.data,
+    locale: () => props.locale,
     onSortChange: (newSort) => emit('sortChange', newSort),
   };
 
@@ -89,11 +91,11 @@ export function useDataTable(
 
   // useLayout options - ensure layout has a default value
   const layoutOptions: UseLayoutOptions = {
-    columns: props.columns,
-    data: props.data,
-    rowIdKey: props.rowIdKey,
-    layout: (props.layout ?? 'auto') as 'auto' | 'table' | 'cards',
-    id: props.id,
+    columns: () => props.columns,
+    data: () => props.data,
+    rowIdKey: () => props.rowIdKey,
+    layout: () => (props.layout ?? 'auto') as 'auto' | 'table' | 'cards',
+    id: () => props.id,
   };
 
   const {

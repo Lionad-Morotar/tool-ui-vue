@@ -131,3 +131,4 @@ const { selectedIds, isSelected, toggle } = useOptionList(props, emit)
 2. **视图自由** — 你可以用任何 UI 框架或样式方案渲染
 3. **类型安全** — 所有 composable 都有完整的 TypeScript 类型导出
 4. **可测试** — 纯逻辑更容易编写单元测试，无需挂载 Vue 组件
+5. **聚合层 getter 传参** — 子 composable 的 options 字段声明 `MaybeRefOrGetter` 时，聚合层必须写 `data: () => props.data` 而非 `data: props.data`；states 工厂内禁止 `ref(props.x)`、解构 `const { x } = options`、返回 `x.value` 快照——三者都会在 setup 同步作用域把 props 固化在挂载首帧，父层换引用后组件不再更新

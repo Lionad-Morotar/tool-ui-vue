@@ -1,9 +1,9 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, toValue } from 'vue';
 import type { SliderConfig } from '../schema';
-import type { Ref } from 'vue';
+import type { MaybeRefOrGetter, Ref } from 'vue';
 
 export interface UseDragOptions {
-  sliders: SliderConfig[];
+  sliders: MaybeRefOrGetter<SliderConfig[]>;
   trackRefs: Ref<Map<string, HTMLElement>>;
   getSliderValue: (sliderId: string) => number;
   updateSliderValue: (sliderId: string, newValue: number, isCommit?: boolean) => void;
@@ -20,7 +20,6 @@ export interface DragReturns {
 
 export function useDrag(options: UseDragOptions): DragReturns {
   const {
-    sliders,
     trackRefs,
     updateSliderValue,
     getSliderRowState,
@@ -29,8 +28,12 @@ export function useDrag(options: UseDragOptions): DragReturns {
 
   const activeSliderId = ref<string | null>(null);
 
+  function getSliders(): SliderConfig[] {
+    return toValue(options.sliders);
+  }
+
   function handlePointerDown(sliderId: string, event: PointerEvent) {
-    const slider = sliders.find((s) => s.id === sliderId);
+    const slider = getSliders().find((s) => s.id === sliderId);
     if (!slider || slider.disabled) return;
 
     const state = getSliderRowState(sliderId);
@@ -57,7 +60,7 @@ export function useDrag(options: UseDragOptions): DragReturns {
   }
 
   function updateValueFromPointer(sliderId: string, event: PointerEvent) {
-    const slider = sliders.find((s) => s.id === sliderId);
+    const slider = getSliders().find((s) => s.id === sliderId);
     if (!slider) return;
 
     const track = trackRefs.value.get(sliderId);

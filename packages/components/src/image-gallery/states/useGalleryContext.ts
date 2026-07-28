@@ -1,8 +1,8 @@
-import { ref, computed, provide, inject, type InjectionKey, type Ref } from 'vue';
+import { ref, computed, toValue, provide, inject, type InjectionKey, type Ref, type ComputedRef, type MaybeRefOrGetter } from 'vue';
 import type { ImageGalleryItem } from '../schema';
 
 export interface ImageGalleryContextValue {
-  images: Ref<ImageGalleryItem[]>;
+  images: ComputedRef<ImageGalleryItem[]>;
   activeIndex: Ref<number | null>;
   isOpen: Ref<boolean>;
   currentImage: Ref<ImageGalleryItem | null>;
@@ -29,13 +29,15 @@ export function useImageGallery(): ImageGalleryContextValue {
 }
 
 export interface ImageGalleryProviderOptions {
-  images: ImageGalleryItem[];
+  images: MaybeRefOrGetter<ImageGalleryItem[]>;
 }
 
 export function createImageGalleryContext(
   options: ImageGalleryProviderOptions
 ): ImageGalleryContextValue {
-  const images = ref(options.images);
+  // images 以 MaybeRefOrGetter 接收：setup 同步作用域里 ref(值) 会把数组固化在
+  // 挂载首帧；computed + toValue 让读取发生在消费方的活跃 effect 内，跟随 props
+  const images = computed(() => toValue(options.images));
   const activeIndex = ref<number | null>(null);
   const isOpen = ref(false);
 
