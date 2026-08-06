@@ -15,7 +15,22 @@ const storyGroups = [
 export default defineConfig({
   plugins: [HstVue()],
   storyMatch: ['src/**/*.story.vue'],
-  storyIgnored: ['**/.git/**', '**/node_modules/**', '**/dist*/**', '**/tailwind-test.story.vue', '**/tailwind-test/**'],
+  // histoire 内部的 markdown/story watcher 用 micromatch 匹配此列表遍历整个仓库，
+  // glob 的 ** 不匹配 dot 目录段，生成产物目录必须按字面量逐个列出，
+  // 否则会深入 .output/.nitro 的嵌套 node_modules 耗尽系统监听资源（EMFILE）
+  storyIgnored: [
+    '**/.git/**',
+    '**/node_modules/**',
+    '**/dist*/**',
+    '**/.output/**',
+    '**/.nitro/**',
+    '**/.nuxt/**',
+    '**/.serve/**',
+    '**/.histoire/**',
+    '**/.claude/**',
+    '**/tailwind-test.story.vue',
+    '**/tailwind-test/**',
+  ],
   outDir: 'dist-histoire',
   setupFile: 'src/stories/_shared/histoire-setup.ts',
   routerMode: 'hash',
@@ -56,7 +71,19 @@ export default defineConfig({
     },
     server: {
       watch: {
-        ignored: ['**/.git/**', '**/node_modules/**', '**/dist*/**'],
+        // glob 的 ** 不匹配 dot 目录段，生成产物目录必须按字面量逐个列出，
+        // 否则会深入 .output/.nitro 的嵌套 node_modules 耗尽系统监听资源（EMFILE）
+        ignored: [
+          '**/.git/**',
+          '**/node_modules/**',
+          '**/dist*/**',
+          '**/.output/**',
+          '**/.nitro/**',
+          '**/.nuxt/**',
+          '**/.serve/**',
+          '**/.histoire/**',
+          '**/.claude/**',
+        ],
       },
     },
   },
