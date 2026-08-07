@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.9] - 2026-08-07
+
+### Changed
+
+- DataTable 默认 `layout` 由 `auto` 调整为 `table`：未显式指定布局时固定以表格形态渲染
+
+### Fixed
+
+- [internal] histoire story watcher 的 ignore 列表补字面 dot 目录（`.output`、`.nitro` 等），修复 packages/site Nuxt 构建产物被 chokidar 递归监视导致的 dev 启动 EMFILE 崩溃
+
 ## [0.3.8] - 2026-07-28
 
 ### Fixed

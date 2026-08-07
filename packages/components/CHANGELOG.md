@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.9
+
+### Patch Changes
+
+- DataTable 默认 `layout` 由 `auto` 调整为 `table`：未显式指定布局时固定以表格形态渲染
+
 ## 0.3.8
 
 ### Patch Changes
