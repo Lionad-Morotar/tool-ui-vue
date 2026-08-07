@@ -71,9 +71,9 @@ describe('DataTable', () => {
       expect(wrapper.find('[data-slot="data-table"]').classes()).toContain('my-table');
     });
 
-    test('has data-layout attribute defaulting to auto', () => {
+    test('has data-layout attribute defaulting to table', () => {
       const wrapper = mount(DataTable, { props: createProps() });
-      expect(wrapper.find('[data-slot="data-table"]').attributes('data-layout')).toBe('auto');
+      expect(wrapper.find('[data-slot="data-table"]').attributes('data-layout')).toBe('table');
     });
   });
 

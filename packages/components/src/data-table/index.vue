@@ -8,7 +8,7 @@ import type { DataTableProps } from './schema';
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
 
 const props = withDefaults(defineProps<DataTableProps>(), {
-  layout: 'auto',
+  layout: 'table',
   css: () => ({}),
 });
 
