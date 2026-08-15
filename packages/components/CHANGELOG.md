@@ -1,5 +1,22 @@
 # @lionad/vtu-components
 
+## 0.3.10
+
+### Patch Changes
+
+- [`d841052`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/d8410522acbc1ef242158e857fc0e1c1ab432ae2) Thanks [@Lionad-Morotar](https://github.com/Lionad-Morotar)! - fix(components): 全部未命名 group hover 语义改为命名组，防宿主 .group 祖先劫持
+
+  - option-list / question-flow 选项行 hover overlay 改用 group/option：宿主 UI（如聊天消息卡片）带 .group 祖先时，hover 宿主会连带点亮整列选项高亮
+  - video / citation / contact-card / link-preview / item-carousel / image-gallery / citation 条目行的 hover 效果同步改为命名组（group/video、group/citation、group/contact、group/link、group/card、group/item）
+  - 清理无消费方的 group 类：audio / chart / image / data-table 手风琴行 / item-carousel 容器 / question-flow 退出态克隆
+
+- [`36b5737`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/36b573768a6ee73fa5a7047c57b2f998decfbe2a) Thanks [@Lionad-Morotar](https://github.com/Lionad-Morotar)! - feat(components): 数组 props 渲染层宽容——缺字段渲染空态而非抛错
+
+  - chart / data-table / option-list / parameter-slider / preferences-panel / progress-tracker 的数组类 props 改为可选，组件 withDefaults 缺省空数组（LLM 产出缺字段时渲染空图/空表/空列表）
+  - zod 可序列化契约保持必填：usePropsValidator 仍按必填校验并 warn 提示，宽容只发生在渲染层
+  - states 层 props 类型收窄为必有（withDefaults 保证），消除 undefined 防御噪音
+  - 同步 skills 文档的组件用法说明
+
 ## 0.3.9
 
 ### Patch Changes
