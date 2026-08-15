@@ -553,3 +553,11 @@ describe('DataTable', () => {
     });
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting columns/data renders empty state without crashing', () => {
+    const wrapper = mount(DataTable, { props: { id: 'dt-guard' } as any });
+    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.text()).toContain('No data available');
+  });
+});

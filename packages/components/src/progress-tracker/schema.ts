@@ -109,7 +109,8 @@ export type ProgressTrackerCss = z.infer<typeof ProgressTrackerCssSchema>;
 export interface ProgressTrackerProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
-  steps: ProgressStep[];
+  // 渲染层宽容:可序列化契约(zod)保持必填,组件 props 可选、缺省渲染空进度
+  steps?: ProgressStep[];
   elapsedTime?: number;
   choice?: ProgressTrackerChoice;
   css?: ProgressTrackerCss;

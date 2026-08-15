@@ -166,7 +166,8 @@ export interface OptionListProps {
     identifiers?: Record<string, string>;
     at: string;
   };
-  options: OptionListOption[];
+  // 渲染层宽容:可序列化契约(zod)保持必填,组件 props 可选、缺省渲染空列表
+  options?: OptionListOption[];
   selectionMode?: 'multi' | 'single';
   value?: OptionListSelection;
   defaultValue?: OptionListSelection;

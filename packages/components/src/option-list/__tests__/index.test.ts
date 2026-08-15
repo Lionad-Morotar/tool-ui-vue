@@ -449,3 +449,10 @@ describe('i18n', () => {
     expect(receipt.attributes('aria-label')).toBe('Confirmed selection');
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting options renders without crashing', () => {
+    const wrapper = mount(OptionList, { props: { id: 'ol-guard' } as any });
+    expect(wrapper.exists()).toBe(true);
+  });
+});

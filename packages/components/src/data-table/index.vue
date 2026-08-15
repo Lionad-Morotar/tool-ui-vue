@@ -8,6 +8,10 @@ import type { DataTableProps } from './schema';
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
 
 const props = withDefaults(defineProps<DataTableProps>(), {
+  // 数组 props 渲染层宽容:缺省给空数组(LLM 产出可序列化契约经 zod 保持必填,
+  // 组件对缺字段渲染空表而非抛错)
+  columns: () => [],
+  data: () => [],
   layout: 'table',
   css: () => ({}),
 });

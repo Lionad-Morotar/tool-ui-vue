@@ -7,6 +7,8 @@ import type { ProgressTrackerProps } from './schema';
 defineOptions({ name: 'CmptProgressTracker', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ProgressTrackerProps>(), {
+  // 数组 props 渲染层宽容:缺省给空数组(zod 契约保持必填,组件渲染空进度而非抛错)
+  steps: () => [],
   css: () => ({}),
 })
 

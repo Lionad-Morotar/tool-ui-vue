@@ -9,7 +9,8 @@ export type OptionListEmit = {
 };
 
 export function useOptionList(
-  props: OptionListProps & { modelValue?: OptionListSelection } & { css?: { root?: string } },
+  // options 收窄为必有:组件 withDefaults 保证数组默认,states 不再面对 undefined
+  props: Omit<OptionListProps, 'options'> & { options: OptionListOption[] } & { modelValue?: OptionListSelection } & { css?: { root?: string } },
   emit: OptionListEmit,
 ) {
 

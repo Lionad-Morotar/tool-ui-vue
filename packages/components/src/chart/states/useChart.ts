@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue';
-import type { ChartProps, ChartDataPoint } from '../schema';
+import type { ChartProps, ChartDataPoint, ChartSeries } from '../schema';
 import type { ComputedRef, Ref } from 'vue';
 
 export type ChartEmit = {
@@ -65,7 +65,11 @@ const INNER_WIDTH = CHART_WIDTH - MARGIN.left - MARGIN.right;
 const INNER_HEIGHT = CHART_HEIGHT - MARGIN.top - MARGIN.bottom;
 
 export function useChart(
-  props: ChartProps,
+  // data/series 收窄为必有:组件 withDefaults 保证数组默认,states 不再面对 undefined
+  props: Omit<ChartProps, 'data' | 'series'> & {
+    data: Record<string, unknown>[];
+    series: ChartSeries[];
+  },
   emit: ChartEmit,
 ): ChartReturns {
 

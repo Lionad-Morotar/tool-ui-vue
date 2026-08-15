@@ -138,7 +138,7 @@ import { DataTable } from 'tool-ui-vue'
 ## 样式故障排除
 
 1. 确认 `@import "@lionad/vtu-components/style.css"` 已添加在 `@import "tailwindcss"` **之后**，且在**同一个** Tailwind 入口里（见下「为什么顺序/位置重要」）
-2. 确认 Tailwind v4 扫描到组件源码（`style.css` 内置 `@source "."` 指令，无需手动配置）
+2. 确认 Tailwind v4 扫描到组件源码（`style.css` 内置 `@source "."` 指令，正常 `@import` 时无需手动配置；vendoring 拆文件场景除外，见下「有色无类」）
 3. 确认 `data-theme="dark"` 已设置（如需 dark mode）
 
 ### 典型症状：边框发黑 / 底色或字色丢失
@@ -149,6 +149,20 @@ import { DataTable } from 'tool-ui-vue'
 - 在框架模块里**另行 `@source` 扫描** vtu dist，却没引入 vtu 的 `@theme`，于是扫得到类名、查不到颜色名。
 
 修法：回到「安装」的写法——在入口 css 的 `@import "tailwindcss"` 之后 `@import` style.css，不要并行注入或单独扫描。
+
+### 典型症状：颜色正常、部分类无样式（「有色无类」）
+
+上节的对偶形态：`bg-*` 颜色正常，但 vtu 独有的 utility（`text-primary-foreground`、`min-h-11`、`@container/*` 容器查询族等）在编译产物里搜不到——`@theme` 进来了、`@source` 丢了。表现为「按钮文字色继承父级」「容器查询布局不生效」等局部失样式，无构建期报错，纯静默。
+
+典型诱因：`@import style.css` 触发 `@source cannot be nested`（部分宿主构建链 / lint 插件不容 import 图内出现 `@source`），于是 vendoring 拆成 tokens.css + 组件 css 两个文件引入——拆完 `@source` 注册随之丢失。
+
+修法：在含 `@import "tailwindcss"` 的入口里显式补扫描（路径相对入口文件，按实际层级调整）：
+
+```css
+@source "../../../node_modules/@lionad/vtu-components/dist";
+```
+
+诊断口诀：编译产物搜类名——搜不到 = 扫描丢（补 `@source`）；搜得到但 `var()` 值不对 = `@theme` 丢或被覆写（查上节）。
 
 ### Monorepo / pnpm 严格模式
 

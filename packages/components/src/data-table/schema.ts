@@ -202,8 +202,9 @@ export interface DataTableProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   receipt?: ToolUIReceipt;
-  columns: Column[];
-  data: RowData[];
+  // 渲染层宽容:可序列化契约(zod)保持必填,组件 props 可选、缺省渲染空表
+  columns?: Column[];
+  data?: RowData[];
   rowIdKey?: string;
   defaultSort?: { by?: string; direction?: 'asc' | 'desc' };
   sort?: { by?: string; direction?: 'asc' | 'desc' };

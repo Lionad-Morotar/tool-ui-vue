@@ -4,7 +4,7 @@ import { useLayout, type UseLayoutOptions } from './useLayout';
 import { useSort, type UseSortOptions } from './useSort';
 import { usePropsValidator } from '../../core';
 import { SerializableDataTableSchema } from '../schema';
-import type { DataTableProps } from '../schema';
+import type { Column, DataTableProps, RowData } from '../schema';
 
 export type DataTableEmit = {
   (e: 'sortChange', sort: { by?: string; direction?: 'asc' | 'desc' }): void;
@@ -46,7 +46,9 @@ export interface DataTableState {
 }
 
 export function useDataTable(
-  props: DataTableProps,
+  // columns/data 收窄为必有:组件 withDefaults 保证数组默认,states 不再面对 undefined;
+  // usePropsValidator 仍按 zod 必填校验(缺字段 warn 提示,渲染层宽容不炸)
+  props: Omit<DataTableProps, 'columns' | 'data'> & { columns: Column[]; data: RowData[] },
   emit: DataTableEmit,
 ): DataTableState {
   usePropsValidator(SerializableDataTableSchema, props, 'DataTable');

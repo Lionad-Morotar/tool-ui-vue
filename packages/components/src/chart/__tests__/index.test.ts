@@ -257,3 +257,10 @@ describe('Chart', () => {
     });
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting data/series renders without crashing', () => {
+    const wrapper = mount(Chart, { props: { id: 'c-guard', type: 'bar', xKey: 'x' } as any });
+    expect(wrapper.exists()).toBe(true);
+  });
+});

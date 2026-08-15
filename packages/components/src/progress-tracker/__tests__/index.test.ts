@@ -319,3 +319,10 @@ describe('accessibility', () => {
     expect(article.attributes('aria-busy')).toBe('false');
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting steps renders without crashing', () => {
+    const wrapper = mount(ProgressTracker, { props: { id: 'pt-guard' } as any });
+    expect(wrapper.exists()).toBe(true);
+  });
+});

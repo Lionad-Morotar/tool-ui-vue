@@ -17,6 +17,8 @@ import type { ParameterSliderProps, SliderValue } from './schema';
 defineOptions({ name: 'CmptParameterSlider', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ParameterSliderProps>(), {
+  // 数组 props 渲染层宽容:缺省给空数组(zod 契约保持必填,组件渲染空滑块组而非抛错)
+  sliders: () => [],
   css: () => ({}),
 })
 

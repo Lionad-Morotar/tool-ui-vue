@@ -152,7 +152,8 @@ export type ParameterSliderCss = z.infer<typeof ParameterSliderCssSchema>;
 export interface ParameterSliderProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
-  sliders: SliderConfig[];
+  // 渲染层宽容:可序列化契约(zod)保持必填,组件 props 可选、缺省渲染空滑块组
+  sliders?: SliderConfig[];
   css?: ParameterSliderCss;
   values?: SliderValue[];
   actions?:

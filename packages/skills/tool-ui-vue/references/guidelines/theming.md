@@ -68,6 +68,8 @@ document.documentElement.setAttribute('data-theme', 'dark')
 
 dark mode 会覆盖所有颜色和阴影 token。颜色模式 key 为 `vtu-color-mode`。
 
+> **`.dark` 分支的命中范围注意**：深色覆写选择器实际是 `[data-theme='dark'], .dark` 双分支（`.dark` 为 Histoire stories 保留）。`.dark` 是**任意祖先命中**——任何带 `dark` 标记类的内层容器（markdown 渲染器、代码高亮深色壳常见）都会把其**整棵子树**的 vtu token 重基为深色值，压过你在 `:root` 的撞名覆写（曾致 `bg-primary` 按钮白底、继承浅色文字隐身）。宿主若有在内层挂 dark 类的依赖：在自定义 CSS 用更具体选择器夺回，或 vendor 副本上把选择器收窄为仅 `[data-theme='dark']` 并注释记录本地改动。
+
 ## css Prop 覆盖
 
 每个组件支持 `css` prop，通过 Tailwind 类字符串覆盖内部样式：

@@ -8,6 +8,8 @@ import type { OptionListProps, OptionListSelection } from './schema';
 defineOptions({ name: 'CmptOptionList', inheritAttrs: false })
 
 const props = withDefaults(defineProps<OptionListProps & { modelValue?: OptionListSelection }>(), {
+  // 数组 props 渲染层宽容:缺省给空数组(zod 契约保持必填,组件渲染空列表而非抛错)
+  options: () => [],
   css: () => ({})
 })
 

@@ -405,3 +405,10 @@ describe('i18n', () => {
     expect(wrapper.text()).toContain('Confirm');
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting sliders renders without crashing', () => {
+    const wrapper = mount(ParameterSlider, { props: { id: 'ps-guard' } as any });
+    expect(wrapper.exists()).toBe(true);
+  });
+});

@@ -996,3 +996,10 @@ describe('PreferencesPanel', () => {
     });
   });
 });
+
+describe('数组 props 缺省防御(LLM 产出宽容)', () => {
+  test('omitting sections renders without crashing', () => {
+    const wrapper = mount(PreferencesPanel, { props: { id: 'pp-guard' } as any });
+    expect(wrapper.exists()).toBe(true);
+  });
+});

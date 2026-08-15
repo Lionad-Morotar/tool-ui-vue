@@ -155,9 +155,10 @@ export interface ChartProps {
   type: 'bar' | 'line';
   title?: string;
   description?: string;
-  data: Record<string, unknown>[];
+  // 渲染层宽容:可序列化契约(zod)保持必填,组件 props 可选、缺省渲染空图
+  data?: Record<string, unknown>[];
   xKey: string;
-  series: ChartSeries[];
+  series?: ChartSeries[];
   colors?: string[];
   showLegend?: boolean;
   showGrid?: boolean;

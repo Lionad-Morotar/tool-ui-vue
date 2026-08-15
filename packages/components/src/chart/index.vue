@@ -7,6 +7,9 @@ import type { ChartProps } from './schema';
 defineOptions({ name: 'CmptChart', inheritAttrs: false })
 
 const props = withDefaults(defineProps<ChartProps>(), {
+  // 数组 props 渲染层宽容:缺省给空数组(zod 可序列化契约保持必填,组件渲染空图而非抛错)
+  data: () => [],
+  series: () => [],
   css: () => ({})
 })
 
