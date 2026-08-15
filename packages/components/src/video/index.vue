@@ -38,7 +38,7 @@ const { t } = useI18n();
     <div
       :class="
         cn(
-          'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
+          'group/video @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
           'border border-border bg-card text-sm shadow-xs'
         )
       "
@@ -47,7 +47,7 @@ const { t } = useI18n();
       <div
         :class="
           cn(
-            'group relative w-full overflow-hidden bg-black',
+            'relative w-full overflow-hidden bg-black',
             videoState.resolvedRatio !== 'auto'
               ? RATIO_CLASS_MAP[videoState.resolvedRatio]
               : 'aspect-video',
@@ -60,7 +60,7 @@ const { t } = useI18n();
           :poster="poster"
           :class="
             cn(
-              'relative z-10 w-full transition-transform duration-200 group-hover:scale-[1.01]',
+              'relative z-10 w-full transition-transform duration-200 group-hover/video:scale-[1.01]',
               getFitClass(videoState.resolvedFit),
               videoState.resolvedRatio !== 'auto' ? 'absolute inset-0 h-full' : 'h-full'
             )
@@ -81,11 +81,11 @@ const { t } = useI18n();
         <!-- Overlay -->
         <template v-if="videoState.hasOverlay">
           <div
-            class="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100"
+            class="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 opacity-0 transition-opacity duration-200 group-focus-within/video:opacity-100 group-hover/video:opacity-100"
             :style="{ backgroundImage: OVERLAY_GRADIENT }"
           />
           <div
-            :class="cn('absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100', css?.controls)"
+            :class="cn('absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-5 pt-4 opacity-0 transition-opacity duration-200 group-focus-within/video:opacity-100 group-hover/video:opacity-100', css?.controls)"
           >
             <div
               v-if="title"

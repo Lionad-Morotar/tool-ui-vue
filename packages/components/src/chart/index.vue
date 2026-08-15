@@ -28,7 +28,7 @@ const chartState = reactive(useChart(props, emit));
     <div
       :class="
         cn(
-          'group relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
+          'relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
           'border border-border bg-card text-sm shadow-xs'
         )
       "

@@ -104,7 +104,7 @@ defineExpose({
       </p>
     </div>
 
-    <div class="group relative">
+    <div class="relative">
       <!-- Navigation Buttons -->
       <button
         type="button"

@@ -163,10 +163,11 @@ const CheckIcon = {
                 v-if="index > 0"
                 class="border-border"
               />
+              <!-- 退出态只读克隆:peer/group 均无消费方(分隔线不联动),清除防宿主 .group 祖先劫持 -->
               <div
                 :class="
                   cn(
-                    'peer group relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
+                    'relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
                     'rounded-none border-0 bg-transparent px-0 py-2 text-base shadow-none @md/question-flow:text-sm',
                     index === 0 && 'pb-2.5',
                     index > 0 && index < state.exitingStepData.options.length - 1 && 'py-2.5',
@@ -255,7 +256,7 @@ const CheckIcon = {
                 :disabled="option.disabled || state.isTransitioning"
                 :class="
                   cn(
-                    'peer group relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
+                    'peer group/option relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
                     'rounded-none border-0 bg-transparent px-0 py-2 text-base shadow-none transition-none hover:bg-transparent! @md/question-flow:text-sm',
                     index === 0 && 'pb-2.5',
                     index > 0 && index < state.currentOptions.length - 1 && 'py-2.5',
@@ -269,7 +270,7 @@ const CheckIcon = {
               >
                 <span
                   :class="cn(
-                    'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100',
+                    'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover/option:opacity-100',
                   )"
                 />
                 <div class="relative flex items-start gap-3">

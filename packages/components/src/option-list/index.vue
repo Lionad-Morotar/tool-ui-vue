@@ -111,13 +111,15 @@ const state = reactive(useOptionList(props, emit));
           v-if="index > 0"
           class="border-border transition-opacity [@media(hover:hover)]:[&:has(+_:hover)]:opacity-0 [@media(hover:hover)]:[.peer:hover+&]:opacity-0"
         />
+        <!-- group/option 命名组:未命名 group 会被宿主任意 .group 祖先的 hover 劫持,
+             嵌入消息卡片等场景时整列选项高亮被连带点亮;overlay 只应响应本行 hover -->
         <button
           :ref="(el) => { if (el) state.optionRefs[index] = el as HTMLButtonElement }"
           type="button"
           :data-id="option.id"
           :class="
             cn(
-              'peer group relative h-auto min-h-12 w-full justify-start text-left text-base font-medium',
+              'peer group/option relative h-auto min-h-12 w-full justify-start text-left text-base font-medium',
               'rounded-none border-0 bg-transparent px-0 py-2 shadow-none transition-none hover:bg-transparent! @md/option-list:text-sm',
               index === 0 && 'pb-2.5',
               index > 0 && index < props.options.length - 1 && 'py-2.5',
@@ -133,7 +135,7 @@ const state = reactive(useOptionList(props, emit));
         >
           <span
             :class="cn(
-              'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover:opacity-100',
+              'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover/option:opacity-100',
             )"
           />
           <div class="relative flex items-start gap-3">

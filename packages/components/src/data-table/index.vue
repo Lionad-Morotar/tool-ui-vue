@@ -304,7 +304,6 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
           <!-- Accordion Card -->
           <div
             v-if="secondaryColumns.length > 0"
-            class="group"
           >
             <button
               type="button"

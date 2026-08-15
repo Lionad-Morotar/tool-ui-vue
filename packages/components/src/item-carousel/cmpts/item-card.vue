@@ -32,7 +32,7 @@ function handleActionClick(actionId: string, event: Event) {
 <template>
   <div
     :class="cn(
-      'group @container/card relative flex w-52 min-w-48 flex-col gap-0 self-stretch overflow-clip rounded-md p-0 @lg:w-56',
+      'group/card @container/card relative flex w-52 min-w-48 flex-col gap-0 self-stretch overflow-clip rounded-md p-0 @lg:w-56',
       'border border-border bg-card',
       isCardInteractive && 'cursor-pointer hover:shadow',
       'touch-manipulation',
@@ -63,14 +63,14 @@ function handleActionClick(actionId: string, event: Event) {
         draggable="false"
         :class="cn(
           'size-full object-cover transition-transform duration-200',
-          isCardInteractive && 'group-hover:scale-105'
+          isCardInteractive && 'group-hover/card:scale-105'
         )"
       />
       <div
         v-else
         :class="cn(
           'size-full transition-transform duration-200',
-          isCardInteractive && 'group-hover:scale-105'
+          isCardInteractive && 'group-hover/card:scale-105'
         )"
         :style="item.color ? { backgroundColor: item.color } : undefined"
         role="img"

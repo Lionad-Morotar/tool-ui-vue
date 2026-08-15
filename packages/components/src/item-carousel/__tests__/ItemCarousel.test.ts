@@ -609,7 +609,7 @@ describe('ItemCard - Component', () => {
       },
     });
     const img = wrapper.find('img');
-    expect(img.classes()).toContain('group-hover:scale-105');
+    expect(img.classes()).toContain('group-hover/card:scale-105');
   });
 
   test('has correct touch-manipulation class', () => {

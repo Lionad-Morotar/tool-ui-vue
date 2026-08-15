@@ -139,7 +139,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
   >
     <div
       :class="cn(
-        'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
+        'group/citation @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
         'border border-border bg-card text-sm shadow-xs',
         'transition-colors duration-150',
         state.sanitizedHref && 'cursor-pointer hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
@@ -197,7 +197,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
+            class="size-3.5 shrink-0 opacity-0 transition-opacity group-hover/citation:opacity-100"
           >
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
             <polyline points="15 3 21 3 21 9" />
@@ -212,7 +212,7 @@ const popover = usePopover({ placement: 'top', id: `${props.id}-popover` });
 
         <div :class="cn('flex flex-col gap-2', css?.body)">
           <h3 class="text-[15px] leading-snug font-medium text-pretty text-foreground">
-            <span class="line-clamp-2 group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+            <span class="line-clamp-2 group-hover/citation:underline group-hover/citation:decoration-foreground/30 group-hover/citation:underline-offset-2">
               {{ title }}
             </span>
           </h3>

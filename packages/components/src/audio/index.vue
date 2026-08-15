@@ -55,7 +55,7 @@ const progressAriaLabel = computed(() => t('audio.progress').value);
   >
     <div
       :class="cn(
-        'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden',
+        '@container relative isolate flex w-full min-w-0 flex-col overflow-hidden',
         'border border-border bg-card text-sm shadow-xs',
         'rounded-xl'
       )"

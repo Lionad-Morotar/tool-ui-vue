@@ -158,7 +158,7 @@ function getTypeIcon(type: CitationType | undefined) {
           v-for="citation in citations"
           :key="citation.id"
           type="button"
-          class="group flex w-full cursor-pointer items-center gap-2.5 rounded-md p-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+          class="group/item flex w-full cursor-pointer items-center gap-2.5 rounded-md p-2 text-left transition-colors hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
           @click="handleStackedClick(citation)"
         >
           <img
@@ -184,7 +184,7 @@ function getTypeIcon(type: CitationType | undefined) {
             <path :d="getTypeIcon(citation.type).path" />
           </svg>
           <div class="min-w-0 flex-1">
-            <p class="truncate text-sm font-medium group-hover:underline group-hover:decoration-foreground/30 group-hover:underline-offset-2">
+            <p class="truncate text-sm font-medium group-hover/item:underline group-hover/item:decoration-foreground/30 group-hover/item:underline-offset-2">
               {{ citation.title }}
             </p>
             <p class="truncate text-xs text-muted-foreground">
@@ -201,7 +201,7 @@ function getTypeIcon(type: CitationType | undefined) {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+            class="mt-0.5 size-3.5 shrink-0 self-start text-muted-foreground opacity-0 transition-opacity group-hover/item:opacity-100"
           >
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
             <polyline points="15 3 21 3 21 9" />

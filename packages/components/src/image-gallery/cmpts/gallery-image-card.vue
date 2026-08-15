@@ -43,7 +43,7 @@ onUnmounted(() => {
     :class="cn(
       'relative size-full overflow-hidden rounded-lg bg-muted',
       'transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]',
-      'group-hover:scale-[1.02] group-active:scale-[0.98]',
+      'group-hover/item:scale-[1.02] group-active/item:scale-[0.98]',
       css?.root
     )"
   >

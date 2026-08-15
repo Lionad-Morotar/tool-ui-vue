@@ -41,7 +41,7 @@ function isPortraitImage(image: ImageGalleryItem): boolean {
       :key="image.id"
       role="listitem"
       :class="cn(
-        'group relative cursor-pointer',
+        'group/item relative cursor-pointer',
         isPortraitImage(image) && 'row-span-2',
         css?.item
       )"

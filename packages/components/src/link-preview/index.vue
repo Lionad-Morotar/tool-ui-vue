@@ -31,7 +31,7 @@ const state = reactive(useLinkPreview(props, emit));
   >
     <div
       :class="cn(
-        'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
+        'group/link @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
         'border border-border bg-card text-sm shadow-xs',
         href && 'cursor-pointer',
       )"
@@ -58,7 +58,7 @@ const state = reactive(useLinkPreview(props, emit));
             :class="cn(
               'absolute inset-0 size-full',
               state.fitClassMap[state.resolvedFit],
-              'object-center transition-transform duration-200 group-hover:scale-[1.01]',
+              'object-center transition-transform duration-200 group-hover/link:scale-[1.01]',
             )"
           />
         </div>

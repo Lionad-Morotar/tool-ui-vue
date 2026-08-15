@@ -31,7 +31,7 @@ const kindLabelKey = (kind: string): string => `contactCard.${kind}`;
   >
     <div
       :class="cn(
-        'group @container relative isolate flex w-full min-w-0 overflow-hidden rounded-xl',
+        'group/contact @container relative isolate flex w-full min-w-0 overflow-hidden rounded-xl',
         'border border-border bg-card text-sm shadow-xs',
         'transition-colors duration-150',
         (state.sanitizedHref || state.isCopyable) && 'cursor-pointer hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
@@ -98,7 +98,7 @@ const kindLabelKey = (kind: string): string => `contactCard.${kind}`;
       <!-- Action indicator -->
       <div
         v-if="state.sanitizedHref || state.isCopyable"
-        class="flex shrink-0 items-center pr-4 opacity-0 transition-opacity group-hover:opacity-100"
+        class="flex shrink-0 items-center pr-4 opacity-0 transition-opacity group-hover/contact:opacity-100"
       >
         <!-- External link icon -->
         <svg

@@ -33,14 +33,14 @@ const state = reactive(useImage(props, emit));
   >
     <div
       :class="cn(
-        'group @container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
+        '@container relative isolate flex w-full min-w-0 flex-col overflow-hidden rounded-xl',
         'border border-border bg-card text-sm shadow-xs',
       )"
     >
       <!-- Image Container -->
       <div
         :class="cn(
-          'group relative w-full overflow-hidden bg-muted',
+          'relative w-full overflow-hidden bg-muted',
           state.resolvedRatio !== 'auto' ? state.ratioClassMap[state.resolvedRatio] : 'min-h-[160px]',
           state.sanitizedHref && 'cursor-pointer',
           css?.image,
