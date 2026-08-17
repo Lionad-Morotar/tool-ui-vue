@@ -45,17 +45,24 @@ const visibilityMenuOpen = ref(false)
 const visibilityMenuRef = ref<HTMLElement | null>(null)
 onClickOutside(visibilityMenuRef, () => { visibilityMenuOpen.value = false })
 
-// 列重排拖拽：手柄 pointerdown 启动，目标 th 的 pointerenter 落点换位。
-// 拖拽源挂手柄而非整行，天然避开横向滚动手势竞争；排序按钮 pointerdown.stop 防误触。
+// 列重排拖拽：手柄 pointerdown + setPointerCapture 接管指针流，
+// pointermove 用 elementFromPoint 命中最接近的 th 落点换位。
+// 注意：capture 会把后续 pointer 事件重定向到手柄（其他元素收不到 pointerenter），
+// 所以落点探测必须走坐标命中而非目标元素事件——jsdom 不实现 capture 语义，
+// 单测里 pointerenter 假绿曾掩盖这一点。
 const dragSourceKey = ref<string | null>(null)
 function onDragHandleDown(key: string, e: PointerEvent) {
   if (!featureEnabled.value.reorder) return
   dragSourceKey.value = key
   ;(e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId)
 }
-function onHeaderEnter(key: string) {
-  if (dragSourceKey.value && dragSourceKey.value !== key) {
-    state.reorderColumns(dragSourceKey.value, key)
+function onDragHandleMove(e: PointerEvent) {
+  if (!dragSourceKey.value) return
+  const el = document.elementFromPoint(e.clientX, e.clientY)
+  const th = el?.closest?.('th[data-column-key]')
+  const toKey = th?.getAttribute('data-column-key')
+  if (toKey && toKey !== dragSourceKey.value) {
+    state.reorderColumns(dragSourceKey.value, toKey)
   }
 }
 function onDragEnd() {
@@ -240,8 +247,6 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     :aria-sort="state.currentSort?.by === column.key
                       ? (state.currentSort?.direction === 'asc' ? 'ascending' : 'descending')
                       : undefined"
-                    @pointerenter="onHeaderEnter(column.key)"
-                    @pointerup="onDragEnd"
                   >
                     <span class="inline-flex items-center">
                       <span
@@ -252,6 +257,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         :aria-label="`Drag to reorder column ${column.label}`"
                         tabindex="0"
                         @pointerdown="onDragHandleDown(column.key, $event)"
+                        @pointermove="onDragHandleMove"
                         @pointerup="onDragEnd"
                       >
                         <GripVertical :size="14" aria-hidden="true" />

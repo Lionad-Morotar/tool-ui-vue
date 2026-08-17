@@ -608,19 +608,27 @@ describe('DataTable', () => {
       return wrapper.findAll('thead th').map((th) => th.text());
     }
     // VTU trigger() 对 pointer 事件走 MouseEvent 构造且 clientX 只读，
-    // 必须用原生 PointerEvent 派发（jsdom 已支持 PointerEvent 构造器）
+    // 必须用原生 PointerEvent 派发（jsdom 已支持 PointerEvent 构造器）。
+    // 真实浏览器 setPointerCapture 会把事件重定向到手柄，落点探测走
+    // document.elementFromPoint——jsdom 默认不实现该方法，测试需 stub。
     function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
       el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
     }
     async function dragColumnTo(wrapper: ReturnType<typeof mount>, fromKey: string, toKey: string) {
       const from = dragHandle(wrapper, fromKey).element;
-      dispatchPointer(from, 'pointerdown', { pointerId: 1 });
-      await nextTick();
       const to = wrapper.find(`th[data-column-key="${toKey}"]`).element;
-      dispatchPointer(to, 'pointerenter');
-      await nextTick();
-      dispatchPointer(from, 'pointerup');
-      await nextTick();
+      const origElementFromPoint = document.elementFromPoint;
+      document.elementFromPoint = () => to;
+      try {
+        dispatchPointer(from, 'pointerdown', { pointerId: 1, clientX: 0, clientY: 0 });
+        await nextTick();
+        dispatchPointer(from, 'pointermove', { pointerId: 1, clientX: 50, clientY: 10 });
+        await nextTick();
+        dispatchPointer(from, 'pointerup', { pointerId: 1 });
+        await nextTick();
+      } finally {
+        document.elementFromPoint = origElementFromPoint;
+      }
     }
 
     test('drag handle renders per column when reorder enabled (default)', () => {
@@ -760,13 +768,21 @@ describe('DataTable', () => {
       await dragResize(wrapper, 'name', 40);
       const widthAfter = colStyle(wrapper, 0);
       // 重排 value 到首位后，name 列的 px 宽度跟随到第二位
+      //（与 dragColumnTo 同路：capture 后 elementFromPoint 命中目标 th）
       const dragFrom = wrapper.find('[data-testid="drag-handle-value"]').element;
-      dragFrom.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 2 }));
-      await nextTick();
-      wrapper.find('th[data-column-key="name"]').element.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
-      await nextTick();
-      dragFrom.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
-      await nextTick();
+      const to = wrapper.find('th[data-column-key="name"]').element;
+      const origElementFromPoint = document.elementFromPoint;
+      document.elementFromPoint = () => to;
+      try {
+        dragFrom.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 2, clientX: 0, clientY: 0 }));
+        await nextTick();
+        dragFrom.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 2, clientX: 50, clientY: 10 }));
+        await nextTick();
+        dragFrom.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
+        await nextTick();
+      } finally {
+        document.elementFromPoint = origElementFromPoint;
+      }
       expect(colStyle(wrapper, 1)).toBe(widthAfter);
     });
   });
