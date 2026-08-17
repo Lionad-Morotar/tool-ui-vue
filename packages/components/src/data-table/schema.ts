@@ -194,6 +194,18 @@ export const DataTableCssSchema = z.object({
 export type DataTableCss = z.infer<typeof DataTableCssSchema>;
 
 /**
+ * DataTable 交互特性开关
+ * 纯宿主侧 UI 配置，不进 zod 可序列化契约（非 LLM 语义）；
+ * 每项 undefined 视为开启，显式 false 关闭
+ */
+export interface DataTableFeatures {
+  reorder?: boolean;
+  resize?: boolean;
+  visibility?: boolean;
+  export?: boolean;
+}
+
+/**
  * DataTable 组件的 Props 接口
  * 包含所有可配置的属性
  */
@@ -213,5 +225,9 @@ export interface DataTableProps {
   locale?: string;
   css?: DataTableCss;
   layout?: 'auto' | 'table' | 'cards';
+  features?: DataTableFeatures;
   onSortChange?: (sort: { by?: string; direction?: 'asc' | 'desc' }) => void;
+  onColumnsVisibilityChange?: (hidden: string[]) => void;
+  onColumnsReorder?: (order: string[]) => void;
+  onColumnResize?: (widths: Record<string, number>) => void;
 }

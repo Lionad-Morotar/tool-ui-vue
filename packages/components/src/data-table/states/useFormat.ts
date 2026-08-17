@@ -1,4 +1,4 @@
-import type { Column } from '../schema';
+import type { Column, RowData } from '../schema';
 
 export interface FormatOptions {
   locale?: string;
@@ -16,6 +16,25 @@ export interface FormatReturns {
   getToneClasses: (tone: string | null) => string;
   getDeltaClasses: (value: unknown, column: Column) => string;
   getArrayItems: (value: unknown, maxVisible?: number) => { items: (string | number | boolean | null)[]; remaining: number; hidden: (string | number | boolean | null)[] };
+}
+
+/**
+ * 把当前可见列与数据行序列化为 CSV 文本。
+ * 导出口径=用户所见（排序后视图 × 可见列），值经 formatCellValue 展示层格式化；
+ * 含逗号/引号/换行的单元格按 RFC4180 引号包裹并双写内部引号。
+ */
+export function toCsvText(
+  columns: Column[],
+  rows: RowData[],
+  formatCellValue: (value: unknown, column: Column) => string,
+): string {
+  const escape = (s: string) =>
+    /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  const header = columns.map((c) => escape(c.label)).join(',');
+  const body = rows.map((row) =>
+    columns.map((c) => escape(formatCellValue(row[c.key], c))).join(','),
+  );
+  return [header, ...body].join('\n');
 }
 
 export function useFormat(options: FormatOptions): FormatReturns {

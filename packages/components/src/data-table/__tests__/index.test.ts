@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test, beforeAll, afterAll } from 'vitest';
+import { describe, expect, test, beforeAll, afterAll, vi } from 'vitest';
+import { nextTick } from 'vue';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
 import DataTable from '../index.vue';
 
@@ -103,8 +104,8 @@ describe('DataTable', () => {
       const wrapper = mount(DataTable, {
         props: createProps({ layout: 'table' }),
       });
-      const tableContainer = wrapper.find('[data-slot="data-table"] > div:first-child');
-      expect(tableContainer.classes()).toContain('block');
+      const tableContainer = wrapper.find('[data-slot="data-table"] > div.block');
+      expect(tableContainer.exists()).toBe(true);
     });
 
     test('cards view container is visible in cards mode', () => {
@@ -223,7 +224,8 @@ describe('DataTable', () => {
         }),
       });
       // No expand button when all columns are primary
-      const expandButton = wrapper.find('[aria-expanded]');
+      //（选择器收窄到行卡片容器内，排除工具条按钮的 aria-expanded）
+      const expandButton = wrapper.find('[role="list"] [aria-expanded]');
       expect(expandButton.exists()).toBe(false);
     });
   });
@@ -534,6 +536,336 @@ describe('DataTable', () => {
       });
       // Should render without errors
       expect(wrapper.find('tbody tr').exists()).toBe(true);
+    });
+  });
+
+  describe('column visibility', () => {
+    test('toggle button hides a column from both table and mobile card views', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: undefined }),
+      });
+      const toggle = wrapper.find('[data-testid="column-visibility-toggle"]');
+      expect(toggle.exists()).toBe(true);
+      await toggle.trigger('click');
+      const item = wrapper.find('[data-testid="column-toggle-value"]');
+      expect(item.exists()).toBe(true);
+      await item.trigger('click');
+      // table 视图表头不再有 Value
+      const headers = wrapper.findAll('thead th');
+      expect(headers.map((h) => h.text())).not.toContain('Value');
+      // mobile cards 视图（auto 布局默认渲染）也不再有 Value 标签
+      expect(wrapper.find('[role="list"]').text()).not.toContain('Value:');
+    });
+
+    test('features.visibility=false removes the visibility menu entirely', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { visibility: false } }),
+      });
+      expect(wrapper.find('[data-testid="column-visibility-toggle"]').exists()).toBe(false);
+    });
+
+    test('hiding a column emits columnsVisibilityChange with hidden keys', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      const events = wrapper.emitted('columnsVisibilityChange');
+      expect(events).toBeTruthy();
+      expect(events![0]).toEqual([['value']]);
+    });
+
+    test('interaction state survives LLM re-emitting props with a new columns array reference', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      expect(wrapper.findAll('thead th').map((h) => h.text())).not.toContain('Value');
+      // LLM 重发：同 key 集合但全新数组引用
+      await wrapper.setProps({
+        columns: [
+          { key: 'name', label: 'Name' },
+          { key: 'value', label: 'Value' },
+        ],
+      });
+      expect(wrapper.findAll('thead th').map((h) => h.text())).not.toContain('Value');
+    });
+
+    test('hidden column is excluded from mobile card view in cards layout', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ layout: 'cards' }),
+      });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      const list = wrapper.find('[role="list"]');
+      expect(list.text()).toContain('Alpha');
+      expect(list.text()).not.toContain('200');
+    });
+  });
+
+  describe('column reorder', () => {
+    function dragHandle(wrapper: ReturnType<typeof mount>, key: string) {
+      return wrapper.find(`[data-testid="drag-handle-${key}"]`);
+    }
+    function headerTexts(wrapper: ReturnType<typeof mount>) {
+      return wrapper.findAll('thead th').map((th) => th.text());
+    }
+    // VTU trigger() 对 pointer 事件走 MouseEvent 构造且 clientX 只读，
+    // 必须用原生 PointerEvent 派发（jsdom 已支持 PointerEvent 构造器）
+    function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
+      el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
+    }
+    async function dragColumnTo(wrapper: ReturnType<typeof mount>, fromKey: string, toKey: string) {
+      const from = dragHandle(wrapper, fromKey).element;
+      dispatchPointer(from, 'pointerdown', { pointerId: 1 });
+      await nextTick();
+      const to = wrapper.find(`th[data-column-key="${toKey}"]`).element;
+      dispatchPointer(to, 'pointerenter');
+      await nextTick();
+      dispatchPointer(from, 'pointerup');
+      await nextTick();
+    }
+
+    test('drag handle renders per column when reorder enabled (default)', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(dragHandle(wrapper, 'name').exists()).toBe(true);
+      expect(dragHandle(wrapper, 'value').exists()).toBe(true);
+    });
+
+    test('features.reorder=false removes drag handles', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { reorder: false } }),
+      });
+      expect(wrapper.find('[data-testid^="drag-handle-"]').exists()).toBe(false);
+    });
+
+    test('dragging handle onto another header swaps column order in table view', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragColumnTo(wrapper, 'value', 'name');
+      const headers = headerTexts(wrapper);
+      expect(headers[0]).toContain('Value');
+      expect(headers[1]).toContain('Name');
+    });
+
+    test('reordered columns reflect in mobile card view', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          layout: 'cards',
+          columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragColumnTo(wrapper, 'value', 'name');
+      // simple card（无 secondary 列）：重排后首行主标题应为 Value 列的值
+      const firstCard = wrapper.find('[role="listitem"]');
+      expect(firstCard.find('.font-medium').text()).toBe('100');
+    });
+
+    test('reorder emits columnsReorder with new key order', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragColumnTo(wrapper, 'value', 'name');
+      const events = wrapper.emitted('columnsReorder');
+      expect(events).toBeTruthy();
+      expect(events![0]).toEqual([['value', 'name']]);
+    });
+
+    test('unsortable column can still be reordered via drag handle', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name', sortable: false },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragColumnTo(wrapper, 'name', 'value');
+      const headers = headerTexts(wrapper);
+      expect(headers[0]).toContain('Value');
+    });
+
+    test('sorting still works after drag handles introduced (click does not start drag)', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      const sortBtn = wrapper.find('thead th[data-column-key="name"] button');
+      await sortBtn.trigger('click');
+      const rows = wrapper.findAll('tbody tr');
+      expect(rows[0].text()).toContain('Alpha');
+      // 且未触发重排
+      expect(wrapper.emitted('columnsReorder')).toBeFalsy();
+    });
+  });
+
+  describe('column resize', () => {
+    function resizeHandle(wrapper: ReturnType<typeof mount>, key: string) {
+      return wrapper.find(`[data-testid="resize-handle-${key}"]`);
+    }
+    function colStyle(wrapper: ReturnType<typeof mount>, index: number) {
+      return wrapper.findAll('colgroup col')[index].attributes('style') || '';
+    }
+    function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
+      el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
+    }
+    async function dragResize(wrapper: ReturnType<typeof mount>, key: string, deltaX: number) {
+      const handle = resizeHandle(wrapper, key).element;
+      dispatchPointer(handle, 'pointerdown', { pointerId: 1, clientX: 100 });
+      await nextTick();
+      dispatchPointer(handle, 'pointermove', { pointerId: 1, clientX: 100 + deltaX });
+      await nextTick();
+      dispatchPointer(handle, 'pointerup', { pointerId: 1 });
+      await nextTick();
+    }
+
+    test('resize handle renders per column by default', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(resizeHandle(wrapper, 'name').exists()).toBe(true);
+    });
+
+    test('features.resize=false removes resize handles', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { resize: false } }),
+      });
+      expect(wrapper.find('[data-testid^="resize-handle-"]').exists()).toBe(false);
+    });
+
+    test('dragging resize handle updates colgroup width in px', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      expect(colStyle(wrapper, 0)).toMatch(/width:\s*\d+px/);
+    });
+
+    test('unadjusted column keeps its original width string', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name', width: '30%' },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragResize(wrapper, 'value', 25);
+      expect(colStyle(wrapper, 0)).toContain('30%');
+      expect(colStyle(wrapper, 1)).toMatch(/width:\s*\d+px/);
+    });
+
+    test('resize emits columnResize with px overrides', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      const events = wrapper.emitted('columnResize');
+      expect(events).toBeTruthy();
+      const payload = events![events!.length - 1][0] as Record<string, number>;
+      expect(typeof payload.name).toBe('number');
+      expect(payload.name).toBeGreaterThan(0);
+    });
+
+    test('resized width survives column reorder (key-based)', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      const widthAfter = colStyle(wrapper, 0);
+      // 重排 value 到首位后，name 列的 px 宽度跟随到第二位
+      const dragFrom = wrapper.find('[data-testid="drag-handle-value"]').element;
+      dragFrom.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 2 }));
+      await nextTick();
+      wrapper.find('th[data-column-key="name"]').element.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+      await nextTick();
+      dragFrom.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
+      await nextTick();
+      expect(colStyle(wrapper, 1)).toBe(widthAfter);
+    });
+  });
+
+  describe('CSV export', () => {
+    let createObjectURLCalls: Blob[];
+    let anchorClicks: string[];
+    beforeAll(() => {
+      createObjectURLCalls = [];
+      anchorClicks = [];
+      URL.createObjectURL = (blob: Blob) => {
+        createObjectURLCalls.push(blob);
+        return `blob:mock-${createObjectURLCalls.length}`;
+      };
+      URL.revokeObjectURL = () => {};
+      const origCreate = document.createElement.bind(document);
+      vi.spyOn(document, 'createElement').mockImplementation(((tag: string, ...rest: unknown[]) => {
+        const el = origCreate(tag, ...(rest as []));
+        if (tag === 'a') {
+          (el as HTMLAnchorElement).click = () => {
+            anchorClicks.push((el as HTMLAnchorElement).download);
+          };
+        }
+        return el;
+      }) as typeof document.createElement);
+    });
+
+    test('export button renders by default', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(wrapper.find('[data-testid="export-csv"]').exists()).toBe(true);
+    });
+
+    test('features.export=false removes export button', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { export: false } }),
+      });
+      expect(wrapper.find('[data-testid="export-csv"]').exists()).toBe(false);
+    });
+
+    test('export downloads CSV of current visible columns and formatted values', async () => {
+      createObjectURLCalls = [];
+      anchorClicks = [];
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'value', label: 'Value', format: { kind: 'number' } },
+          ],
+          data: [
+            { name: 'Alpha', value: 1000 },
+            { name: 'Beta, Inc', value: 2000 },
+          ],
+        }),
+      });
+      await wrapper.find('[data-testid="export-csv"]').trigger('click');
+      expect(anchorClicks.length).toBe(1);
+      expect(anchorClicks[0]).toMatch(/\.csv$/);
+      const text = await createObjectURLCalls[0].text();
+      const lines = text.split('\n');
+      expect(lines[0]).toBe('Name,Value');
+      // en-US 千分位格式化含逗号，按 RFC4180 引号包裹
+      expect(lines[1]).toBe('Alpha,"1,000"');
+      // 含逗号的值须被引号包裹转义
+      expect(lines[2]).toBe('"Beta, Inc","2,000"');
+    });
+
+    test('export reflects sorted and visibility-filtered view', async () => {
+      createObjectURLCalls = [];
+      const wrapper = mount(DataTable, { props: createProps() });
+      // 隐藏 name 列
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-name"]').trigger('click');
+      // 按 value 降序
+      const sortBtn = wrapper.find('th[data-column-key="value"] button');
+      await sortBtn.trigger('click');
+      await sortBtn.trigger('click');
+      await wrapper.find('[data-testid="export-csv"]').trigger('click');
+      const text = await createObjectURLCalls[0].text();
+      const lines = text.split('\n');
+      expect(lines[0]).toBe('Value');
+      expect(lines[1]).toBe('200');
+      expect(lines[2]).toBe('100');
+    });
+  });
+
+  describe('sticky header', () => {
+    test('thead is sticky so it stays visible while scrolling within maxHeight container', () => {
+      const wrapper = mount(DataTable, { props: createProps({ maxHeight: '200px' }) });
+      const thead = wrapper.find('thead');
+      expect(thead.classes()).toContain('sticky');
+      expect(thead.classes()).toContain('top-0');
+      // 不透明背景防滚动时表体文字透叠
+      expect(thead.classes()).toContain('bg-card');
+    });
+
+    test('sort header buttons show pointer cursor to signal clickability', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      const sortButton = wrapper.find('thead button');
+      expect(sortButton.classes()).toContain('cursor-pointer');
     });
   });
 

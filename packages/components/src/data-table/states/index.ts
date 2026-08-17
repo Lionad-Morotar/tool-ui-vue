@@ -22,6 +22,12 @@ export {
 } from './useLayout';
 
 export {
+  useColumns,
+  type UseColumnsOptions,
+  type ColumnsReturns,
+} from './useColumns';
+
+export {
   useDataTable,
   type DataTableEmit,
   type DataTableState,

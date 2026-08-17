@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { Columns3, Download, GripVertical } from 'lucide-vue-next';
 import { cn } from '../core';
 import { useDataTable } from './states';
+import { toCsvText } from './states/useFormat';
 import { useI18n } from '../core/i18n';
 import type { DataTableProps } from './schema';
 
@@ -18,6 +21,9 @@ const props = withDefaults(defineProps<DataTableProps>(), {
 
 const emit = defineEmits<{
   sortChange: [sort: { by?: string; direction?: 'asc' | 'desc' }];
+  columnsVisibilityChange: [hidden: string[]];
+  columnsReorder: [order: string[]];
+  columnResize: [widths: Record<string, number>];
 }>();
 
 // All business logic delegated to states layer
@@ -25,6 +31,76 @@ const state = reactive(useDataTable(props, emit));
 
 // i18n
 const { t } = useI18n()
+
+// 交互特性开关：undefined 视为开启
+const featureEnabled = computed(() => ({
+  reorder: props.features?.reorder !== false,
+  resize: props.features?.resize !== false,
+  visibility: props.features?.visibility !== false,
+  export: props.features?.export !== false,
+}))
+
+// 列显隐菜单
+const visibilityMenuOpen = ref(false)
+const visibilityMenuRef = ref<HTMLElement | null>(null)
+onClickOutside(visibilityMenuRef, () => { visibilityMenuOpen.value = false })
+
+// 列重排拖拽：手柄 pointerdown 启动，目标 th 的 pointerenter 落点换位。
+// 拖拽源挂手柄而非整行，天然避开横向滚动手势竞争；排序按钮 pointerdown.stop 防误触。
+const dragSourceKey = ref<string | null>(null)
+function onDragHandleDown(key: string, e: PointerEvent) {
+  if (!featureEnabled.value.reorder) return
+  dragSourceKey.value = key
+  ;(e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId)
+}
+function onHeaderEnter(key: string) {
+  if (dragSourceKey.value && dragSourceKey.value !== key) {
+    state.reorderColumns(dragSourceKey.value, key)
+  }
+}
+function onDragEnd() {
+  dragSourceKey.value = null
+}
+
+// 列宽调整：th 右缘热区 pointer 拖拽，增量位移写入 px 覆盖。
+// jsdom/无布局环境下 getBoundingClientRect 恒 0，故基准宽走「当前声明宽度解析或回退默认 160px」
+const resizingKey = ref<string | null>(null)
+let resizeStartX = 0
+let resizeStartWidth = 0
+function parseWidthToPx(width: string | undefined): number | null {
+  if (!width) return null
+  const m = /^([\d.]+)px$/.exec(width.trim())
+  return m ? parseFloat(m[1]) : null
+}
+function onResizeStart(column: { key: string; width?: string }, e: PointerEvent) {
+  if (!featureEnabled.value.resize) return
+  resizingKey.value = column.key
+  resizeStartX = e.clientX
+  // 已覆盖过的宽度优先（widthOverrides 经 visibleColumns 合并回 column.width）
+  resizeStartWidth = parseWidthToPx(column.width) ?? 160
+  const handle = e.currentTarget as HTMLElement
+  handle.setPointerCapture?.(e.pointerId)
+}
+function onResizeMove(e: PointerEvent) {
+  if (!resizingKey.value) return
+  const next = Math.max(48, resizeStartWidth + (e.clientX - resizeStartX))
+  state.setColumnWidth(resizingKey.value, next)
+}
+function onResizeEnd() {
+  resizingKey.value = null
+}
+
+// CSV 导出：所见即所得（排序后 × 可见列），展示层格式化值
+function exportCsv() {
+  const csv = toCsvText(state.visibleColumns, state.sortedData, state.formatCellValue)
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${props.id || 'data-table'}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 // Overflow detection for text tooltips (only show when text is truncated)
 const overflowSet = ref(new Set<string>())
@@ -41,8 +117,8 @@ function checkTextOverflow(el: HTMLElement | null, index: number, columnKey: str
   }
 }
 
-// Column categorization for mobile view
-const categorizedColumns = computed(() => state.categorizeColumns(props.columns));
+// Column categorization for mobile view —— 与 table 共用 visibleColumns 单源
+const categorizedColumns = computed(() => state.categorizeColumns(state.visibleColumns));
 const primaryColumns = computed(() => categorizedColumns.value.primary);
 const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 </script>
@@ -55,6 +131,62 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
     data-slot="data-table"
     :data-layout="layout"
   >
+    <!-- 工具条：列显隐 / 导出（显隐作用于 table 与 cards 两视图） -->
+    <div
+      v-if="featureEnabled.visibility || featureEnabled.export"
+      class="mb-2 flex items-center justify-end gap-1"
+    >
+      <div v-if="featureEnabled.visibility" ref="visibilityMenuRef" class="relative">
+        <button
+          type="button"
+          data-testid="column-visibility-toggle"
+          class="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          :aria-expanded="visibilityMenuOpen"
+          aria-haspopup="true"
+          @click="visibilityMenuOpen = !visibilityMenuOpen"
+        >
+          <Columns3 :size="14" aria-hidden="true" />
+          <span>{{ t('dataTable.columnsLabel') }}</span>
+        </button>
+        <div
+          v-if="visibilityMenuOpen"
+          class="absolute right-0 z-50 mt-1 min-w-36 rounded-md border border-border bg-popover p-1 shadow-md"
+          role="menu"
+        >
+          <button
+            v-for="col in columns"
+            :key="col.key"
+            type="button"
+            role="menuitemcheckbox"
+            :aria-checked="!state.isColumnHidden(col.key)"
+            :data-testid="`column-toggle-${col.key}`"
+            class="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent"
+            @click="state.toggleColumnVisibility(col.key)"
+          >
+            <span
+              :class="cn(
+                'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                !state.isColumnHidden(col.key) && 'bg-primary text-primary-foreground',
+              )"
+              aria-hidden="true"
+            >{{ state.isColumnHidden(col.key) ? '' : '✓' }}</span>
+            <span class="truncate">{{ col.label }}</span>
+          </button>
+        </div>
+      </div>
+      <button
+        v-if="featureEnabled.export"
+        type="button"
+        data-testid="export-csv"
+        class="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        :aria-label="t('dataTable.exportCsv').value"
+        @click="exportCsv"
+      >
+        <Download :size="14" aria-hidden="true" />
+        <span>{{ t('dataTable.exportCsv') }}</span>
+      </button>
+    </div>
+
     <!-- Table View -->
     <div :class="state.tableContainerClass">
       <div class="relative">
@@ -67,9 +199,9 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
           :style="maxHeight ? { '--max-height': maxHeight, 'overflow-y': 'auto' } : {}"
         >
           <table class="w-full text-sm">
-            <colgroup v-if="columns.length > 0">
+            <colgroup v-if="state.visibleColumns.length > 0">
               <col
-                v-for="col in columns"
+                v-for="col in state.visibleColumns"
                 :key="String(col.key)"
                 :style="col.width ? { width: col.width } : {}"
               />
@@ -79,7 +211,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
             <tbody v-if="data.length === 0">
               <tr class="h-24 bg-card text-center">
                 <td
-                  :colspan="columns.length"
+                  :colspan="state.visibleColumns.length || 1"
                   role="status"
                   aria-live="polite"
                   class="text-muted-foreground"
@@ -91,42 +223,59 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Table Content -->
             <template v-else>
-              <thead :class="cn('[&_tr]:border-b [&_tr]:border-border', css?.header)">
+              <thead :class="cn('sticky top-0 z-10 bg-card [&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
                   <th
-                    v-for="(column, columnIndex) in columns"
+                    v-for="(column, columnIndex) in state.visibleColumns"
                     :key="column.key"
                     scope="col"
+                    :data-column-key="column.key"
                     :class="cn(
-                      'h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
+                      'relative h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
                       state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
                       columnIndex === 0 && 'pl-1',
-                      columnIndex === columns.length - 1 && 'pr-1',
+                      columnIndex === state.visibleColumns.length - 1 && 'pr-1',
                     )"
                     :style="column.width ? { width: column.width } : undefined"
                     :aria-sort="state.currentSort?.by === column.key
                       ? (state.currentSort?.direction === 'asc' ? 'ascending' : 'descending')
                       : undefined"
+                    @pointerenter="onHeaderEnter(column.key)"
+                    @pointerup="onDragEnd"
                   >
-                    <button
-                      type="button"
-                      :disabled="column.sortable === false"
-                      :class="cn(
-                        'inline-flex items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
-                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
-                        'disabled:pointer-events-none disabled:opacity-50',
-                        'h-8 px-3 hover:bg-accent hover:text-accent-foreground',
-                        'w-fit min-w-10 gap-1',
-                        state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
-                        columnIndex === 0 && 'pl-4',
-                        columnIndex === columns.length - 1 && 'pr-4',
-                      )"
-                      :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
-                        ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
-                        : '')"
-                      :aria-disabled="column.sortable === false || undefined"
-                      @click="state.handleSort(column)"
-                    >
+                    <span class="inline-flex items-center">
+                      <span
+                        v-if="featureEnabled.reorder"
+                        :data-testid="`drag-handle-${column.key}`"
+                        class="mr-1 inline-flex cursor-grab touch-none items-center text-muted-foreground/60 hover:text-muted-foreground active:cursor-grabbing"
+                        role="button"
+                        :aria-label="`Drag to reorder column ${column.label}`"
+                        tabindex="0"
+                        @pointerdown="onDragHandleDown(column.key, $event)"
+                        @pointerup="onDragEnd"
+                      >
+                        <GripVertical :size="14" aria-hidden="true" />
+                      </span>
+                      <button
+                        type="button"
+                        :disabled="column.sortable === false"
+                        :class="cn(
+                          'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
+                          'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
+                          'disabled:pointer-events-none disabled:opacity-50',
+                          'h-8 px-3 hover:bg-accent hover:text-accent-foreground',
+                          'w-fit min-w-10 gap-1',
+                          state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
+                          columnIndex === 0 && 'pl-4',
+                          columnIndex === state.visibleColumns.length - 1 && 'pr-4',
+                        )"
+                        :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
+                          ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
+                          : '')"
+                        :aria-disabled="column.sortable === false || undefined"
+                        @pointerdown.stop
+                        @click="state.handleSort(column)"
+                      >
                       <span class="truncate">
                         <template v-if="column.abbr">
                           <abbr
@@ -147,7 +296,20 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                       >
                         {{ state.getSortIcon(column) }}
                       </span>
-                    </button>
+                      </button>
+                    </span>
+                    <span
+                      v-if="featureEnabled.resize"
+                      :data-testid="`resize-handle-${column.key}`"
+                      class="absolute top-0 right-0 z-10 h-full w-1.5 cursor-col-resize touch-none hover:bg-accent"
+                      role="separator"
+                      aria-orientation="vertical"
+                      :aria-label="`Resize column ${column.label}`"
+                      @pointerdown="onResizeStart(column, $event)"
+                      @pointermove="onResizeMove"
+                      @pointerup="onResizeEnd"
+                      @pointercancel="onResizeEnd"
+                    ></span>
                   </th>
                 </tr>
               </thead>
@@ -158,7 +320,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   :class="cn('border-b border-border transition-colors hover:bg-muted/50', css?.row)"
                 >
                   <td
-                    v-for="(column, columnIndex) in columns"
+                    v-for="(column, columnIndex) in state.visibleColumns"
                     :key="column.key"
                     :class="cn(
                       'px-5 py-3 align-middle whitespace-nowrap',

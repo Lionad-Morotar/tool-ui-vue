@@ -10,5 +10,6 @@ export const en = {
     sortAscending: 'ascending',
     sortDescending: 'descending',
     opensInNewTab: '{label} (opens in new tab)',
+    exportCsv: 'Export CSV',
   },
 } as const

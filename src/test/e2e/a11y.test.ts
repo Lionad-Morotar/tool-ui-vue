@@ -689,7 +689,7 @@ describe('E2E: Accessibility', () => {
         },
       });
 
-      const expandButton = wrapper.find('[aria-expanded]');
+      const expandButton = wrapper.find('[role="list"] [aria-expanded]');
       expect(expandButton.exists()).toBe(true);
       expect(expandButton.attributes('aria-expanded')).toBe('false');
       expect(expandButton.attributes('aria-controls')).toBeDefined();
@@ -711,7 +711,7 @@ describe('E2E: Accessibility', () => {
       });
 
       // Expand the row
-      const expandButton = wrapper.find('[aria-expanded]');
+      const expandButton = wrapper.find('[role="list"] [aria-expanded]');
       await expandButton.trigger('click');
 
       const region = wrapper.find('[role="region"]');
