@@ -61,6 +61,34 @@ function onDragEnd() {
   dragSourceKey.value = null
 }
 
+// 列宽调整：th 右缘热区 pointer 拖拽，增量位移写入 px 覆盖。
+// jsdom/无布局环境下 getBoundingClientRect 恒 0，故基准宽走「当前声明宽度解析或回退默认 160px」
+const resizingKey = ref<string | null>(null)
+let resizeStartX = 0
+let resizeStartWidth = 0
+function parseWidthToPx(width: string | undefined): number | null {
+  if (!width) return null
+  const m = /^([\d.]+)px$/.exec(width.trim())
+  return m ? parseFloat(m[1]) : null
+}
+function onResizeStart(column: { key: string; width?: string }, e: PointerEvent) {
+  if (!featureEnabled.value.resize) return
+  resizingKey.value = column.key
+  resizeStartX = e.clientX
+  // 已覆盖过的宽度优先（widthOverrides 经 visibleColumns 合并回 column.width）
+  resizeStartWidth = parseWidthToPx(column.width) ?? 160
+  const handle = e.currentTarget as HTMLElement
+  handle.setPointerCapture?.(e.pointerId)
+}
+function onResizeMove(e: PointerEvent) {
+  if (!resizingKey.value) return
+  const next = Math.max(48, resizeStartWidth + (e.clientX - resizeStartX))
+  state.setColumnWidth(resizingKey.value, next)
+}
+function onResizeEnd() {
+  resizingKey.value = null
+}
+
 // Overflow detection for text tooltips (only show when text is truncated)
 const overflowSet = ref(new Set<string>())
 function checkTextOverflow(el: HTMLElement | null, index: number, columnKey: string) {
@@ -179,7 +207,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     scope="col"
                     :data-column-key="column.key"
                     :class="cn(
-                      'h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
+                      'relative h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
                       state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
                       columnIndex === 0 && 'pl-1',
                       columnIndex === state.visibleColumns.length - 1 && 'pr-1',
@@ -246,6 +274,18 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                       </span>
                       </button>
                     </span>
+                    <span
+                      v-if="featureEnabled.resize"
+                      :data-testid="`resize-handle-${column.key}`"
+                      class="absolute top-0 right-0 z-10 h-full w-1.5 cursor-col-resize touch-none hover:bg-accent"
+                      role="separator"
+                      aria-orientation="vertical"
+                      :aria-label="`Resize column ${column.label}`"
+                      @pointerdown="onResizeStart(column, $event)"
+                      @pointermove="onResizeMove"
+                      @pointerup="onResizeEnd"
+                      @pointercancel="onResizeEnd"
+                    ></span>
                   </th>
                 </tr>
               </thead>

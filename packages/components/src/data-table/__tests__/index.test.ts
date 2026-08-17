@@ -693,6 +693,84 @@ describe('DataTable', () => {
     });
   });
 
+  describe('column resize', () => {
+    function resizeHandle(wrapper: ReturnType<typeof mount>, key: string) {
+      return wrapper.find(`[data-testid="resize-handle-${key}"]`);
+    }
+    function colStyle(wrapper: ReturnType<typeof mount>, index: number) {
+      return wrapper.findAll('colgroup col')[index].attributes('style') || '';
+    }
+    function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
+      el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
+    }
+    async function dragResize(wrapper: ReturnType<typeof mount>, key: string, deltaX: number) {
+      const handle = resizeHandle(wrapper, key).element;
+      dispatchPointer(handle, 'pointerdown', { pointerId: 1, clientX: 100 });
+      await nextTick();
+      dispatchPointer(handle, 'pointermove', { pointerId: 1, clientX: 100 + deltaX });
+      await nextTick();
+      dispatchPointer(handle, 'pointerup', { pointerId: 1 });
+      await nextTick();
+    }
+
+    test('resize handle renders per column by default', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(resizeHandle(wrapper, 'name').exists()).toBe(true);
+    });
+
+    test('features.resize=false removes resize handles', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { resize: false } }),
+      });
+      expect(wrapper.find('[data-testid^="resize-handle-"]').exists()).toBe(false);
+    });
+
+    test('dragging resize handle updates colgroup width in px', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      expect(colStyle(wrapper, 0)).toMatch(/width:\s*\d+px/);
+    });
+
+    test('unadjusted column keeps its original width string', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name', width: '30%' },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragResize(wrapper, 'value', 25);
+      expect(colStyle(wrapper, 0)).toContain('30%');
+      expect(colStyle(wrapper, 1)).toMatch(/width:\s*\d+px/);
+    });
+
+    test('resize emits columnResize with px overrides', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      const events = wrapper.emitted('columnResize');
+      expect(events).toBeTruthy();
+      const payload = events![events!.length - 1][0] as Record<string, number>;
+      expect(typeof payload.name).toBe('number');
+      expect(payload.name).toBeGreaterThan(0);
+    });
+
+    test('resized width survives column reorder (key-based)', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragResize(wrapper, 'name', 40);
+      const widthAfter = colStyle(wrapper, 0);
+      // 重排 value 到首位后，name 列的 px 宽度跟随到第二位
+      const dragFrom = wrapper.find('[data-testid="drag-handle-value"]').element;
+      dragFrom.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 2 }));
+      await nextTick();
+      wrapper.find('th[data-column-key="name"]').element.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+      await nextTick();
+      dragFrom.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
+      await nextTick();
+      expect(colStyle(wrapper, 1)).toBe(widthAfter);
+    });
+  });
+
   describe('sticky header', () => {
     test('thead is sticky so it stays visible while scrolling within maxHeight container', () => {
       const wrapper = mount(DataTable, { props: createProps({ maxHeight: '200px' }) });
