@@ -537,6 +537,23 @@ describe('DataTable', () => {
     });
   });
 
+  describe('sticky header', () => {
+    test('thead is sticky so it stays visible while scrolling within maxHeight container', () => {
+      const wrapper = mount(DataTable, { props: createProps({ maxHeight: '200px' }) });
+      const thead = wrapper.find('thead');
+      expect(thead.classes()).toContain('sticky');
+      expect(thead.classes()).toContain('top-0');
+      // 不透明背景防滚动时表体文字透叠
+      expect(thead.classes()).toContain('bg-card');
+    });
+
+    test('sort header buttons show pointer cursor to signal clickability', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      const sortButton = wrapper.find('thead button');
+      expect(sortButton.classes()).toContain('cursor-pointer');
+    });
+  });
+
   describe('maxHeight', () => {
     test('applies max-height style when provided', () => {
       const wrapper = mount(DataTable, {

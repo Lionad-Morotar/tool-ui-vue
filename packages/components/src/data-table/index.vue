@@ -91,7 +91,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
             <!-- Table Content -->
             <template v-else>
-              <thead :class="cn('[&_tr]:border-b [&_tr]:border-border', css?.header)">
+              <thead :class="cn('sticky top-0 z-10 bg-card [&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
                   <th
                     v-for="(column, columnIndex) in columns"
@@ -112,7 +112,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                       type="button"
                       :disabled="column.sortable === false"
                       :class="cn(
-                        'inline-flex items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
+                        'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
                         'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
                         'disabled:pointer-events-none disabled:opacity-50',
                         'h-8 px-3 hover:bg-accent hover:text-accent-foreground',
