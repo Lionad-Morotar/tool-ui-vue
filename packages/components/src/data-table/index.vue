@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { Columns3 } from 'lucide-vue-next';
+import { Columns3, GripVertical } from 'lucide-vue-next';
 import { cn } from '../core';
 import { useDataTable } from './states';
 import { useI18n } from '../core/i18n';
@@ -43,6 +43,23 @@ const featureEnabled = computed(() => ({
 const visibilityMenuOpen = ref(false)
 const visibilityMenuRef = ref<HTMLElement | null>(null)
 onClickOutside(visibilityMenuRef, () => { visibilityMenuOpen.value = false })
+
+// 列重排拖拽：手柄 pointerdown 启动，目标 th 的 pointerenter 落点换位。
+// 拖拽源挂手柄而非整行，天然避开横向滚动手势竞争；排序按钮 pointerdown.stop 防误触。
+const dragSourceKey = ref<string | null>(null)
+function onDragHandleDown(key: string, e: PointerEvent) {
+  if (!featureEnabled.value.reorder) return
+  dragSourceKey.value = key
+  ;(e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId)
+}
+function onHeaderEnter(key: string) {
+  if (dragSourceKey.value && dragSourceKey.value !== key) {
+    state.reorderColumns(dragSourceKey.value, key)
+  }
+}
+function onDragEnd() {
+  dragSourceKey.value = null
+}
 
 // Overflow detection for text tooltips (only show when text is truncated)
 const overflowSet = ref(new Set<string>())
@@ -171,26 +188,42 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     :aria-sort="state.currentSort?.by === column.key
                       ? (state.currentSort?.direction === 'asc' ? 'ascending' : 'descending')
                       : undefined"
+                    @pointerenter="onHeaderEnter(column.key)"
+                    @pointerup="onDragEnd"
                   >
-                    <button
-                      type="button"
-                      :disabled="column.sortable === false"
-                      :class="cn(
-                        'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
-                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
-                        'disabled:pointer-events-none disabled:opacity-50',
-                        'h-8 px-3 hover:bg-accent hover:text-accent-foreground',
-                        'w-fit min-w-10 gap-1',
-                        state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
-                        columnIndex === 0 && 'pl-4',
-                        columnIndex === state.visibleColumns.length - 1 && 'pr-4',
-                      )"
-                      :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
-                        ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
-                        : '')"
-                      :aria-disabled="column.sortable === false || undefined"
-                      @click="state.handleSort(column)"
-                    >
+                    <span class="inline-flex items-center">
+                      <span
+                        v-if="featureEnabled.reorder"
+                        :data-testid="`drag-handle-${column.key}`"
+                        class="mr-1 inline-flex cursor-grab touch-none items-center text-muted-foreground/60 hover:text-muted-foreground active:cursor-grabbing"
+                        role="button"
+                        :aria-label="`Drag to reorder column ${column.label}`"
+                        tabindex="0"
+                        @pointerdown="onDragHandleDown(column.key, $event)"
+                        @pointerup="onDragEnd"
+                      >
+                        <GripVertical :size="14" aria-hidden="true" />
+                      </span>
+                      <button
+                        type="button"
+                        :disabled="column.sortable === false"
+                        :class="cn(
+                          'inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors',
+                          'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none',
+                          'disabled:pointer-events-none disabled:opacity-50',
+                          'h-8 px-3 hover:bg-accent hover:text-accent-foreground',
+                          'w-fit min-w-10 gap-1',
+                          state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
+                          columnIndex === 0 && 'pl-4',
+                          columnIndex === state.visibleColumns.length - 1 && 'pr-4',
+                        )"
+                        :aria-label="`Sort by ${column.label}` + (state.currentSort?.by === column.key && state.currentSort?.direction
+                          ? ` (${state.currentSort.direction === 'asc' ? 'ascending' : 'descending'})`
+                          : '')"
+                        :aria-disabled="column.sortable === false || undefined"
+                        @pointerdown.stop
+                        @click="state.handleSort(column)"
+                      >
                       <span class="truncate">
                         <template v-if="column.abbr">
                           <abbr
@@ -211,7 +244,8 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                       >
                         {{ state.getSortIcon(column) }}
                       </span>
-                    </button>
+                      </button>
+                    </span>
                   </th>
                 </tr>
               </thead>

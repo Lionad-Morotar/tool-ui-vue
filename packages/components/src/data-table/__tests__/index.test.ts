@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, beforeAll, afterAll } from 'vitest';
+import { nextTick } from 'vue';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
 import DataTable from '../index.vue';
 
@@ -596,6 +597,99 @@ describe('DataTable', () => {
       const list = wrapper.find('[role="list"]');
       expect(list.text()).toContain('Alpha');
       expect(list.text()).not.toContain('200');
+    });
+  });
+
+  describe('column reorder', () => {
+    function dragHandle(wrapper: ReturnType<typeof mount>, key: string) {
+      return wrapper.find(`[data-testid="drag-handle-${key}"]`);
+    }
+    function headerTexts(wrapper: ReturnType<typeof mount>) {
+      return wrapper.findAll('thead th').map((th) => th.text());
+    }
+    // VTU trigger() 对 pointer 事件走 MouseEvent 构造且 clientX 只读，
+    // 必须用原生 PointerEvent 派发（jsdom 已支持 PointerEvent 构造器）
+    function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
+      el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
+    }
+    async function dragColumnTo(wrapper: ReturnType<typeof mount>, fromKey: string, toKey: string) {
+      const from = dragHandle(wrapper, fromKey).element;
+      dispatchPointer(from, 'pointerdown', { pointerId: 1 });
+      await nextTick();
+      const to = wrapper.find(`th[data-column-key="${toKey}"]`).element;
+      dispatchPointer(to, 'pointerenter');
+      await nextTick();
+      dispatchPointer(from, 'pointerup');
+      await nextTick();
+    }
+
+    test('drag handle renders per column when reorder enabled (default)', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(dragHandle(wrapper, 'name').exists()).toBe(true);
+      expect(dragHandle(wrapper, 'value').exists()).toBe(true);
+    });
+
+    test('features.reorder=false removes drag handles', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { reorder: false } }),
+      });
+      expect(wrapper.find('[data-testid^="drag-handle-"]').exists()).toBe(false);
+    });
+
+    test('dragging handle onto another header swaps column order in table view', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragColumnTo(wrapper, 'value', 'name');
+      const headers = headerTexts(wrapper);
+      expect(headers[0]).toContain('Value');
+      expect(headers[1]).toContain('Name');
+    });
+
+    test('reordered columns reflect in mobile card view', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          layout: 'cards',
+          columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragColumnTo(wrapper, 'value', 'name');
+      // simple card（无 secondary 列）：重排后首行主标题应为 Value 列的值
+      const firstCard = wrapper.find('[role="listitem"]');
+      expect(firstCard.find('.font-medium').text()).toBe('100');
+    });
+
+    test('reorder emits columnsReorder with new key order', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await dragColumnTo(wrapper, 'value', 'name');
+      const events = wrapper.emitted('columnsReorder');
+      expect(events).toBeTruthy();
+      expect(events![0]).toEqual([['value', 'name']]);
+    });
+
+    test('unsortable column can still be reordered via drag handle', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name', sortable: false },
+            { key: 'value', label: 'Value' },
+          ],
+        }),
+      });
+      await dragColumnTo(wrapper, 'name', 'value');
+      const headers = headerTexts(wrapper);
+      expect(headers[0]).toContain('Value');
+    });
+
+    test('sorting still works after drag handles introduced (click does not start drag)', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      const sortBtn = wrapper.find('thead th[data-column-key="name"] button');
+      await sortBtn.trigger('click');
+      const rows = wrapper.findAll('tbody tr');
+      expect(rows[0].text()).toContain('Alpha');
+      // 且未触发重排
+      expect(wrapper.emitted('columnsReorder')).toBeFalsy();
     });
   });
 
