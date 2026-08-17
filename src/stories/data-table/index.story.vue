@@ -16,6 +16,9 @@ const withMaxHeight = useStoryLocale('content.withMaxHeight', messages)
 const withArrayOverflow = useStoryLocale('content.withArrayOverflow', messages)
 const withTextOverflow = useStoryLocale('content.withTextOverflow', messages)
 const interactiveLayoutPlayground = useStoryLocale('content.interactiveLayoutPlayground', messages)
+const featureFlags = useStoryLocale('content.featureFlags', messages)
+const interactionHint = useStoryLocale('content.interactionHint', messages)
+const featureFlagsHint = useStoryLocale('content.featureFlagsHint', messages)
 const colName = useStoryLocale('content.colName', messages)
 const colStatus = useStoryLocale('content.colStatus', messages)
 const colRevenue = useStoryLocale('content.colRevenue', messages)
@@ -64,7 +67,7 @@ function handleSortChange(sort: { by?: string; direction?: 'asc' | 'desc' }) {
 }
 
 const playgroundState = reactive({
-  layout: 'cards' as 'auto' | 'table' | 'cards',
+  layout: 'table' as 'auto' | 'table' | 'cards',
 });
 
 // Basic columns
@@ -132,10 +135,21 @@ const maxHeightColumns = computed<any[]>(() => [
 const playgroundColumns = computed<any[]>(() => [
   { key: 'project', label: colProject.value, priority: 'primary' },
   { key: 'owner', label: colOwner.value, priority: 'primary' },
-  { key: 'status', label: colStatus.value, priority: 'secondary' },
+  { key: 'status', label: colStatus.value, priority: 'secondary', format: { kind: 'status', statusMap: {
+    'In Progress': { tone: 'info' },
+    Planning: { tone: 'warning' },
+    Completed: { tone: 'success' },
+  }}},
   { key: 'budget', label: colBudget.value, priority: 'secondary', format: { kind: 'currency', currency: 'USD' } },
   { key: 'deadline', label: colDeadline.value, priority: 'tertiary' },
   { key: 'notes', label: colNotes.value, hideOnMobile: true },
+])
+
+// Feature flags demo columns
+const featureFlagsColumns = computed<any[]>(() => [
+  { key: 'name', label: colName.value, sortable: true },
+  { key: 'status', label: colStatus.value, sortable: true },
+  { key: 'revenue', label: colRevenue.value, sortable: true, format: { kind: 'currency', currency: 'USD' } },
 ])
 
 // Array overflow columns
@@ -164,6 +178,7 @@ const props = [
   { name: 'maxHeight', type: 'string', description: { zh: '表格最大高度（例如 200px）', en: 'Maximum height of the table (e.g. 200px)' } },
   { name: 'locale', type: "'en' | 'zh'", description: { zh: '显示语言', en: 'Display locale' } },
   { name: 'layout', type: "'auto' | 'table' | 'cards'", description: { zh: '响应式布局模式', en: 'Responsive layout mode' } },
+  { name: 'features', type: '{ reorder?: boolean, resize?: boolean, visibility?: boolean, export?: boolean }', description: { zh: '交互特性开关（拖拽重排/列宽调整/列显隐/CSV 导出），缺省全开', en: 'Interaction feature flags (reorder/resize/visibility/export), all on by default' } },
   { name: 'css', type: '{ root?: string, header?: string, body?: string, row?: string, footer?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 
@@ -330,10 +345,7 @@ const propsTitle = Props
 
     <Variant :title="interactiveLayoutPlayground" auto-props-disabled>
       <div class="w-full max-w-2xl space-y-4">
-        <p class="text-sm text-muted-foreground">
-          Use the right panel to change <code>layout</code>. Default is <code>cards</code> (accordion view).
-          This demo combines primary, secondary, tertiary, and hideOnMobile columns.
-        </p>
+        <p class="text-sm text-muted-foreground">{{ interactionHint }}</p>
         <data-table
           id="data-table-playground"
           v-bind="playgroundState"
@@ -342,8 +354,30 @@ const propsTitle = Props
             { project: 'Website Redesign', owner: 'Alice', status: 'In Progress', budget: 45000, deadline: '2024-03-15', notes: 'Needs brand assets' },
             { project: 'Mobile App', owner: 'Bob', status: 'Planning', budget: 120000, deadline: '2024-06-30', notes: 'iOS-first approach' },
             { project: 'API Migration', owner: 'Carol', status: 'Completed', budget: 28000, deadline: '2024-01-20', notes: 'Zero downtime' },
+            { project: 'Design System', owner: 'Dan', status: 'In Progress', budget: 62000, deadline: '2024-05-10', notes: 'Token pipeline' },
+            { project: 'Billing Revamp', owner: 'Eve', status: 'Planning', budget: 88000, deadline: '2024-08-01', notes: 'Proration rules' },
+            { project: 'Search Infra', owner: 'Frank', status: 'Completed', budget: 54000, deadline: '2024-02-28', notes: 'Reindex strategy' },
+            { project: 'Data Pipeline', owner: 'Grace', status: 'In Progress', budget: 97000, deadline: '2024-07-15', notes: 'CDC connectors' },
+            { project: 'Auth Overhaul', owner: 'Heidi', status: 'Planning', budget: 41000, deadline: '2024-09-20', notes: 'Passkey rollout' },
           ]"
           row-id-key="project"
+          max-height="320px"
+        />
+      </div>
+    </Variant>
+
+    <Variant :title="featureFlags">
+      <p class="mb-3 text-xs text-muted-foreground">{{ featureFlagsHint }}</p>
+      <div class="w-full max-w-2xl">
+        <data-table
+          id="data-table-feature-flags"
+          :columns="featureFlagsColumns"
+          :data="[
+            { name: 'Product A', status: 'Active', revenue: 12450 },
+            { name: 'Product B', status: 'Draft', revenue: 8230 },
+            { name: 'Product C', status: 'Active', revenue: 24100 },
+          ]"
+          :features="{ reorder: false, export: false }"
         />
       </div>
     </Variant>
