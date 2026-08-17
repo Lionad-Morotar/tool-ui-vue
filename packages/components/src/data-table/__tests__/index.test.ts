@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test, beforeAll, afterAll } from 'vitest';
+import { describe, expect, test, beforeAll, afterAll, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
 import DataTable from '../index.vue';
@@ -768,6 +768,87 @@ describe('DataTable', () => {
       dragFrom.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 2 }));
       await nextTick();
       expect(colStyle(wrapper, 1)).toBe(widthAfter);
+    });
+  });
+
+  describe('CSV export', () => {
+    let createObjectURLCalls: Blob[];
+    let anchorClicks: string[];
+    beforeAll(() => {
+      createObjectURLCalls = [];
+      anchorClicks = [];
+      URL.createObjectURL = (blob: Blob) => {
+        createObjectURLCalls.push(blob);
+        return `blob:mock-${createObjectURLCalls.length}`;
+      };
+      URL.revokeObjectURL = () => {};
+      const origCreate = document.createElement.bind(document);
+      vi.spyOn(document, 'createElement').mockImplementation(((tag: string, ...rest: unknown[]) => {
+        const el = origCreate(tag, ...(rest as []));
+        if (tag === 'a') {
+          (el as HTMLAnchorElement).click = () => {
+            anchorClicks.push((el as HTMLAnchorElement).download);
+          };
+        }
+        return el;
+      }) as typeof document.createElement);
+    });
+
+    test('export button renders by default', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(wrapper.find('[data-testid="export-csv"]').exists()).toBe(true);
+    });
+
+    test('features.export=false removes export button', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { export: false } }),
+      });
+      expect(wrapper.find('[data-testid="export-csv"]').exists()).toBe(false);
+    });
+
+    test('export downloads CSV of current visible columns and formatted values', async () => {
+      createObjectURLCalls = [];
+      anchorClicks = [];
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'value', label: 'Value', format: { kind: 'number' } },
+          ],
+          data: [
+            { name: 'Alpha', value: 1000 },
+            { name: 'Beta, Inc', value: 2000 },
+          ],
+        }),
+      });
+      await wrapper.find('[data-testid="export-csv"]').trigger('click');
+      expect(anchorClicks.length).toBe(1);
+      expect(anchorClicks[0]).toMatch(/\.csv$/);
+      const text = await createObjectURLCalls[0].text();
+      const lines = text.split('\n');
+      expect(lines[0]).toBe('Name,Value');
+      // en-US 千分位格式化含逗号，按 RFC4180 引号包裹
+      expect(lines[1]).toBe('Alpha,"1,000"');
+      // 含逗号的值须被引号包裹转义
+      expect(lines[2]).toBe('"Beta, Inc","2,000"');
+    });
+
+    test('export reflects sorted and visibility-filtered view', async () => {
+      createObjectURLCalls = [];
+      const wrapper = mount(DataTable, { props: createProps() });
+      // 隐藏 name 列
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-name"]').trigger('click');
+      // 按 value 降序
+      const sortBtn = wrapper.find('th[data-column-key="value"] button');
+      await sortBtn.trigger('click');
+      await sortBtn.trigger('click');
+      await wrapper.find('[data-testid="export-csv"]').trigger('click');
+      const text = await createObjectURLCalls[0].text();
+      const lines = text.split('\n');
+      expect(lines[0]).toBe('Value');
+      expect(lines[1]).toBe('200');
+      expect(lines[2]).toBe('100');
     });
   });
 

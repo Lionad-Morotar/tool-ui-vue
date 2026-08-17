@@ -10,5 +10,6 @@ export const zhCN = {
     sortAscending: '升序',
     sortDescending: '降序',
     opensInNewTab: '{label}（在新标签页中打开）',
+    exportCsv: '导出 CSV',
   },
 } as const

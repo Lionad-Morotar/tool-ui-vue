@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { Columns3, GripVertical } from 'lucide-vue-next';
+import { Columns3, Download, GripVertical } from 'lucide-vue-next';
 import { cn } from '../core';
 import { useDataTable } from './states';
+import { toCsvText } from './states/useFormat';
 import { useI18n } from '../core/i18n';
 import type { DataTableProps } from './schema';
 
@@ -89,6 +90,18 @@ function onResizeEnd() {
   resizingKey.value = null
 }
 
+// CSV 导出：所见即所得（排序后 × 可见列），展示层格式化值
+function exportCsv() {
+  const csv = toCsvText(state.visibleColumns, state.sortedData, state.formatCellValue)
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${props.id || 'data-table'}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 // Overflow detection for text tooltips (only show when text is truncated)
 const overflowSet = ref(new Set<string>())
 function checkTextOverflow(el: HTMLElement | null, index: number, columnKey: string) {
@@ -161,6 +174,17 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
           </button>
         </div>
       </div>
+      <button
+        v-if="featureEnabled.export"
+        type="button"
+        data-testid="export-csv"
+        class="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        :aria-label="t('dataTable.exportCsv').value"
+        @click="exportCsv"
+      >
+        <Download :size="14" aria-hidden="true" />
+        <span>{{ t('dataTable.exportCsv') }}</span>
+      </button>
     </div>
 
     <!-- Table View -->
