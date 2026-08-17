@@ -1,13 +1,17 @@
-// DataTable 聚合 composable - 组装 useSort, useFormat, useLayout
+// DataTable 聚合 composable - 组装 useSort, useFormat, useLayout, useColumns
 import { useFormat, type FormatOptions } from './useFormat';
 import { useLayout, type UseLayoutOptions } from './useLayout';
 import { useSort, type UseSortOptions } from './useSort';
+import { useColumns, type UseColumnsOptions } from './useColumns';
 import { usePropsValidator } from '../../core';
 import { SerializableDataTableSchema } from '../schema';
 import type { Column, DataTableProps, RowData } from '../schema';
 
 export type DataTableEmit = {
   (e: 'sortChange', sort: { by?: string; direction?: 'asc' | 'desc' }): void;
+  (e: 'columnsVisibilityChange', hidden: string[]): void;
+  (e: 'columnsReorder', order: string[]): void;
+  (e: 'columnResize', widths: Record<string, number>): void;
 };
 
 export interface DataTableState {
@@ -43,6 +47,16 @@ export interface DataTableState {
   isRowExpanded: ReturnType<typeof useLayout>['isRowExpanded'];
   tableContainerClass: ReturnType<typeof useLayout>['tableContainerClass'];
   cardsContainerClass: ReturnType<typeof useLayout>['cardsContainerClass'];
+
+  // From useColumns
+  columnOrder: ReturnType<typeof useColumns>['columnOrder'];
+  hiddenKeys: ReturnType<typeof useColumns>['hiddenKeys'];
+  widthOverrides: ReturnType<typeof useColumns>['widthOverrides'];
+  visibleColumns: ReturnType<typeof useColumns>['visibleColumns'];
+  toggleColumnVisibility: ReturnType<typeof useColumns>['toggleColumnVisibility'];
+  isColumnHidden: ReturnType<typeof useColumns>['isColumnHidden'];
+  reorderColumns: ReturnType<typeof useColumns>['reorderColumns'];
+  setColumnWidth: ReturnType<typeof useColumns>['setColumnWidth'];
 }
 
 export function useDataTable(
@@ -112,6 +126,25 @@ export function useDataTable(
     cardsContainerClass,
   } = useLayout(layoutOptions);
 
+  // useColumns options —— 交互动作在聚合层包 emit 上抛，宿主可监听回写
+  const columnsOptions: UseColumnsOptions = { columns: () => props.columns };
+  const columnsState = useColumns(columnsOptions);
+
+  function toggleColumnVisibility(key: string) {
+    columnsState.toggleColumnVisibility(key);
+    emit('columnsVisibilityChange', [...columnsState.hiddenKeys.value]);
+  }
+
+  function reorderColumns(fromKey: string, toKey: string) {
+    columnsState.reorderColumns(fromKey, toKey);
+    emit('columnsReorder', [...columnsState.columnOrder.value]);
+  }
+
+  function setColumnWidth(key: string, widthPx: number) {
+    columnsState.setColumnWidth(key, widthPx);
+    emit('columnResize', { ...columnsState.widthOverrides.value });
+  }
+
   return {
     // From useSort
     currentSort,
@@ -145,5 +178,15 @@ export function useDataTable(
     isRowExpanded,
     tableContainerClass,
     cardsContainerClass,
+
+    // From useColumns（动作经聚合层包装以 emit）
+    columnOrder: columnsState.columnOrder,
+    hiddenKeys: columnsState.hiddenKeys,
+    widthOverrides: columnsState.widthOverrides,
+    visibleColumns: columnsState.visibleColumns,
+    toggleColumnVisibility,
+    isColumnHidden: columnsState.isColumnHidden,
+    reorderColumns,
+    setColumnWidth,
   };
 }

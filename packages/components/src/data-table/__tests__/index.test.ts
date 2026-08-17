@@ -103,8 +103,8 @@ describe('DataTable', () => {
       const wrapper = mount(DataTable, {
         props: createProps({ layout: 'table' }),
       });
-      const tableContainer = wrapper.find('[data-slot="data-table"] > div:first-child');
-      expect(tableContainer.classes()).toContain('block');
+      const tableContainer = wrapper.find('[data-slot="data-table"] > div.block');
+      expect(tableContainer.exists()).toBe(true);
     });
 
     test('cards view container is visible in cards mode', () => {
@@ -223,7 +223,8 @@ describe('DataTable', () => {
         }),
       });
       // No expand button when all columns are primary
-      const expandButton = wrapper.find('[aria-expanded]');
+      //（选择器收窄到行卡片容器内，排除工具条按钮的 aria-expanded）
+      const expandButton = wrapper.find('[role="list"] [aria-expanded]');
       expect(expandButton.exists()).toBe(false);
     });
   });
@@ -534,6 +535,67 @@ describe('DataTable', () => {
       });
       // Should render without errors
       expect(wrapper.find('tbody tr').exists()).toBe(true);
+    });
+  });
+
+  describe('column visibility', () => {
+    test('toggle button hides a column from both table and mobile card views', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: undefined }),
+      });
+      const toggle = wrapper.find('[data-testid="column-visibility-toggle"]');
+      expect(toggle.exists()).toBe(true);
+      await toggle.trigger('click');
+      const item = wrapper.find('[data-testid="column-toggle-value"]');
+      expect(item.exists()).toBe(true);
+      await item.trigger('click');
+      // table 视图表头不再有 Value
+      const headers = wrapper.findAll('thead th');
+      expect(headers.map((h) => h.text())).not.toContain('Value');
+      // mobile cards 视图（auto 布局默认渲染）也不再有 Value 标签
+      expect(wrapper.find('[role="list"]').text()).not.toContain('Value:');
+    });
+
+    test('features.visibility=false removes the visibility menu entirely', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { visibility: false } }),
+      });
+      expect(wrapper.find('[data-testid="column-visibility-toggle"]').exists()).toBe(false);
+    });
+
+    test('hiding a column emits columnsVisibilityChange with hidden keys', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      const events = wrapper.emitted('columnsVisibilityChange');
+      expect(events).toBeTruthy();
+      expect(events![0]).toEqual([['value']]);
+    });
+
+    test('interaction state survives LLM re-emitting props with a new columns array reference', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      expect(wrapper.findAll('thead th').map((h) => h.text())).not.toContain('Value');
+      // LLM 重发：同 key 集合但全新数组引用
+      await wrapper.setProps({
+        columns: [
+          { key: 'name', label: 'Name' },
+          { key: 'value', label: 'Value' },
+        ],
+      });
+      expect(wrapper.findAll('thead th').map((h) => h.text())).not.toContain('Value');
+    });
+
+    test('hidden column is excluded from mobile card view in cards layout', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ layout: 'cards' }),
+      });
+      await wrapper.find('[data-testid="column-visibility-toggle"]').trigger('click');
+      await wrapper.find('[data-testid="column-toggle-value"]').trigger('click');
+      const list = wrapper.find('[role="list"]');
+      expect(list.text()).toContain('Alpha');
+      expect(list.text()).not.toContain('200');
     });
   });
 
