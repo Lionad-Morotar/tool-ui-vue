@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { computed, h, reactive } from 'vue';
 import { cn } from '../core';
 import { useQuestionFlow } from './states';
 import { useI18n } from '../core/i18n';
@@ -29,15 +29,26 @@ const stepProgressAriaLabel = computed(() =>
   t('questionFlow.step', { current: state.currentStepNumber, total: state.totalSteps }).value
 )
 
+// Why render functions instead of `template` strings: string templates need the
+// runtime compiler, which consumer apps (runtime-only Vue builds) don't ship —
+// the icons silently fail to render there with a Vue warn.
+const iconProps = {
+  xmlns: 'http://www.w3.org/2000/svg',
+  width: 24,
+  height: 24,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  'stroke-width': 2,
+  'stroke-linecap': 'round',
+  'stroke-linejoin': 'round',
+} as const
+
 // Chevron left icon
-const ChevronLeftIcon = {
-  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
-};
+const ChevronLeftIcon = () => h('svg', iconProps, [h('path', { d: 'm15 18-6-6 6-6' })]);
 
 // Check icon
-const CheckIcon = {
-  template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
-};
+const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })]);
 </script>
 
 <template>

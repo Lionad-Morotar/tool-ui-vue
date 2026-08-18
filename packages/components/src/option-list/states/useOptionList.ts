@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import { resolveLucideIcon } from '../../shared/resolve-lucide-icon';
 import type { OptionListProps, OptionListSelection, OptionListOption } from '../schema';
 
@@ -309,9 +309,21 @@ export function useOptionList(
   const isConfirmDisabled = computed(() => selectedCount.value < minSelections.value || selectedCount.value === 0);
   const hasNothingToClear = computed(() => selectedCount.value === 0);
 
-  const CheckIcon = {
-    template: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
-  };
+  // Why a render function instead of a `template` string: string templates need
+  // the runtime compiler, absent in consumer apps' runtime-only Vue builds —
+  // the icon silently fails to render there with a Vue warn.
+  const CheckIcon = () =>
+    h('svg', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      width: 16,
+      height: 16,
+      viewBox: '0 0 24 24',
+      fill: 'none',
+      stroke: 'currentColor',
+      'stroke-width': 2,
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+    }, [h('path', { d: 'M20 6 9 17l-5-5' })]);
 
   const iconMap: Record<string, typeof CheckIcon> = {
     check: CheckIcon,

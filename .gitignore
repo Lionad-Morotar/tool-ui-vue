@@ -43,3 +43,4 @@ server/db/chats/backup
 .claude
 
 zRefs
+.claude/worktrees/
