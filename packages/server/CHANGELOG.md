@@ -1,5 +1,12 @@
 # @lionad/vtu-server
 
+## 0.3.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lionad/vtu-components@0.3.11
+
 ## 0.3.10
 
 ### Patch Changes

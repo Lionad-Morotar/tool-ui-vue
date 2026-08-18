@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.11
+
+### Patch Changes
+
+- 修复 QuestionFlow / OptionList 内联图标在 runtime-only Vue 构建（Nuxt 等消费端）下不渲染并触发 template 编译告警：字符串模板组件改为 render 函数
+
 ## 0.3.10
 
 ### Patch Changes
