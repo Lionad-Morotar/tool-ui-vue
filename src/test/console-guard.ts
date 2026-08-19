@@ -15,6 +15,8 @@ export const ALLOWED_PATTERNS: RegExp[] = [
   /\[Vue warn\]: Missing required prop: "alt"/,
   // Props validation warnings - expected when testing usePropsValidator
   /\[\w+\] Props validation failed/,
+  // DataTable 缺 rowIdKey 提示 - 设计内提示性警告(每页一次,见 useLayout),once 语义测试故意构造
+  /\[DataTable\] Missing `rowIdKey` prop/,
 ];
 
 let consoleErrorSpy: ReturnType<typeof vi.spyOn>;

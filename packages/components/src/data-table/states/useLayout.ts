@@ -37,6 +37,11 @@ function toValue<T>(v: MaybeRefOrGetter<T>): T {
   return v as T;
 }
 
+// 缺 rowIdKey 警告的模块级去重:同页多表实例(genui 流式物料常态)各 setup 一次,
+// 缺 key 属同一处调用方问题,警一次足够定位——每实例都警会刷屏淹掉真错误。
+// 页面刷新后 flag 随模块重载重置,提示不丢。
+let warnedMissingRowIdKey = false;
+
 export function useLayout(options: UseLayoutOptions): LayoutReturns {
   const { columns: _columns, data, rowIdKey, layout, id } = options;
 
@@ -117,8 +122,14 @@ export function useLayout(options: UseLayoutOptions): LayoutReturns {
     return '@md:hidden'; // auto mode
   });
 
-  // Warn about missing rowIdKey (once)
-  if (typeof window !== 'undefined' && !toValue(rowIdKey) && toValue(data).length > 0) {
+  // Warn about missing rowIdKey (once per page load — see module flag above)
+  if (
+    typeof window !== 'undefined' &&
+    !warnedMissingRowIdKey &&
+    !toValue(rowIdKey) &&
+    toValue(data).length > 0
+  ) {
+    warnedMissingRowIdKey = true;
     console.warn(
       '[DataTable] Missing `rowIdKey` prop. Falling back to inferred/content-derived row keys. ' +
         "Strongly recommended: Pass a `rowIdKey` prop that points to a unique identifier in your row data (e.g., 'id', 'uuid', 'symbol').",
