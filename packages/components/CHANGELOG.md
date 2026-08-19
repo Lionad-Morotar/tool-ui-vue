@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.12
+
+### Patch Changes
+
+- fix(components): DataTable 缺 `rowIdKey` 警告兑现 once 语义——模块级去重，同页多表实例（genui 流式物料常态）各 setup 一次只警一次，不再每实例刷屏淹掉真错误
+
 ## 0.3.11
 
 ### Patch Changes
