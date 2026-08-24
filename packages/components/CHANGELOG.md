@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.13
+
+### Patch Changes
+
+- fix(components): DataTable 单元格 tooltip 被表格滚动容器 overflow 裁剪——teleport 到 body 改 fixed 定位，hover 提示不再被挡
+
 ## 0.3.12
 
 ### Patch Changes
