@@ -6,6 +6,7 @@ import { cn } from '../core';
 import { useDataTable } from './states';
 import { toCsvText } from './states/useFormat';
 import { useI18n } from '../core/i18n';
+import HoverTooltip from './cmpts/hover-tooltip.vue';
 import type { DataTableProps } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
@@ -388,15 +389,15 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                         >
                           {{ item === null ? t('dataTable.nullLabel') : String(item) }}
                         </span>
-                        <span
+                        <HoverTooltip
                           v-if="state.getArrayItems(row[column.key], column.format.maxVisible).remaining > 0"
-                          class="group/more relative cursor-default text-xs text-muted-foreground"
+                          :text="state.getArrayItems(row[column.key], column.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ')"
+                          nowrap
+                          trigger-class="cursor-default text-xs text-muted-foreground"
+                          :testid="`array-more-${index}-${column.key}`"
                         >
                           {{ t('dataTable.moreCount', { count: state.getArrayItems(row[column.key], column.format.maxVisible).remaining }) }}
-                          <span class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 rounded-md bg-popover px-3 py-1.5 text-xs whitespace-nowrap text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/more:opacity-100">
-                            {{ state.getArrayItems(row[column.key], column.format.maxVisible).hidden.map((h: any) => h === null ? t('dataTable.nullLabel') : String(h)).join(', ') }}
-                          </span>
-                        </span>
+                        </HoverTooltip>
                       </span>
                     </template>
 
@@ -416,21 +417,19 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 
                     <!-- Default -->
                     <template v-else>
-                      <span class="group/cell relative inline-block max-w-[280px]">
+                      <HoverTooltip
+                        :text="state.formatCellValue(row[column.key], column)"
+                        :disabled="!overflowSet.has(`${index}-${column.key}`)"
+                        trigger-class="inline-block max-w-[280px]"
+                        :testid="`cell-text-${index}-${column.key}`"
+                      >
                         <span
                           :ref="(el) => checkTextOverflow(el as HTMLElement, index, column.key)"
                           :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')"
                         >
                           {{ state.formatCellValue(row[column.key], column) }}
                         </span>
-                        <!-- Tooltip: hover 显示完整内容（仅溢出时） -->
-                        <span
-                          v-if="overflowSet.has(`${index}-${column.key}`)"
-                          class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1 max-w-[320px] -translate-x-1/2 rounded-md bg-popover px-3 py-1.5 text-xs whitespace-normal text-popover-foreground opacity-0 shadow-md transition-opacity group-hover/cell:opacity-100"
-                        >
-                          {{ state.formatCellValue(row[column.key], column) }}
-                        </span>
-                      </span>
+                      </HoverTooltip>
                     </template>
                   </td>
                 </tr>

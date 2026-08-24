@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test, beforeAll, afterAll, vi } from 'vitest';
+import { describe, expect, test, beforeAll, afterAll, afterEach, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
 import DataTable from '../index.vue';
@@ -898,6 +898,79 @@ describe('DataTable', () => {
       const wrapper = mount(DataTable, { props: createProps() });
       const container = wrapper.find('.max-h-\\[var\\(--max-height\\)\\]');
       expect(container.exists()).toBe(false);
+    });
+  });
+
+  describe('cell tooltip', () => {
+    // jsdom 无布局：scrollWidth/clientWidth 恒 0，stub prototype getter 模拟文本溢出
+    function stubElementWidths(scrollWidth: number, clientWidth: number) {
+      Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+        configurable: true,
+        get() { return scrollWidth; },
+      });
+      Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+        configurable: true,
+        get() { return clientWidth; },
+      });
+    }
+
+    afterEach(() => {
+      stubElementWidths(0, 0);
+      document.body.querySelectorAll('[role="tooltip"]').forEach((el) => el.remove());
+    });
+
+    test('overflowed cell renders tooltip into document.body on hover', async () => {
+      stubElementWidths(500, 100);
+      const longText = 'A very long cell value '.repeat(20).trim();
+      const wrapper = mount(DataTable, {
+        props: createProps({ data: [{ name: longText, value: 1 }] }),
+      });
+      const trigger = wrapper.find('[data-testid="cell-text-0-name"]');
+      expect(trigger.exists()).toBe(true);
+
+      // overflowSet 在 mount 后的 ref 回调中写入，触发的重渲染是异步的；
+      // 等重渲染 flush 后 disabled 才更新为 false
+      await nextTick();
+      await nextTick();
+      await trigger.trigger('mouseenter');
+      const tooltip = document.body.querySelector('[role="tooltip"]');
+      expect(tooltip).not.toBeNull();
+      expect(tooltip!.textContent).toBe(longText);
+      // tooltip 必须脱离表格容器，才能逃出滚动容器的 overflow 裁剪
+      expect(wrapper.find('[role="tooltip"]').exists()).toBe(false);
+
+      await trigger.trigger('mouseleave');
+      expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
+      wrapper.unmount();
+    });
+
+    test('non-overflowed cell does not show tooltip on hover', async () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      const trigger = wrapper.find('[data-testid="cell-text-0-name"]');
+      await trigger.trigger('mouseenter');
+      expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
+      wrapper.unmount();
+    });
+
+    test('array more badge renders hidden items tooltip into document.body', async () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [{ key: 'tags', label: 'Tags', format: { kind: 'array', maxVisible: 1 } }],
+          data: [{ tags: ['alpha', 'beta', 'gamma'] }],
+        }),
+      });
+      const trigger = wrapper.find('[data-testid="array-more-0-tags"]');
+      expect(trigger.exists()).toBe(true);
+
+      await trigger.trigger('mouseenter');
+      const tooltip = document.body.querySelector('[role="tooltip"]');
+      expect(tooltip).not.toBeNull();
+      expect(tooltip!.textContent).toBe('beta, gamma');
+      expect(wrapper.find('[role="tooltip"]').exists()).toBe(false);
+
+      await trigger.trigger('mouseleave');
+      expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
+      wrapper.unmount();
     });
   });
 });
