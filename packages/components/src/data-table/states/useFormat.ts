@@ -4,8 +4,13 @@ export interface FormatOptions {
   locale?: string;
 }
 
+export interface FormatCellOptions {
+  /** 数据口径（如 CSV 导出）：array 列忽略展示层 maxVisible 折叠，输出完整数组 */
+  complete?: boolean;
+}
+
 export interface FormatReturns {
-  formatCellValue: (value: unknown, column: Column) => string;
+  formatCellValue: (value: unknown, column: Column, options?: FormatCellOptions) => string;
   getRelativeTime: (date: Date) => string;
   resolveSafeNavigationHref: (rawHref: string) => string | null;
   isNumericFormat: (format?: Column['format']) => boolean;
@@ -20,19 +25,20 @@ export interface FormatReturns {
 
 /**
  * 把当前可见列与数据行序列化为 CSV 文本。
- * 导出口径=用户所见（排序后视图 × 可见列），值经 formatCellValue 展示层格式化；
+ * 导出口径=排序后视图 × 可见列的完整数据：值经 formatCellValue 展示层格式化，
+ * 但 array 列忽略 maxVisible 折叠（+N 是 UI 空间妥协，导出不应丢数据）；
  * 含逗号/引号/换行的单元格按 RFC4180 引号包裹并双写内部引号。
  */
 export function toCsvText(
   columns: Column[],
   rows: RowData[],
-  formatCellValue: (value: unknown, column: Column) => string,
+  formatCellValue: (value: unknown, column: Column, options?: FormatCellOptions) => string,
 ): string {
   const escape = (s: string) =>
     /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   const header = columns.map((c) => escape(c.label)).join(',');
   const body = rows.map((row) =>
-    columns.map((c) => escape(formatCellValue(row[c.key], c))).join(','),
+    columns.map((c) => escape(formatCellValue(row[c.key], c, { complete: true }))).join(','),
   );
   return [header, ...body].join('\n');
 }
@@ -94,7 +100,7 @@ export function useFormat(options: FormatOptions): FormatReturns {
     }
   }
 
-  function formatCellValue(value: unknown, column: Column): string {
+  function formatCellValue(value: unknown, column: Column, options?: FormatCellOptions): string {
     if (value == null || value === '') return '\u2014';
 
     const format = column.format;
@@ -177,6 +183,7 @@ export function useFormat(options: FormatOptions): FormatReturns {
       }
       case 'array': {
         if (!Array.isArray(value)) return String(value);
+        if (options?.complete) return value.join(', ');
         const max = format.maxVisible ?? value.length;
         const visible = value.slice(0, max);
         const remaining = value.length - max;

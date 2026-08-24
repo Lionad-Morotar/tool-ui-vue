@@ -866,6 +866,23 @@ describe('DataTable', () => {
       expect(lines[1]).toBe('200');
       expect(lines[2]).toBe('100');
     });
+
+    test('export includes complete array values instead of UI +N truncation', async () => {
+      createObjectURLCalls = [];
+      anchorClicks = [];
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [{ key: 'tags', label: 'Tags', format: { kind: 'array', maxVisible: 2 } }],
+          data: [{ tags: ['上市', '单项冠军', '世界500强'] }],
+        }),
+      });
+      await wrapper.find('[data-testid="export-csv"]').trigger('click');
+      const text = await createObjectURLCalls[0].text();
+      const lines = text.split('\n');
+      expect(lines[0]).toBe('Tags');
+      // maxVisible 是展示层折叠，导出口径为完整数组（含逗号按 RFC4180 引号包裹）
+      expect(lines[1]).toBe('"上市, 单项冠军, 世界500强"');
+    });
   });
 
   describe('sticky header', () => {

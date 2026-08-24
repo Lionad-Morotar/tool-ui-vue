@@ -98,7 +98,7 @@ function onResizeEnd() {
   resizingKey.value = null
 }
 
-// CSV 导出：所见即所得（排序后 × 可见列），展示层格式化值
+// CSV 导出：排序后 × 可见列的完整数据（array 列不按 maxVisible 截断）
 function exportCsv() {
   const csv = toCsvText(state.visibleColumns, state.sortedData, state.formatCellValue)
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
