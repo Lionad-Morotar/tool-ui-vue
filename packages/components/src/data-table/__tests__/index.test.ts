@@ -975,6 +975,33 @@ describe('DataTable', () => {
       wrapper.unmount();
     });
 
+    test('ancestor-level truncation (column.truncate td) also counts as overflow', async () => {
+      // 列级 truncate 的 td(200px) 比内层 max-w(280px) 更紧：文本 252px 时内层不截断、
+      // 视觉被 td 截断——溢出判定必须沿触发链检查裁剪祖先
+      stubElementWidths(0, 0);
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          columns: [{ key: 'name', label: 'Name', truncate: true }],
+          data: [{ name: 'x'.repeat(30), value: 1 }],
+        }),
+      });
+      const trigger = wrapper.find('[data-testid="cell-text-0-name"]');
+      const inner = trigger.element.firstElementChild as HTMLElement;
+      const td = trigger.element.closest('td') as HTMLElement;
+      // 内层恰好不截断(252/252),td 以 200px 裁剪;jsdom 无样式表,行内 overflowX 供 getComputedStyle 读取
+      Object.defineProperty(inner, 'scrollWidth', { configurable: true, value: 252 });
+      Object.defineProperty(inner, 'clientWidth', { configurable: true, value: 252 });
+      Object.defineProperty(trigger.element, 'clientWidth', { configurable: true, value: 252 });
+      Object.defineProperty(td, 'clientWidth', { configurable: true, value: 200 });
+      td.style.overflowX = 'hidden';
+
+      await trigger.trigger('mouseenter');
+      expect(document.body.querySelector('[role="tooltip"]')).not.toBeNull();
+
+      await trigger.trigger('mouseleave');
+      wrapper.unmount();
+    });
+
     test('non-overflowed cell does not show tooltip on hover', async () => {
       const wrapper = mount(DataTable, { props: createProps() });
       const trigger = wrapper.find('[data-testid="cell-text-0-name"]');

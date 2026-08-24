@@ -54,12 +54,24 @@ function measure(): boolean {
   return true
 }
 
-/** hover 时刻测量插槽内容是否截断：取插槽首个元素（截断样式在其上），无元素则退回触发器 */
+/**
+ * hover 时刻测量插槽内容是否截断：取插槽首个元素（截断样式在其上），无元素则退回触发器。
+ * 截断可能发生在祖先层（如列级 truncate 的 td 比内层 max-w 更紧）：
+ * 沿触发链向上检查每个 overflow-x 非 visible 祖先，内容超出其 padding box 即视觉截断。
+ */
 function isOverflowing(): boolean {
   const el = triggerRef.value
   if (!el) return false
   const target = (el.firstElementChild as HTMLElement | null) ?? el
-  return target.scrollWidth > target.clientWidth
+  if (target.scrollWidth > target.clientWidth) return true
+  let node: HTMLElement | null = el
+  while (node) {
+    if (getComputedStyle(node).overflowX !== 'visible' && target.scrollWidth > node.clientWidth) {
+      return true
+    }
+    node = node.parentElement
+  }
+  return false
 }
 
 function show() {
