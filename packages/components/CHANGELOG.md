@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.14
+
+### Patch Changes
+
+- fix(components): DataTable 文本截断判定改 hover 时刻测量——修复流式布局/字体晚载下 mount 期一次性测量失效导致截断单元格 tooltip 不弹出的问题
+
 ## 0.3.13
 
 ### Patch Changes
