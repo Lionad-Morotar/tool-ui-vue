@@ -110,21 +110,6 @@ function exportCsv() {
   URL.revokeObjectURL(url)
 }
 
-// Overflow detection for text tooltips (only show when text is truncated)
-const overflowSet = ref(new Set<string>())
-function checkTextOverflow(el: HTMLElement | null, index: number, columnKey: string) {
-  const key = `${index}-${columnKey}`
-  if (!el) {
-    overflowSet.value.delete(key)
-    return
-  }
-  if (el.scrollWidth > el.clientWidth) {
-    overflowSet.value.add(key)
-  } else {
-    overflowSet.value.delete(key)
-  }
-}
-
 // Column categorization for mobile view —— 与 table 共用 visibleColumns 单源
 const categorizedColumns = computed(() => state.categorizeColumns(state.visibleColumns));
 const primaryColumns = computed(() => categorizedColumns.value.primary);
@@ -419,12 +404,11 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                     <template v-else>
                       <HoverTooltip
                         :text="state.formatCellValue(row[column.key], column)"
-                        :disabled="!overflowSet.has(`${index}-${column.key}`)"
+                        overflow-only
                         trigger-class="inline-block max-w-[280px]"
                         :testid="`cell-text-${index}-${column.key}`"
                       >
                         <span
-                          :ref="(el) => checkTextOverflow(el as HTMLElement, index, column.key)"
                           :class="cn('block truncate', state.isNumericFormat(column.format) && 'tabular-nums')"
                         >
                           {{ state.formatCellValue(row[column.key], column) }}

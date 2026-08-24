@@ -928,10 +928,6 @@ describe('DataTable', () => {
       const trigger = wrapper.find('[data-testid="cell-text-0-name"]');
       expect(trigger.exists()).toBe(true);
 
-      // overflowSet 在 mount 后的 ref 回调中写入，触发的重渲染是异步的；
-      // 等重渲染 flush 后 disabled 才更新为 false
-      await nextTick();
-      await nextTick();
       await trigger.trigger('mouseenter');
       const tooltip = document.body.querySelector('[role="tooltip"]');
       expect(tooltip).not.toBeNull();
@@ -941,6 +937,24 @@ describe('DataTable', () => {
 
       await trigger.trigger('mouseleave');
       expect(document.body.querySelector('[role="tooltip"]')).toBeNull();
+      wrapper.unmount();
+    });
+
+    test('overflow state is measured at hover time, not at mount', async () => {
+      // 流式布局与字体晚载都会让 mount 后宽度才变化；溢出判定必须以 hover 时刻为准
+      stubElementWidths(0, 0);
+      const longText = 'A very long cell value '.repeat(20).trim();
+      const wrapper = mount(DataTable, {
+        props: createProps({ data: [{ name: longText, value: 1 }] }),
+      });
+      const trigger = wrapper.find('[data-testid="cell-text-0-name"]');
+
+      // mount 后才变为溢出（模拟布局后至/字体替换导致的字宽变化）
+      stubElementWidths(500, 100);
+      await trigger.trigger('mouseenter');
+      expect(document.body.querySelector('[role="tooltip"]')).not.toBeNull();
+
+      await trigger.trigger('mouseleave');
       wrapper.unmount();
     });
 

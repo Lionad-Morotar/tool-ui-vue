@@ -14,6 +14,12 @@ const props = withDefaults(
     text: string
     /** 禁用时不响应 hover（如文本未溢出、无需补全展示） */
     disabled?: boolean
+    /**
+     * 仅在插槽内容被截断（overflow）时才响应 hover。
+     * Why: 判定放在 hover 时刻而非 mount 时刻——流式渲染表格布局随数据到达变化、
+     *      字体子集晚载改变字宽，mount 期一次性测量会得出陈旧结论且不再修正。
+     */
+    overflowOnly?: boolean
     /** 内容强制单行（短汇总文本）；默认允许多行并限宽 */
     nowrap?: boolean
     /** 透传到触发元素包裹 span 的 class */
@@ -22,6 +28,7 @@ const props = withDefaults(
   }>(),
   {
     disabled: false,
+    overflowOnly: false,
     nowrap: false,
     triggerClass: undefined,
     testid: undefined,
@@ -47,8 +54,17 @@ function measure(): boolean {
   return true
 }
 
+/** hover 时刻测量插槽内容是否截断：取插槽首个元素（截断样式在其上），无元素则退回触发器 */
+function isOverflowing(): boolean {
+  const el = triggerRef.value
+  if (!el) return false
+  const target = (el.firstElementChild as HTMLElement | null) ?? el
+  return target.scrollWidth > target.clientWidth
+}
+
 function show() {
   if (props.disabled || typeof window === 'undefined') return
+  if (props.overflowOnly && !isOverflowing()) return
   open.value = measure()
 }
 function hide() {
