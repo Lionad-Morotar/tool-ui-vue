@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.16-alpha.0
+
+### Patch Changes
+
+- fix(components): Article 展开按钮按真实溢出门控——宿主统一注入默认 maxHeight 后短文章不再挂死钮,scrollHeight 对比上限解析 px(px/vh/rem),未知单位回退恒戴帽旧行为
+
 ## 0.3.15
 
 ### Patch Changes
