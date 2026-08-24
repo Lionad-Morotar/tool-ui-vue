@@ -1,4 +1,5 @@
-import { computed, ref, shallowRef, type ComputedRef, type Ref } from 'vue'
+import { computed, onMounted, ref, shallowRef, watch, type ComputedRef, type Ref } from 'vue'
+import { useEventListener, useResizeObserver } from '@vueuse/core'
 import type { ArticleProps } from './schema'
 
 // Lazy-load marked to avoid vite-node SSR interop issues.
@@ -116,9 +117,28 @@ export interface ArticleState {
   toggleExpanded: () => void
   contentStyle: ComputedRef<Record<string, string | undefined>>
   isEmptyContent: ComputedRef<boolean>
+  showExpandButton: ComputedRef<boolean>
 }
 
-export function useArticle(props: ArticleProps): ArticleState {
+/**
+ * 把 maxHeight 解析为 px。仅识别 px/vh/rem;其他单位(rem 根字号不可读、%等)
+ * 返回 null,调用方回退「恒戴帽」旧行为。测量语义见 useArticle 内注释。
+ */
+function parseCapToPx(value: string): number | null {
+  const v = value.trim()
+  const px = /^([\d.]+)px$/.exec(v)
+  if (px) return parseFloat(px[1]!)
+  const vh = /^([\d.]+)vh$/.exec(v)
+  if (vh) return (parseFloat(vh[1]!) / 100) * window.innerHeight
+  const rem = /^([\d.]+)rem$/.exec(v)
+  if (rem) {
+    const root = parseFloat(getComputedStyle(document.documentElement).fontSize)
+    return parseFloat(rem[1]!) * (Number.isFinite(root) ? root : 16)
+  }
+  return null
+}
+
+export function useArticle(props: ArticleProps, bodyEl: Ref<HTMLElement | null>): ArticleState {
   const parsedContent = computed(() => {
     const raw = parseContent(props.type, props.content, markedInstance.value)
     return sanitizeStrict(raw)
@@ -132,14 +152,54 @@ export function useArticle(props: ArticleProps): ArticleState {
     isExpanded.value = !isExpanded.value
   }
 
+  /**
+   * 展开按钮与戴帽的真实溢出门控:只有内容自然高度超出上限才生效。
+   * 宿主(如聊天)会给所有文章注入默认 maxHeight,若沿用「设了 maxHeight 即
+   * 显示按钮」,短文章会挂一个点击无视觉变化的展开钮。测量取 scrollHeight
+   * 对比上限解析 px:scrollHeight 不受裁切影响,戴帽与否都能量出自然高度,
+   * 无「摘帽量不出、戴帽量不准」的循环依赖。初始 false(先不戴帽),onMounted
+   * 与 flush:post 的 watch 都在绘制前完成首测,长内容无可见闪帧。
+   */
+  const needsExpansion = ref(false)
+
+  function measureOverflow() {
+    const el = bodyEl.value
+    if (!el || !props.maxHeight) {
+      needsExpansion.value = false
+      return
+    }
+    const capPx = parseCapToPx(props.maxHeight)
+    if (capPx === null) {
+      needsExpansion.value = true
+      return
+    }
+    needsExpansion.value = el.scrollHeight > capPx + 1
+  }
+
+  onMounted(measureOverflow)
+  watch([parsedContent, () => props.maxHeight], measureOverflow, { flush: 'post' })
+  // 未戴帽时内容生长带动元素高度;vh 上限随视口换算,两条路都要重测
+  if (typeof ResizeObserver !== 'undefined') {
+    useResizeObserver(bodyEl, measureOverflow)
+  }
+  if (typeof window !== 'undefined') {
+    useEventListener(window, 'resize', measureOverflow)
+  }
+
   const contentStyle = computed(() => {
-    if (!props.maxHeight || isExpanded.value) return {}
+    if (!props.maxHeight || isExpanded.value || !needsExpansion.value) return {}
     return { maxHeight: props.maxHeight }
   })
 
   const isEmptyContent = computed(() => {
     return props.content === '' || /^\s*$/.test(props.content)
   })
+
+  // 展开后上限移除,needsExpansion 保持展开前的测量结果,须用 isExpanded 续命
+  // 按钮,否则长文展开后丢失「折叠」出口
+  const showExpandButton = computed(
+    () => !!props.maxHeight && !isEmptyContent.value && (isExpanded.value || needsExpansion.value),
+  )
 
   return {
     parsedContent,
@@ -148,5 +208,6 @@ export function useArticle(props: ArticleProps): ArticleState {
     toggleExpanded,
     contentStyle,
     isEmptyContent,
+    showExpandButton,
   }
 }

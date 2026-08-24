@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Star } from 'lucide-vue-next'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { cn } from '../core'
 import { useArticle } from './states'
 import { useI18n } from '../core/i18n'
@@ -13,7 +13,9 @@ const props = withDefaults(defineProps<ArticleProps>(), {
   css: () => ({}),
 })
 
-const state = reactive(useArticle(props))
+// 正文容器 ref 交状态层做溢出门控测量(展开按钮只在真实超高时出现)
+const bodyEl = ref<HTMLElement | null>(null)
+const state = reactive(useArticle(props, bodyEl))
 
 // i18n
 const { t } = useI18n()
@@ -131,6 +133,7 @@ const { t } = useI18n()
 
     <!-- Body -->
     <div
+      ref="bodyEl"
       :class="cn(
         'relative p-4',
         (title || description || author || createdAt || state.starOpacities || tags?.length) && 'border-t border-border/50',
@@ -159,7 +162,7 @@ const { t } = useI18n()
 
     <!-- Footer: source, readingTime, wordCount, expand button -->
     <div
-      v-if="source || readingTime || wordCount || (maxHeight && !state.isEmptyContent)"
+      v-if="source || readingTime || wordCount || state.showExpandButton"
       :class="cn('flex items-center justify-between border-t border-border/50 px-4 py-3 text-xs text-muted-foreground', css?.footer)"
     >
       <!-- Left -->
@@ -179,7 +182,7 @@ const { t } = useI18n()
 
       <!-- Right: expand button -->
       <button
-        v-if="maxHeight && !state.isEmptyContent"
+        v-if="state.showExpandButton"
         data-slot="expand-button"
         :class="cn(
           'text-xs text-muted-foreground underline-offset-2 hover:underline',
