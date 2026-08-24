@@ -1,5 +1,12 @@
 # @lionad/vtu-components
 
+## 0.3.15
+
+### Patch Changes
+
+- fix(components): DataTable 溢出判定沿触发链检查裁剪祖先——列级 truncate 的 td 比内层 max-w 更紧时,(200,280] 区间文本被视觉截断但 tooltip 漏弹
+- fix(components): DataTable 导出 CSV 泄漏 UI 折叠标记——array 列导出完整数据而非 +N 截断
+
 ## 0.3.14
 
 ### Patch Changes
