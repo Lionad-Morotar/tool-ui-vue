@@ -527,15 +527,33 @@ describe('DataTable', () => {
       expect(wrapper.find('tbody tr').exists()).toBe(true);
     });
 
-    test('falls back to index when rowIdKey not provided', () => {
+    test('falls back to index when rowIdKey absent and no unique candidate field', () => {
       const wrapper = mount(DataTable, {
         props: createProps({
           rowIdKey: undefined,
-          data: [{ name: 'test', value: 100 }],
+          data: [
+            { company: 'A', value: 100 },
+            { company: 'B', value: 200 },
+          ],
         }),
       });
-      // Should render without errors
+      // Should render without errors (candidate probe finds no usable field → index keys)
       expect(wrapper.find('tbody tr').exists()).toBe(true);
+    });
+
+    test('probes unique candidate field as row key when rowIdKey absent', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const wrapper = mount(DataTable, {
+        props: createProps({
+          rowIdKey: undefined,
+          data: [{ name: 'probe-unique', value: 100 }],
+        }),
+      });
+      expect(wrapper.find('tbody tr').exists()).toBe(true);
+      // 探测命中(name 全行唯一)不触发缺 rowIdKey 警告
+      expect(
+        warnSpy.mock.calls.filter((args) => String(args[0]).includes('Missing `rowIdKey`')),
+      ).toHaveLength(0);
     });
   });
 
