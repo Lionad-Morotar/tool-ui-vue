@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.16-alpha.2
+
+### Minor Changes
+
+- feat(components): DataTable 缺 `rowIdKey` 时自动探测常见唯一字段兜底——id/uuid/key/name/title/label 取首个每行非空且全量唯一者做行键，流式初帧 `rowIdKey` 尚未到达期间行状态不再随行号漂移；警告仅在显式缺失且探测失败（真落行号）时触发，消除数组增长型流式物料挂载期的误报
+
 ## 0.3.16-alpha.1
 
 ### Minor Changes
