@@ -11,5 +11,7 @@ export const en = {
     sortDescending: 'descending',
     opensInNewTab: '{label} (opens in new tab)',
     exportCsv: 'Export CSV',
+    fullscreenEnter: 'Fullscreen',
+    fullscreenExit: 'Exit fullscreen',
   },
 } as const

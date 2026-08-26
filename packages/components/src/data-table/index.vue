@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed, ref } from 'vue';
-import { onClickOutside } from '@vueuse/core';
-import { Columns3, Download, GripVertical } from 'lucide-vue-next';
+import { onClickOutside, useFullscreen } from '@vueuse/core';
+import { Columns3, Download, GripVertical, Maximize, Minimize } from 'lucide-vue-next';
 import { cn } from '../core';
 import { useDataTable } from './states';
 import { toCsvText } from './states/useFormat';
@@ -39,7 +39,17 @@ const featureEnabled = computed(() => ({
   resize: props.features?.resize !== false,
   visibility: props.features?.visibility !== false,
   export: props.features?.export !== false,
+  fullscreen: props.features?.fullscreen !== false,
 }))
+
+// 全屏查看：作用于根元素（工具栏随根一起入屏），不支持 Fullscreen API 的环境（如 iPhone Safari）隐藏按钮
+const rootRef = ref<HTMLElement | null>(null)
+const { isFullscreen, isSupported: fullscreenSupported, toggle: toggleFullscreen } = useFullscreen(rootRef)
+
+// ESC 退出后的短暂冷却期内浏览器会以 NotAllowedError 拒绝 requestFullscreen，吞 rejection 防 unhandledrejection 噪音
+function onToggleFullscreen() {
+  toggleFullscreen().catch(() => {})
+}
 
 // 列显隐菜单
 const visibilityMenuOpen = ref(false)
@@ -119,16 +129,30 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
 <template>
   <div
     v-bind="$attrs"
-    :class="cn('@container w-full min-w-80', css?.root)"
+    ref="rootRef"
+    :class="cn('@container w-full min-w-80', isFullscreen && 'grid h-full grid-rows-[auto_minmax(0,1fr)] bg-background p-4', css?.root)"
     :data-tool-ui-id="id"
     data-slot="data-table"
     :data-layout="layout"
   >
-    <!-- 工具条：列显隐 / 导出（显隐作用于 table 与 cards 两视图） -->
+    <!-- 工具条：全屏 / 列显隐 / 导出（显隐作用于 table 与 cards 两视图） -->
     <div
-      v-if="featureEnabled.visibility || featureEnabled.export"
+      v-if="featureEnabled.fullscreen || featureEnabled.visibility || featureEnabled.export"
       class="mb-2 flex items-center justify-end gap-1"
     >
+      <button
+        v-if="featureEnabled.fullscreen && fullscreenSupported"
+        type="button"
+        data-testid="fullscreen-toggle"
+        class="inline-flex h-8 cursor-pointer items-center gap-1 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        :aria-label="isFullscreen ? t('dataTable.fullscreenExit').value : t('dataTable.fullscreenEnter').value"
+        :aria-pressed="isFullscreen"
+        @click="onToggleFullscreen"
+      >
+        <Minimize v-if="isFullscreen" :size="14" aria-hidden="true" />
+        <Maximize v-else :size="14" aria-hidden="true" />
+        <span>{{ isFullscreen ? t('dataTable.fullscreenExit') : t('dataTable.fullscreenEnter') }}</span>
+      </button>
       <div v-if="featureEnabled.visibility" ref="visibilityMenuRef" class="relative">
         <button
           type="button"
@@ -180,16 +204,18 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
       </button>
     </div>
 
-    <!-- Table View -->
-    <div :class="state.tableContainerClass">
-      <div class="relative">
+    <!-- Table View（全屏链：根 grid 1fr 行 → 容器 h-full 逐层继承 → 滚动容器 h-full，不依赖 flex 父链） -->
+    <div :class="cn(state.tableContainerClass, isFullscreen && 'min-h-0')">
+      <div :class="cn('relative', isFullscreen && 'h-full')">
         <div
           :class="cn(
             'relative w-full overflow-hidden overflow-y-auto rounded-lg border border-border bg-card',
             'touch-pan-x',
-            maxHeight && 'max-h-[var(--max-height)]',
+            // 全屏态解除 maxHeight 帽子（宿主可能戴了 40vh 类有界契约），h-full 沿高度继承链铺满视口
+            maxHeight && !isFullscreen && 'max-h-[var(--max-height)]',
+            isFullscreen && 'h-full',
           )"
-          :style="maxHeight ? { '--max-height': maxHeight, 'overflow-y': 'auto' } : {}"
+          :style="maxHeight && !isFullscreen ? { '--max-height': maxHeight, 'overflow-y': 'auto' } : {}"
         >
           <table class="w-full text-sm">
             <colgroup v-if="state.visibleColumns.length > 0">
@@ -424,9 +450,9 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
       </div>
     </div>
 
-    <!-- Mobile Cards View -->
+    <!-- Mobile Cards View（全屏态作为根 grid 1fr 行的 item 自滚动） -->
     <div
-      :class="state.cardsContainerClass"
+      :class="cn(state.cardsContainerClass, isFullscreen && 'min-h-0 overflow-y-auto')"
       role="list"
       :aria-label="t('dataTable.mobileViewLabel').value"
       :aria-describedby="state.mobileDescriptionId"

@@ -203,6 +203,7 @@ export interface DataTableFeatures {
   resize?: boolean;
   visibility?: boolean;
   export?: boolean;
+  fullscreen?: boolean;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test, beforeAll, afterAll, afterEach, vi } from 'vitest';
+import { describe, expect, test, beforeAll, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
 import DataTable from '../index.vue';
@@ -882,6 +882,102 @@ describe('DataTable', () => {
       expect(lines[0]).toBe('Tags');
       // maxVisible 是展示层折叠，导出口径为完整数组（含逗号按 RFC4180 引号包裹）
       expect(lines[1]).toBe('"上市, 单项冠军, 世界500强"');
+    });
+  });
+
+  describe('fullscreen', () => {
+    // jsdom 不实现 Fullscreen API。VueUse useFullscreen 的支持探测要三探针齐备：
+    // requestMethod（requestFullscreen）+ exitMethod（exitFullscreen）+ fullscreenEnabled
+    // （注意探的是 fullScreen 等前缀名而非标准 fullscreenEnabled），缺一按钮不渲染
+    beforeEach(() => {
+      const doc = document as unknown as Record<string, unknown>;
+      doc.requestFullscreen = vi.fn().mockResolvedValue(undefined);
+      doc.exitFullscreen = vi.fn().mockResolvedValue(undefined);
+      doc.fullScreen = false;
+      // fullscreenElement 须在挂载前就位：useFullscreen 的方法名探测在 setup 一次性求值，事后补挂不生效
+      doc.fullscreenElement = null;
+      (Element.prototype as unknown as Record<string, unknown>).requestFullscreen = vi
+        .fn()
+        .mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      const doc = document as unknown as Record<string, unknown>;
+      delete doc.requestFullscreen;
+      delete doc.exitFullscreen;
+      delete doc.fullScreen;
+      delete doc.fullscreenElement;
+      delete (Element.prototype as unknown as Record<string, unknown>).requestFullscreen;
+    });
+
+    test('fullscreen toggle renders by default', () => {
+      const wrapper = mount(DataTable, { props: createProps() });
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').exists()).toBe(true);
+    });
+
+    test('features.fullscreen=false removes fullscreen toggle', () => {
+      const wrapper = mount(DataTable, {
+        props: createProps({ features: { fullscreen: false } }),
+      });
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').exists()).toBe(false);
+    });
+
+    test('click requests fullscreen on root, maxHeight cap lifts, exit syncs via fullscreenchange', async () => {
+      const enteredOn: Element[] = [];
+      const exitFullscreen = vi.fn().mockResolvedValue(undefined);
+      (Element.prototype as unknown as Record<string, unknown>).requestFullscreen = function (
+        this: Element,
+      ) {
+        enteredOn.push(this);
+        return Promise.resolve();
+      };
+      (document as unknown as Record<string, unknown>).exitFullscreen = exitFullscreen;
+
+      const wrapper = mount(DataTable, { props: createProps({ maxHeight: '200px' }) });
+      const root = wrapper.find('[data-slot="data-table"]');
+      const scrollContainer = root.find('.overflow-y-auto');
+      expect(scrollContainer.classes()).toContain('max-h-[var(--max-height)]');
+
+      await wrapper.find('[data-testid="fullscreen-toggle"]').trigger('click');
+      await nextTick();
+      expect(enteredOn).toEqual([root.element]);
+      // 全屏态 maxHeight 帽子解除（宿主 40vh 有界契约失效）：根转 grid 1fr 行布局，
+      // 滚动容器沿「grid item → h-full 逐层继承」链铺满视口（不依赖中间层的 flex 父链）
+      expect(scrollContainer.classes()).not.toContain('max-h-[var(--max-height)]');
+      expect(scrollContainer.classes()).toContain('h-full');
+      expect(root.classes()).toContain('grid-rows-[auto_minmax(0,1fr)]');
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').attributes('aria-pressed')).toBe('true');
+
+      await wrapper.find('[data-testid="fullscreen-toggle"]').trigger('click');
+      await nextTick();
+      expect(exitFullscreen).toHaveBeenCalledTimes(1);
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').attributes('aria-pressed')).toBe('false');
+
+      // 外部路径（Esc / 浏览器 UI）进出全屏：fullscreenchange 事件驱动按钮状态回摆
+      const doc = document as unknown as Record<string, unknown>;
+      doc.fullScreen = true;
+      doc.fullscreenElement = root.element;
+      document.dispatchEvent(new Event('fullscreenchange'));
+      await nextTick();
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').attributes('aria-pressed')).toBe('true');
+      doc.fullScreen = false;
+      doc.fullscreenElement = null;
+      document.dispatchEvent(new Event('fullscreenchange'));
+      await nextTick();
+      expect(wrapper.find('[data-testid="fullscreen-toggle"]').attributes('aria-pressed')).toBe('false');
+    });
+
+    test('cards layout: cards container becomes the scroll region in fullscreen', async () => {
+      const wrapper = mount(DataTable, { props: createProps({ layout: 'cards' }) });
+      const cardsContainer = wrapper.find('[role="list"]');
+      expect(cardsContainer.exists()).toBe(true);
+      expect(cardsContainer.classes()).not.toContain('overflow-y-auto');
+
+      await wrapper.find('[data-testid="fullscreen-toggle"]').trigger('click');
+      await nextTick();
+      // 全屏态长卡片列表须在 cards 容器内滚动，否则视口外卡片被裁剪不可达
+      expect(cardsContainer.classes()).toContain('overflow-y-auto');
+      expect(cardsContainer.classes()).toContain('min-h-0');
     });
   });
 

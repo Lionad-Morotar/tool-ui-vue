@@ -11,5 +11,7 @@ export const zhCN = {
     sortDescending: '降序',
     opensInNewTab: '{label}（在新标签页中打开）',
     exportCsv: '导出 CSV',
+    fullscreenEnter: '全屏',
+    fullscreenExit: '退出全屏',
   },
 } as const
