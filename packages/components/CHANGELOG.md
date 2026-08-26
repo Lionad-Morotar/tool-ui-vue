@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.16-alpha.1
+
+### Minor Changes
+
+- feat(components): DataTable 内建全屏查看——features.fullscreen 默认开启（显式 false 关闭），useFullscreen 作用根元素随工具栏整体入屏，全屏态解除 maxHeight 有界帽子（根 grid 1fr 行 + h-full 继承链铺满视口，table/cards 双视图各自成滚动区），不支持 Fullscreen API 的环境（如 iPhone Safari）自动隐藏按钮
+
 ## 0.3.16-alpha.0
 
 ### Patch Changes
