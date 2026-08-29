@@ -267,11 +267,12 @@ function getRowA11yLabel(row: RowData, index: number): string {
             <template v-else>
               <thead :class="cn('sticky top-0 z-10 bg-card [&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
-                  <!-- 全选列：非排序表头；勾选框样式对齐列显隐菜单的 ✓ 框。
-                       原生 input 承担 checked/indeterminate 语义（sr-only 视觉隐藏），
+                  <!-- 全选列：仅多选模式（selectable === true）；单选模式无全选语义。
+                       勾选框样式对齐列显隐菜单的 ✓ 框，原生 input 承担
+                       checked/indeterminate 语义（sr-only 视觉隐藏），
                        半选态由 watchEffect 写 .indeterminate 属性 -->
                   <th
-                    v-if="selectable"
+                    v-if="selectable === true"
                     scope="col"
                     class="w-10 align-middle"
                   >

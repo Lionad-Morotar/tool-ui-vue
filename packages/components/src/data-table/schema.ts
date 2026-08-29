@@ -153,7 +153,8 @@ export const SerializableDataTableSchema = z.object({
   maxHeight: z.string().optional(),
   locale: z.string().optional(),
   layout: z.enum(['auto', 'table', 'cards']).optional(),
-  selectable: z.boolean().optional(),
+  // true = 多选，'single' = 单选；两者都渲染行勾选列，仅多选额外渲染表头全选
+  selectable: z.union([z.boolean(), z.literal('single')]).optional(),
 });
 
 const SerializableDataTableSchemaContract = defineToolUiContract(
@@ -228,7 +229,7 @@ export interface DataTableProps {
   css?: DataTableCss;
   layout?: 'auto' | 'table' | 'cards';
   features?: DataTableFeatures;
-  selectable?: boolean;
+  selectable?: boolean | 'single';
   onSortChange?: (sort: { by?: string; direction?: 'asc' | 'desc' }) => void;
   onSelectionChange?: (rowIds: string[]) => void;
   onColumnsVisibilityChange?: (hidden: string[]) => void;

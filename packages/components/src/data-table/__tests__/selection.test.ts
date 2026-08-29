@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, test, vi } from 'vitest';
-import { parseSerializableDataTable } from '../schema';
+import { parseSerializableDataTable, safeParseSerializableDataTable } from '../schema';
 import DataTable from '../index.vue';
 
 // DataTable 多选核心行为测试（S1: 仅 table 视图）。
@@ -54,6 +54,26 @@ describe('勾选列渲染', () => {
   });
 });
 
+describe('单选模式渲染（S2）', () => {
+  test('selectable="single" 时行勾选框渲染、表头无全选勾选框', () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    expect(wrapper.find('[data-testid="row-select-a1"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="row-select-a2"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="select-all"]').exists()).toBe(false);
+  });
+
+  test('selectable="single" 时 colgroup 保留勾选列占位、表头不占全选列', () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    expect(wrapper.findAll('colgroup col')).toHaveLength(3);
+    expect(wrapper.findAll('thead th')).toHaveLength(2);
+  });
+
+  test('selectable="single" 时空态 colspan 加 1 适配行勾选列', () => {
+    const wrapper = mount(DataTable, { props: createProps({ data: [], selectable: 'single' }) });
+    expect(wrapper.find('[role="status"]').attributes('colspan')).toBe('3');
+  });
+});
+
 describe('行选择交互', () => {
   test('勾选单行：input checked 且 emit selectionChange 携带该行 rowId', async () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
@@ -85,6 +105,42 @@ describe('行选择交互', () => {
     await wrapper.find('[data-testid="cell-text-0-name"]').trigger('click');
     expect(wrapper.emitted('selectionChange')).toBeFalsy();
     expect((wrapper.find('[data-testid="row-select-a1"]').element as HTMLInputElement).checked).toBe(false);
+  });
+});
+
+describe('单选交互（S2）', () => {
+  test('单选勾选一行：emit 携带该行 rowId', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    expect(wrapper.emitted('selectionChange')![0]).toEqual([['a1']]);
+  });
+
+  test('单选勾另一行：选中切换，emit 仅含新行且旧行取消勾选', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.find('[data-testid="row-select-a2"]').setValue(true);
+    expect(wrapper.emitted('selectionChange')![1]).toEqual([['a2']]);
+    expect((wrapper.find('[data-testid="row-select-a1"]').element as HTMLInputElement).checked).toBe(false);
+    expect((wrapper.find('[data-testid="row-select-a2"]').element as HTMLInputElement).checked).toBe(true);
+  });
+
+  test('单选再点已选行：取消选中并 emit 空数组', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    const checkbox = wrapper.find('[data-testid="row-select-a1"]');
+    await checkbox.setValue(true);
+    await checkbox.setValue(false);
+    expect(wrapper.emitted('selectionChange')![1]).toEqual([[]]);
+    expect((checkbox.element as HTMLInputElement).checked).toBe(false);
+  });
+
+  test('单选行勾选 aria 语义：checkbox 形态 + aria-checked 随状态更新', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    const checkbox = wrapper.find('[data-testid="row-select-a1"]');
+    expect(checkbox.attributes('role')).toBeUndefined();
+    expect(checkbox.attributes('type')).toBe('checkbox');
+    expect(checkbox.attributes('aria-checked')).toBe('false');
+    await checkbox.setValue(true);
+    expect(checkbox.attributes('aria-checked')).toBe('true');
   });
 });
 
@@ -127,6 +183,35 @@ describe('全选/半选', () => {
     await wrapper.find('[data-testid="row-select-a2"]').setValue(false);
     expect((selectAll.element as HTMLInputElement).indeterminate).toBe(false);
     expect(selectAll.attributes('aria-checked')).toBe('false');
+  });
+});
+
+describe('单选模式切换（S2）', () => {
+  test('multiple → single 且已选多行：选中集清空并 emit 空数组', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.find('[data-testid="row-select-a2"]').setValue(true);
+    await wrapper.setProps({ selectable: 'single' });
+    expect(wrapper.emitted('selectionChange')!.at(-1)).toEqual([[]]);
+    expect((wrapper.find('[data-testid="row-select-a1"]').element as HTMLInputElement).checked).toBe(false);
+    expect((wrapper.find('[data-testid="row-select-a2"]').element as HTMLInputElement).checked).toBe(false);
+    expect(wrapper.find('[data-testid="select-all"]').exists()).toBe(false);
+  });
+
+  test('multiple → single 且仅选一行：选中集保持不重置', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.setProps({ selectable: 'single' });
+    expect(wrapper.emitted('selectionChange')).toHaveLength(1);
+    expect((wrapper.find('[data-testid="row-select-a1"]').element as HTMLInputElement).checked).toBe(true);
+  });
+
+  test('single → multiple：选中集保持不重置', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.setProps({ selectable: true });
+    expect(wrapper.emitted('selectionChange')).toHaveLength(1);
+    expect((wrapper.find('[data-testid="row-select-a1"]').element as HTMLInputElement).checked).toBe(true);
   });
 });
 
@@ -281,5 +366,25 @@ describe('schema 契约', () => {
       data: [{ a: 1 }],
     });
     expect(parsed.selectable).toBeUndefined();
+  });
+
+  test('parseSerializableDataTable 接受 selectable="single"（单选模式）', () => {
+    const parsed = parseSerializableDataTable({
+      id: 't1',
+      columns: [{ key: 'a', label: 'A' }],
+      data: [{ a: 1 }],
+      selectable: 'single',
+    });
+    expect(parsed.selectable).toBe('single');
+  });
+
+  test('safeParse 拒绝非法 selectable 值（如 "foo"）', () => {
+    const result = safeParseSerializableDataTable({
+      id: 't1',
+      columns: [{ key: 'a', label: 'A' }],
+      data: [{ a: 1 }],
+      selectable: 'foo',
+    });
+    expect(result).toBeNull();
   });
 });

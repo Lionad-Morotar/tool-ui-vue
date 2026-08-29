@@ -1,7 +1,9 @@
-// DataTable 行选择状态 composable —— 多选核心（S1：仅 table 视图）
+// DataTable 行选择状态 composable —— 多选/单选核心（S1 多选、S2 单选：仅 table 视图）
 import { computed, ref, toValue, watch } from 'vue';
 import type { RowData } from '../schema';
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue';
+
+export type SelectionMode = 'multiple' | 'single';
 
 export interface UseSelectionOptions {
   /**
@@ -14,6 +16,12 @@ export interface UseSelectionOptions {
    * 排序后兜底键随位置漂移属既有已接受语义，不在本层加防线。
    */
   getRowId: (row: RowData, index: number) => string;
+  /**
+   * 选择模式：multiple = 多选（可多行并存、表头全选）；
+   * single = 单选（选中集恒 ≤1 项，点击未选行切换、点击已选行取消）。
+   * getter 传参以支持运行时切换（流式修订后到），缺省 multiple。
+   */
+  mode?: MaybeRefOrGetter<SelectionMode>;
   /** 选择集变化回调（聚合层接 emit('selectionChange')） */
   onSelectionChange?: (rowIds: string[]) => void;
 }
@@ -31,6 +39,10 @@ export interface SelectionReturns {
 
 export function useSelection(options: UseSelectionOptions): SelectionReturns {
   const { data, getRowId, onSelectionChange } = options;
+
+  // 单选/多选模式：getter 传参在 computed 内读 props 链收集依赖，
+  // 运行时 selectable 切换（true ↔ 'single'）触发模式迁移而非固化首帧
+  const mode = computed<SelectionMode>(() => toValue(options.mode) ?? 'multiple');
 
   const selectedRows = ref<Set<string>>(new Set());
 
@@ -67,6 +79,14 @@ export function useSelection(options: UseSelectionOptions): SelectionReturns {
     onSelectionChange?.(viewRowIds.value.filter((id) => next.has(id)));
   }
 
+  // 模式迁移：multiple → single 时多行选集与单选语义冲突，收敛为清空并上抛；
+  // 仅选一行时语义等价不动；single → multiple 及同模式重渲染不触发（无变化）
+  watch(mode, (nextMode, prevMode) => {
+    if (prevMode === 'multiple' && nextMode === 'single' && selectedRows.value.size > 1) {
+      commitSelection(new Set());
+    }
+  });
+
   // 视图数据收缩时清理幽灵选中键：流式修订删除行的 rowId 若残留，
   // 会随后续全选/半选载荷上抛，消费方按 rowId 回查落空。
   // 只剔除不在新视图行键序列中的键——排序仅重排不换集合，不触发本清理。
@@ -87,7 +107,13 @@ export function useSelection(options: UseSelectionOptions): SelectionReturns {
 
   function toggleRowSelection(rowId: string) {
     const next = new Set(selectedRows.value);
-    if (next.has(rowId)) {
+    if (mode.value === 'single') {
+      // 单选：选中新行 = 收敛为仅含该行；再点已选行 = 取消（清空）
+      next.clear();
+      if (!selectedRows.value.has(rowId)) {
+        next.add(rowId);
+      }
+    } else if (next.has(rowId)) {
       next.delete(rowId);
     } else {
       next.add(rowId);

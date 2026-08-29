@@ -156,10 +156,12 @@ export function useDataTable(
   }
 
   // useSelection options —— 全选/半选以排序后视图行为准（sortedData 经 getter 传入，
-  // 排序切换后行键序列随视图更新，选中集按 rowId 保持不串行）
+  // 排序切换后行键序列随视图更新，选中集按 rowId 保持不串行）；
+  // mode 由 props.selectable 派生：true→多选、'single'→单选、false/缺省→多选（不渲染勾选列故语义不暴露）
   const selectionOptions: UseSelectionOptions = {
     data: () => sortedData.value,
     getRowId,
+    mode: () => (props.selectable === 'single' ? 'single' : 'multiple'),
     onSelectionChange: (rowIds) => emit('selectionChange', rowIds),
   };
   const selectionState = useSelection(selectionOptions);
