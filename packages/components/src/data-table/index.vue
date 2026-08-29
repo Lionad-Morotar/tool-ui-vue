@@ -7,6 +7,7 @@ import { useDataTable } from './states';
 import { toCsvText } from './states/useFormat';
 import { useI18n } from '../core/i18n';
 import HoverTooltip from './cmpts/hover-tooltip.vue';
+import RowCheckbox from './cmpts/row-checkbox.vue';
 import type { DataTableProps, RowData } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
@@ -396,24 +397,12 @@ function getRowA11yLabel(row: RowData, index: number): string {
                 >
                   <!-- 行勾选列：仅勾选框响应点击，行其他区域不触发选中 -->
                   <td v-if="selectable" class="w-10 px-3 py-3 align-middle">
-                    <label class="inline-flex h-8 w-8 cursor-pointer items-center justify-center">
-                      <input
-                        type="checkbox"
-                        class="sr-only"
-                        :data-testid="`row-select-${state.getRowId(row, index)}`"
-                        :checked="state.isRowSelected(state.getRowId(row, index))"
-                        :aria-checked="state.isRowSelected(state.getRowId(row, index))"
-                        :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
-                        @change="state.toggleRowSelection(state.getRowId(row, index))"
-                      />
-                      <span
-                        :class="cn(
-                          'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
-                          state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
-                        )"
-                        aria-hidden="true"
-                      >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
-                    </label>
+                    <RowCheckbox
+                      :checked="state.isRowSelected(state.getRowId(row, index))"
+                       :ariaLabel="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
+                      :testid="`row-select-${state.getRowId(row, index)}`"
+                      @toggle="state.toggleRowSelection(state.getRowId(row, index))"
+                    />
                   </td>
                   <td
                     v-for="(column, columnIndex) in state.visibleColumns"
@@ -532,7 +521,7 @@ function getRowA11yLabel(row: RowData, index: number): string {
     <div
       :class="cn(state.cardsContainerClass, isFullscreen && 'min-h-0 overflow-y-auto')"
       role="list"
-      :aria-label="t('dataTable.mobileViewLabel').value"
+       :aria-label="t('dataTable.mobileViewLabel').value"
       :aria-describedby="state.mobileDescriptionId"
     >
       <div :id="state.mobileDescriptionId" class="sr-only">
@@ -630,27 +619,14 @@ function getRowA11yLabel(row: RowData, index: number): string {
 
               <!-- 卡片头部勾选框：标记与 aria 语义对齐 table 视图行勾选列，
                    共享同一 useSelection 状态源（多选累积/单选互斥由 state 层统一收敛） -->
-              <label
+              <RowCheckbox
                 v-if="selectable"
-                class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center self-center"
-              >
-                <input
-                  type="checkbox"
-                  class="sr-only"
-                  :data-testid="`row-select-${state.getRowId(row, index)}`"
-                  :checked="state.isRowSelected(state.getRowId(row, index))"
-                  :aria-checked="state.isRowSelected(state.getRowId(row, index))"
-                  :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
-                  @change="state.toggleRowSelection(state.getRowId(row, index))"
-                />
-                <span
-                  :class="cn(
-                    'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
-                    state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
-                  )"
-                  aria-hidden="true"
-                >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
-              </label>
+                :checked="state.isRowSelected(state.getRowId(row, index))"
+                 :ariaLabel="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
+                :testid="`row-select-${state.getRowId(row, index)}`"
+                label-class="shrink-0 self-center"
+                @toggle="state.toggleRowSelection(state.getRowId(row, index))"
+              />
             </div>
 
             <!-- Expanded Content -->
@@ -780,27 +756,14 @@ function getRowA11yLabel(row: RowData, index: number): string {
               >
                 {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
               </div>
-              <label
+              <RowCheckbox
                 v-if="selectable"
-                class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center"
-              >
-                <input
-                  type="checkbox"
-                  class="sr-only"
-                  :data-testid="`row-select-${state.getRowId(row, index)}`"
-                  :checked="state.isRowSelected(state.getRowId(row, index))"
-                  :aria-checked="state.isRowSelected(state.getRowId(row, index))"
-                  :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
-                  @change="state.toggleRowSelection(state.getRowId(row, index))"
-                />
-                <span
-                  :class="cn(
-                    'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
-                    state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
-                  )"
-                  aria-hidden="true"
-                >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
-              </label>
+                :checked="state.isRowSelected(state.getRowId(row, index))"
+                 :ariaLabel="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
+                :testid="`row-select-${state.getRowId(row, index)}`"
+                label-class="shrink-0"
+                @toggle="state.toggleRowSelection(state.getRowId(row, index))"
+              />
             </div>
 
             <div
