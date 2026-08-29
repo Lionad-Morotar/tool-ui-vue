@@ -564,65 +564,94 @@ function getRowA11yLabel(row: RowData, index: number): string {
           <div
             v-if="secondaryColumns.length > 0"
           >
-            <button
-              type="button"
-              :class="cn(
-                'w-full rounded-none px-4 py-3 text-left transition-colors',
-                'hover:bg-accent/50 active:bg-accent/50',
-                state.isRowExpanded(state.getRowId(row, index)) && 'bg-muted'
-              )"
-              :aria-expanded="state.isRowExpanded(state.getRowId(row, index))"
-              :aria-controls="`row-details-${state.getDataTableRowDomId(state.getRowId(row, index))}`"
-              @click="state.toggleRowExpansion(state.getRowId(row, index))"
-            >
-              <div class="flex min-w-0 flex-1 flex-col gap-2">
-                <!-- Primary Column -->
-                <div
-                  v-if="primaryColumns[0]"
-                  class="truncate font-medium"
-                >
-                  {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
-                </div>
-
-                <!-- Remaining Primary Columns Summary -->
-                <div
-                  v-if="primaryColumns.slice(1).length > 0"
-                  class="flex w-full flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground"
-                >
-                  <span
-                    v-for="col in primaryColumns.slice(1)"
-                    :key="col.key"
-                    class="flex min-w-[8em] shrink-0 gap-1 font-normal"
-                  >
-                    <span class="sr-only">{{ col.label }}:</span>
-                    <span aria-hidden="true">{{ col.label }}:</span>
-                    <span class="truncate">
-                      {{ state.formatCellValue(row[col.key], col) }}
-                    </span>
-                  </span>
-                </div>
-              </div>
-
-              <!-- Expand Icon -->
-              <span
+            <!-- 头部 = 展开 button + 勾选框，两者是兄弟节点而非嵌套：
+                 原生 checkbox 属 interactive content，嵌进 button 违反 HTML 内容模型，
+                 兄弟结构让勾选点击天然不触发展开/收起（无需事件拦截） -->
+            <div class="flex items-start">
+              <button
+                type="button"
                 :class="cn(
-                  'float-right text-muted-foreground transition-transform',
-                  state.isRowExpanded(state.getRowId(row, index)) && 'rotate-180'
+                  'min-w-0 flex-1 rounded-none px-4 py-3 text-left transition-colors',
+                  'hover:bg-accent/50 active:bg-accent/50',
+                  state.isRowExpanded(state.getRowId(row, index)) && 'bg-muted'
                 )"
-                aria-hidden="true"
+                :aria-expanded="state.isRowExpanded(state.getRowId(row, index))"
+                :aria-controls="`row-details-${state.getDataTableRowDomId(state.getRowId(row, index))}`"
+                @click="state.toggleRowExpansion(state.getRowId(row, index))"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
+                <div class="flex min-w-0 flex-1 flex-col gap-2">
+                  <!-- Primary Column -->
+                  <div
+                    v-if="primaryColumns[0]"
+                    class="truncate font-medium"
+                  >
+                    {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
+                  </div>
+
+                  <!-- Remaining Primary Columns Summary -->
+                  <div
+                    v-if="primaryColumns.slice(1).length > 0"
+                    class="flex w-full flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground"
+                  >
+                    <span
+                      v-for="col in primaryColumns.slice(1)"
+                      :key="col.key"
+                      class="flex min-w-[8em] shrink-0 gap-1 font-normal"
+                    >
+                      <span class="sr-only">{{ col.label }}:</span>
+                      <span aria-hidden="true">{{ col.label }}:</span>
+                      <span class="truncate">
+                        {{ state.formatCellValue(row[col.key], col) }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Expand Icon -->
+                <span
+                  :class="cn(
+                    'float-right text-muted-foreground transition-transform',
+                    state.isRowExpanded(state.getRowId(row, index)) && 'rotate-180'
+                  )"
+                  aria-hidden="true"
                 >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
-            </button>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+                </button>
+
+              <!-- 卡片头部勾选框：标记与 aria 语义对齐 table 视图行勾选列，
+                   共享同一 useSelection 状态源（多选累积/单选互斥由 state 层统一收敛） -->
+              <label
+                v-if="selectable"
+                class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center self-center"
+              >
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  :data-testid="`row-select-${state.getRowId(row, index)}`"
+                  :checked="state.isRowSelected(state.getRowId(row, index))"
+                  :aria-checked="state.isRowSelected(state.getRowId(row, index))"
+                  :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
+                  @change="state.toggleRowSelection(state.getRowId(row, index))"
+                />
+                <span
+                  :class="cn(
+                    'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                    state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
+                  )"
+                  aria-hidden="true"
+                >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
+              </label>
+            </div>
 
             <!-- Expanded Content -->
             <div
@@ -743,11 +772,35 @@ function getRowA11yLabel(row: RowData, index: number): string {
             v-else
             class="flex flex-col gap-2 p-4"
           >
-            <div
-              v-if="primaryColumns[0]"
-              class="font-medium"
-            >
-              {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
+            <!-- 顶部行 = 主文本 + 勾选框：勾选框居右上角，与 accordion 卡片头部勾选框同位 -->
+            <div class="flex items-start justify-between gap-2">
+              <div
+                v-if="primaryColumns[0]"
+                class="min-w-0 flex-1 font-medium"
+              >
+                {{ state.formatCellValue(row[primaryColumns[0].key], primaryColumns[0]) }}
+              </div>
+              <label
+                v-if="selectable"
+                class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center"
+              >
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  :data-testid="`row-select-${state.getRowId(row, index)}`"
+                  :checked="state.isRowSelected(state.getRowId(row, index))"
+                  :aria-checked="state.isRowSelected(state.getRowId(row, index))"
+                  :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
+                  @change="state.toggleRowSelection(state.getRowId(row, index))"
+                />
+                <span
+                  :class="cn(
+                    'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                    state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
+                  )"
+                  aria-hidden="true"
+                >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
+              </label>
             </div>
 
             <div

@@ -352,6 +352,105 @@ describe('可访问性', () => {
   });
 });
 
+describe('cards 视图勾选', () => {
+  // cards 布局下 table 视图 DOM 仍渲染（CSS hidden 隐藏），选择器必须按视图作用域，
+  // 否则 find 命中 table 视图的同一 data-testid 造成假绿/误判
+  const cardsCheckbox = (wrapper: ReturnType<typeof mount<typeof DataTable>>, rowId: string) =>
+    wrapper.find(`[role="list"] [data-testid="row-select-${rowId}"]`);
+
+  test('simple card 渲染勾选框：勾选 emit selectionChange 且 table 视图同框同步', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({ layout: 'cards', selectable: true }),
+    });
+    // 默认 columns 无 priority → 全为 primary → simple card
+    expect(cardsCheckbox(wrapper, 'a1').exists()).toBe(true);
+    await cardsCheckbox(wrapper, 'a1').setValue(true);
+    expect(wrapper.emitted('selectionChange')![0]).toEqual([['a1']]);
+    // 两视图共享同一 useSelection 状态源：table 视图勾选框同步勾上
+    expect(
+      (wrapper.find('table [data-testid="row-select-a1"]').element as HTMLInputElement).checked,
+    ).toBe(true);
+  });
+
+  test('accordion card 头部渲染勾选框', () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        layout: 'cards',
+        selectable: true,
+        columns: [
+          { key: 'name', label: 'Name', priority: 'primary' },
+          { key: 'value', label: 'Value', priority: 'secondary' },
+        ],
+      }),
+    });
+    expect(cardsCheckbox(wrapper, 'a1').exists()).toBe(true);
+  });
+
+  test('勾选 accordion 卡片头部勾选框不触发展开/收起', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        layout: 'cards',
+        selectable: true,
+        columns: [
+          { key: 'name', label: 'Name', priority: 'primary' },
+          { key: 'value', label: 'Value', priority: 'secondary' },
+        ],
+      }),
+    });
+    const expandButton = wrapper.find('[role="list"] [aria-expanded]');
+    expect(expandButton.attributes('aria-expanded')).toBe('false');
+    await cardsCheckbox(wrapper, 'a1').setValue(true);
+    expect(expandButton.attributes('aria-expanded')).toBe('false');
+    // 勾选后展开内容仍未显示（v-show 隐藏，DOM 在但不可见）
+    expect(wrapper.find('[role="region"]').isVisible()).toBe(false);
+  });
+
+  test('点击 accordion 头部展开区域不触发勾选', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        layout: 'cards',
+        selectable: true,
+        columns: [
+          { key: 'name', label: 'Name', priority: 'primary' },
+          { key: 'value', label: 'Value', priority: 'secondary' },
+        ],
+      }),
+    });
+    await wrapper.find('[role="list"] [aria-expanded]').trigger('click');
+    expect(
+      (cardsCheckbox(wrapper, 'a1').element as HTMLInputElement).checked,
+    ).toBe(false);
+    expect(wrapper.emitted('selectionChange')).toBeFalsy();
+  });
+
+  test('cards 视图单选模式：勾选互斥且与 table 视图共享单选集', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({ layout: 'cards', selectable: 'single' }),
+    });
+    await cardsCheckbox(wrapper, 'a1').setValue(true);
+    await cardsCheckbox(wrapper, 'a2').setValue(true);
+    expect(wrapper.emitted('selectionChange')![1]).toEqual([['a2']]);
+    expect(
+      (cardsCheckbox(wrapper, 'a1').element as HTMLInputElement).checked,
+    ).toBe(false);
+    expect(
+      (wrapper.find('table [data-testid="row-select-a1"]').element as HTMLInputElement).checked,
+    ).toBe(false);
+  });
+
+  test('cards 视图勾选框 aria 语义与 table 视图一致', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({ layout: 'cards', selectable: true }),
+    });
+    const checkbox = cardsCheckbox(wrapper, 'a1');
+    expect(checkbox.attributes('type')).toBe('checkbox');
+    expect(checkbox.attributes('aria-label')).toBe('Select row Alpha');
+    expect(checkbox.attributes('aria-checked')).toBe('false');
+    await checkbox.setValue(true);
+    expect(checkbox.attributes('aria-checked')).toBe('true');
+  });
+});
+
 describe('schema 契约', () => {
   test('parseSerializableDataTable 接受 selectable 布尔值', () => {
     const parsed = parseSerializableDataTable({
