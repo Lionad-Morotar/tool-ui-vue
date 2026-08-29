@@ -161,6 +161,44 @@ describe('排序与选中', () => {
     await selectAll.setValue(false);
     expect(wrapper.emitted('selectionChange')![1]).toEqual([[]]);
   });
+
+  test('行勾选 emit 按视图行序输出（与交互先后无关）', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    // value 降序后视图序 a2, a1：先勾底部 a1 再勾顶部 a2，载荷仍按视图序
+    const sortBtn = wrapper.find('th[data-column-key="value"] button');
+    await sortBtn.trigger('click');
+    await sortBtn.trigger('click');
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.find('[data-testid="row-select-a2"]').setValue(true);
+    expect(wrapper.emitted('selectionChange')!.at(-1)).toEqual([['a2', 'a1']]);
+  });
+});
+
+describe('流式数据收缩与选中清理', () => {
+  test('视图移除已选行：选中集收缩并 emit 修正后的载荷', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.find('[data-testid="row-select-a2"]').setValue(true);
+    // 流式修订：a1 行消失，仅剩 a2
+    await wrapper.setProps({ data: [{ id: 'a2', name: 'Beta', value: 200 }] });
+    expect((wrapper.find('[data-testid="row-select-a2"]').element as HTMLInputElement).checked).toBe(true);
+    expect(wrapper.emitted('selectionChange')!.at(-1)).toEqual([['a2']]);
+  });
+
+  test('幽灵 rowId 不残留：剔除后全选仅含当前视图行', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.setProps({ data: [{ id: 'a2', name: 'Beta', value: 200 }] });
+    await wrapper.find('[data-testid="select-all"]').setValue(true);
+    expect(wrapper.emitted('selectionChange')!.at(-1)).toEqual([['a2']]);
+  });
+
+  test('视图数据清空：选中集全清并 emit 空数组', async () => {
+    const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
+    await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
+    await wrapper.setProps({ data: [] });
+    expect(wrapper.emitted('selectionChange')!.at(-1)).toEqual([[]]);
+  });
 });
 
 describe('空态与导出', () => {
@@ -200,7 +238,20 @@ describe('可访问性', () => {
   test('全选 input 与行勾选 input 均有 aria-label', () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
     expect(wrapper.find('[data-testid="select-all"]').attributes('aria-label')).toBe('Select all');
-    expect(wrapper.find('[data-testid="row-select-a1"]').attributes('aria-label')).toBe('Select row a1');
+    expect(wrapper.find('[data-testid="row-select-a1"]').attributes('aria-label')).toBe('Select row Alpha');
+  });
+
+  test('无 rowIdKey 时 aria-label 用首列格式化文本而非行号', () => {
+    const wrapper = mount(DataTable, { props: createProps({ rowIdKey: undefined, selectable: true }) });
+    // 探测命中 id 字段，data-testid 仍稳定；aria-label 读首列 Name 文本
+    expect(wrapper.find('[data-testid="row-select-a1"]').attributes('aria-label')).toBe('Select row Alpha');
+  });
+
+  test('首列缺失时 aria-label 回退 rowId 兜底', () => {
+    const wrapper = mount(DataTable, {
+      props: { id: 't-a11y', columns: [], data: [{ foo: 1 }, { foo: 2 }], selectable: true },
+    });
+    expect(wrapper.find('[data-testid="row-select-row-0"]').attributes('aria-label')).toBe('Select row row-0');
   });
 
   test('行勾选 input 的 aria-checked 随状态更新', async () => {

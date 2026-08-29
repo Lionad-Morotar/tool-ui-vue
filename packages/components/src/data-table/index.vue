@@ -7,7 +7,7 @@ import { useDataTable } from './states';
 import { toCsvText } from './states/useFormat';
 import { useI18n } from '../core/i18n';
 import HoverTooltip from './cmpts/hover-tooltip.vue';
-import type { DataTableProps } from './schema';
+import type { DataTableProps, RowData } from './schema';
 
 defineOptions({ name: 'CmptDataTable', inheritAttrs: false })
 
@@ -134,6 +134,18 @@ watchEffect(() => {
     selectAllInputRef.value.indeterminate = state.isIndeterminate
   }
 })
+
+// 行勾选的可访问性标签：读屏需要可理解的「行是谁」——
+// 优先首列格式化文本（与 opensInNewTab 的 label 插值同源），
+// 首列缺失或文本为空时回退 rowId，避免 row-${index} 无语义标识
+function getRowA11yLabel(row: RowData, index: number): string {
+  const first = state.visibleColumns[0]
+  if (first) {
+    const text = state.formatCellValue(row[first.key], first)
+    if (text.trim()) return text
+  }
+  return state.getRowId(row, index)
+}
 </script>
 
 <template>
@@ -385,7 +397,7 @@ watchEffect(() => {
                         :data-testid="`row-select-${state.getRowId(row, index)}`"
                         :checked="state.isRowSelected(state.getRowId(row, index))"
                         :aria-checked="state.isRowSelected(state.getRowId(row, index))"
-                        :aria-label="t('dataTable.selectRow', { label: state.getRowId(row, index) }).value"
+                        :aria-label="t('dataTable.selectRow', { label: getRowA11yLabel(row, index) }).value"
                         @change="state.toggleRowSelection(state.getRowId(row, index))"
                       />
                       <span

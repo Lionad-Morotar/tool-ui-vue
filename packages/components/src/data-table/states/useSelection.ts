@@ -1,5 +1,5 @@
 // DataTable 行选择状态 composable —— 多选核心（S1：仅 table 视图）
-import { computed, ref } from 'vue';
+import { computed, ref, toValue, watch } from 'vue';
 import type { RowData } from '../schema';
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue';
 
@@ -27,16 +27,6 @@ export interface SelectionReturns {
   toggleSelectAll: () => void;
   isAllSelected: ComputedRef<boolean>;
   isIndeterminate: ComputedRef<boolean>;
-}
-
-function toValue<T>(v: MaybeRefOrGetter<T>): T {
-  if (typeof v === 'function') {
-    return (v as () => T)();
-  }
-  if (v !== null && typeof v === 'object' && 'value' in v) {
-    return (v as { value: T }).value;
-  }
-  return v as T;
 }
 
 export function useSelection(options: UseSelectionOptions): SelectionReturns {
@@ -72,8 +62,28 @@ export function useSelection(options: UseSelectionOptions): SelectionReturns {
 
   function commitSelection(next: Set<string>) {
     selectedRows.value = next;
-    onSelectionChange?.([...next]);
+    // 载荷按视图行序输出：消费方按 rowId 回查的遍历顺序与渲染行一致，
+    // 不受 Set 插入序（交互先后）影响，同一操作产出确定顺序
+    onSelectionChange?.(viewRowIds.value.filter((id) => next.has(id)));
   }
+
+  // 视图数据收缩时清理幽灵选中键：流式修订删除行的 rowId 若残留，
+  // 会随后续全选/半选载荷上抛，消费方按 rowId 回查落空。
+  // 只剔除不在新视图行键序列中的键——排序仅重排不换集合，不触发本清理。
+  watch(viewRowIds, (ids) => {
+    const viewSet = new Set(ids);
+    const next = new Set(selectedRows.value);
+    let removed = false;
+    for (const id of next) {
+      if (!viewSet.has(id)) {
+        next.delete(id);
+        removed = true;
+      }
+    }
+    if (removed) {
+      commitSelection(next);
+    }
+  });
 
   function toggleRowSelection(rowId: string) {
     const next = new Set(selectedRows.value);
