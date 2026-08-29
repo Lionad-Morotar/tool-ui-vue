@@ -1,4 +1,5 @@
-// DataTable 行选择状态 composable —— 多选/单选核心（S1 多选、S2 单选：仅 table 视图）
+// DataTable 行选择状态 composable —— 单选/多选共用同一状态源与收敛规则，
+// 视图层仅按模式决定勾选交互形态，选择状态本身与视图形态解耦
 import { computed, ref, toValue, watch } from 'vue';
 import type { RowData } from '../schema';
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue';

@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { parseSerializableDataTable, safeParseSerializableDataTable } from '../schema';
 import DataTable from '../index.vue';
 
-// DataTable 多选核心行为测试（S1: 仅 table 视图）。
+// DataTable 勾选列与行选择行为测试。
 // 行键统一走 useLayout.getRowId 链：显式 rowIdKey → 探测 → row-${index} 兜底，
 // 测试数据用 rowIdKey: 'id' + 简单 id（a1/a2）保证 data-testid 稳定可查。
 
@@ -54,7 +54,7 @@ describe('勾选列渲染', () => {
   });
 });
 
-describe('单选模式渲染（S2）', () => {
+describe('单选模式渲染', () => {
   test('selectable="single" 时行勾选框渲染、表头无全选勾选框', () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
     expect(wrapper.find('[data-testid="row-select-a1"]').exists()).toBe(true);
@@ -62,10 +62,14 @@ describe('单选模式渲染（S2）', () => {
     expect(wrapper.find('[data-testid="select-all"]').exists()).toBe(false);
   });
 
-  test('selectable="single" 时 colgroup 保留勾选列占位、表头不占全选列', () => {
+  test('selectable="single" 时表头渲染空占位列保持列数一致且无全选勾选框', () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
     expect(wrapper.findAll('colgroup col')).toHaveLength(3);
-    expect(wrapper.findAll('thead th')).toHaveLength(2);
+    // 表头 th 数 = visibleColumns + 1：空占位 th 与 colgroup/表体勾选列对齐，
+    // 缺位会导致真实浏览器中表头左移与数据列错位
+    expect(wrapper.findAll('thead th')).toHaveLength(3);
+    expect(wrapper.find('[data-testid="select-all"]').exists()).toBe(false);
+    expect(wrapper.findAll('thead th input')).toHaveLength(0);
   });
 
   test('selectable="single" 时空态 colspan 加 1 适配行勾选列', () => {
@@ -108,7 +112,7 @@ describe('行选择交互', () => {
   });
 });
 
-describe('单选交互（S2）', () => {
+describe('单选交互', () => {
   test('单选勾选一行：emit 携带该行 rowId', async () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: 'single' }) });
     await wrapper.find('[data-testid="row-select-a1"]').setValue(true);
@@ -186,7 +190,7 @@ describe('全选/半选', () => {
   });
 });
 
-describe('单选模式切换（S2）', () => {
+describe('单选模式切换', () => {
   test('multiple → single 且已选多行：选中集清空并 emit 空数组', async () => {
     const wrapper = mount(DataTable, { props: createProps({ selectable: true }) });
     await wrapper.find('[data-testid="row-select-a1"]').setValue(true);

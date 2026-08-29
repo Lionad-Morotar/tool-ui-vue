@@ -267,16 +267,21 @@ function getRowA11yLabel(row: RowData, index: number): string {
             <template v-else>
               <thead :class="cn('sticky top-0 z-10 bg-card [&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
-                  <!-- 全选列：仅多选模式（selectable === true）；单选模式无全选语义。
-                       勾选框样式对齐列显隐菜单的 ✓ 框，原生 input 承担
+                  <!-- 勾选列表头：colgroup 与表体行勾选列均按 selectable truthy 渲染，
+                       表头若只在 === true 时渲染，单选模式会少一格导致表头左移与数据列错位，
+                       故单选模式渲染空占位 th（h-10 对齐数据列行高）保持列数一致。
+                       多选（selectable === true）才渲染全选勾选框；原生 input 承担
                        checked/indeterminate 语义（sr-only 视觉隐藏），
                        半选态由 watchEffect 写 .indeterminate 属性 -->
                   <th
-                    v-if="selectable === true"
+                    v-if="selectable"
                     scope="col"
-                    class="w-10 align-middle"
+                    class="w-10 h-10 align-middle"
                   >
-                    <label class="inline-flex h-8 w-10 cursor-pointer items-center justify-center">
+                    <label
+                      v-if="selectable === true"
+                      class="inline-flex h-8 w-10 cursor-pointer items-center justify-center"
+                    >
                       <input
                         ref="selectAllInputRef"
                         type="checkbox"
