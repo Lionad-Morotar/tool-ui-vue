@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed, ref } from 'vue';
+import { reactive, computed, ref, watchEffect } from 'vue';
 import { onClickOutside, useFullscreen } from '@vueuse/core';
 import { Columns3, Download, GripVertical, Maximize, Minimize } from 'lucide-vue-next';
 import { cn } from '../core';
@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<DataTableProps>(), {
 
 const emit = defineEmits<{
   sortChange: [sort: { by?: string; direction?: 'asc' | 'desc' }];
+  selectionChange: [rowIds: string[]];
   columnsVisibilityChange: [hidden: string[]];
   columnsReorder: [order: string[]];
   columnResize: [widths: Record<string, number>];
@@ -124,6 +125,15 @@ function exportCsv() {
 const categorizedColumns = computed(() => state.categorizeColumns(state.visibleColumns));
 const primaryColumns = computed(() => categorizedColumns.value.primary);
 const secondaryColumns = computed(() => categorizedColumns.value.secondary);
+
+// 表头全选 input 的 indeterminate：半选态无对应 HTML attribute，
+// 只能经 DOM 属性设置；selectable=false 时 ref 恒空，watchEffect 空跑无害
+const selectAllInputRef = ref<HTMLInputElement | null>(null)
+watchEffect(() => {
+  if (selectAllInputRef.value) {
+    selectAllInputRef.value.indeterminate = state.isIndeterminate
+  }
+})
 </script>
 
 <template>
@@ -218,7 +228,8 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
           :style="maxHeight && !isFullscreen ? { '--max-height': maxHeight, 'overflow-y': 'auto' } : {}"
         >
           <table class="w-full text-sm">
-            <colgroup v-if="state.visibleColumns.length > 0">
+            <colgroup v-if="selectable || state.visibleColumns.length > 0">
+              <col v-if="selectable" class="w-10" />
               <col
                 v-for="col in state.visibleColumns"
                 :key="String(col.key)"
@@ -230,7 +241,7 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
             <tbody v-if="data.length === 0">
               <tr class="h-24 bg-card text-center">
                 <td
-                  :colspan="state.visibleColumns.length || 1"
+                  :colspan="(state.visibleColumns.length + (selectable ? 1 : 0)) || 1"
                   role="status"
                   aria-live="polite"
                   class="text-muted-foreground"
@@ -244,6 +255,34 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
             <template v-else>
               <thead :class="cn('sticky top-0 z-10 bg-card [&_tr]:border-b [&_tr]:border-border', css?.header)">
                 <tr class="hover:bg-transparent">
+                  <!-- 全选列：非排序表头；勾选框样式对齐列显隐菜单的 ✓ 框。
+                       原生 input 承担 checked/indeterminate 语义（sr-only 视觉隐藏），
+                       半选态由 watchEffect 写 .indeterminate 属性 -->
+                  <th
+                    v-if="selectable"
+                    scope="col"
+                    class="w-10 align-middle"
+                  >
+                    <label class="inline-flex h-8 w-10 cursor-pointer items-center justify-center">
+                      <input
+                        ref="selectAllInputRef"
+                        type="checkbox"
+                        class="sr-only"
+                        data-testid="select-all"
+                        :checked="state.isAllSelected"
+                        :aria-checked="state.isIndeterminate ? 'mixed' : state.isAllSelected"
+                        :aria-label="t('dataTable.selectAll').value"
+                        @change="state.toggleSelectAll()"
+                      />
+                      <span
+                        :class="cn(
+                          'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                          (state.isAllSelected || state.isIndeterminate) && 'bg-primary text-primary-foreground',
+                        )"
+                        aria-hidden="true"
+                      >{{ state.isAllSelected ? '✓' : (state.isIndeterminate ? '—' : '') }}</span>
+                    </label>
+                  </th>
                   <th
                     v-for="(column, columnIndex) in state.visibleColumns"
                     :key="column.key"
@@ -337,6 +376,27 @@ const secondaryColumns = computed(() => categorizedColumns.value.secondary);
                   :key="state.getRowId(row, index)"
                   :class="cn('border-b border-border transition-colors hover:bg-muted/50', css?.row)"
                 >
+                  <!-- 行勾选列：仅勾选框响应点击，行其他区域不触发选中 -->
+                  <td v-if="selectable" class="w-10 px-3 py-3 align-middle">
+                    <label class="inline-flex h-8 w-8 cursor-pointer items-center justify-center">
+                      <input
+                        type="checkbox"
+                        class="sr-only"
+                        :data-testid="`row-select-${state.getRowId(row, index)}`"
+                        :checked="state.isRowSelected(state.getRowId(row, index))"
+                        :aria-checked="state.isRowSelected(state.getRowId(row, index))"
+                        :aria-label="t('dataTable.selectRow', { label: state.getRowId(row, index) }).value"
+                        @change="state.toggleRowSelection(state.getRowId(row, index))"
+                      />
+                      <span
+                        :class="cn(
+                          'flex h-4 w-4 items-center justify-center rounded-sm border border-border',
+                          state.isRowSelected(state.getRowId(row, index)) && 'bg-primary text-primary-foreground',
+                        )"
+                        aria-hidden="true"
+                      >{{ state.isRowSelected(state.getRowId(row, index)) ? '✓' : '' }}</span>
+                    </label>
+                  </td>
                   <td
                     v-for="(column, columnIndex) in state.visibleColumns"
                     :key="column.key"

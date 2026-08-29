@@ -1,14 +1,16 @@
-// DataTable 聚合 composable - 组装 useSort, useFormat, useLayout, useColumns
+// DataTable 聚合 composable - 组装 useSort, useFormat, useLayout, useColumns, useSelection
 import { useFormat, type FormatOptions } from './useFormat';
 import { useLayout, type UseLayoutOptions } from './useLayout';
 import { useSort, type UseSortOptions } from './useSort';
 import { useColumns, type UseColumnsOptions } from './useColumns';
+import { useSelection, type UseSelectionOptions } from './useSelection';
 import { usePropsValidator } from '../../core';
 import { SerializableDataTableSchema } from '../schema';
 import type { Column, DataTableProps, RowData } from '../schema';
 
 export type DataTableEmit = {
   (e: 'sortChange', sort: { by?: string; direction?: 'asc' | 'desc' }): void;
+  (e: 'selectionChange', rowIds: string[]): void;
   (e: 'columnsVisibilityChange', hidden: string[]): void;
   (e: 'columnsReorder', order: string[]): void;
   (e: 'columnResize', widths: Record<string, number>): void;
@@ -57,6 +59,14 @@ export interface DataTableState {
   isColumnHidden: ReturnType<typeof useColumns>['isColumnHidden'];
   reorderColumns: ReturnType<typeof useColumns>['reorderColumns'];
   setColumnWidth: ReturnType<typeof useColumns>['setColumnWidth'];
+
+  // From useSelection
+  selectedRows: ReturnType<typeof useSelection>['selectedRows'];
+  isRowSelected: ReturnType<typeof useSelection>['isRowSelected'];
+  toggleRowSelection: ReturnType<typeof useSelection>['toggleRowSelection'];
+  toggleSelectAll: ReturnType<typeof useSelection>['toggleSelectAll'];
+  isAllSelected: ReturnType<typeof useSelection>['isAllSelected'];
+  isIndeterminate: ReturnType<typeof useSelection>['isIndeterminate'];
 }
 
 export function useDataTable(
@@ -145,6 +155,15 @@ export function useDataTable(
     emit('columnResize', { ...columnsState.widthOverrides.value });
   }
 
+  // useSelection options —— 全选/半选以排序后视图行为准（sortedData 经 getter 传入，
+  // 排序切换后行键序列随视图更新，选中集按 rowId 保持不串行）
+  const selectionOptions: UseSelectionOptions = {
+    data: () => sortedData.value,
+    getRowId,
+    onSelectionChange: (rowIds) => emit('selectionChange', rowIds),
+  };
+  const selectionState = useSelection(selectionOptions);
+
   return {
     // From useSort
     currentSort,
@@ -188,5 +207,13 @@ export function useDataTable(
     isColumnHidden: columnsState.isColumnHidden,
     reorderColumns,
     setColumnWidth,
+
+    // From useSelection（选择集变化经 onSelectionChange 回调 emit 上抛）
+    selectedRows: selectionState.selectedRows,
+    isRowSelected: selectionState.isRowSelected,
+    toggleRowSelection: selectionState.toggleRowSelection,
+    toggleSelectAll: selectionState.toggleSelectAll,
+    isAllSelected: selectionState.isAllSelected,
+    isIndeterminate: selectionState.isIndeterminate,
   };
 }

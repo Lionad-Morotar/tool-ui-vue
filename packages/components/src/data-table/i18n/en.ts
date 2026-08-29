@@ -13,5 +13,7 @@ export const en = {
     exportCsv: 'Export CSV',
     fullscreenEnter: 'Fullscreen',
     fullscreenExit: 'Exit fullscreen',
+    selectAll: 'Select all',
+    selectRow: 'Select row {label}',
   },
 } as const

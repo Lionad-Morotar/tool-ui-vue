@@ -13,5 +13,7 @@ export const zhCN = {
     exportCsv: '导出 CSV',
     fullscreenEnter: '全屏',
     fullscreenExit: '退出全屏',
+    selectAll: '全选',
+    selectRow: '选择行 {label}',
   },
 } as const
