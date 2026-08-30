@@ -179,6 +179,8 @@ const props = [
   { name: 'locale', type: "'en' | 'zh'", description: { zh: '显示语言', en: 'Display locale' } },
   { name: 'layout', type: "'auto' | 'table' | 'cards'", description: { zh: '响应式布局模式', en: 'Responsive layout mode' } },
   { name: 'features', type: '{ reorder?: boolean, resize?: boolean, visibility?: boolean, export?: boolean }', description: { zh: '交互特性开关（拖拽重排/列宽调整/列显隐/CSV 导出），缺省全开', en: 'Interaction feature flags (reorder/resize/visibility/export), all on by default' } },
+  { name: 'selectable', type: "boolean | 'single'", description: { zh: '行勾选开关，true 多选、single 单选，默认关闭', en: 'Row checkboxes: true for multi-select, single for single-select, off by default' } },
+  { name: 'onSelectionChange', type: '(rowIds: string[]) => void', description: { zh: '选中行变化回调，按视图行序输出 rowId 数组', en: 'Selection change callback emitting row ids in view order' } },
   { name: 'css', type: '{ root?: string, header?: string, body?: string, row?: string, footer?: string }', description: { zh: '组件元素的 CSS 类', en: 'CSS classes for component elements' } },
 ];
 

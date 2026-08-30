@@ -4,7 +4,7 @@ import { defineConfig } from 'histoire';
 import { resolve } from 'path';
 
 const storyGroups = [
-  { title: 'Data Display', stories: ['article', 'chart', 'data-table', 'stats-display', 'weather-widget'] },
+  { title: 'Data Display', stories: ['article', 'chart', 'data-table', 'data-table/selection', 'stats-display', 'weather-widget'] },
   { title: 'Code & Terminal', stories: ['code-block', 'code-diff', 'terminal'] },
   { title: 'Media', stories: ['audio', 'image', 'image-gallery', 'item-carousel', 'video'] },
   { title: 'Social', stories: ['approval-card', 'citation', 'contact-card', 'instagram-post', 'linkedin-post', 'link-preview', 'message-draft', 'x-post'] },
