@@ -1,5 +1,11 @@
 # @lionad/vtu-components
 
+## 0.3.16-alpha.3
+
+### Patch Changes
+
+- fix(components): Image 组件 src 放行根相对路径——states 层本地 sanitizeHref 只收绝对 http(s) URL，宿主经 BFF 代理通道（`/api/...` 根相对路径）喂图时被丢弃致 img 失去 src；改用 core 共享实现（与 video/x-post 同源），相对路径合法、`//` 协议相对与 `javascript:` 仍拦截
+
 ## 0.3.16-alpha.2
 
 ### Minor Changes
