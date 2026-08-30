@@ -72,6 +72,32 @@ describe('Image', () => {
     });
   });
 
+  describe('src sanitization', () => {
+    // 宿主侧常以根相对路径喂图(如 BFF 代理通道 /api/...),不应被当作非法 URL 丢弃
+    test('keeps root-relative src', () => {
+      const wrapper = mount(Image, {
+        props: createProps({ src: '/api/workspace/conv-1/files/a.png?raw=1' }),
+      });
+      expect(wrapper.find('img').attributes('src')).toBe(
+        '/api/workspace/conv-1/files/a.png?raw=1',
+      );
+    });
+
+    test('drops protocol-relative src', () => {
+      const wrapper = mount(Image, {
+        props: createProps({ src: '//evil.com/x.png' }),
+      });
+      expect(wrapper.find('img').attributes('src')).toBeUndefined();
+    });
+
+    test('drops javascript: src', () => {
+      const wrapper = mount(Image, {
+        props: createProps({ src: 'javascript:alert(1)' }),
+      });
+      expect(wrapper.find('img').attributes('src')).toBeUndefined();
+    });
+  });
+
   describe('attributes', () => {
     test('sets data-slot attribute', () => {
       const wrapper = mount(Image, {

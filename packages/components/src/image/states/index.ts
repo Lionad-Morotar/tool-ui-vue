@@ -2,6 +2,7 @@
 // All business logic lives here, index.vue is UI-only
 
 import { computed } from 'vue';
+import { sanitizeHref } from '../../core';
 import type { ImageProps, AspectRatio, MediaFit } from '../schema';
 import type { ComputedRef } from 'vue';
 
@@ -25,28 +26,6 @@ export interface ImageState {
   fitClassMap: Record<MediaFit, string>;
   handleImageClick: () => void;
   handleSourceClick: () => void;
-}
-
-/**
- * 安全的 URL 验证函数
- * 只允许 http: 和 https: 协议，防止 XSS 攻击
- */
-function sanitizeHref(url?: string): string | undefined {
-  if (!url) return undefined;
-  const candidate = url.trim();
-  if (!candidate) return undefined;
-
-  try {
-    const parsed = new URL(candidate);
-    // 只允许 http: 和 https: 协议
-    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      return undefined;
-    }
-    return candidate;
-  } catch {
-    // 如果不是绝对 URL，检查是否为相对路径（不允许）
-    return undefined;
-  }
 }
 
 const FALLBACK_LOCALE = 'en-US';
