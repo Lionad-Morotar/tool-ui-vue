@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from '../../core';
-import { Switch } from '../../ui/switch';
-import { ToggleGroup } from '../../ui/toggle-group';
+import { Switch, ToggleGroup } from '../../ui';
 import type { PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
