@@ -36,6 +36,7 @@
     }
   },
   "dependencies": {
+    "@internationalized/date": "^3.12.4",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/components": "^14.2.1",
     "@vueuse/core": "^14.2.1",

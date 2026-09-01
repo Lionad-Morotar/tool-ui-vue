@@ -1,4 +1,5 @@
 // 内部私有原子层:不对外发布,禁止从 packages/components/src/index.ts 再导出
+export * from './date';
 export * from './input';
 export * from './number-field';
 export * from './option-indicator';
