@@ -883,7 +883,7 @@ describe('PreferencesPanel', () => {
       expect(wrapper.find('legend').exists()).toBe(true);
     });
 
-    test('uses div for sections without headings', () => {
+    test('uses fieldset without legend for sections without headings', () => {
       const wrapper = mount(PreferencesPanel, {
         props: createProps({
           sections: [
@@ -895,7 +895,8 @@ describe('PreferencesPanel', () => {
           ],
         }),
       });
-      expect(wrapper.find('fieldset').exists()).toBe(false);
+      expect(wrapper.find('fieldset').exists()).toBe(true);
+      expect(wrapper.find('legend').exists()).toBe(false);
     });
 
     test('removes top padding for first item when no title and no heading', () => {
