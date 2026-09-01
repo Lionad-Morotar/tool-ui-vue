@@ -1,3 +1,4 @@
 [submodule "refs/tool-ui"]
 	path = refs/tool-ui
 	url = https://github.com/assistant-ui/tool-ui.git
+	ignore = all
