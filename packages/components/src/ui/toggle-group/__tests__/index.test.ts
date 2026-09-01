@@ -35,6 +35,16 @@ describe('ui/toggle-group', () => {
       expect(root.classes()).toContain('my-group');
       expect(root.classes()).toContain('flex');
     });
+
+    // 选中态视觉由这两条 data-[state=on] class 交付,reka 只给 data-state 属性;
+    // 误拼 state 值或删 class 时行为测试仍绿,须字面量锁定
+    test('locks the selected-state style contract on every item', () => {
+      const wrapper = mount(ToggleGroup, { props: { options, modelValue: 'light' } });
+      for (const item of getItems(wrapper)) {
+        expect(item.classes()).toContain('data-[state=on]:bg-primary');
+        expect(item.classes()).toContain('data-[state=on]:text-primary-foreground');
+      }
+    });
   });
 
   describe('single mode', () => {
