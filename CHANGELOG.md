@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.16] - 2026-09-01
+
+### Added
+
+- DataTable 列拖拽重排、列宽拖拽调整与 CSV 导出
+- DataTable 内建全屏查看：`features.fullscreen` 默认开启，全屏态解除 maxHeight 高度限制
+- DataTable 行选择：`selectable` 开启多选勾选列（表头全选/半选，排序后选中按 rowId 保持），支持 `'single'` 单选模式；cards 视图与 table 视图共享选择状态，`selectionChange` 上抛 rowId 数组
+- DataTable 缺 `rowIdKey` 时探测常见唯一字段兜底（id/uuid/key/name/title/label 取首个全行非空且唯一者）
+
+### Changed
+
+- 数组 props 渲染层宽容——缺字段渲染空态而非抛错
+
+### Fixed
+
+- DataTable 文本溢出 tooltip 判定与定位：hover 时刻测量截断、沿触发链检查裁剪祖先、tooltip teleport 到 body 防滚动容器裁剪
+- DataTable 导出 CSV 泄漏 UI 折叠标记——array 列导出完整数据而非 +N 截断
+- DataTable 缺 rowIdKey 警告兑现 once 语义——模块级去重，同页多表实例不再刷屏
+- Article 展开按钮按真实溢出门控
+- Image 组件 src 放行根相对路径
+- StatsDisplay 三项改为一行三等分——网格列数按项数收敛，修复 3/5 项时末行出现半行孤儿单元格
+- 内联图标改 render 函数，消除 runtime-only Vue 下 template 字符串告警
+- 全部未命名 group hover 语义改为命名组，防宿主 .group 祖先劫持
+- [internal] code-block 补 pierre 主题模块类型声明
+
 ## [0.3.9] - 2026-08-07
 
 ### Changed
