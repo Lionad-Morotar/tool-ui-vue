@@ -32,6 +32,18 @@ describe('ui/input', () => {
     });
   });
 
+  describe('attribute fallthrough', () => {
+    // 消费方靠 id 透传建立 label[for] 程序关联,断裂会静默破坏可访问性
+    test('falls through undeclared attributes to the native input', () => {
+      const wrapper = mount(Input, {
+        attrs: { id: 'preference-email', 'data-testid': 'email-field' },
+      });
+      const root = wrapper.find('input');
+      expect(root.attributes('id')).toBe('preference-email');
+      expect(root.attributes('data-testid')).toBe('email-field');
+    });
+  });
+
   describe('v-model', () => {
     test('emits update:modelValue on input', async () => {
       const wrapper = mount(Input, { props: { modelValue: '' } });

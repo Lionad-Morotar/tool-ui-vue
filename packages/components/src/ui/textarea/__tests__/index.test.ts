@@ -32,6 +32,18 @@ describe('ui/textarea', () => {
     });
   });
 
+  describe('attribute fallthrough', () => {
+    // 消费方靠 id 透传建立 label[for] 程序关联,断裂会静默破坏可访问性
+    test('falls through undeclared attributes to the native textarea', () => {
+      const wrapper = mount(Textarea, {
+        attrs: { id: 'preference-bio', 'data-testid': 'bio-field' },
+      });
+      const root = wrapper.find('textarea');
+      expect(root.attributes('id')).toBe('preference-bio');
+      expect(root.attributes('data-testid')).toBe('bio-field');
+    });
+  });
+
   describe('v-model', () => {
     test('emits update:modelValue on input', async () => {
       const wrapper = mount(Textarea, { props: { modelValue: '' } });

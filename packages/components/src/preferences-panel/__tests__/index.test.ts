@@ -441,6 +441,25 @@ describe('PreferencesPanel', () => {
     });
   });
 
+  describe('interactions - input', () => {
+    // label 点击聚焦与屏幕阅读器关联依赖该 for/id 配对
+    test('associates label with input control via for/id', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                { id: 'email', type: 'input' as const, label: 'Email', placeholder: 'you@example.com' },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.find('label[for="preference-email"]').exists()).toBe(true);
+      expect(wrapper.find('input#preference-email').exists()).toBe(true);
+    });
+  });
+
   describe('interactions - textarea', () => {
     test('renders textarea item', () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
