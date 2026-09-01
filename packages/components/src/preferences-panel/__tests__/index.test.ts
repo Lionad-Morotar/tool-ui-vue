@@ -203,6 +203,18 @@ describe('PreferencesPanel', () => {
   });
 
   describe('interactions - toggle', () => {
+    // ToggleGroupRoot 渲染 div role=group 非 labelable 元素,label[for] 不参与命名,
+    // 屏幕阅读器遍历到 toggle 偏好项时组容器的可访问名称靠 aria-labelledby 指回 label
+    test('associates toggle group container with its label via aria-labelledby', () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const label = wrapper.find('label#preference-theme-label');
+      const group = wrapper.find('[data-testid="toggle-group"]');
+      expect(label.exists()).toBe(true);
+      expect(group.exists()).toBe(true);
+      expect(group.attributes('role')).toBe('group');
+      expect(group.attributes('aria-labelledby')).toBe(label.attributes('id'));
+    });
+
     test('selects toggle option and emits change', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
       const darkBtn = wrapper.findAll('button').find((b) => b.text() === 'Dark');

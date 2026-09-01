@@ -94,11 +94,14 @@ const controlWrapperClass = computed(() =>
         v-model="switchChecked"
       />
 
+      <!-- ToggleGroupRoot 渲染 div role=group 非 labelable,label[for] 不参与命名,
+           组容器可访问名称靠 aria-labelledby 指回文案块 label(该 label 恒带此 id) -->
       <ToggleGroup
         v-else-if="item.type === 'toggle' && item.options"
         v-model="toggleModel"
         :options="item.options"
         :multiple="item.multiple"
+        :aria-labelledby="`preference-${item.id}-label`"
         :class="props.hasHeading ? 'w-full' : undefined"
       />
 
