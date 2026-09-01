@@ -233,6 +233,9 @@ importers:
       marked:
         specifier: ^15.0.0
         version: 15.0.12
+      reka-ui:
+        specifier: ^2.10.4
+        version: 2.10.4(vue@3.5.32(typescript@6.0.2))
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
@@ -6126,6 +6129,11 @@ packages:
   regjsparser@0.13.1:
     resolution: {integrity: sha512-dLsljMd9sqwRkby8zhO1gSg3PnJIBFid8f4CQj/sXx+7cKx+E7u0PKhZ+U4wmhx7EfmtvnA318oVaIkAB1lRJw==}
     hasBin: true
+
+  reka-ui@2.10.4:
+    resolution: {integrity: sha512-kbS5GAbkHkYj0EVKAg5ZPEPndhBjeUFSa1Aq5m5ftQwyHnB1v5tw8X6fcwfKH/ry3StPXblMWM1DW82MVS71cw==}
+    peerDependencies:
+      vue: '>= 3.4.0'
 
   reka-ui@2.9.3:
     resolution: {integrity: sha512-C9lCVxsSC7uYD0Nbgik1+14FNndHNprZmf0zGQt0ZDYIt5KxXV3zD0hEqNcfRUsEEJvVmoRsUkJnASBVBeaaUw==}
@@ -14549,6 +14557,22 @@ snapshots:
   regjsparser@0.13.1:
     dependencies:
       jsesc: 3.1.0
+
+  reka-ui@2.10.4(vue@3.5.32(typescript@6.0.2)):
+    dependencies:
+      '@floating-ui/dom': 1.7.6
+      '@floating-ui/vue': 1.1.11(vue@3.5.32(typescript@6.0.2))
+      '@internationalized/date': 3.12.0
+      '@internationalized/number': 3.6.5
+      '@tanstack/vue-virtual': 3.13.23(vue@3.5.32(typescript@6.0.2))
+      '@vueuse/core': 14.2.1(vue@3.5.32(typescript@6.0.2))
+      '@vueuse/shared': 14.2.1(vue@3.5.32(typescript@6.0.2))
+      aria-hidden: 1.2.6
+      defu: 6.1.6
+      ohash: 2.0.11
+      vue: 3.5.32(typescript@6.0.2)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
 
   reka-ui@2.9.3(vue@3.5.32(typescript@6.0.2)):
     dependencies:

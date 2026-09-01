@@ -38,6 +38,13 @@ export default defineConfig({
     ],
     exclude: ['node_modules', 'dist'],
     setupFiles: ['src/test/setup.ts'],
+    // reka-ui 必须走 Vite 管线内联加载:被 externalize 时它会经 Node 解析出另一份
+    // vue 实例,与 vite-node 管线的 SFC 分属两套响应式系统,checked 态追踪静默失效
+    server: {
+      deps: {
+        inline: ['reka-ui'],
+      },
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
