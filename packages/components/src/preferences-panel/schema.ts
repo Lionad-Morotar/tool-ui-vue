@@ -67,12 +67,60 @@ const PreferenceTextareaSchema = PreferenceItemBaseSchema.extend({
   rows: z.number().min(1).optional(),
 });
 
+// 新增表单项的默认值字段统一收敛 defaultValue(既有 defaultChecked/defaultSelected 保留不破坏兼容)
+const PreferenceRatingSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('rating'),
+  max: z.number().min(1).optional(),
+  defaultValue: z.number().optional(),
+});
+
+const PreferenceNumberSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('number'),
+  min: z.number().optional(),
+  max: z.number().optional(),
+  step: z.number().optional(),
+  placeholder: z.string().optional(),
+  defaultValue: z.number().optional(),
+});
+
+const PreferenceTagsSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('tags'),
+  max: z.number().min(1).optional(),
+  placeholder: z.string().optional(),
+  defaultValue: z.array(z.string()).optional(),
+});
+
+const PreferenceDateSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('date'),
+  mode: z.enum(['date', 'datetime', 'range']).optional(),
+  placeholder: z.string().optional(),
+  defaultValue: z.union([z.string(), z.array(z.string())]).optional(),
+}).check((ctx) => {
+  // mode 与默认值形态交叉校验:range ↔ 数组、单值 ↔ string,错位即非法
+  // (受控 value 与 receipt choice 不过此 schema,那条入口由 field 层 dateModel 收窄兜底)
+  const v = ctx.value;
+  if (v.defaultValue === undefined) return;
+  const ok = v.mode === 'range' ? Array.isArray(v.defaultValue) : typeof v.defaultValue === 'string';
+  if (!ok) {
+    ctx.issues.push({
+      code: 'custom',
+      input: v.defaultValue,
+      message: "date item defaultValue must be a string pair array when mode is 'range', otherwise a string",
+      path: ['defaultValue'],
+    });
+  }
+});
+
 const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
   PreferenceSelectSchema,
   PreferenceInputSchema,
   PreferenceTextareaSchema,
+  PreferenceRatingSchema,
+  PreferenceNumberSchema,
+  PreferenceTagsSchema,
+  PreferenceDateSchema,
 ]);
 
 const PreferenceSectionSchema = z.object({
@@ -107,7 +155,11 @@ export const SerializablePreferencesPanelSchema =
  */
 export const SerializablePreferencesPanelReceiptSchema =
   z.strictObject(PreferencesPanelBaseSchema.extend({
-        choice: z.record(z.string(), z.union([z.string(), z.boolean(), z.array(z.string())])),
+        // number 承载 rating/number 项,null 承载 number 项的未填空态
+        choice: z.record(
+          z.string(),
+          z.union([z.string(), z.boolean(), z.array(z.string()), z.number(), z.null()])
+        ),
         error: z.record(z.string(), z.string()).optional(),
       }).shape);
 
@@ -159,10 +211,14 @@ export const safeParseSerializablePreferencesPanelReceipt: (
 
 /**
  * 偏好设置值类型
+ * null 专供 number 项的未填空态(与 0 区分);rating 恒为 number
  */
 export interface PreferencesValue {
-  [itemId: string]: string | string[] | boolean;
+  [itemId: string]: string | string[] | boolean | number | null;
 }
+
+/** 单个偏好项的值联合,供控件桥接与 states 层签名复用 */
+export type PreferenceFieldValue = PreferencesValue[string];
 
 /**
  * PreferencesPanelCssSchema Zod Schema
@@ -204,7 +260,7 @@ export interface PreferencesPanelReceiptProps {
   receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
-  choice: Record<string, string | boolean | string[]>;
+  choice: Record<string, string | boolean | string[] | number | null>;
   error?: Record<string, string>;
   css?: PreferencesPanelCss;
 }

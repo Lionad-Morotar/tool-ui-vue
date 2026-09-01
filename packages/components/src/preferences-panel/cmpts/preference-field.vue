@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from '../../core';
-import { Switch, ToggleGroup, Input, Textarea, Select } from '../../ui';
-import type { PreferenceItem } from '../schema';
+import { Switch, ToggleGroup, Input, Textarea, Select, Rating, NumberField, TagsInput, DatePicker } from '../../ui';
+import type { PreferenceFieldValue, PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
 
 const props = defineProps<{
   item: PreferenceItem;
-  value: string | string[] | boolean;
+  value: PreferenceFieldValue;
   itemIndex: number;
   hasHeading: boolean;
   hasTitle: boolean;
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  update: [value: string | string[] | boolean];
+  update: [value: PreferenceFieldValue];
 }>();
 
 // 值可能来自序列化数据,字符串 'true' 视为开
@@ -27,19 +27,56 @@ const switchChecked = computed<boolean>({
 
 // toggle 值桥接:field 联合类型收窄为 string | string[],写回统一走 update 上抛
 const toggleModel = computed<string | string[]>({
-  get: () => (typeof props.value === 'boolean' ? '' : props.value),
+  get: () => {
+    if (Array.isArray(props.value)) return props.value;
+    return typeof props.value === 'string' ? props.value : '';
+  },
   set: (v) => emit('update', v),
 });
 
 // 字符串控件值桥接:select/input/textarea 均为 string 值,联合类型收窄后与原子 defineModel<string> 对齐
 const textModel = computed<string>({
-  get: () => String(props.value),
+  get: () => String(props.value ?? ''),
+  set: (v) => emit('update', v),
+});
+
+// rating 恒 number,空值归 0(与初始值兜底一致)
+const ratingModel = computed<number>({
+  get: () => (typeof props.value === 'number' ? props.value : 0),
+  set: (v) => emit('update', v),
+});
+
+// number 的空态 null 原样透传,与原子 defineModel<number|null> 对齐
+const numberModel = computed<number | null>({
+  get: () => (typeof props.value === 'number' || props.value === null ? props.value : null),
+  set: (v) => emit('update', v),
+});
+
+// tags 值桥接:string[] 收窄,非数组输入(脏数据)归空数组
+const tagsModel = computed<string[]>({
+  get: () => (Array.isArray(props.value) ? props.value : []),
+  set: (v) => emit('update', v),
+});
+
+// date 值桥接:按 item.mode 感知收窄——range 只认 string[],单值只认 string;
+// 受控/receipt 入口不过 zod,脏形态(数组进单值分支等)在此归空防御
+const dateModel = computed<string | string[]>({
+  get: () => {
+    if (props.item.type === 'date' && props.item.mode === 'range') {
+      return Array.isArray(props.value) ? props.value : [];
+    }
+    return typeof props.value === 'string' ? props.value : '';
+  },
   set: (v) => emit('update', v),
 });
 
 // 宽控件独占一行,其余与文案同行排列
 const isBlockControl = computed(
-  () => props.item.type === 'input' || props.item.type === 'textarea' || props.item.type === 'toggle'
+  () =>
+    props.item.type === 'input' ||
+    props.item.type === 'textarea' ||
+    props.item.type === 'toggle' ||
+    props.item.type === 'tags'
 );
 
 // 无标题卡片的首行去掉上 padding,与容器内边距互补避免顶部双倍留白
@@ -128,6 +165,41 @@ const controlWrapperClass = computed(() =>
         v-model="textModel"
         :placeholder="item.placeholder"
         :rows="item.rows"
+      />
+
+      <!-- Rating/TagsInput/DatePicker 均非 labelable 原生控件,aria-labelledby 指回文案块 label -->
+      <Rating
+        v-else-if="item.type === 'rating'"
+        v-model="ratingModel"
+        :max="item.max"
+        :aria-labelledby="`preference-${item.id}-label`"
+      />
+
+      <NumberField
+        v-else-if="item.type === 'number'"
+        :id="`preference-${item.id}`"
+        v-model="numberModel"
+        :min="item.min"
+        :max="item.max"
+        :step="item.step"
+        :placeholder="item.placeholder"
+      />
+
+      <TagsInput
+        v-else-if="item.type === 'tags'"
+        v-model="tagsModel"
+        :max="item.max"
+        :placeholder="item.placeholder"
+        :aria-labelledby="`preference-${item.id}-label`"
+        :class="props.hasHeading ? 'w-full' : undefined"
+      />
+
+      <DatePicker
+        v-else-if="item.type === 'date'"
+        v-model="dateModel"
+        :mode="item.mode"
+        :placeholder="item.placeholder"
+        :aria-labelledby="`preference-${item.id}-label`"
       />
     </div>
   </div>

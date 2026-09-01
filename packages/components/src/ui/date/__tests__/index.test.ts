@@ -310,3 +310,24 @@ describe('ui/date', () => {
     });
   });
 });
+
+describe('attrs forwarding', () => {
+  // DatePickerRoot/DateRangePickerRoot 基于 PopoverRoot(renderless,不渲染 DOM),
+  // 单根 fallthrough attrs 无处可落——aria 命名/id 等必须显式转发到 Trigger(真实交互元素)
+  test('date mode forwards aria-labelledby onto the trigger', () => {
+    const wrapper = mount(DatePicker, { attrs: { 'aria-labelledby': 'due-label' } });
+    expect(wrapper.find('[data-testid="date-trigger"]').attributes('aria-labelledby')).toBe(
+      'due-label'
+    );
+  });
+
+  test('range mode forwards aria-labelledby onto the trigger', () => {
+    const wrapper = mount(DatePicker, {
+      props: { mode: 'range' },
+      attrs: { 'aria-labelledby': 'period-label' },
+    });
+    expect(wrapper.find('[data-testid="date-trigger"]').attributes('aria-labelledby')).toBe(
+      'period-label'
+    );
+  });
+});

@@ -8,6 +8,7 @@ import PreferenceField from './cmpts/preference-field.vue';
 import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,
+  PreferencesValue,
 } from './schema';
 
 defineOptions({ name: 'CmptPreferencesPanel', inheritAttrs: false })
@@ -17,10 +18,10 @@ const props = withDefaults(defineProps<PreferencesPanelProps & Partial<Preferenc
 })
 
 const emit = defineEmits<{
-  change: [value: Record<string, string | string[] | boolean>];
-  action: [actionId: string, value: Record<string, string | string[] | boolean>];
-  beforeAction: [actionId: string, value: Record<string, string | string[] | boolean>];
-  'update:value': [value: Record<string, string | string[] | boolean>];
+  change: [value: PreferencesValue];
+  action: [actionId: string, value: PreferencesValue];
+  beforeAction: [actionId: string, value: PreferencesValue];
+  'update:value': [value: PreferencesValue];
 }>()
 
 // All business logic delegated to states layer

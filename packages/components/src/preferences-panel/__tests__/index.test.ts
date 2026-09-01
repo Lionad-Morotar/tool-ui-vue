@@ -37,6 +37,10 @@ vi.mock('../../core/i18n', async (importOriginal) => {
 
 import PreferencesPanel from '../index.vue';
 import {
+  safeParseSerializablePreferencesPanel,
+  safeParseSerializablePreferencesPanelReceipt,
+} from '../schema';
+import {
   installPointerCaptureShim,
   openSelect,
   querySelectItems,
@@ -1061,11 +1065,392 @@ describe('PreferencesPanel', () => {
       expect(wrapper.text()).toContain('Saved');
     });
   });
+
+  describe('interactions - rating', () => {
+    test('renders five stars by default and emits numeric value on pick', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [{ id: 'satisfaction', type: 'rating' as const, label: 'Satisfaction' }],
+            },
+          ],
+        }),
+      });
+      const items = wrapper.findAll('[data-testid="rating-item"]');
+      expect(items).toHaveLength(5);
+      await items[2].trigger('click');
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({
+        satisfaction: 3,
+      });
+    });
+
+    // label[for] 对 rating(div role=radiogroup 派生)不提供无障碍命名,须 aria-labelledby 指回
+    test('associates rating with its label via aria-labelledby', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [{ id: 'satisfaction', type: 'rating' as const, label: 'Satisfaction' }],
+            },
+          ],
+        }),
+      });
+      expect(
+        wrapper.find('[data-testid="rating-root"]').attributes('aria-labelledby')
+      ).toBe('preference-satisfaction-label');
+    });
+
+    test('respects max and defaultValue', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                { id: 'score', type: 'rating' as const, label: 'Score', max: 10, defaultValue: 4 },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.findAll('[data-testid="rating-item"]')).toHaveLength(10);
+      expect(wrapper.findAll('[data-state="active"]')).toHaveLength(4);
+    });
+
+    test('shows "n / max" in receipt', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          choice: { satisfaction: 3 },
+          sections: [
+            {
+              items: [{ id: 'satisfaction', type: 'rating' as const, label: 'Satisfaction' }],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('3 / 5');
+    });
+  });
+
+  describe('interactions - number', () => {
+    // number-field 空态(null)与 0 是不同语义:未填 vs 填了零
+    test('renders with null initial and commits a number on Enter', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [{ id: 'quantity', type: 'number' as const, label: 'Quantity', min: 0 }],
+            },
+          ],
+        }),
+      });
+      const input = wrapper.find('[data-testid="number-field-input"]');
+      expect((input.element as HTMLInputElement).value).toBe('');
+      await input.setValue('7');
+      await input.trigger('keydown', { key: 'Enter' });
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({ quantity: 7 });
+    });
+
+    test('respects min/max/step passthrough', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'quantity',
+                  type: 'number' as const,
+                  label: 'Quantity',
+                  defaultValue: 4,
+                  min: 0,
+                  max: 10,
+                  step: 2,
+                },
+              ],
+            },
+          ],
+        }),
+        attachTo: document.body,
+      });
+      const input = wrapper.find('[data-testid="number-field-input"]');
+      expect((input.element as HTMLInputElement).value).toBe('4');
+      await input.trigger('keydown', { key: 'ArrowUp' });
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({ quantity: 6 });
+    });
+
+    test('shows "-" for null and plain number in receipt', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          choice: { quantity: 8, budget: null },
+          sections: [
+            {
+              items: [
+                { id: 'quantity', type: 'number' as const, label: 'Quantity' },
+                { id: 'budget', type: 'number' as const, label: 'Budget' },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('8');
+      expect(wrapper.text()).toContain('-');
+    });
+  });
+
+  describe('interactions - tags', () => {
+    test('adds a tag on Enter and emits string array', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                { id: 'keywords', type: 'tags' as const, label: 'Keywords', defaultValue: ['alpha'] },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.findAll('[data-testid="tags-input-item"]')).toHaveLength(1);
+      const field = wrapper.find('[data-testid="tags-input-field"]');
+      await field.setValue('beta');
+      await field.trigger('keydown', { key: 'Enter' });
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({
+        keywords: ['alpha', 'beta'],
+      });
+    });
+
+    // tags 是宽控件,独占一行排列(与 input/textarea/toggle 同布局类)
+    test('tags control takes a full row', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            { items: [{ id: 'keywords', type: 'tags' as const, label: 'Keywords' }] },
+          ],
+        }),
+      });
+      expect(wrapper.find('[data-testid="preference-field"]').classes()).toContain('flex-col');
+    });
+
+    test('shows comma-joined tags in receipt', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          choice: { keywords: ['alpha', 'beta'] },
+          sections: [
+            { items: [{ id: 'keywords', type: 'tags' as const, label: 'Keywords' }] },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('alpha, beta');
+    });
+  });
+
+  describe('interactions - date', () => {
+    test('renders date trigger with placeholder and emits YYYY-MM-DD on pick', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'due',
+                  type: 'date' as const,
+                  label: 'Due date',
+                  placeholder: 'Pick a date',
+                  defaultValue: '2026-03-10',
+                },
+              ],
+            },
+          ],
+        }),
+        attachTo: document.body,
+      });
+      expect(wrapper.find('[data-testid="date-trigger"]').text()).toContain('2026-03-10');
+      await wrapper.find('[data-testid="date-trigger"]').trigger('click');
+      await settle();
+      const day = Array.from(
+        document.body.querySelectorAll<HTMLElement>('[data-reka-calendar-cell-trigger]')
+      ).find((el) => !el.hasAttribute('data-outside-view') && el.textContent?.trim() === '15')!;
+      day.click();
+      await settle();
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({
+        due: '2026-03-15',
+      });
+    });
+
+    test('range mode emits [start, end] pair', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                {
+                  id: 'period',
+                  type: 'date' as const,
+                  label: 'Period',
+                  mode: 'range' as const,
+                  defaultValue: ['2026-03-10', '2026-03-20'],
+                },
+              ],
+            },
+          ],
+        }),
+        attachTo: document.body,
+      });
+      expect(wrapper.find('[data-testid="date-trigger"]').text()).toContain('2026-03-10 ~ 2026-03-20');
+      await wrapper.find('[data-testid="date-trigger"]').trigger('click');
+      await settle();
+      const clickDay = async (d: string) => {
+        const el = Array.from(
+          document.body.querySelectorAll<HTMLElement>('[data-reka-calendar-cell-trigger]')
+        ).find((x) => !x.hasAttribute('data-outside-view') && x.textContent?.trim() === d)!;
+        el.click();
+        await settle();
+      };
+      await clickDay('12');
+      expect(wrapper.emitted('change'), 'single end picked must not emit').toBeFalsy();
+      await clickDay('18');
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({
+        period: ['2026-03-12', '2026-03-18'],
+      });
+    });
+
+    test('shows range joined with ~ in receipt', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          choice: { period: ['2026-03-10', '2026-03-20'] },
+          sections: [
+            {
+              items: [
+                { id: 'period', type: 'date' as const, label: 'Period', mode: 'range' as const },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.text()).toContain('2026-03-10 ~ 2026-03-20');
+    });
+
+    // date trigger 是 button 非 labelable,aria-labelledby 须真实落到 DOM
+    // (原子层 renderless 根吞 attrs 曾是这里的缺陷,此用例锁定端到端通路)
+    test('date trigger carries aria-labelledby in the DOM', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            { items: [{ id: 'due', type: 'date' as const, label: 'Due date' }] },
+          ],
+        }),
+      });
+      expect(wrapper.find('[data-testid="date-trigger"]').attributes('aria-labelledby')).toBe(
+        'preference-due-label'
+      );
+    });
+
+    // tags 命名须落在真实输入框上(根容器无 role,落其上不参与名称计算)
+    test('tags input field carries aria-labelledby in the DOM', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            { items: [{ id: 'keywords', type: 'tags' as const, label: 'Keywords' }] },
+          ],
+        }),
+      });
+      expect(
+        wrapper.find('[data-testid="tags-input-field"]').attributes('aria-labelledby')
+      ).toBe('preference-keywords-label');
+    });
+
+    // 受控脏形态防御:mode 单值但外部值是数组(不过 zod 的受控/receipt 入口),
+    // dateModel 按 mode 感知收窄,落到「未选择」态而非放行数组进单值分支静默显示空
+    test('controlled array value on single-date mode falls back to placeholder', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          value: { due: ['2026-03-10', '2026-03-20'] },
+          sections: [
+            {
+              items: [
+                { id: 'due', type: 'date' as const, label: 'Due date', placeholder: 'Pick a date' },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.find('[data-testid="date-trigger"]').text()).toContain('Pick a date');
+    });
+  });
 });
 
 describe('数组 props 缺省防御(LLM 产出宽容)', () => {
   test('omitting sections renders without crashing', () => {
     const wrapper = mount(PreferencesPanel, { props: { id: 'pp-guard' } as any });
     expect(wrapper.exists()).toBe(true);
+  });
+});
+
+describe('serializable schema 契约', () => {
+  const baseItem = { label: 'L' };
+
+  test('accepts all four new item types with their defaultValue shapes', () => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [
+        {
+          items: [
+            { ...baseItem, id: 'r', type: 'rating', max: 10, defaultValue: 4 },
+            { ...baseItem, id: 'n', type: 'number', min: 0, max: 10, step: 2, defaultValue: 2 },
+            { ...baseItem, id: 't', type: 'tags', max: 5, defaultValue: ['a'] },
+            { ...baseItem, id: 'd1', type: 'date', defaultValue: '2026-03-10' },
+            { ...baseItem, id: 'd2', type: 'date', mode: 'datetime', defaultValue: '2026-03-10T08:30' },
+            { ...baseItem, id: 'd3', type: 'date', mode: 'range', defaultValue: ['2026-03-10', '2026-03-20'] },
+          ],
+        },
+      ],
+    });
+    expect(result).not.toBeNull();
+  });
+
+  test('rejects an item missing the base-required label', () => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [{ items: [{ id: 'r', type: 'rating' }] }],
+    });
+    expect(result).toBeNull();
+  });
+
+  test('rejects an unknown item type', () => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [{ items: [{ ...baseItem, id: 'x', type: 'color' }] }],
+    });
+    expect(result).toBeNull();
+  });
+
+  // number 承载 rating/number 回执,null 承载 number 项未填空态
+  test('receipt choice accepts number and null entries', () => {
+    const result = safeParseSerializablePreferencesPanelReceipt({
+      id: 'pp-schema',
+      sections: [
+        {
+          items: [
+            { ...baseItem, id: 'r', type: 'rating' },
+            { ...baseItem, id: 'n', type: 'number' },
+          ],
+        },
+      ],
+      choice: { r: 4, n: null },
+    });
+    expect(result).not.toBeNull();
+  });
+
+  // mode 与 defaultValue 形态交叉校验:range ↔ 数组,单值 ↔ string,错位即拒
+  test.each([
+    ['range with string defaultValue', { mode: 'range', defaultValue: '2026-03-10' }],
+    ['single date with array defaultValue', { defaultValue: ['2026-03-10', '2026-03-20'] }],
+    ['datetime with array defaultValue', { mode: 'datetime', defaultValue: ['2026-03-10'] }],
+  ])('rejects %s', (_label, extra) => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [{ items: [{ ...baseItem, id: 'd', type: 'date', ...extra }] }],
+    });
+    expect(result).toBeNull();
   });
 });

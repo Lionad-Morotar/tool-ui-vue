@@ -16,10 +16,15 @@ const props = withDefaults(
     max?: number;
     disabled?: boolean;
     placeholder?: string;
+    // 根容器是无 role 的 generic div,aria-labelledby 落在其上不参与可访问名称计算;
+    // 声明为 prop 阻断 fallthrough,显式透传到真实输入框。
+    // 须 camelCase 声明(外部写 aria-labelledby 时 Vue 模板编译自动 camelize 匹配),
+    // kebab 键名的 prop 声明在 Vue 匹配机制下收不到值
+    ariaLabelledby?: string;
     class?: string;
   }>(),
   // 缺省兜底放原子层;max 缺省不限制(reka 原生)
-  { disabled: false, placeholder: '' }
+  { disabled: false, placeholder: '', ariaLabelledby: undefined }
 );
 
 const model = defineModel<string[]>({ default: () => [] });
@@ -67,6 +72,7 @@ const model = defineModel<string[]>({ default: () => [] });
 
     <TagsInputInput
       :placeholder="props.placeholder"
+      :aria-labelledby="props.ariaLabelledby"
       class="min-w-16 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       data-testid="tags-input-field"
     />

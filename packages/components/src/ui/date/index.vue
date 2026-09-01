@@ -26,7 +26,7 @@ import { cn } from '../../core';
 import DateRangePicker from './date-range.vue';
 import { formatDateTimeValue, formatDateValue, parseDateString, parseDateTimeString } from './date-bridge';
 
-defineOptions({ name: 'VtuDatePicker' });
+defineOptions({ name: 'VtuDatePicker', inheritAttrs: false });
 
 const props = withDefaults(
   defineProps<{
@@ -130,6 +130,7 @@ const rangeModel = computed<string[]>({
 <template>
   <DateRangePicker
     v-if="isRange"
+    v-bind="$attrs"
     v-model="rangeModel"
     :disabled="props.disabled"
     :placeholder="props.placeholder"
@@ -145,8 +146,11 @@ const rangeModel = computed<string[]>({
     :close-on-select="!isDatetime"
     data-testid="date-root"
   >
-    <!-- 触发器:表单语义按钮,空值显示占位文案 -->
+    <!-- 触发器:表单语义按钮,空值显示占位文案;
+         双 Root 均 renderless(PopoverRoot 不渲染 DOM),fallthrough attrs 无处可落,
+         aria 命名/id 等经 $attrs 显式落到 Trigger(真实交互元素) -->
     <DatePickerTrigger
+      v-bind="$attrs"
       :class="
         cn(
           'inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors',

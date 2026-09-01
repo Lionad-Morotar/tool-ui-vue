@@ -4,6 +4,7 @@ import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,
   PreferencesValue,
+  PreferenceFieldValue,
   PreferenceItem,
   PreferenceSection,
 } from '../schema';
@@ -29,7 +30,7 @@ export function usePreferencesPanel(
   const isReceipt = computed(() => isReceiptProps(props));
 
   // Get initial value for an item
-  function getInitialValue(item: PreferenceItem): string | string[] | boolean {
+  function getInitialValue(item: PreferenceItem): PreferenceFieldValue {
     switch (item.type) {
       case 'switch':
         return item.defaultChecked ?? false;
@@ -45,6 +46,18 @@ export function usePreferencesPanel(
       case 'input':
       case 'textarea':
         return item.defaultValue ?? '';
+      case 'rating':
+        return item.defaultValue ?? 0;
+      // number 的未填空态是 null 而非 0:0 是用户明确填的合法值
+      case 'number':
+        return item.defaultValue ?? null;
+      case 'tags':
+        return item.defaultValue ?? [];
+      case 'date':
+        if (item.mode === 'range') {
+          return Array.isArray(item.defaultValue) ? item.defaultValue : [];
+        }
+        return typeof item.defaultValue === 'string' ? item.defaultValue : '';
     }
   }
 
@@ -78,7 +91,7 @@ export function usePreferencesPanel(
   });
 
   // Get current value for an item (handles both controlled and uncontrolled modes)
-  function getItemValue(item: PreferenceItem): string | string[] | boolean {
+  function getItemValue(item: PreferenceItem): PreferenceFieldValue {
     if (isReceiptProps(props)) {
       return props.choice[item.id] ?? getInitialValue(item);
     }
@@ -108,7 +121,7 @@ export function usePreferencesPanel(
   });
 
   // Update value (only in interactive mode)
-  function updateValue(itemId: string, value: string | string[] | boolean) {
+  function updateValue(itemId: string, value: PreferenceFieldValue) {
     if (isReceipt.value) return;
 
     if (controlledValue.value !== undefined) {
@@ -136,13 +149,33 @@ export function usePreferencesPanel(
   });
 
   // Format display value
-  function formatDisplayValue(item: PreferenceItem, value: string | string[] | boolean): string {
+  function formatDisplayValue(item: PreferenceItem, value: PreferenceFieldValue): string {
     if (item.type === 'switch') {
       return typeof value === 'boolean' && value ? 'On' : 'Off';
     }
 
     if (item.type === 'input' || item.type === 'textarea') {
       return typeof value === 'string' ? value : '';
+    }
+
+    // rating 展示「n / max」,缺省 5 与原子层兜底一致
+    if (item.type === 'rating') {
+      return `${typeof value === 'number' ? value : 0} / ${item.max ?? 5}`;
+    }
+
+    // null 是 number 项的未填空态,与 0 的展示区分
+    if (item.type === 'number') {
+      return value === null || value === undefined ? '-' : String(value);
+    }
+
+    if (item.type === 'tags') {
+      return Array.isArray(value) ? value.join(', ') || '-' : '-';
+    }
+
+    // date 单值原样(string),range 以 ~ 连接两端
+    if (item.type === 'date') {
+      if (Array.isArray(value)) return value.join(' ~ ') || '-';
+      return typeof value === 'string' && value ? value : '-';
     }
 
     const options = item.type === 'toggle' ? item.options : item.selectOptions;

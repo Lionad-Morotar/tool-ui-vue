@@ -29,7 +29,7 @@ import { formatDateValue, parseDateString } from './date-bridge';
  * 的契约由这里的本地态 + 提交条件兜住。
  */
 
-defineOptions({ name: 'VtuDateRangePicker' });
+defineOptions({ name: 'VtuDateRangePicker', inheritAttrs: false });
 
 const props = withDefaults(
   defineProps<{
@@ -75,8 +75,10 @@ const displayText = computed(() => {
     :locale="props.locale"
     data-testid="date-root"
   >
-    <!-- 触发器:空值显示占位文案,有值显示 start ~ end -->
+    <!-- 触发器:空值显示占位文案,有值显示 start ~ end;
+         Root renderless,fallthrough attrs 经 $attrs 显式落到 Trigger -->
     <DateRangePickerTrigger
+      v-bind="$attrs"
       :class="
         cn(
           'inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors',

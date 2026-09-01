@@ -110,3 +110,15 @@ describe('ui/tags-input', () => {
     });
   });
 });
+
+describe('a11y naming', () => {
+  // 根容器是无 role 的 generic div,aria-labelledby 落在其上不参与可访问名称计算;
+  // 命名必须透传到真实输入框
+  test('forwards aria-labelledby onto the input field', () => {
+    const wrapper = mount(TagsInput, { attrs: { 'aria-labelledby': 'keywords-label' } });
+    expect(wrapper.find('[data-testid="tags-input-field"]').attributes('aria-labelledby')).toBe(
+      'keywords-label'
+    );
+    expect(wrapper.find('[data-testid="tags-input-root"]').attributes('aria-labelledby')).toBeUndefined();
+  });
+});
