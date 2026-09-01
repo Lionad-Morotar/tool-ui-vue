@@ -54,5 +54,6 @@ export default {
     usersLabel: '用户',
     withSparklines: '含迷你图',
     withTrends: '含趋势',
+    threeItems: '三项布局',
   },
 }

@@ -11,6 +11,9 @@ export interface StatsDisplayState {
   locale: ComputedRef<string>;
   hasHeader: ComputedRef<boolean>;
   isSingle: ComputedRef<boolean>;
+  gridCols: ComputedRef<1 | 2 | 3>;
+  gridColsClass: ComputedRef<string>;
+  valueSizeClass: ComputedRef<string>;
   deltaColorClasses: (diff: StatDiff) => string;
   deltaBgClasses: (diff: StatDiff) => string;
   deltaDisplay: (diff: StatDiff) => string;
@@ -44,6 +47,34 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
 
   const hasHeader = computed(() => Boolean(options.title || options.description));
   const isSingle = computed(() => options.stats.length === 1);
+
+  // 列数按项数收敛而非容器宽度自适应：auto-fit 会在 3/5 项时留下半行孤儿单元格，
+  // 固定列数保证最后一行恰好填满（4 项取 2×2 而非 3+1）
+  const gridCols = computed<1 | 2 | 3>(() => {
+    const n = options.stats.length;
+    if (n <= 1) return 1;
+    if (n <= 3) return n as 2 | 3;
+    if (n === 4) return 2;
+    return 3;
+  });
+
+  // 类名必须是完整字面量，Tailwind 扫描 states 源文件后才会产出对应容器查询规则
+  const gridColsClass = computed(() => {
+    switch (gridCols.value) {
+      case 1:
+        return '@[440px]:grid-cols-1';
+      case 2:
+        return '@[440px]:grid-cols-2';
+      default:
+        return '@[440px]:grid-cols-3';
+    }
+  });
+
+  // 三列时单元格约 190px 宽，text-3xl 的长数值会溢出，降一档保住单行
+  const valueSizeClass = computed(() => {
+    if (isSingle.value) return 'text-5xl';
+    return gridCols.value === 3 ? 'text-2xl' : 'text-3xl';
+  });
 
   function deltaColorClasses(diff: StatDiff): string {
     const { isGood, isBad } = getDeltaMeta(diff);
@@ -135,6 +166,9 @@ export function useStatsDisplay(options: UseStatsDisplayOptions): StatsDisplaySt
     locale,
     hasHeader,
     isSingle,
+    gridCols,
+    gridColsClass,
+    valueSizeClass,
     deltaColorClasses,
     deltaBgClasses,
     deltaDisplay,

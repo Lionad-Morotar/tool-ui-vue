@@ -327,5 +327,44 @@ describe('StatsDisplay', () => {
       const article = wrapper.find("[data-slot='stats-display']");
       expect(article.attributes('aria-busy')).toBe('false');
     });
+
+    test('grid columns collapse to item count so rows always fill evenly', () => {
+      const cases: Array<[number, string]> = [
+        [1, '@[440px]:grid-cols-1'],
+        [2, '@[440px]:grid-cols-2'],
+        [3, '@[440px]:grid-cols-3'],
+        [4, '@[440px]:grid-cols-2'],
+        [5, '@[440px]:grid-cols-3'],
+        [6, '@[440px]:grid-cols-3'],
+      ];
+      for (const [count, expected] of cases) {
+        const wrapper = mount(StatsDisplay, {
+          props: createProps({
+            stats: Array.from({ length: count }, (_, i) => ({
+              key: `s${i}`,
+              label: `S${i}`,
+              value: i,
+            })),
+          }),
+        });
+        expect(wrapper.find('.grid').classes()).toContain(expected);
+      }
+    });
+
+    test('shrinks value type to text-2xl only when three columns render', () => {
+      const three = mount(StatsDisplay, {
+        props: createProps({
+          stats: [1, 2, 3].map((i) => ({ key: `s${i}`, label: `S${i}`, value: i })),
+        }),
+      });
+      expect(three.find('.grid .text-2xl').exists()).toBe(true);
+
+      const four = mount(StatsDisplay, {
+        props: createProps({
+          stats: [1, 2, 3, 4].map((i) => ({ key: `s${i}`, label: `S${i}`, value: i })),
+        }),
+      });
+      expect(four.find('.grid .text-3xl').exists()).toBe(true);
+    });
   });
 });

@@ -54,5 +54,6 @@ export default {
     usersLabel: 'Users',
     withSparklines: 'With Sparklines',
     withTrends: 'With Trends',
+    threeItems: 'Three Items',
   },
 }

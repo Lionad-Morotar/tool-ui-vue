@@ -54,8 +54,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
       <!-- Stats Grid -->
       <div class="@container overflow-hidden p-0">
         <div
-          class="grid @[440px]:-mt-px @[440px]:-ml-px"
-          :style="{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }"
+          :class="cn('grid grid-cols-1 @[440px]:-mt-px @[440px]:-ml-px', state.gridColsClass)"
         >
           <div
             v-for="(stat, index) in stats"
@@ -100,7 +99,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
                 <span
                   :class="cn(
                     'font-light tracking-normal',
-                    state.isSingle ? 'text-5xl' : 'text-3xl'
+                    state.valueSizeClass
                   )"
                 >
                   <!-- number compact -->
