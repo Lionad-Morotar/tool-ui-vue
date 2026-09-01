@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ItemCarousel, PreferencesPanel, ItemCard } from '@lionad/vtu-components'
+import type { PreferencesValue } from '@lionad/vtu-components'
 import { computed, ref, nextTick } from 'vue'
 import DemoChatMessage from './demo-chat-message.vue'
 import DemoDelayedShow from './demo-delayed-show.vue'
@@ -8,7 +9,7 @@ import { useSiteLocale } from '../composables/use-site-locale'
 type Step = 'intro' | 'carousel' | 'panel' | 'done'
 const step = ref<Step>('intro')
 const selectedItemId = ref<string | null>(null)
-const panelChoice = ref<Record<string, string | boolean> | null>(null)
+const panelChoice = ref<PreferencesValue | null>(null)
 const { t, locale } = useSiteLocale()
 
 const isEn = computed(() => locale.value === 'en')
@@ -66,7 +67,7 @@ async function handleItemAction(_itemId: string, actionId: string) {
   }
 }
 
-async function handlePanelAction(actionId: string, value: Record<string, string | boolean>) {
+async function handlePanelAction(actionId: string, value: PreferencesValue) {
   if (actionId === 'confirm') {
     panelChoice.value = value
     if (document.startViewTransition) {

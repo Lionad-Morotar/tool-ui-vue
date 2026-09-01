@@ -103,7 +103,7 @@ export function usePreferencesPanel(
 
     // Uncontrolled mode: use localValues
     if (item.id in localValues.value) {
-      return localValues.value[item.id];
+      return localValues.value[item.id] ?? getInitialValue(item);
     }
 
     return getInitialValue(item);
