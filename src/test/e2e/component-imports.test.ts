@@ -8,6 +8,9 @@ import { describe, expect, test } from 'vitest';
  */
 
 describe('E2E: Component Imports', () => {
+  // 动态 import 的耗时随模块图重量增长(reka-ui 经根入口进入依赖图后,
+  // vite-node 冷缓存下转换+加载整图远超 15s);阈值按实测收敛到 60s,
+  // 仅放宽等待窗口,不断言性能本身
   test('all components can be imported from library entry', async () => {
     const imports = await import('@/index');
 
@@ -20,7 +23,7 @@ describe('E2E: Component Imports', () => {
 
     // Should have exports (not empty)
     expect(componentExports.length).toBeGreaterThan(0);
-  }, 15000);
+  }, 60000);
 
   test('shared utilities can be imported', async () => {
     const shared = await import('@/shared');
@@ -31,5 +34,5 @@ describe('E2E: Component Imports', () => {
   test('VERSION constant matches package version', async () => {
     const { VERSION } = await import('@/index');
     expect(VERSION).toBe('0.1.0');
-  });
+  }, 60000);
 });

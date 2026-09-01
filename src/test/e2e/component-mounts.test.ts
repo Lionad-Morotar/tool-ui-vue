@@ -280,6 +280,8 @@ describe('E2E: Component Mounts', () => {
     expect(wrapper.findAll('tbody tr').length).toBeGreaterThanOrEqual(1);
   });
 
+  // PreferencesPanel 与 QuestionFlow 的动态 import 会拉入 reka-ui 子图,
+  // vite-node 冷缓存转换下远超默认 5s,阈值放宽到 30s(仅放宽等待窗口)
   test('PreferencesPanel mounts with minimal props', async () => {
     const { PreferencesPanel } = await import('@lionad/vtu-components/preferences-panel');
     const wrapper = mount(PreferencesPanel as Component, {
@@ -297,7 +299,7 @@ describe('E2E: Component Mounts', () => {
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find('[role="switch"]').exists()).toBe(true);
     expect(wrapper.text()).toContain('Preference 1');
-  });
+  }, 30000);
 
   test('Plan mounts with minimal props', async () => {
     const { Plan } = await import('@lionad/vtu-components/plan');
@@ -345,7 +347,7 @@ describe('E2E: Component Mounts', () => {
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find('[data-tool-ui-id="test-questions"]').exists()).toBe(true);
     expect(wrapper.text()).toContain('Question 1?');
-  });
+  }, 30000);
 
   test('ItemCarousel mounts with minimal props', async () => {
     const { ItemCarousel } = await import('@lionad/vtu-components/item-carousel');
