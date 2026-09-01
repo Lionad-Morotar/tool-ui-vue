@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from '../../core';
-import { Switch, ToggleGroup } from '../../ui';
+import { Switch, ToggleGroup, Input, Textarea } from '../../ui';
 import type { PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
@@ -28,6 +28,12 @@ const switchChecked = computed<boolean>({
 // toggle 值桥接:field 联合类型收窄为 string | string[],写回统一走 update 上抛
 const toggleModel = computed<string | string[]>({
   get: () => (typeof props.value === 'boolean' ? '' : props.value),
+  set: (v) => emit('update', v),
+});
+
+// 文本控件值桥接:联合类型收窄为 string,与原子 defineModel<string> 对齐
+const textModel = computed<string>({
+  get: () => String(props.value),
   set: (v) => emit('update', v),
 });
 
@@ -116,34 +122,20 @@ const controlWrapperClass = computed(() =>
         </option>
       </select>
 
-      <input
+      <Input
         v-else-if="item.type === 'input'"
         :id="`preference-${item.id}`"
-        :type="item.inputType ?? 'text'"
-        :placeholder="item.placeholder ?? ''"
-        :value="String(value)"
-        :class="
-          cn(
-            'h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-            'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-          )
-        "
-        @input="emit('update', ($event.target as HTMLInputElement).value)"
+        v-model="textModel"
+        :type="item.inputType"
+        :placeholder="item.placeholder"
       />
 
-      <textarea
+      <Textarea
         v-else-if="item.type === 'textarea'"
         :id="`preference-${item.id}`"
-        :placeholder="item.placeholder ?? ''"
-        :rows="item.rows ?? 3"
-        :value="String(value)"
-        :class="
-          cn(
-            'w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors',
-            'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-          )
-        "
-        @input="emit('update', ($event.target as HTMLTextAreaElement).value)"
+        v-model="textModel"
+        :placeholder="item.placeholder"
+        :rows="item.rows"
       />
     </div>
   </div>
