@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { cn } from '../../core';
 import { Switch } from '../../ui/switch';
+import { ToggleGroup } from '../../ui/toggle-group';
 import type { PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
@@ -17,12 +18,17 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   update: [value: string | string[] | boolean];
-  toggle: [optionValue: string];
 }>();
 
 // 值可能来自序列化数据,字符串 'true' 视为开
 const switchChecked = computed<boolean>({
   get: () => (typeof props.value === 'boolean' ? props.value : props.value === 'true'),
+  set: (v) => emit('update', v),
+});
+
+// toggle 值桥接:field 联合类型收窄为 string | string[],写回统一走 update 上抛
+const toggleModel = computed<string | string[]>({
+  get: () => (typeof props.value === 'boolean' ? '' : props.value),
   set: (v) => emit('update', v),
 });
 
@@ -41,11 +47,6 @@ const controlWrapperClass = computed(() =>
     ? cn('flex', isBlockControl.value && 'w-full', !isBlockControl.value && 'shrink-0')
     : cn('flex', props.item.type !== 'input' && props.item.type !== 'textarea' && 'shrink-0')
 );
-
-function isToggleOptionSelected(optionValue: string): boolean {
-  if (Array.isArray(props.value)) return props.value.includes(optionValue);
-  return props.value === optionValue;
-}
 </script>
 
 <template>
@@ -87,29 +88,13 @@ function isToggleOptionSelected(optionValue: string): boolean {
         v-model="switchChecked"
       />
 
-      <div
+      <ToggleGroup
         v-else-if="item.type === 'toggle' && item.options"
-        :class="
-          props.hasHeading
-            ? 'flex w-full flex-wrap items-center justify-end gap-1'
-            : 'flex flex-wrap items-center justify-end gap-1'
-        "
-      >
-        <button
-          v-for="option in item.options"
-          :key="option.value"
-          type="button"
-          :class="
-            cn(
-              'rounded-full px-3 py-1.5 text-sm transition-colors',
-              isToggleOptionSelected(option.value) ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'
-            )
-          "
-          @click="item.multiple ? emit('toggle', option.value) : emit('update', option.value)"
-        >
-          {{ option.label }}
-        </button>
-      </div>
+        v-model="toggleModel"
+        :options="item.options"
+        :multiple="item.multiple"
+        :class="props.hasHeading ? 'w-full' : undefined"
+      />
 
       <select
         v-else-if="item.type === 'select' && item.selectOptions"

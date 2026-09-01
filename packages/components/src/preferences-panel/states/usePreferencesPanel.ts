@@ -121,19 +121,6 @@ export function usePreferencesPanel(
     }
   }
 
-  // Toggle an option in a multi-select toggle
-  function toggleOption(item: PreferenceItem, optionValue: string) {
-    if (item.type !== 'toggle' || !item.multiple) return;
-
-    const currentValue = getItemValue(item);
-    const currentArray = Array.isArray(currentValue) ? currentValue : [];
-    const newArray = currentArray.includes(optionValue)
-      ? currentArray.filter((v) => v !== optionValue)
-      : [...currentArray, optionValue];
-
-    updateValue(item.id, newArray);
-  }
-
   // Check if dirty (has changes from initial)
   const isDirty = computed(() => {
     if (isReceipt.value) return false;
@@ -273,7 +260,6 @@ export function usePreferencesPanel(
     getItemValue,
     currentValues,
     updateValue,
-    toggleOption,
     isDirty,
     formatDisplayValue,
     normalizedActions,

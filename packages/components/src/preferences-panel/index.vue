@@ -168,7 +168,6 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   :has-title="!!props.title"
                   :css-item="props.css?.item"
                   @update="state.updateValue(item.id, $event)"
-                  @toggle="state.toggleOption(item, $event)"
                 />
               </template>
             </div>

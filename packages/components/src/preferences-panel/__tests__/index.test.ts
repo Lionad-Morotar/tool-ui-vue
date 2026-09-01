@@ -203,9 +203,11 @@ describe('PreferencesPanel', () => {
     test('toggle shows selected state', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
       const buttons = wrapper.findAll('button').filter((b) => ['Light', 'Dark'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
       await buttons[1].trigger('click');
-      expect(buttons[1].classes()).toContain('bg-primary');
+      expect(buttons[1].attributes('data-state')).toBe('on');
+      expect(buttons[0].attributes('data-state')).toBe('off');
     });
 
     test('toggle uses first option as default when no defaultValue', () => {
@@ -229,7 +231,8 @@ describe('PreferencesPanel', () => {
         }),
       });
       const buttons = wrapper.findAll('button').filter((b) => ['Option A', 'Option B'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
     });
   });
 
@@ -265,8 +268,8 @@ describe('PreferencesPanel', () => {
         ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
       );
       expect(buttons.length).toBe(4);
-      // None should have bg-primary class initially
-      expect(buttons.every((b) => !b.classes().includes('bg-primary'))).toBe(true);
+      // None should be selected initially
+      expect(buttons.every((b) => b.attributes('data-state') === 'off')).toBe(true);
     });
 
     test('selects multiple options in multi-toggle', async () => {
@@ -305,12 +308,12 @@ describe('PreferencesPanel', () => {
       );
 
       await buttons[0].trigger('click');
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).not.toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
 
       await buttons[1].trigger('click');
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('on');
     });
 
     test('multi-toggle respects defaultValue array', () => {
@@ -322,10 +325,10 @@ describe('PreferencesPanel', () => {
       const buttons = wrapper.findAll('button').filter((b) =>
         ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
       );
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[3].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).not.toContain('bg-primary');
-      expect(buttons[2].classes()).not.toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[3].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
+      expect(buttons[2].attributes('data-state')).toBe('off');
     });
 
     test('multi-toggle with string defaultValue wraps to array', () => {
@@ -351,7 +354,8 @@ describe('PreferencesPanel', () => {
         }),
       });
       const buttons = wrapper.findAll('button').filter((b) => ['LFP', 'NCM'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
     });
 
     test('isDirty detects multi-toggle changes', async () => {
