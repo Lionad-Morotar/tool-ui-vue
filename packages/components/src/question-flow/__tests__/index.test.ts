@@ -240,6 +240,38 @@ describe('listbox 结构契约', () => {
   });
 });
 
+describe('exiting 快照契约', () => {
+  // 换步退场快照是静态记录:exiting 分支随 v-if 全新挂载,若指示器仍带
+  // animate-in,CSS 动画会在新节点从头播放(退场窗口 250ms 短于动画 300ms,
+  // 用户可见已选指示器重新放大淡入);契约要求快照内指示器一律不挂 animate-in,
+  // 动画只属于当前步用户的真实点击反馈
+  test('exiting 分支已选指示器不挂入场动画类', async () => {
+    vi.useFakeTimers();
+    try {
+      const wrapper = mount(QuestionFlow, {
+        ...globalMountOptions,
+        props: { id: 'qf-1', steps: QUESTIONS },
+      });
+      const options = wrapper.findAll("[role='option']");
+      await options[0]?.trigger('click');
+      const nextButton = wrapper.findAll('button').find((b) => b.text() === 'Next');
+      await nextButton?.trigger('click');
+      const exiting = wrapper.find('[aria-hidden="true"]');
+      expect(exiting.exists()).toBe(true);
+      const indicators = exiting.findAll('[data-testid="option-indicator"]');
+      expect(indicators.length).toBe(2);
+      const selectedIndicator = indicators.find((i) => i.attributes('data-state') === 'selected');
+      expect(selectedIndicator).toBeTruthy();
+      for (const indicator of indicators) {
+        expect(indicator.classes()).not.toContain('motion-safe:animate-in');
+      }
+    } finally {
+      // 断言失败也要复位计时器,否则 fake timers 泄漏会让后续用例的异步等待集体超时
+      vi.useRealTimers();
+    }
+  });
+});
+
 describe('keyboard navigation', () => {
   // reka Listbox 接管 roving:挂载后 highlight 落首个可选项,
   // 方向键经 Content 的 keydown 移动 highlight 并同步实焦点,tabindex 0/-1 仍是单焦点契约;

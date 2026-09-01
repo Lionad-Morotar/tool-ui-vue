@@ -189,9 +189,12 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
               >
                 <div class="relative flex items-start gap-3">
                   <span class="flex h-6 items-center">
+                    <!-- 退场快照是静态记录:本分支随 v-if 全新挂载,若指示器播放
+                         入场动画,退场滑出窗口内用户可见已选标记重播放大淡入 -->
                     <OptionIndicator
                       :selected="state.exitingStepData.selectedIds.has(option.id)"
                       :shape="state.exitingStepData.selectionMode === 'single' ? 'radio' : 'checkbox'"
+                      :animate="false"
                     />
                   </span>
                   <div class="flex flex-col text-left">

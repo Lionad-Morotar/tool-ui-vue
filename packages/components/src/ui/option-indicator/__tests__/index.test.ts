@@ -63,6 +63,33 @@ describe('ui/option-indicator', () => {
       const unselected = mount(OptionIndicator, { props: { selected: false, shape: 'radio' } });
       expect(unselected.find('[data-testid="option-indicator"] span').exists()).toBe(false);
     });
+
+    // 静态快照场景(QuestionFlow 换步退场克隆):快照是已选定状态的记录而非新交互,
+    // animate-in 在全新挂载节点上会从头播放,退场窗口短于动画时长时用户可见重播;
+    // animate=false 须剥掉外壳与内嵌图形的全部入场动画类,仅保留选中静态样式
+    test('animate=false 时选中态不挂入场动画类', () => {
+      const wrapper = mount(OptionIndicator, {
+        props: { selected: true, shape: 'checkbox', animate: false },
+      });
+      const classes = getIndicator(wrapper).classes();
+      expect(classes).toContain('border-primary');
+      expect(classes).toContain('bg-primary');
+      expect(classes).not.toContain('motion-safe:animate-in');
+      expect(classes).not.toContain('motion-safe:fade-in');
+      expect(classes).not.toContain('motion-safe:zoom-in-75');
+      const svg = wrapper.find('svg');
+      expect(svg.exists()).toBe(true);
+      expect(svg.classes().some((c) => c.includes('animate-in'))).toBe(false);
+    });
+
+    test('animate=false 时 radio 内嵌圆点不挂入场动画类', () => {
+      const wrapper = mount(OptionIndicator, {
+        props: { selected: true, shape: 'radio', animate: false },
+      });
+      const dot = wrapper.find('[data-testid="option-indicator"] span');
+      expect(dot.exists()).toBe(true);
+      expect(dot.classes().some((c) => c.includes('animate-in'))).toBe(false);
+    });
   });
 
   describe('disabled', () => {
