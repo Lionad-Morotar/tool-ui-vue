@@ -46,6 +46,7 @@ const model = defineModel<string>();
         )
       "
       data-testid="select-trigger"
+      data-slot="select-trigger"
     >
       <SelectValue :placeholder="props.placeholder" />
       <SelectIcon class="opacity-50">
@@ -63,6 +64,7 @@ const model = defineModel<string>();
           )
         "
         data-testid="select-content"
+        data-slot="select-content"
       >
         <!-- Viewport:schema 的 selectOptions 无数量上限,须封顶高度并内部滚动,
              否则底部选项滚轮与键盘 End 均不可达;规格对齐 citation-overflow-popover 先例 -->
@@ -79,6 +81,7 @@ const model = defineModel<string>();
               )
             "
             data-testid="select-item"
+            data-slot="select-item"
           >
             <SelectItemText>{{ option.label }}</SelectItemText>
             <SelectItemIndicator

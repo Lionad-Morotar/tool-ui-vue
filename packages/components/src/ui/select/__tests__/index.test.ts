@@ -82,6 +82,17 @@ describe('ui/select', () => {
       expect(viewport!.className).toContain('max-h-72');
       expect(viewport!.className).toContain('overflow-y-auto');
     });
+
+    // data-slot 是主题层 [data-slot] 覆盖手法的锚点,与既有 input/switch/textarea 原子对齐
+    test('exposes data-slot anchors on trigger, content and items', async () => {
+      const wrapper = mountSelect({ props: { modelValue: 'en' } });
+      expect(getTrigger(wrapper).attributes('data-slot')).toBe('select-trigger');
+      await openSelect(wrapper);
+      expect(querySelectContent()?.getAttribute('data-slot')).toBe('select-content');
+      const items = querySelectItems();
+      expect(items.length).toBeGreaterThan(0);
+      expect(items.every((i) => i.getAttribute('data-slot') === 'select-item')).toBe(true);
+    });
   });
 
   describe('attribute fallthrough', () => {
