@@ -46,3 +46,13 @@ export function querySelectContent() {
 export function querySelectItems() {
   return Array.from(document.body.querySelectorAll('[data-testid="select-item"]'));
 }
+
+// reka NumberField 的增减按钮是 pointerdown 按住连发语义(usePressedHold),
+// 且监听经 vueuse useEventListener 以 flush:post 注册——mount 后须先 settle
+// 等注册完成再派发,否则事件落在注册前的空窗静默丢失。
+// VTU trigger 无法构造带 button 的 pointer 事件(createDOMEvent 对只读 getter 赋值抛错),
+// 须原生 dispatchEvent;pointerup 必派——连发计时器不清会跨用例漏。
+export function pointerPress(element: Element) {
+  element.dispatchEvent(new MouseEvent('pointerdown', { button: 0, bubbles: true }));
+  window.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+}
