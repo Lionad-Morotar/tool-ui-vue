@@ -4,6 +4,7 @@ import { computed, reactive } from 'vue';
 import { cn } from '../core';
 import { usePreferencesPanel } from './states';
 import { useI18n } from '../core/i18n';
+import PreferenceField from './cmpts/preference-field.vue';
 import type {
   PreferencesPanelProps,
   PreferencesPanelReceiptProps,
@@ -70,14 +71,25 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
-          <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
-            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
+          <fieldset :class="cn('flex flex-col', props.css?.section)">
+            <legend
+              v-if="section.heading"
+              class="pb-1 text-xs tracking-widest text-muted-foreground uppercase"
+            >
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
                 <hr v-if="itemIndex > 0" class="my-1 border-border" />
-                <div :class="cn('flex items-start justify-between gap-4 py-3', props.css?.item)">
+                <div
+                  :class="
+                    cn(
+                      'flex items-start justify-between gap-4',
+                      !section.heading && itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
+                      props.css?.item
+                    )
+                  "
+                >
                   <div class="flex flex-col gap-1">
                     <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
                     <span
@@ -110,50 +122,6 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
               </template>
             </div>
           </fieldset>
-          <div v-else :class="cn('flex flex-col', props.css?.section)">
-            <template v-for="(item, itemIndex) in section.items" :key="item.id">
-              <hr
-                v-if="itemIndex > 0"
-                class="my-1 border-border"
-              />
-              <div
-                :class="cn(
-                  'flex items-start justify-between gap-4',
-                  itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
-                  props.css?.item
-                )"
-              >
-                <div class="flex flex-col gap-1">
-                  <span class="text-sm leading-6 font-medium text-pretty">{{ item.label }}</span>
-                  <span
-                    v-if="state.getItemError(item)"
-                    class="text-sm font-normal text-pretty text-destructive"
-                  >
-                    {{ state.getItemError(item) }}
-                  </span>
-                  <span
-                    v-else-if="item.description"
-                    class="text-sm font-normal text-pretty text-muted-foreground"
-                  >
-                    {{ item.description }}
-                  </span>
-                </div>
-                <div class="flex shrink-0 items-center gap-2">
-                  <span class="text-sm font-medium text-muted-foreground">
-                    {{ state.formatDisplayValue(item, state.getItemValue(item)) }}
-                  </span>
-                  <alert-circle
-                    v-if="state.getItemError(item)"
-                    class="size-3.5 shrink-0 text-destructive"
-                  />
-                  <check
-                    v-else-if="!state.hasErrors"
-                    class="size-3.5 shrink-0 text-emerald-600 dark:text-emerald-500"
-                  />
-                </div>
-              </div>
-            </template>
-          </div>
         </template>
       </div>
     </div>
@@ -182,254 +150,28 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
       <!-- Content -->
       <div :class="cn('flex flex-col gap-4 px-5', props.title ? 'py-6' : 'py-2')">
         <template v-for="(section, sectionIndex) in state.sections" :key="sectionIndex">
-          <fieldset v-if="section.heading" :class="cn('flex flex-col', props.css?.section)">
-            <legend class="pb-1 text-xs tracking-widest text-muted-foreground uppercase">
+          <fieldset :class="cn('flex flex-col', props.css?.section)">
+            <legend
+              v-if="section.heading"
+              class="pb-1 text-xs tracking-widest text-muted-foreground uppercase"
+            >
               {{ section.heading }}
             </legend>
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
                 <hr v-if="itemIndex > 0" class="my-1 border-border" />
-                <div
-                  :class="cn(
-                    'flex items-start justify-between gap-4',
-                    'py-3',
-                    (item.type === 'input' || item.type === 'textarea' || item.type === 'toggle') ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
-                    props.css?.item
-                  )"
-                >
-                  <div class="flex shrink-0 flex-col gap-1">
-                    <label
-                      :for="`preference-${item.id}`"
-                      class="leading-6 font-medium text-pretty"
-                    >
-                      {{ item.label }}
-                    </label>
-                    <p
-                      v-if="item.description"
-                      class="text-sm font-normal text-pretty text-muted-foreground"
-                    >
-                      {{ item.description }}
-                    </p>
-                  </div>
-                  <div :class="cn('flex', (item.type === 'input' || item.type === 'textarea' || item.type === 'toggle') && 'w-full', item.type !== 'input' && item.type !== 'textarea' && item.type !== 'toggle' && 'shrink-0')">
-                    <!-- Switch -->
-                    <button
-                      v-if="item.type === 'switch'"
-                      :id="`preference-${item.id}`"
-                      type="button"
-                      role="switch"
-                      :aria-checked="state.isSwitchValue(state.getItemValue(item))"
-                      :class="cn(
-                        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
-                        state.isSwitchValue(state.getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
-                      )"
-                      @click="state.updateValue(item.id, !state.isSwitchValue(state.getItemValue(item)))"
-                    >
-                      <span
-                        :class="cn(
-                          'pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform',
-                          state.isSwitchValue(state.getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
-                        )"
-                        :style="{ marginTop: '2px' }"
-                      />
-                    </button>
-
-                    <!-- Toggle -->
-                    <div
-                      v-else-if="item.type === 'toggle' && item.options"
-                      class="flex w-full flex-wrap items-center justify-end gap-1"
-                    >
-                      <button
-                        v-for="option in item.options"
-                        :key="option.value"
-                        type="button"
-                        :class="cn(
-                          'rounded-full px-3 py-1.5 text-sm transition-colors',
-                          state.isToggleOptionSelected(item, option.value)
-                            ? 'bg-primary text-primary-foreground'
-                            : 'hover:bg-accent'
-                        )"
-                        @click="item.multiple ? state.toggleOption(item, option.value) : state.updateValue(item.id, option.value)"
-                      >
-                        {{ option.label }}
-                      </button>
-                    </div>
-
-                    <!-- Select -->
-                    <select
-                      v-else-if="item.type === 'select' && item.selectOptions"
-                      :id="`preference-${item.id}`"
-                      :value="String(state.getItemValue(item))"
-                      :class="cn(
-                        'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                      )"
-                      @change="state.updateValue(item.id, ($event.target as HTMLSelectElement).value)"
-                    >
-                      <option
-                        v-for="option in item.selectOptions"
-                        :key="option.value"
-                        :value="option.value"
-                      >
-                        {{ option.label }}
-                      </option>
-                    </select>
-
-                    <!-- Input -->
-                    <input
-                      v-else-if="item.type === 'input'"
-                      :id="`preference-${item.id}`"
-                      :type="item.inputType ?? 'text'"
-                      :placeholder="item.placeholder ?? ''"
-                      :value="String(state.getItemValue(item))"
-                      :class="cn(
-                        'h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                      )"
-                      @input="state.updateValue(item.id, ($event.target as HTMLInputElement).value)"
-                    />
-
-                    <!-- Textarea -->
-                    <textarea
-                      v-else-if="item.type === 'textarea'"
-                      :id="`preference-${item.id}`"
-                      :placeholder="item.placeholder ?? ''"
-                      :rows="item.rows ?? 3"
-                      :value="String(state.getItemValue(item))"
-                      :class="cn(
-                        'w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors',
-                        'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                      )"
-                      @input="state.updateValue(item.id, ($event.target as HTMLTextAreaElement).value)"
-                    />
-                  </div>
-                </div>
+                <PreferenceField
+                  :item="item"
+                  :value="state.getItemValue(item)"
+                  :item-index="itemIndex"
+                  :has-heading="!!section.heading"
+                  :has-title="!!props.title"
+                  :css-item="props.css?.item"
+                  @update="state.updateValue(item.id, $event)"
+                />
               </template>
             </div>
           </fieldset>
-          <div v-else :class="cn('flex flex-col', props.css?.section)">
-            <template v-for="(item, itemIndex) in section.items" :key="item.id">
-              <hr
-                v-if="itemIndex > 0"
-                class="my-1 border-border"
-              />
-              <div
-                :class="cn(
-                  'flex items-start justify-between gap-4',
-                  itemIndex === 0 && !props.title ? 'pt-0 pb-3' : 'py-3',
-                  (item.type === 'input' || item.type === 'textarea' || item.type === 'toggle') ? 'flex-col gap-3' : (item.type !== 'switch' && 'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4'),
-                  props.css?.item
-                )"
-              >
-                <div class="flex flex-col gap-1">
-                  <label
-                    :for="`preference-${item.id}`"
-                    class="leading-6 font-medium text-pretty"
-                  >
-                    {{ item.label }}
-                  </label>
-                  <p
-                    v-if="item.description"
-                    class="text-sm font-normal text-pretty text-muted-foreground"
-                  >
-                    {{ item.description }}
-                  </p>
-                </div>
-                <div :class="cn('flex', item.type !== 'input' && item.type !== 'textarea' && 'shrink-0')">
-                  <!-- Switch -->
-                  <button
-                    v-if="item.type === 'switch'"
-                    :id="`preference-${item.id}`"
-                    type="button"
-                    role="switch"
-                    :aria-checked="state.isSwitchValue(state.getItemValue(item))"
-                    :class="cn(
-                      'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none',
-                      state.isSwitchValue(state.getItemValue(item)) ? 'bg-primary' : 'bg-muted-foreground/30'
-                    )"
-                    @click="state.updateValue(item.id, !state.isSwitchValue(state.getItemValue(item)))"
-                  >
-                    <span
-                      :class="cn(
-                        'pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform',
-                        state.isSwitchValue(state.getItemValue(item)) ? 'translate-x-5' : 'translate-x-0.5'
-                      )"
-                      :style="{ marginTop: '2px' }"
-                    />
-                  </button>
-
-                  <!-- Toggle -->
-                  <div
-                    v-else-if="item.type === 'toggle' && item.options"
-                    class="flex flex-wrap items-center justify-end gap-1"
-                  >
-                    <button
-                      v-for="option in item.options"
-                      :key="option.value"
-                      type="button"
-                      :class="cn(
-                        'rounded-full px-3 py-1.5 text-sm transition-colors',
-                        state.isToggleOptionSelected(item, option.value)
-                          ? 'bg-primary text-primary-foreground'
-                          : 'hover:bg-accent'
-                      )"
-                      @click="item.multiple ? state.toggleOption(item, option.value) : state.updateValue(item.id, option.value)"
-                    >
-                      {{ option.label }}
-                    </button>
-                  </div>
-
-                  <!-- Select -->
-                  <select
-                    v-else-if="item.type === 'select' && item.selectOptions"
-                    :id="`preference-${item.id}`"
-                    :value="String(state.getItemValue(item))"
-                    :class="cn(
-                      'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                    )"
-                    @change="state.updateValue(item.id, ($event.target as HTMLSelectElement).value)"
-                  >
-                    <option
-                      v-for="option in item.selectOptions"
-                      :key="option.value"
-                      :value="option.value"
-                    >
-                      {{ option.label }}
-                    </option>
-                  </select>
-
-                  <!-- Input -->
-                  <input
-                    v-else-if="item.type === 'input'"
-                    :id="`preference-${item.id}`"
-                    :type="item.inputType ?? 'text'"
-                    :placeholder="item.placeholder ?? ''"
-                    :value="String(state.getItemValue(item))"
-                    :class="cn(
-                      'h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                    )"
-                    @input="state.updateValue(item.id, ($event.target as HTMLInputElement).value)"
-                  />
-
-                  <!-- Textarea -->
-                  <textarea
-                    v-else-if="item.type === 'textarea'"
-                    :id="`preference-${item.id}`"
-                    :placeholder="item.placeholder ?? ''"
-                    :rows="item.rows ?? 3"
-                    :value="String(state.getItemValue(item))"
-                    :class="cn(
-                      'w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors',
-                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-                    )"
-                    @input="state.updateValue(item.id, ($event.target as HTMLTextAreaElement).value)"
-                  />
-                </div>
-              </div>
-            </template>
-          </div>
         </template>
       </div>
     </div>

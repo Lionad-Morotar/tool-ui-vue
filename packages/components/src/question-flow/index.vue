@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, h, reactive } from 'vue';
+import { ListboxContent, ListboxItem, ListboxRoot } from 'reka-ui';
 import { cn } from '../core';
+import { OptionIndicator } from '../ui';
 import { useQuestionFlow } from './states';
 import { useI18n } from '../core/i18n';
 import type { QuestionFlowCss, QuestionFlowProps } from './schema';
@@ -187,36 +189,13 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
               >
                 <div class="relative flex items-start gap-3">
                   <span class="flex h-6 items-center">
-                    <span
-                      :class="
-                        cn(
-                          'flex size-4 shrink-0 items-center justify-center border-2',
-                          state.exitingStepData.selectionMode === 'single' ? 'rounded-full' : 'rounded',
-                          state.exitingStepData.selectedIds.has(option.id)
-                            ? 'border-primary bg-primary text-primary-foreground'
-                            : 'border-muted-foreground/50',
-                        )
-                      "
-                    >
-                      <svg
-                        v-if="state.exitingStepData.selectionMode === 'multi' && state.exitingStepData.selectedIds.has(option.id)"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                      <span
-                        v-if="state.exitingStepData.selectionMode === 'single' && state.exitingStepData.selectedIds.has(option.id)"
-                        class="size-2 rounded-full bg-current"
-                      />
-                    </span>
+                    <!-- 退场快照是静态记录:本分支随 v-if 全新挂载,若指示器播放
+                         入场动画,退场滑出窗口内用户可见已选标记重播放大淡入 -->
+                    <OptionIndicator
+                      :selected="state.exitingStepData.selectedIds.has(option.id)"
+                      :shape="state.exitingStepData.selectionMode === 'single' ? 'radio' : 'checkbox'"
+                      :animate="false"
+                    />
                   </span>
                   <div class="flex flex-col text-left">
                     <span class="leading-6 text-pretty">{{ option.label }}</span>
@@ -248,91 +227,61 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
             </p>
           </div>
 
-          <!-- Options -->
-          <div
-            :class="cn('flex flex-col px-1', props.css?.options)"
-            role="listbox"
-            :aria-multiselectable="state.currentSelectionMode === 'multi'"
-            @keydown="state.handleKeyDown"
+          <!-- Options:roving 焦点/方向键/Enter·Space 选中/disabled 跳过由 reka Listbox 内建接管 -->
+          <!-- 步骤切换窗口内新步选项全 disabled,reka 导航集合为空;若不按 step key 重建实例,
+               highlight 滞留已卸载元素、listbox 容器 tabindex 卡 -1,键盘焦点再无法进入;
+               keyed remount 让新实例 highlightedElement 归零,容器恢复 tabindex 0 作为键盘入口 -->
+          <ListboxRoot
+            :key="state.currentStepKey"
+            v-model="state.listboxModel"
+            :multiple="state.currentSelectionMode === 'multi'"
           >
-            <template v-for="(option, index) in state.currentOptions" :key="option.id">
-              <hr
-                v-if="index > 0"
-                class="border-border transition-opacity [@media(hover:hover)]:[&:has(+_:hover)]:opacity-0 [@media(hover:hover)]:[.peer:hover+&]:opacity-0"
-              />
-              <button
-                :ref="(el) => { if (el) state.optionRefs[index] = el as HTMLButtonElement }"
-                type="button"
-                :data-id="option.id"
-                :disabled="option.disabled || state.isTransitioning"
-                :class="
-                  cn(
-                    'peer group/option relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
-                    'rounded-none border-0 bg-transparent px-0 py-2 text-base shadow-none transition-none hover:bg-transparent! @md/question-flow:text-sm',
-                    index === 0 && 'pb-2.5',
-                    index > 0 && index < state.currentOptions.length - 1 && 'py-2.5',
-                  )
-                "
-                role="option"
-                :aria-selected="state.isSelected(option.id)"
-                :tabindex="index === state.activeIndex ? 0 : -1"
-                @click="state.toggleOption(option.id)"
-                @focus="state.activeIndex = index"
-              >
-                <span
-                  :class="cn(
-                    'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover/option:opacity-100',
-                  )"
+            <ListboxContent :class="cn('flex flex-col px-1', props.css?.options)">
+              <template v-for="(option, index) in state.currentOptions" :key="option.id">
+                <hr
+                  v-if="index > 0"
+                  class="border-border transition-opacity [@media(hover:hover)]:[&:has(+_:hover)]:opacity-0 [@media(hover:hover)]:[.peer:hover+&]:opacity-0"
                 />
-                <div class="relative flex items-start gap-3">
-                  <span class="flex h-6 items-center">
-                    <span
-                      :class="
-                        cn(
-                          'flex size-4 shrink-0 items-center justify-center border-2',
-                          'motion-safe:transition-colors motion-safe:duration-200',
-                          state.currentSelectionMode === 'single' ? 'rounded-full' : 'rounded',
-                          state.isSelected(option.id)
-                            ? 'motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 border-primary bg-primary text-primary-foreground motion-safe:duration-300 motion-safe:ease-out'
-                            : 'border-muted-foreground/50',
-                          option.disabled ? 'opacity-50' : undefined,
-                        )
-                      "
-                    >
-                      <svg
-                        v-if="state.currentSelectionMode === 'multi' && state.isSelected(option.id)"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 motion-safe:fill-mode-both motion-safe:delay-75 motion-safe:duration-200"
-                      >
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                      <span
-                        v-if="state.currentSelectionMode === 'single' && state.isSelected(option.id)"
-                        class="motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 size-2 rounded-full bg-current motion-safe:duration-300 motion-safe:ease-out"
+                <ListboxItem
+                  :value="option.id"
+                  :disabled="option.disabled || state.isTransitioning"
+                  :data-id="option.id"
+                  :class="
+                    cn(
+                      'peer group/option relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
+                      'rounded-none border-0 bg-transparent px-0 py-2 text-base shadow-none transition-none hover:bg-transparent! @md/question-flow:text-sm',
+                      index === 0 && 'pb-2.5',
+                      index > 0 && index < state.currentOptions.length - 1 && 'py-2.5',
+                    )
+                  "
+                >
+                  <span
+                    :class="cn(
+                      'absolute inset-0 -mx-3 -my-0.5 rounded-xl bg-primary/5 opacity-0 transition-opacity group-hover/option:opacity-100',
+                    )"
+                  />
+                  <div class="relative flex items-start gap-3">
+                    <span class="flex h-6 items-center">
+                      <OptionIndicator
+                        :selected="state.isSelected(option.id)"
+                        :shape="state.currentSelectionMode === 'single' ? 'radio' : 'checkbox'"
+                        :disabled="option.disabled"
                       />
                     </span>
-                  </span>
-                  <div class="flex flex-col text-left">
-                    <span class="leading-6 text-pretty">{{ option.label }}</span>
-                    <span
-                      v-if="option.description"
-                      class="text-sm font-normal text-pretty text-muted-foreground"
-                    >
-                      {{ option.description }}
-                    </span>
+                    <div class="flex flex-col text-left">
+                      <span class="leading-6 text-pretty">{{ option.label }}</span>
+                      <span
+                        v-if="option.description"
+                        class="text-sm font-normal text-pretty text-muted-foreground"
+                      >
+                        {{ option.description }}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            </template>
-          </div>
+                </ListboxItem>
+              </template>
+            </ListboxContent>
+          </ListboxRoot>
         </div>
       </div>
 

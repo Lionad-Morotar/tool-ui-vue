@@ -121,19 +121,6 @@ export function usePreferencesPanel(
     }
   }
 
-  // Toggle an option in a multi-select toggle
-  function toggleOption(item: PreferenceItem, optionValue: string) {
-    if (item.type !== 'toggle' || !item.multiple) return;
-
-    const currentValue = getItemValue(item);
-    const currentArray = Array.isArray(currentValue) ? currentValue : [];
-    const newArray = currentArray.includes(optionValue)
-      ? currentArray.filter((v) => v !== optionValue)
-      : [...currentArray, optionValue];
-
-    updateValue(item.id, newArray);
-  }
-
   // Check if dirty (has changes from initial)
   const isDirty = computed(() => {
     if (isReceipt.value) return false;
@@ -243,21 +230,6 @@ export function usePreferencesPanel(
     }
   }
 
-  // Check if switch is on
-  function isSwitchValue(value: string | string[] | boolean): boolean {
-    return typeof value === 'boolean' ? value : value === 'true';
-  }
-
-  // Check if a toggle option is selected (handles both single and multi-select)
-  function isToggleOptionSelected(item: PreferenceItem, optionValue: string): boolean {
-    if (item.type !== 'toggle') return false;
-    const value = getItemValue(item);
-    if (Array.isArray(value)) {
-      return value.includes(optionValue);
-    }
-    return value === optionValue;
-  }
-
   // Check if there are errors (receipt mode only)
   const hasErrors = computed(() => {
     if (!isReceiptProps(props)) return false;
@@ -288,14 +260,11 @@ export function usePreferencesPanel(
     getItemValue,
     currentValues,
     updateValue,
-    toggleOption,
     isDirty,
     formatDisplayValue,
     normalizedActions,
     actionsWithState,
     handleAction,
-    isSwitchValue,
-    isToggleOptionSelected,
     hasErrors,
     getItemError,
   };

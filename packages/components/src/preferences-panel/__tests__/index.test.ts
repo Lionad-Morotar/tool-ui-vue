@@ -1,6 +1,8 @@
-import { mount } from '@vue/test-utils';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
+import { describe, expect, test, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import { ref, computed } from 'vue';
+
+enableAutoUnmount(afterEach);
 
 const currentLocale = ref('en');
 const messagesByLocale: Record<string, Record<string, string>> = {
@@ -34,6 +36,14 @@ vi.mock('../../core/i18n', async (importOriginal) => {
 });
 
 import PreferencesPanel from '../index.vue';
+import {
+  installPointerCaptureShim,
+  openSelect,
+  querySelectItems,
+  settle,
+} from '../../ui/__tests__/reka-test-utils';
+
+beforeAll(installPointerCaptureShim);
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {
@@ -108,12 +118,14 @@ describe('PreferencesPanel', () => {
       expect(wrapper.text()).toContain('Dark');
     });
 
-    test('renders select with options', () => {
+    test('renders select as a combobox trigger showing the selected option', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
-      const select = wrapper.find('select');
-      expect(select.exists()).toBe(true);
+      await flushPromises();
       expect(wrapper.text()).toContain('Language');
-      expect(wrapper.text()).toContain('English');
+      const trigger = wrapper.find('[data-testid="select-trigger"]');
+      expect(trigger.exists()).toBe(true);
+      expect(trigger.attributes('role')).toBe('combobox');
+      expect(trigger.text()).toContain('English');
     });
 
     test('has data-slot attribute', () => {
@@ -191,6 +203,18 @@ describe('PreferencesPanel', () => {
   });
 
   describe('interactions - toggle', () => {
+    // ToggleGroupRoot 渲染 div role=group 非 labelable 元素,label[for] 不参与命名,
+    // 屏幕阅读器遍历到 toggle 偏好项时组容器的可访问名称靠 aria-labelledby 指回 label
+    test('associates toggle group container with its label via aria-labelledby', () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const label = wrapper.find('label#preference-theme-label');
+      const group = wrapper.find('[data-testid="toggle-group"]');
+      expect(label.exists()).toBe(true);
+      expect(group.exists()).toBe(true);
+      expect(group.attributes('role')).toBe('group');
+      expect(group.attributes('aria-labelledby')).toBe(label.attributes('id'));
+    });
+
     test('selects toggle option and emits change', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
       const darkBtn = wrapper.findAll('button').find((b) => b.text() === 'Dark');
@@ -203,9 +227,11 @@ describe('PreferencesPanel', () => {
     test('toggle shows selected state', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
       const buttons = wrapper.findAll('button').filter((b) => ['Light', 'Dark'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
       await buttons[1].trigger('click');
-      expect(buttons[1].classes()).toContain('bg-primary');
+      expect(buttons[1].attributes('data-state')).toBe('on');
+      expect(buttons[0].attributes('data-state')).toBe('off');
     });
 
     test('toggle uses first option as default when no defaultValue', () => {
@@ -229,7 +255,8 @@ describe('PreferencesPanel', () => {
         }),
       });
       const buttons = wrapper.findAll('button').filter((b) => ['Option A', 'Option B'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
     });
   });
 
@@ -265,8 +292,8 @@ describe('PreferencesPanel', () => {
         ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
       );
       expect(buttons.length).toBe(4);
-      // None should have bg-primary class initially
-      expect(buttons.every((b) => !b.classes().includes('bg-primary'))).toBe(true);
+      // None should be selected initially
+      expect(buttons.every((b) => b.attributes('data-state') === 'off')).toBe(true);
     });
 
     test('selects multiple options in multi-toggle', async () => {
@@ -305,12 +332,12 @@ describe('PreferencesPanel', () => {
       );
 
       await buttons[0].trigger('click');
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).not.toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
 
       await buttons[1].trigger('click');
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('on');
     });
 
     test('multi-toggle respects defaultValue array', () => {
@@ -322,10 +349,10 @@ describe('PreferencesPanel', () => {
       const buttons = wrapper.findAll('button').filter((b) =>
         ['Power Battery', 'E-bike Battery', 'Energy Storage', 'Consumer'].includes(b.text())
       );
-      expect(buttons[0].classes()).toContain('bg-primary');
-      expect(buttons[3].classes()).toContain('bg-primary');
-      expect(buttons[1].classes()).not.toContain('bg-primary');
-      expect(buttons[2].classes()).not.toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[3].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
+      expect(buttons[2].attributes('data-state')).toBe('off');
     });
 
     test('multi-toggle with string defaultValue wraps to array', () => {
@@ -351,7 +378,8 @@ describe('PreferencesPanel', () => {
         }),
       });
       const buttons = wrapper.findAll('button').filter((b) => ['LFP', 'NCM'].includes(b.text()));
-      expect(buttons[0].classes()).toContain('bg-primary');
+      expect(buttons[0].attributes('data-state')).toBe('on');
+      expect(buttons[1].attributes('data-state')).toBe('off');
     });
 
     test('isDirty detects multi-toggle changes', async () => {
@@ -402,14 +430,20 @@ describe('PreferencesPanel', () => {
 
   describe('interactions - select', () => {
     test('changes select and emits change', async () => {
-      const wrapper = mount(PreferencesPanel, { props: createProps() });
-      const select = wrapper.find('select');
-      await select.setValue('es');
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps(),
+        attachTo: document.body,
+      });
+      await openSelect(wrapper);
+      const target = querySelectItems().find((i) => i.textContent === 'Spanish');
+      expect(target).toBeTruthy();
+      target!.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true }));
+      await settle();
       expect(wrapper.emitted('change')).toBeTruthy();
       expect((wrapper.emitted('change')![0] as unknown[])[0]).toMatchObject({ language: 'es' });
     });
 
-    test('select uses first option as default when no defaultSelected', () => {
+    test('select uses first option as default when no defaultSelected', async () => {
       const wrapper = mount(PreferencesPanel, {
         props: createProps({
           sections: [
@@ -432,8 +466,39 @@ describe('PreferencesPanel', () => {
           ],
         }),
       });
-      const select = wrapper.find('select');
-      expect((select.element as HTMLSelectElement).value).toBe('opt1');
+      await flushPromises();
+      expect(wrapper.find('[data-testid="select-trigger"]').text()).toContain('Option 1');
+    });
+
+    // trigger 渲染为 button:label[for] 只提供点击聚焦,无障碍命名靠 aria-labelledby 配对,
+    // 任一环节断裂都会静默丢失屏幕阅读器的程序关联
+    test('associates label with select trigger via for/id and aria-labelledby', () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const label = wrapper.find('label[for="preference-language"]');
+      const trigger = wrapper.find('[data-testid="select-trigger"]');
+      expect(label.exists()).toBe(true);
+      expect(trigger.attributes('id')).toBe('preference-language');
+      expect(label.attributes('id')).toBeTruthy();
+      expect(trigger.attributes('aria-labelledby')).toBe(label.attributes('id'));
+    });
+  });
+
+  describe('interactions - input', () => {
+    // label 点击聚焦与屏幕阅读器关联依赖该 for/id 配对
+    test('associates label with input control via for/id', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                { id: 'email', type: 'input' as const, label: 'Email', placeholder: 'you@example.com' },
+              ],
+            },
+          ],
+        }),
+      });
+      expect(wrapper.find('label[for="preference-email"]').exists()).toBe(true);
+      expect(wrapper.find('input#preference-email').exists()).toBe(true);
     });
   });
 
@@ -711,7 +776,7 @@ describe('PreferencesPanel', () => {
       });
       // Try to find any interactive element - there should be none
       expect(wrapper.find('[role="switch"]').exists()).toBe(false);
-      expect(wrapper.find('select').exists()).toBe(false);
+      expect(wrapper.find('[role="combobox"]').exists()).toBe(false);
     });
 
     test('shows error icon for items with errors', () => {
@@ -883,7 +948,7 @@ describe('PreferencesPanel', () => {
       expect(wrapper.find('legend').exists()).toBe(true);
     });
 
-    test('uses div for sections without headings', () => {
+    test('uses fieldset without legend for sections without headings', () => {
       const wrapper = mount(PreferencesPanel, {
         props: createProps({
           sections: [
@@ -895,7 +960,8 @@ describe('PreferencesPanel', () => {
           ],
         }),
       });
-      expect(wrapper.find('fieldset').exists()).toBe(false);
+      expect(wrapper.find('fieldset').exists()).toBe(true);
+      expect(wrapper.find('legend').exists()).toBe(false);
     });
 
     test('removes top padding for first item when no title and no heading', () => {

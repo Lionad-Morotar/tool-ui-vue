@@ -1,9 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, test } from 'vitest';
+import { beforeAll, describe, expect, test } from 'vitest';
 import { ALLOWED_PATTERNS } from '../../../../../src/test/console-guard';
+import { installScrollIntoViewShim } from '../../ui/__tests__/reka-test-utils';
 import QuestionFlow from '../index.vue';
 
 // props 响应式契约：父层以新 steps 引用切换当前 step key 后，aria-labelledby 必须跟随新 step。
+
+beforeAll(installScrollIntoViewShim);
 
 ALLOWED_PATTERNS.push(
   // QuestionFlow union props 运行时校验警告已在全局放行；测试期间无额外非预期警告。
