@@ -164,42 +164,27 @@ export function useQuestionFlow(
     return currentSelectedIds.value.has(optionId);
   }
 
-  function toggleOption(optionId: string) {
-    const mode = currentSelectionMode.value;
-
-    if (progressiveProps.value) {
-      const next = new Set(selectedIds.value);
-      if (mode === 'single') {
-        if (next.has(optionId)) {
-          next.delete(optionId);
-        } else {
-          next.clear();
-          next.add(optionId);
-        }
-      } else {
-        if (next.has(optionId)) {
-          next.delete(optionId);
-        } else {
-          next.add(optionId);
-        }
+  // reka Listbox 的 v-model 契约(单选 string|undefined、多选 string[])与内部
+  // 选中态(progressive 用 Set、upfront 按 step 存数组)之间的双向桥;
+  // 单选 toggle 回吐 undefined 即取消选中,与旧手写语义一致
+  const listboxModel = computed<string | string[] | undefined>({
+    get() {
+      const ids = currentSelectedIds.value;
+      if (currentSelectionMode.value === 'multi') {
+        return Array.from(ids);
       }
-      selectedIds.value = next;
-    } else if (currentStep.value) {
-      const stepId = currentStep.value.id;
-      const current = answers.value[stepId] ?? [];
-      let next: string[];
-
-      if (mode === 'single') {
-        next = current.includes(optionId) ? [] : [optionId];
-      } else {
-        next = current.includes(optionId)
-          ? current.filter((id) => id !== optionId)
-          : [...current, optionId];
+      return ids.values().next().value as string | undefined;
+    },
+    set(value) {
+      const next =
+        value === undefined || value === null ? [] : Array.isArray(value) ? value : [value];
+      if (progressiveProps.value) {
+        selectedIds.value = new Set(next);
+      } else if (currentStep.value) {
+        answers.value = { ...answers.value, [currentStep.value.id]: next };
       }
-
-      answers.value = { ...answers.value, [stepId]: next };
-    }
-  }
+    },
+  });
 
   function saveExitingStepData() {
     if (currentStep.value) {
@@ -253,94 +238,6 @@ export function useQuestionFlow(
       }, 250);
     }
   }
-
-  // Keyboard navigation
-  const optionRefs = ref<(HTMLButtonElement | null)[]>([]);
-  const activeIndex = ref(0);
-
-  function findFirstEnabledIndex(): number {
-    const idx = currentOptions.value.findIndex((opt) => !opt.disabled);
-    return idx >= 0 ? idx : 0;
-  }
-
-  function findLastEnabledIndex(): number {
-    for (let i = currentOptions.value.length - 1; i >= 0; i--) {
-      if (!currentOptions.value[i].disabled) return i;
-    }
-    return 0;
-  }
-
-  function findNextEnabledIndex(start: number, direction: 1 | -1): number {
-    const len = currentOptions.value.length;
-    if (len === 0) return 0;
-    for (let step = 1; step <= len; step++) {
-      const idx = (start + direction * step + len) % len;
-      if (!currentOptions.value[idx].disabled) return idx;
-    }
-    return start;
-  }
-
-  function focusOptionAt(index: number) {
-    activeIndex.value = index;
-    const el = optionRefs.value[index];
-    if (el) el.focus();
-  }
-
-  function handleKeyDown(event: KeyboardEvent) {
-    if (currentOptions.value.length === 0 || exitingStepData.value) return;
-
-    const key = event.key;
-
-    if (key === 'ArrowDown') {
-      event.preventDefault();
-      focusOptionAt(findNextEnabledIndex(activeIndex.value, 1));
-      return;
-    }
-
-    if (key === 'ArrowUp') {
-      event.preventDefault();
-      focusOptionAt(findNextEnabledIndex(activeIndex.value, -1));
-      return;
-    }
-
-    if (key === 'Home') {
-      event.preventDefault();
-      focusOptionAt(findFirstEnabledIndex());
-      return;
-    }
-
-    if (key === 'End') {
-      event.preventDefault();
-      focusOptionAt(findLastEnabledIndex());
-      return;
-    }
-
-    if (key === 'Enter' || key === ' ') {
-      event.preventDefault();
-      const option = currentOptions.value[activeIndex.value];
-      if (option && !option.disabled) {
-        toggleOption(option.id);
-      }
-      return;
-    }
-  }
-
-  watch(
-    () => currentOptions.value,
-    (options) => {
-      if (!options || options.length === 0) return;
-      const firstSelected = options.findIndex(
-        (opt) => isSelected(opt.id) && !opt.disabled
-      );
-      if (firstSelected >= 0) {
-        activeIndex.value = firstSelected;
-      } else {
-        const firstEnabled = findFirstEnabledIndex();
-        activeIndex.value = firstEnabled >= 0 ? firstEnabled : 0;
-      }
-    },
-    { immediate: true }
-  );
 
   // Animation state
   const isTransitioning = computed(() => exitingStepData.value !== null);
@@ -397,15 +294,11 @@ export function useQuestionFlow(
     enteringOpacity,
     EXIT_DURATION,
     ENTER_DURATION,
-    optionRefs,
-    activeIndex,
     canProceed,
     isSelected,
-    toggleOption,
+    listboxModel,
     handleNext,
     handleBack,
-    handleKeyDown,
-    focusOptionAt,
     titleId,
     descriptionId,
     currentStepKey,

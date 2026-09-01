@@ -10,6 +10,14 @@ export function installPointerCaptureShim() {
   }
 }
 
+// jsdom 未实现 scrollIntoView,而 reka Listbox 挂载即 highlight 首项并调用它,
+// 不补空实现时任何挂载 Listbox 的组件树在 nextTick 回调抛 TypeError;幂等
+export function installScrollIntoViewShim() {
+  if (!Element.prototype.scrollIntoView) {
+    Element.prototype.scrollIntoView = () => undefined;
+  }
+}
+
 // 浮层开关闭跨 nextTick、Promise(floating-ui 定位)与 setTimeout(Presence 退场)三级调度,
 // 单次 flushPromises 等不到最终态
 export async function settle() {
