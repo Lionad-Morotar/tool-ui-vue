@@ -71,6 +71,17 @@ describe('ui/select', () => {
       expect(classes).toContain('rounded-md');
       expect(classes).toContain('border-input');
     });
+
+    // schema 的 selectOptions 仅 min(5) 无上限:选项增多时浮层必须有高度上限与内部滚动,
+    // 否则底部选项滚轮与键盘 End 均不可达;规格对齐 citation-overflow-popover 先例
+    test('caps the viewport height with internal scrolling', async () => {
+      const wrapper = mountSelect({ props: { modelValue: 'en' } });
+      await openSelect(wrapper);
+      const viewport = document.body.querySelector('[data-reka-select-viewport]');
+      expect(viewport).not.toBeNull();
+      expect(viewport!.className).toContain('max-h-72');
+      expect(viewport!.className).toContain('overflow-y-auto');
+    });
   });
 
   describe('attribute fallthrough', () => {

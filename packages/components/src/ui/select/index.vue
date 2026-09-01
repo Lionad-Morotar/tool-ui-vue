@@ -64,7 +64,9 @@ const model = defineModel<string>();
         "
         data-testid="select-content"
       >
-        <SelectViewport>
+        <!-- Viewport:schema 的 selectOptions 无数量上限,须封顶高度并内部滚动,
+             否则底部选项滚轮与键盘 End 均不可达;规格对齐 citation-overflow-popover 先例 -->
+        <SelectViewport class="max-h-72 overflow-y-auto">
           <SelectItem
             v-for="option in props.options"
             :key="option.value"
