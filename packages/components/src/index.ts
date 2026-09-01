@@ -493,6 +493,29 @@ export {
   safeParseSerializableWeatherWidget,
 } from './weather-widget'
 
+// Upload
+export { Upload } from './upload'
+export type {
+  UploadProps,
+  UploadInteractiveProps,
+  UploadReceiptProps,
+  UploadedFile,
+  SerializableUpload,
+  SerializableUploadReceipt,
+  UploadItem,
+  UploadItemStatus,
+  UploadEmit,
+} from './upload'
+export {
+  UploadedFileSchema,
+  SerializableUploadSchema,
+  SerializableUploadReceiptSchema,
+  parseSerializableUpload,
+  safeParseSerializableUpload,
+  parseSerializableUploadReceipt,
+  safeParseSerializableUploadReceipt,
+} from './upload'
+
 // i18n exports (core i18n symbols are re-exported via `export * from './core'` above)
 export {
   setMessages,

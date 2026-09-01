@@ -5,8 +5,9 @@ export const ALLOWED_PATTERNS: RegExp[] = [
   /\[Shiki\] \d+ instances have been created/,
   // Vue injection warning - expected when testing useImageGallery outside provider
   /\[Vue warn\]: injection "Symbol\(ImageGalleryContext\)" not found/,
-  // QuestionFlow union type props - Vue validates all union props at runtime
-  /\[Vue warn\]: Missing required prop: "(step|options|steps|choice|title)"/,
+  // QuestionFlow/Upload union type props - Vue validates all union props at runtime
+  // (compiler-sfc 对联合类型任一成员 required 即生成运行时 required)
+  /\[Vue warn\]: Missing required prop: "(step|options|steps|choice|title|upload)"/,
   // i18n missing key warning - expected when testing fallback behavior
   /\[vtu:i18n\] Missing key:/,
   // No LocaleProvider configured - expected when testing fallback mode

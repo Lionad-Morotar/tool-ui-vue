@@ -349,6 +349,34 @@ describe('E2E: Component Mounts', () => {
     expect(wrapper.text()).toContain('Question 1?');
   }, 30000);
 
+  test('Upload mounts with minimal props', async () => {
+    const { Upload } = await import('@lionad/vtu-components/upload');
+    const wrapper = mount(Upload as Component, {
+      props: {
+        id: 'test-upload',
+        title: 'Attachments',
+        upload: async (file: File) => ({ name: file.name, url: `https://x/${file.name}` }),
+      },
+    });
+    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-tool-ui-id="test-upload"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="upload-trigger"]').exists()).toBe(true);
+    expect(wrapper.find('input[type="file"]').exists()).toBe(true);
+  });
+
+  test('Upload mounts in receipt mode', async () => {
+    const { Upload } = await import('@lionad/vtu-components/upload');
+    const wrapper = mount(Upload as Component, {
+      props: {
+        id: 'test-upload-receipt',
+        choice: [{ name: 'a.png', url: 'https://x/a.png' }],
+      },
+    });
+    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.find('[data-testid="upload-item"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="upload-trigger"]').exists()).toBe(false);
+  });
+
   test('ItemCarousel mounts with minimal props', async () => {
     const { ItemCarousel } = await import('@lionad/vtu-components/item-carousel');
     const wrapper = mount(ItemCarousel as Component, {
