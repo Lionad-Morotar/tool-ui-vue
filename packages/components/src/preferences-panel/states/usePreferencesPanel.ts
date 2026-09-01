@@ -91,19 +91,24 @@ export function usePreferencesPanel(
   });
 
   // Get current value for an item (handles both controlled and uncontrolled modes)
+  // 空值语义:值联合含 null(number 清空即「未填」),?? 会把 null 一并吞成 defaultValue;
+  // 只有 undefined(该项未被记录)才回退初始值,null 必须穿透
   function getItemValue(item: PreferenceItem): PreferenceFieldValue {
     if (isReceiptProps(props)) {
-      return props.choice[item.id] ?? getInitialValue(item);
+      const v = props.choice[item.id];
+      return v !== undefined ? v : getInitialValue(item);
     }
 
     // Controlled mode: use modelValue
     if (controlledValue.value !== undefined) {
-      return modelValue.value?.[item.id] ?? getInitialValue(item);
+      const v = modelValue.value?.[item.id];
+      return v !== undefined ? v : getInitialValue(item);
     }
 
     // Uncontrolled mode: use localValues
     if (item.id in localValues.value) {
-      return localValues.value[item.id] ?? getInitialValue(item);
+      const v = localValues.value[item.id];
+      return v !== undefined ? v : getInitialValue(item);
     }
 
     return getInitialValue(item);

@@ -1178,6 +1178,29 @@ describe('PreferencesPanel', () => {
       expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({ quantity: 6 });
     });
 
+    // 清空即「未填」:null 必须穿透进提交值,不得回退 defaultValue
+    test('clearing a number entry commits null, not the defaultValue', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps({
+          sections: [
+            {
+              items: [
+                { id: 'quantity', type: 'number' as const, label: 'Quantity', defaultValue: 4, min: 0 },
+              ],
+            },
+          ],
+        }),
+      });
+      const input = wrapper.find('[data-testid="number-field-input"]');
+      expect((input.element as HTMLInputElement).value).toBe('4');
+      await input.setValue('7');
+      await input.trigger('keydown', { key: 'Enter' });
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({ quantity: 7 });
+      await input.setValue('');
+      await input.trigger('keydown', { key: 'Enter' });
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({ quantity: null });
+    });
+
     test('shows "-" for null and plain number in receipt', () => {
       const wrapper = mount(PreferencesPanel, {
         props: createProps({
