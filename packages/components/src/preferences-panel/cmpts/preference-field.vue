@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { cn } from '../../core';
-import { Switch, ToggleGroup, Input, Textarea } from '../../ui';
+import { Switch, ToggleGroup, Input, Textarea, Select } from '../../ui';
 import type { PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
@@ -31,7 +31,7 @@ const toggleModel = computed<string | string[]>({
   set: (v) => emit('update', v),
 });
 
-// 文本控件值桥接:联合类型收窄为 string,与原子 defineModel<string> 对齐
+// 字符串控件值桥接:select/input/textarea 均为 string 值,联合类型收窄后与原子 defineModel<string> 对齐
 const textModel = computed<string>({
   get: () => String(props.value),
   set: (v) => emit('update', v),
@@ -69,9 +69,10 @@ const controlWrapperClass = computed(() =>
     "
     data-testid="preference-field"
   >
-    <!-- 文案块:label 关联控件 id,description 辅助说明 -->
+    <!-- 文案块:label 关联控件 id,description 辅助说明;label 自身带 id 供 button 形态控件接 aria-labelledby -->
     <div :class="props.hasHeading ? 'flex shrink-0 flex-col gap-1' : 'flex flex-col gap-1'">
       <label
+        :id="`preference-${item.id}-label`"
         :for="`preference-${item.id}`"
         class="leading-6 font-medium text-pretty"
       >
@@ -101,26 +102,14 @@ const controlWrapperClass = computed(() =>
         :class="props.hasHeading ? 'w-full' : undefined"
       />
 
-      <select
+      <!-- Select trigger 渲染为 button,label[for] 无法提供无障碍命名,须补 aria-labelledby -->
+      <Select
         v-else-if="item.type === 'select' && item.selectOptions"
         :id="`preference-${item.id}`"
-        :value="String(value)"
-        :class="
-          cn(
-            'h-9 w-[180px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors',
-            'focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none'
-          )
-        "
-        @change="emit('update', ($event.target as HTMLSelectElement).value)"
-      >
-        <option
-          v-for="option in item.selectOptions"
-          :key="option.value"
-          :value="option.value"
-        >
-          {{ option.label }}
-        </option>
-      </select>
+        v-model="textModel"
+        :options="item.selectOptions"
+        :aria-labelledby="`preference-${item.id}-label`"
+      />
 
       <Input
         v-else-if="item.type === 'input'"

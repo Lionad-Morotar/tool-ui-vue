@@ -1,6 +1,9 @@
-import { mount } from '@vue/test-utils';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
+import type { VueWrapper } from '@vue/test-utils';
+import { describe, expect, test, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import { ref, computed } from 'vue';
+
+enableAutoUnmount(afterEach);
 
 const currentLocale = ref('en');
 const messagesByLocale: Record<string, Record<string, string>> = {
@@ -34,6 +37,37 @@ vi.mock('../../core/i18n', async (importOriginal) => {
 });
 
 import PreferencesPanel from '../index.vue';
+
+// jsdom 未实现 Pointer Capture API,而 reka-ui Select trigger 的 pointerdown 分支直接调用,
+// 不补空实现时打开下拉的交互路径在测试环境抛 TypeError
+beforeAll(() => {
+  if (!Element.prototype.hasPointerCapture) {
+    Element.prototype.hasPointerCapture = () => false;
+    Element.prototype.releasePointerCapture = () => undefined;
+  }
+});
+
+// 下拉浮层开关闭跨 nextTick、Promise(floating-ui 定位)与 setTimeout(Presence 退场)三级调度
+async function settle() {
+  await flushPromises();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  await flushPromises();
+}
+
+// 完整点击序列:按下后先等浮层挂载(reka 才武装 document 级 once pointerup 监听),
+// 随后这次松开用于消耗该监听;宿主 wrapper 必须 attachTo document,
+// 悬空挂载时 trigger 事件冒泡不到 document,监听残留会把后续选项的 pointerup preventDefault
+async function openPanelSelect(wrapper: VueWrapper) {
+  const trigger = wrapper.find('[data-testid="select-trigger"]');
+  await trigger.trigger('pointerdown');
+  await settle();
+  await trigger.trigger('pointerup');
+  await settle();
+}
+
+function queryPanelSelectItems() {
+  return Array.from(document.body.querySelectorAll('[data-testid="select-item"]'));
+}
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {
@@ -108,12 +142,14 @@ describe('PreferencesPanel', () => {
       expect(wrapper.text()).toContain('Dark');
     });
 
-    test('renders select with options', () => {
+    test('renders select as a combobox trigger showing the selected option', async () => {
       const wrapper = mount(PreferencesPanel, { props: createProps() });
-      const select = wrapper.find('select');
-      expect(select.exists()).toBe(true);
+      await flushPromises();
       expect(wrapper.text()).toContain('Language');
-      expect(wrapper.text()).toContain('English');
+      const trigger = wrapper.find('[data-testid="select-trigger"]');
+      expect(trigger.exists()).toBe(true);
+      expect(trigger.attributes('role')).toBe('combobox');
+      expect(trigger.text()).toContain('English');
     });
 
     test('has data-slot attribute', () => {
@@ -406,14 +442,20 @@ describe('PreferencesPanel', () => {
 
   describe('interactions - select', () => {
     test('changes select and emits change', async () => {
-      const wrapper = mount(PreferencesPanel, { props: createProps() });
-      const select = wrapper.find('select');
-      await select.setValue('es');
+      const wrapper = mount(PreferencesPanel, {
+        props: createProps(),
+        attachTo: document.body,
+      });
+      await openPanelSelect(wrapper);
+      const target = queryPanelSelectItems().find((i) => i.textContent === 'Spanish');
+      expect(target).toBeTruthy();
+      target!.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true }));
+      await settle();
       expect(wrapper.emitted('change')).toBeTruthy();
       expect((wrapper.emitted('change')![0] as unknown[])[0]).toMatchObject({ language: 'es' });
     });
 
-    test('select uses first option as default when no defaultSelected', () => {
+    test('select uses first option as default when no defaultSelected', async () => {
       const wrapper = mount(PreferencesPanel, {
         props: createProps({
           sections: [
@@ -436,8 +478,20 @@ describe('PreferencesPanel', () => {
           ],
         }),
       });
-      const select = wrapper.find('select');
-      expect((select.element as HTMLSelectElement).value).toBe('opt1');
+      await flushPromises();
+      expect(wrapper.find('[data-testid="select-trigger"]').text()).toContain('Option 1');
+    });
+
+    // trigger 渲染为 button:label[for] 只提供点击聚焦,无障碍命名靠 aria-labelledby 配对,
+    // 任一环节断裂都会静默丢失屏幕阅读器的程序关联
+    test('associates label with select trigger via for/id and aria-labelledby', () => {
+      const wrapper = mount(PreferencesPanel, { props: createProps() });
+      const label = wrapper.find('label[for="preference-language"]');
+      const trigger = wrapper.find('[data-testid="select-trigger"]');
+      expect(label.exists()).toBe(true);
+      expect(trigger.attributes('id')).toBe('preference-language');
+      expect(label.attributes('id')).toBeTruthy();
+      expect(trigger.attributes('aria-labelledby')).toBe(label.attributes('id'));
     });
   });
 
@@ -734,7 +788,7 @@ describe('PreferencesPanel', () => {
       });
       // Try to find any interactive element - there should be none
       expect(wrapper.find('[role="switch"]').exists()).toBe(false);
-      expect(wrapper.find('select').exists()).toBe(false);
+      expect(wrapper.find('[role="combobox"]').exists()).toBe(false);
     });
 
     test('shows error icon for items with errors', () => {
