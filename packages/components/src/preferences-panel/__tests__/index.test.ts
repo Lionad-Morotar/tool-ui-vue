@@ -1,5 +1,4 @@
 import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
-import type { VueWrapper } from '@vue/test-utils';
 import { describe, expect, test, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import { ref, computed } from 'vue';
 
@@ -37,37 +36,14 @@ vi.mock('../../core/i18n', async (importOriginal) => {
 });
 
 import PreferencesPanel from '../index.vue';
+import {
+  installPointerCaptureShim,
+  openSelect,
+  querySelectItems,
+  settle,
+} from '../../ui/__tests__/reka-test-utils';
 
-// jsdom 未实现 Pointer Capture API,而 reka-ui Select trigger 的 pointerdown 分支直接调用,
-// 不补空实现时打开下拉的交互路径在测试环境抛 TypeError
-beforeAll(() => {
-  if (!Element.prototype.hasPointerCapture) {
-    Element.prototype.hasPointerCapture = () => false;
-    Element.prototype.releasePointerCapture = () => undefined;
-  }
-});
-
-// 下拉浮层开关闭跨 nextTick、Promise(floating-ui 定位)与 setTimeout(Presence 退场)三级调度
-async function settle() {
-  await flushPromises();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  await flushPromises();
-}
-
-// 完整点击序列:按下后先等浮层挂载(reka 才武装 document 级 once pointerup 监听),
-// 随后这次松开用于消耗该监听;宿主 wrapper 必须 attachTo document,
-// 悬空挂载时 trigger 事件冒泡不到 document,监听残留会把后续选项的 pointerup preventDefault
-async function openPanelSelect(wrapper: VueWrapper) {
-  const trigger = wrapper.find('[data-testid="select-trigger"]');
-  await trigger.trigger('pointerdown');
-  await settle();
-  await trigger.trigger('pointerup');
-  await settle();
-}
-
-function queryPanelSelectItems() {
-  return Array.from(document.body.querySelectorAll('[data-testid="select-item"]'));
-}
+beforeAll(installPointerCaptureShim);
 
 function createProps(overrides: Record<string, unknown> = {}) {
   return {
@@ -446,8 +422,8 @@ describe('PreferencesPanel', () => {
         props: createProps(),
         attachTo: document.body,
       });
-      await openPanelSelect(wrapper);
-      const target = queryPanelSelectItems().find((i) => i.textContent === 'Spanish');
+      await openSelect(wrapper);
+      const target = querySelectItems().find((i) => i.textContent === 'Spanish');
       expect(target).toBeTruthy();
       target!.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true }));
       await settle();
