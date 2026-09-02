@@ -7,11 +7,7 @@ const { t } = useSiteLocale()
 const tabs = computed(() => [
   { id: 'restaurant', label: t('demo.tabRestaurant').value },
   { id: 'travel', label: t('demo.tabTravel').value },
-  { id: 'code', label: t('demo.tabCode').value },
-  { id: 'contact', label: t('demo.tabContact').value },
-  { id: 'article', label: t('demo.tabArticle').value },
-  { id: 'fields', label: t('demo.tabFields').value },
-  { id: 'questionFlow', label: t('demo.tabQuestionFlow').value }
+  { id: 'code', label: t('demo.tabCode').value }
 ])
 
 const activeTab = ref('restaurant')
@@ -83,22 +79,14 @@ watch(activeTab, () => {
         >
           <DemoRestaurant v-if="activeTab === 'restaurant'" />
           <DemoTravel v-else-if="activeTab === 'travel'" />
-          <DemoCodeReview v-else-if="activeTab === 'code'" />
-          <DemoContactCard v-else-if="activeTab === 'contact'" />
-          <DemoFields v-else-if="activeTab === 'fields'" />
-          <DemoQuestionFlow v-else-if="activeTab === 'questionFlow'" />
-          <DemoArticle v-else />
+          <DemoCodeReview v-else />
           <div class="for-padding h-30" />
         </OverlayScrollbarsComponent>
         <template #fallback>
           <div class="grid flex-1 bg-background p-6">
             <DemoRestaurant v-if="activeTab === 'restaurant'" />
             <DemoTravel v-else-if="activeTab === 'travel'" />
-            <DemoCodeReview v-else-if="activeTab === 'code'" />
-            <DemoContactCard v-else-if="activeTab === 'contact'" />
-            <DemoFields v-else-if="activeTab === 'fields'" />
-            <DemoQuestionFlow v-else-if="activeTab === 'questionFlow'" />
-            <DemoArticle v-else />
+            <DemoCodeReview v-else />
           </div>
         </template>
       </ClientOnly>
