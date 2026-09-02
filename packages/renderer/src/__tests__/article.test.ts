@@ -5,8 +5,35 @@ import {
   useArticle,
   Article,
 } from '@lionad/vtu-components';
+import type { ArticleProps, ArticleState } from '@lionad/vtu-components';
 import { mount } from '@vue/test-utils';
 import { describe, expect, test } from 'vitest';
+import { defineComponent, h, nextTick, ref } from 'vue';
+
+/**
+ * 最小挂载壳:为 useArticle 提供真实 setup 上下文(生命周期钩子可注册,
+ * 避免裸调用触发 onMounted 告警被 console-guard 拦截)与 bodyEl 引用
+ * (测量驱动的戴帽语义可经 DOM 打桩驱动)
+ */
+function mountUseArticle(props: Partial<ArticleProps>) {
+  let state: ArticleState | undefined;
+  const host = defineComponent({
+    setup() {
+      const bodyEl = ref<HTMLElement | null>(null);
+      state = useArticle(props as ArticleProps, bodyEl);
+      return () => h('div', { ref: bodyEl });
+    },
+  });
+  const wrapper = mount(host);
+  return { wrapper, state: state! };
+}
+
+/** jsdom 无布局,scrollHeight 恒 0;打桩模拟内容自然高度后经 resize 触发重测 */
+async function measureWithOverflow(wrapper: ReturnType<typeof mount>, scrollHeight: number) {
+  Object.defineProperty(wrapper.element, 'scrollHeight', { configurable: true, value: scrollHeight });
+  window.dispatchEvent(new Event('resize'));
+  await nextTick();
+}
 
 describe('Article schema', () => {
   test('parses valid article with all fields', () => {
@@ -121,61 +148,61 @@ describe('Article schema', () => {
 describe('useArticle markdown parsing', () => {
   test('parses markdown heading to h1 tag', () => {
     const props = { id: 'a1', type: 'md' as const, content: '# Title' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<h1');
     expect(state.parsedContent.value).toContain('Title');
   });
 
   test('parses markdown paragraph to p tag', () => {
     const props = { id: 'a2', type: 'md' as const, content: 'Hello world' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<p>Hello world</p>');
   });
 
   test('parses markdown unordered list', () => {
     const props = { id: 'a3', type: 'md' as const, content: '- Apple\n- Banana\n- Cherry' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<ul>');
     expect(state.parsedContent.value).toContain('<li>Apple</li>');
   });
 
   test('parses markdown ordered list', () => {
     const props = { id: 'a4', type: 'md' as const, content: '1. First\n2. Second' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<ol>');
     expect(state.parsedContent.value).toContain('<li>First</li>');
   });
 
   test('parses markdown code block', () => {
     const props = { id: 'a5', type: 'md' as const, content: '```js\nconst x = 1;\n```' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<pre><code');
     expect(state.parsedContent.value).toContain('const x = 1;');
   });
 
   test('parses markdown blockquote', () => {
     const props = { id: 'a6', type: 'md' as const, content: '> Quote this' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<blockquote>');
     expect(state.parsedContent.value).toContain('Quote this');
   });
 
   test('parses markdown table', () => {
     const props = { id: 'a7', type: 'md' as const, content: '| A | B |\n|---|---|\n| 1 | 2 |' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toContain('<table>');
     expect(state.parsedContent.value).toContain('<td>1</td>');
   });
 
   test('html type uses raw content without parsing', () => {
     const props = { id: 'a8', type: 'html' as const, content: '<p>Raw HTML</p>' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toBe('<p>Raw HTML</p>');
   });
 
   test('falls back to raw text when marked throws', () => {
     const props = { id: 'a9', type: 'md' as const, content: 'safe content' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.parsedContent.value).toBeTruthy();
   });
 });
@@ -190,7 +217,7 @@ describe('useArticle HTML sanitization', () => {
       <form><input type="text"><button>Click</button></form>
     `;
     const props = { id: 'a10', type: 'html' as const, content: dirty };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     const html = state.parsedContent.value;
     expect(html).toContain('Safe paragraph');
     expect(html).not.toContain('<script');
@@ -215,7 +242,7 @@ describe('useArticle HTML sanitization', () => {
       <p><img src="img.png" alt="Alt"></p>
     `;
     const props = { id: 'a11', type: 'html' as const, content: safe };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     const html = state.parsedContent.value;
     expect(html).toContain('<h1>Title</h1>');
     expect(html).toContain('<p>Paragraph');
@@ -232,7 +259,7 @@ describe('useArticle HTML sanitization', () => {
 
   test('injects target="_blank" and rel="noopener noreferrer" into links', () => {
     const props = { id: 'a12', type: 'html' as const, content: '<p><a href="https://example.com">Link</a></p>' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     const html = state.parsedContent.value;
     expect(html).toContain('target="_blank"');
     expect(html).toContain('rel="noopener noreferrer"');
@@ -240,7 +267,7 @@ describe('useArticle HTML sanitization', () => {
 
   test('injects loading="lazy" into images', () => {
     const props = { id: 'a13', type: 'html' as const, content: '<p><img src="img.png" alt="Alt"></p>' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     const html = state.parsedContent.value;
     expect(html).toContain('loading="lazy"');
   });
@@ -248,7 +275,7 @@ describe('useArticle HTML sanitization', () => {
   test('sanitizes markdown output as well', () => {
     const md = '# Title\n\n<script>evil()</script>\n\n[Link](https://example.com)';
     const props = { id: 'a14', type: 'md' as const, content: md };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     const html = state.parsedContent.value;
     expect(html).toContain('<h1>Title</h1>');
     expect(html).not.toContain('<script');
@@ -259,55 +286,55 @@ describe('useArticle HTML sanitization', () => {
 describe('useArticle star rating', () => {
   test('rate 4.2 produces 4 full + 1 partial star', () => {
     const props = { id: 'a15', type: 'md' as const, content: 'test', rate: 4.2 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([1, 1, 1, 1, 0.2]);
   });
 
   test('rate 0 produces all empty stars', () => {
     const props = { id: 'a16', type: 'md' as const, content: 'test', rate: 0 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([0, 0, 0, 0, 0]);
   });
 
   test('rate 5 produces all full stars', () => {
     const props = { id: 'a17', type: 'md' as const, content: 'test', rate: 5 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([1, 1, 1, 1, 1]);
   });
 
   test('negative rate clamps to 0', () => {
     const props = { id: 'a18', type: 'md' as const, content: 'test', rate: -1 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([0, 0, 0, 0, 0]);
   });
 
   test('rate above 5 clamps to 5', () => {
     const props = { id: 'a19', type: 'md' as const, content: 'test', rate: 6 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([1, 1, 1, 1, 1]);
   });
 
   test('NaN rate returns null (hide rating)', () => {
     const props = { id: 'a20', type: 'md' as const, content: 'test', rate: NaN };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toBeNull();
   });
 
   test('undefined rate returns null (hide rating)', () => {
     const props = { id: 'a21', type: 'md' as const, content: 'test' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toBeNull();
   });
 
   test('rate rounds to nearest 0.1 (4.25 -> 4.3)', () => {
     const props = { id: 'a22', type: 'md' as const, content: 'test', rate: 4.25 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([1, 1, 1, 1, 0.3]);
   });
 
   test('rate rounds to nearest 0.1 (4.24 -> 4.2)', () => {
     const props = { id: 'a23', type: 'md' as const, content: 'test', rate: 4.24 };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.starOpacities.value).toEqual([1, 1, 1, 1, 0.2]);
   });
 });
@@ -315,21 +342,30 @@ describe('useArticle star rating', () => {
 describe('useArticle expand/collapse', () => {
   test('without maxHeight, contentStyle is empty and isExpanded is false', () => {
     const props = { id: 'a24', type: 'md' as const, content: 'test' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.isExpanded.value).toBe(false);
     expect(Object.keys(state.contentStyle.value)).toHaveLength(0);
   });
 
-  test('with maxHeight, contentStyle injects maxHeight style', () => {
+  test('with maxHeight, contentStyle injects maxHeight style when content overflows', async () => {
     const props = { id: 'a25', type: 'md' as const, content: 'test', maxHeight: '300px' };
-    const state = useArticle(props);
-    expect(state.isExpanded.value).toBe(false);
+    const { wrapper, state } = mountUseArticle(props);
+    // 戴帽为测量驱动:量出内容自然高度超出上限才注入 maxHeight
+    await measureWithOverflow(wrapper, 1000);
     expect(state.contentStyle.value).toEqual({ maxHeight: '300px' });
   });
 
-  test('toggleExpanded removes max-height limit', () => {
+  test('content below cap does not inject maxHeight (host-injected default)', async () => {
+    const props = { id: 'a25b', type: 'md' as const, content: 'test', maxHeight: '300px' };
+    const { wrapper, state } = mountUseArticle(props);
+    await measureWithOverflow(wrapper, 120);
+    expect(Object.keys(state.contentStyle.value)).toHaveLength(0);
+  });
+
+  test('toggleExpanded removes max-height limit', async () => {
     const props = { id: 'a26', type: 'md' as const, content: 'test', maxHeight: '20rem' };
-    const state = useArticle(props);
+    const { wrapper, state } = mountUseArticle(props);
+    await measureWithOverflow(wrapper, 1000);
     expect(state.contentStyle.value).toEqual({ maxHeight: '20rem' });
 
     state.toggleExpanded();
@@ -337,9 +373,10 @@ describe('useArticle expand/collapse', () => {
     expect(Object.keys(state.contentStyle.value)).toHaveLength(0);
   });
 
-  test('toggleExpanded twice restores max-height limit', () => {
+  test('toggleExpanded twice restores max-height limit', async () => {
     const props = { id: 'a27', type: 'md' as const, content: 'test', maxHeight: '300px' };
-    const state = useArticle(props);
+    const { wrapper, state } = mountUseArticle(props);
+    await measureWithOverflow(wrapper, 1000);
 
     state.toggleExpanded();
     expect(state.isExpanded.value).toBe(true);
@@ -353,25 +390,25 @@ describe('useArticle expand/collapse', () => {
 describe('useArticle empty content', () => {
   test('empty string content is detected as empty', () => {
     const props = { id: 'a28', type: 'md' as const, content: '' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.isEmptyContent.value).toBe(true);
   });
 
   test('whitespace-only content is detected as empty', () => {
     const props = { id: 'a29', type: 'md' as const, content: '   \n\t  ' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.isEmptyContent.value).toBe(true);
   });
 
   test('non-empty content is not empty', () => {
     const props = { id: 'a30', type: 'md' as const, content: 'Hello' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.isEmptyContent.value).toBe(false);
   });
 
   test('html empty string is detected as empty', () => {
     const props = { id: 'a31', type: 'html' as const, content: '' };
-    const state = useArticle(props);
+    const { state } = mountUseArticle(props);
     expect(state.isEmptyContent.value).toBe(true);
   });
 });
@@ -429,10 +466,15 @@ describe('Article template', () => {
     expect(wrapper.find('[data-slot="empty-placeholder"]').exists()).toBe(true);
   });
 
-  test('renders expand button when maxHeight is provided', () => {
+  test('renders expand button when content overflows maxHeight', async () => {
     const wrapper = mount(Article, {
       props: { id: 'a38', type: 'md', content: 'Body', maxHeight: '300px' },
     });
+    // 溢出门控:量出内容超高才出现按钮,与戴帽语义一致
+    const body = wrapper.find('[data-slot="article-body"]').element.parentElement!;
+    Object.defineProperty(body, 'scrollHeight', { configurable: true, value: 1000 });
+    window.dispatchEvent(new Event('resize'));
+    await nextTick();
     expect(wrapper.find('[data-slot="expand-button"]').exists()).toBe(true);
   });
 
