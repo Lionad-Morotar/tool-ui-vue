@@ -47,7 +47,7 @@ watch(activeTab, () => {
 
       <!-- Tabs -->
       <div class="border-b border-border bg-muted/30 px-2 pt-1">
-        <div class="flex gap-2">
+        <div class="flex gap-2 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <button
             v-for="tab in tabs"
             :key="tab.id"
