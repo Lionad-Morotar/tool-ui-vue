@@ -9,7 +9,9 @@ const tabs = computed(() => [
   { id: 'travel', label: t('demo.tabTravel').value },
   { id: 'code', label: t('demo.tabCode').value },
   { id: 'contact', label: t('demo.tabContact').value },
-  { id: 'article', label: t('demo.tabArticle').value }
+  { id: 'article', label: t('demo.tabArticle').value },
+  { id: 'fields', label: t('demo.tabFields').value },
+  { id: 'questionFlow', label: t('demo.tabQuestionFlow').value }
 ])
 
 const activeTab = ref('restaurant')
@@ -83,6 +85,8 @@ watch(activeTab, () => {
           <DemoTravel v-else-if="activeTab === 'travel'" />
           <DemoCodeReview v-else-if="activeTab === 'code'" />
           <DemoContactCard v-else-if="activeTab === 'contact'" />
+          <DemoFields v-else-if="activeTab === 'fields'" />
+          <DemoQuestionFlow v-else-if="activeTab === 'questionFlow'" />
           <DemoArticle v-else />
           <div class="for-padding h-30" />
         </OverlayScrollbarsComponent>
@@ -92,6 +96,8 @@ watch(activeTab, () => {
             <DemoTravel v-else-if="activeTab === 'travel'" />
             <DemoCodeReview v-else-if="activeTab === 'code'" />
             <DemoContactCard v-else-if="activeTab === 'contact'" />
+            <DemoFields v-else-if="activeTab === 'fields'" />
+            <DemoQuestionFlow v-else-if="activeTab === 'questionFlow'" />
             <DemoArticle v-else />
           </div>
         </template>
