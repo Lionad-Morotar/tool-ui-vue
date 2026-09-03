@@ -122,10 +122,10 @@ const rowPaddingClass = computed(() =>
   !props.hasHeading && props.itemIndex === 0 && !props.hasTitle ? 'pt-0 pb-3' : 'py-3'
 );
 
+// 宽控件独占整行(input/textarea/tags/upload 等),两个分支都给 w-full;
+// 窄控件保持内容宽且不被 flex 压缩
 const controlWrapperClass = computed(() =>
-  props.hasHeading
-    ? cn('flex', isBlockControl.value && 'w-full', !isBlockControl.value && 'shrink-0')
-    : cn('flex', props.item.type !== 'input' && props.item.type !== 'textarea' && 'shrink-0')
+  cn('flex', isBlockControl.value ? 'w-full' : 'shrink-0')
 );
 </script>
 
