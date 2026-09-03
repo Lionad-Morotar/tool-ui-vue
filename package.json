@@ -11,6 +11,8 @@
     "typecheck": "pnpm -r --filter='./packages/*' run typecheck",
     "serve:pages": "rm -rf .serve/tool-ui-vue/ && mkdir -p packages/site/.output/public/docs && cp -r dist-histoire/* packages/site/.output/public/docs/ && mkdir -p .serve && cp -r packages/site/.output/public .serve/tool-ui-vue && npx serve .serve/",
     "test": "vitest run",
+    "prebuild": "pnpm test",
+    "prerelease": "pnpm build",
     "lint": "eslint . --fix",
     "dev:site": "pnpm --filter @lionad/vtu-site dev",
     "dev:playground": "vite dev playground --config playground/vite.config.ts --port 5749 --host",
@@ -26,7 +28,7 @@
     "publish:all": "pnpm publish:components && pnpm publish:renderer && pnpm publish:server",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "changeset publish"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

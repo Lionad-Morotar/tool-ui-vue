@@ -1,0 +1,13 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@lionad/vtu-components": "0.3.16",
+    "@lionad/vtu-renderer": "0.3.12",
+    "@lionad/vtu-server": "0.3.12",
+    "@lionad/vtu-theme": "0.1.0"
+  },
+  "changesets": [
+    "release-0-3-17-alpha"
+  ]
+}

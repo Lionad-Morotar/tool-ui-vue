@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.17-alpha.0] - 2026-09-03
+
+### Added
+
+- Upload 公开组件：handler 注入传输，支持 text 与 picture-card 双形态
+- 原子表单层落地（reka-ui 底座）：input、textarea、select、switch、toggle-group、date（date/datetime/range 三模式）、rating、number-field、tags-input 十类表单原子，PreferencesPanel 各偏好项全面接线
+- PreferencesPanel 集成 rating/number/tags/date 四类新偏好项
+- ui/option-indicator 选中指示器原子：radio/checkbox 两形态纯展示，选中态样式与 motion-safe 动画自 QuestionFlow 收敛
+
+### Changed
+
+- QuestionFlow 选项区交互改由 reka Listbox 接管，替代手写 roving tabindex/keydown 实现
+
+### Fixed
+
+- QuestionFlow 换步 transition 窗口内选项全部 disabled 导致 highlight 滞留已卸载元素、键盘焦点无法再进入；换步退场快照指示器不再重播入场动画
+- Select 选项较多（约 20 项）时浮层溢出视口，补滚动高度上限后底部选项滚轮与键盘 End 可达
+- preference-field toggle 分支补组容器无障碍命名（aria-labelledby）
+- date 原子 datetime 模式补 TimeField 段渲染
+- PreferencesValue 类型扩展的下游类型对齐
+- [internal] select 原子补 [data-slot] 主题覆盖锚点
+
 ## [0.3.16] - 2026-09-01
 
 ### Added

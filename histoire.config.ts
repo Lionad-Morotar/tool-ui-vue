@@ -8,7 +8,7 @@ const storyGroups = [
   { title: 'Code & Terminal', stories: ['code-block', 'code-block/languages', 'code-block/options', 'code-diff', 'code-diff/modes', 'code-diff/themes', 'terminal', 'terminal/outputs', 'terminal/dark'] },
   { title: 'Media', stories: ['audio', 'image', 'image-gallery', 'image-gallery/layouts', 'image-gallery/captions', 'image-gallery/lightbox', 'item-carousel', 'item-carousel/states', 'item-carousel/interactions', 'item-carousel/actions', 'video'] },
   { title: 'Social', stories: ['approval-card', 'citation', 'citation/formats', 'citation/list', 'contact-card', 'contact-card/channels', 'contact-card/options', 'instagram-post', 'instagram-post/media', 'instagram-post/captions', 'linkedin-post', 'linkedin-post/media', 'linkedin-post/variants', 'link-preview', 'link-preview/variants', 'link-preview/ratios', 'message-draft', 'x-post', 'x-post/media', 'x-post/variants'] },
-  { title: 'Forms & Input', stories: ['option-list', 'parameter-slider', 'preferences-panel', 'preferences-panel/sections', 'preferences-panel/receipt', 'preferences-panel/layout'] },
+  { title: 'Forms & Input', stories: ['option-list', 'parameter-slider', 'preferences-panel', 'preferences-panel/sections', 'preferences-panel/receipt', 'preferences-panel/layout', 'upload'] },
   { title: 'Workflow', stories: ['geo-map', 'geo-map/routes', 'geo-map/interactions', 'geo-map/icons', 'plan', 'progress-tracker', 'progress-tracker/states', 'progress-tracker/receipt', 'question-flow', 'question-flow/progressive', 'question-flow/upfront', 'question-flow/receipt', 'order-summary'] },
 ];
 
