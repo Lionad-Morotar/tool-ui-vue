@@ -35,17 +35,17 @@ vi.mock('../../core/i18n', async (importOriginal) => {
   };
 });
 
-import PreferencesPanel from '../index.vue';
-import {
-  safeParseSerializablePreferencesPanel,
-  safeParseSerializablePreferencesPanelReceipt,
-} from '../schema';
 import {
   installPointerCaptureShim,
   openSelect,
   querySelectItems,
   settle,
 } from '../../ui/__tests__/reka-test-utils';
+import PreferencesPanel from '../index.vue';
+import {
+  safeParseSerializablePreferencesPanel,
+  safeParseSerializablePreferencesPanelReceipt,
+} from '../schema';
 
 beforeAll(installPointerCaptureShim);
 

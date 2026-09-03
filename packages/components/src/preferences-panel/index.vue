@@ -169,7 +169,7 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
             <div class="flex flex-col">
               <template v-for="(item, itemIndex) in section.items" :key="item.id">
                 <hr v-if="itemIndex > 0" class="my-1 border-border" />
-                <PreferenceField
+                <preference-field
                   :item="item"
                   :value="state.getItemValue(item)"
                   :item-index="itemIndex"
