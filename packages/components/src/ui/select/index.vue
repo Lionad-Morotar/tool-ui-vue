@@ -48,7 +48,9 @@ const model = defineModel<string>();
       data-testid="select-trigger"
       data-slot="select-trigger"
     >
-      <SelectValue :placeholder="props.placeholder" />
+      <!-- 值文本 shrink-0:空间不足时保持单行,禁止被 flex 压缩逐字换行
+           (偏好面板窄卡片下 select 与相邻控件争空间时,值文字曾被压成两行) -->
+      <SelectValue :placeholder="props.placeholder" class="shrink-0 whitespace-nowrap" />
       <SelectIcon class="opacity-50">
         <ChevronDown class="size-4" />
       </SelectIcon>
