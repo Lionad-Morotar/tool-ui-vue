@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, h, reactive } from 'vue';
 import { ListboxContent, ListboxItem, ListboxRoot } from 'reka-ui';
+import { computed, h, reactive } from 'vue';
 import { cn } from '../core';
-import { OptionIndicator } from '../ui';
 import { useQuestionFlow } from './states';
 import { useI18n } from '../core/i18n';
-import type { QuestionFlowCss, QuestionFlowProps } from './schema';
+import PreferenceField from '../preferences-panel/cmpts/preference-field.vue';
+import { OptionIndicator } from '../ui';
+import type { QuestionFlowCss, QuestionFlowProps, QuestionFlowFieldAnswers } from './schema';
 
 defineOptions({ name: 'CmptQuestionFlow', inheritAttrs: false })
 
@@ -13,11 +14,17 @@ const props = withDefaults(defineProps<QuestionFlowProps>(), {
   css: () => ({} as QuestionFlowCss)
 })
 
+// 字段步骤内 upload 字段的上传通道:联合 props 编译窄化受限,运行时值判别取用
+const upload = (props as unknown as { upload?: (file: File) => Promise<unknown> }).upload as
+  | ((file: File) => Promise<never>)
+  | undefined;
+
 const emit = defineEmits<{
   select: [optionIds: string[]];
   back: [];
   stepChange: [stepId: string];
-  complete: [answers: Record<string, string[]>];
+  // 选项步骤为 optionId 数组,字段步骤为 itemId → 值映射
+  complete: [answers: Record<string, string[] | QuestionFlowFieldAnswers>];
 }>();
 
 // All business logic delegated to states layer
@@ -183,7 +190,7 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
                     'relative h-auto min-h-[50px] w-full justify-start text-left text-sm font-medium',
                     'rounded-none border-0 bg-transparent px-0 py-2 text-base shadow-none @md/question-flow:text-sm',
                     index === 0 && 'pb-2.5',
-                    index > 0 && index < state.exitingStepData.options.length - 1 && 'py-2.5',
+                    index > 0 && index < (state.exitingStepData.options?.length ?? 0) - 1 && 'py-2.5',
                   )
                 "
               >
@@ -191,7 +198,7 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
                   <span class="flex h-6 items-center">
                     <!-- 退场快照是静态记录:本分支随 v-if 全新挂载,若指示器播放
                          入场动画,退场滑出窗口内用户可见已选标记重播放大淡入 -->
-                    <OptionIndicator
+                    <option-indicator
                       :selected="state.exitingStepData.selectedIds.has(option.id)"
                       :shape="state.exitingStepData.selectionMode === 'single' ? 'radio' : 'checkbox'"
                       :animate="false"
@@ -231,18 +238,19 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
           <!-- 步骤切换窗口内新步选项全 disabled,reka 导航集合为空;若不按 step key 重建实例,
                highlight 滞留已卸载元素、listbox 容器 tabindex 卡 -1,键盘焦点再无法进入;
                keyed remount 让新实例 highlightedElement 归零,容器恢复 tabindex 0 作为键盘入口 -->
-          <ListboxRoot
+          <listbox-root
+            v-if="state.currentOptions.length > 0"
             :key="state.currentStepKey"
             v-model="state.listboxModel"
             :multiple="state.currentSelectionMode === 'multi'"
           >
-            <ListboxContent :class="cn('flex flex-col px-1', props.css?.options)">
+            <listbox-content :class="cn('flex flex-col px-1', props.css?.options)">
               <template v-for="(option, index) in state.currentOptions" :key="option.id">
                 <hr
                   v-if="index > 0"
                   class="border-border transition-opacity [@media(hover:hover)]:[&:has(+_:hover)]:opacity-0 [@media(hover:hover)]:[.peer:hover+&]:opacity-0"
                 />
-                <ListboxItem
+                <listbox-item
                   :value="option.id"
                   :disabled="option.disabled || state.isTransitioning"
                   :data-id="option.id"
@@ -262,7 +270,7 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
                   />
                   <div class="relative flex items-start gap-3">
                     <span class="flex h-6 items-center">
-                      <OptionIndicator
+                      <option-indicator
                         :selected="state.isSelected(option.id)"
                         :shape="state.currentSelectionMode === 'single' ? 'radio' : 'checkbox'"
                         :disabled="option.disabled"
@@ -278,10 +286,27 @@ const CheckIcon = () => h('svg', iconProps, [h('path', { d: 'M20 6 9 17l-5-5' })
                       </span>
                     </div>
                   </div>
-                </ListboxItem>
+                </listbox-item>
               </template>
-            </ListboxContent>
-          </ListboxRoot>
+            </listbox-content>
+          </listbox-root>
+
+          <!-- Fields step:复用 PreferencesPanel 字段渲染,值经 updateFieldValue 归集进 answers -->
+          <div v-else-if="state.currentFields.length > 0" :key="state.currentStepKey" class="flex flex-col">
+            <template v-for="(field, index) in state.currentFields" :key="field.id">
+              <hr v-if="index > 0" class="my-1 border-border" />
+              <preference-field
+                :item="field"
+                :value="state.currentFieldValues[field.id]"
+                :item-index="index"
+                :has-heading="false"
+                :has-title="true"
+                :css-item="props.css?.fields"
+                :upload="upload"
+                @update="state.updateFieldValue(field.id, $event)"
+              />
+            </template>
+          </div>
         </div>
       </div>
 

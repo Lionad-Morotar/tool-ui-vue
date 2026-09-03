@@ -10,6 +10,9 @@
  */
 import { z } from 'zod';
 import { defineToolUiContract, ToolUIIdSchema, ToolUIRoleSchema } from '../core';
+import { PreferenceItemSchema } from '../preferences-panel/schema';
+import type { PreferenceFieldValue } from '../preferences-panel/schema';
+import type { UploadedFile } from '../upload/schema';
 
 /**
  * 问题流程选项的 Schema 定义
@@ -29,14 +32,44 @@ export type QuestionFlowOption = z.infer<typeof QuestionFlowOptionSchema>;
 
 /**
  * 问题流程步骤定义的 Schema 定义
+ * options(选项步骤)与 fields(表单字段步骤)二选一,交叉校验在 check 中收敛
  */
-export const QuestionFlowStepDefinitionSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  description: z.string().optional(),
-  options: z.array(QuestionFlowOptionSchema).min(1),
-  selectionMode: z.enum(['single', 'multi']).optional(),
-});
+export const QuestionFlowStepDefinitionSchema = z
+  .object({
+    id: z.string().min(1),
+    title: z.string().min(1),
+    description: z.string().optional(),
+    options: z.array(QuestionFlowOptionSchema).min(1).optional(),
+    selectionMode: z.enum(['single', 'multi']).optional(),
+    // 表单字段步骤:复用 PreferencesPanel 的字段契约,字段值按 itemId 归集进答案
+    fields: z.array(PreferenceItemSchema).min(1).optional(),
+  })
+  .check((ctx) => {
+    const v = ctx.value;
+    const hasOptions = v.options !== undefined && v.options.length > 0;
+    const hasFields = v.fields !== undefined && v.fields.length > 0;
+    if (!hasOptions && !hasFields) {
+      ctx.issues.push({
+        code: 'custom',
+        input: v,
+        message: 'question flow step requires either options or fields',
+        path: ['options'],
+      });
+    }
+    if (hasOptions && hasFields) {
+      ctx.issues.push({
+        code: 'custom',
+        input: v,
+        message: 'question flow step accepts options or fields, not both',
+        path: ['fields'],
+      });
+    }
+  });
+
+/**
+ * 字段步骤的答案值映射(itemId → 字段值)
+ */
+export type QuestionFlowFieldAnswers = Record<string, PreferenceFieldValue>;
 
 /**
  * 问题流程步骤定义类型
@@ -169,6 +202,7 @@ export const QuestionFlowCssSchema = z.object({
   root: z.string().optional(),
   header: z.string().optional(),
   options: z.string().optional(),
+  fields: z.string().optional(),
   actions: z.string().optional(),
 });
 
@@ -197,14 +231,17 @@ export interface QuestionFlowProgressiveProps {
 
 /**
  * QuestionFlow 前置模式 Props 接口
+ * onComplete answers:选项步骤为 optionId 数组,字段步骤为 itemId → 值映射
  */
 export interface QuestionFlowUpfrontProps {
   id: string;
   role?: 'information' | 'decision' | 'control' | 'state' | 'composite';
   steps: QuestionFlowStepDefinition[];
   css?: QuestionFlowCss;
+  // 字段步骤内 upload 字段的上传通道,语义同 PreferencesPanelProps.upload
+  upload?: (file: File) => Promise<UploadedFile>;
   onStepChange?: (stepId: string) => void;
-  onComplete?: (answers: Record<string, string[]>) => void | Promise<void>;
+  onComplete?: (answers: Record<string, string[] | QuestionFlowFieldAnswers>) => void | Promise<void>;
 }
 
 /**

@@ -1,16 +1,18 @@
 import { computed, onUnmounted, ref, watch } from 'vue';
+import type { PreferenceFieldValue, PreferenceItem } from '../../preferences-panel/schema';
 import type {
   QuestionFlowProps,
   QuestionFlowOption,
   QuestionFlowStepDefinition,
   QuestionFlowChoice,
+  QuestionFlowFieldAnswers,
 } from '../schema';
 
 export type QuestionFlowEmit = {
   (e: 'select', optionIds: string[]): void;
   (e: 'back'): void;
   (e: 'stepChange', stepId: string): void;
-  (e: 'complete', answers: Record<string, string[]>): void;
+  (e: 'complete', answers: Record<string, string[] | QuestionFlowFieldAnswers>): void;
 };
 
 const EXIT_DURATION = 250;
@@ -73,12 +75,14 @@ export function useQuestionFlow(
 
   // Upfront mode state
   const currentStepIndex = ref(0);
-  const answers = ref<Record<string, string[]>>({});
+  // 选项步骤存 optionId 数组,字段步骤存 itemId → 值映射
+  const answers = ref<Record<string, string[] | QuestionFlowFieldAnswers>>({});
   const exitingStepData = ref<{
     stepKey: string;
     title: string;
     description?: string;
-    options: QuestionFlowOption[];
+    options?: QuestionFlowOption[];
+    fields?: PreferenceItem[];
     selectionMode: 'single' | 'multi';
     selectedIds: Set<string>;
   } | null>(null);
@@ -129,9 +133,11 @@ export function useQuestionFlow(
 
   const currentOptions = computed<QuestionFlowOption[]>(() => {
     if (progressiveProps.value) return progressiveProps.value.options;
-    if (currentStep.value) return currentStep.value.options;
+    if (currentStep.value) return currentStep.value.options ?? [];
     return [];
   });
+
+  // 字段步骤:当前步骤的 fields 定义与已归集的字段值
 
   const currentTitle = computed(() => {
     if (progressiveProps.value) return progressiveProps.value.title;
@@ -151,11 +157,39 @@ export function useQuestionFlow(
     return 'single';
   });
 
+  // 字段步骤:当前步骤的 fields 定义与已归集的字段值
+  const currentFields = computed<PreferenceItem[]>(() => currentStep.value?.fields ?? []);
+
+  const currentFieldValues = computed<QuestionFlowFieldAnswers>(() => {
+    if (!currentStep.value) return {};
+    const record = answers.value[currentStep.value.id];
+    return record && !Array.isArray(record) ? record : {};
+  });
+
+  function updateFieldValue(itemId: string, value: PreferenceFieldValue) {
+    if (!currentStep.value) return;
+    const record = currentFieldValues.value;
+    answers.value = { ...answers.value, [currentStep.value.id]: { ...record, [itemId]: value } };
+  }
+
+  // 字段步骤推进门槛:所有 required 字段非空(空态语义与 PreferencesPanel 一致,
+  // 空串/空数组/null/undefined 均视为未填)
+  const requiredFieldsFilled = computed(() =>
+    currentFields.value.every((f) => {
+      if (!('required' in f) || !f.required) return true;
+      const v = currentFieldValues.value[f.id];
+      if (v === undefined || v === null) return false;
+      if (typeof v === 'string') return v !== '';
+      if (Array.isArray(v)) return v.length > 0;
+      return true;
+    })
+  );
+
   const currentSelectedIds = computed<Set<string>>(() => {
     if (progressiveProps.value) return selectedIds.value;
     if (currentStep.value) {
       const answer = answers.value[currentStep.value.id];
-      return new Set(answer ?? []);
+      return new Set(Array.isArray(answer) ? answer : []);
     }
     return new Set();
   });
@@ -188,19 +222,21 @@ export function useQuestionFlow(
 
   function saveExitingStepData() {
     if (currentStep.value) {
+      const record = answers.value[currentStep.value.id];
       exitingStepData.value = {
         stepKey: currentStep.value.id,
         title: currentStep.value.title,
         description: currentStep.value.description,
         options: currentStep.value.options,
+        fields: currentStep.value.fields,
         selectionMode: currentStep.value.selectionMode ?? 'single',
-        selectedIds: new Set(answers.value[currentStep.value.id] ?? []),
+        selectedIds: new Set(Array.isArray(record) ? record : []),
       };
     }
   }
 
   function handleNext() {
-    if (currentSelectedIds.value.size === 0) return;
+    if (!canProceed.value) return;
 
     if (isLastStep.value) {
       if (upfrontProps.value) {
@@ -256,7 +292,10 @@ export function useQuestionFlow(
     }
   });
 
-  const canProceed = computed(() => currentSelectedIds.value.size > 0);
+  // 推进门槛:选项步骤看选中数,字段步骤看 required 字段是否填齐
+  const canProceed = computed(() =>
+    currentFields.value.length > 0 ? requiredFieldsFilled.value : currentSelectedIds.value.size > 0
+  );
 
   function getStepIds(stepKey: string) {
     const safeId = encodeURIComponent(props.id).replace(/%/g, '_');
@@ -288,6 +327,9 @@ export function useQuestionFlow(
     currentTitle,
     currentDescription,
     currentSelectionMode,
+    currentFields,
+    currentFieldValues,
+    updateFieldValue,
     isTransitioning,
     exitingStepData,
     exitingOpacity,

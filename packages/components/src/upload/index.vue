@@ -83,7 +83,7 @@ defineExpose({
         v-bind="triggerAria"
         @click="inputEl?.click()"
       >
-        <Plus class="size-4" />
+        <plus class="size-4" />
         {{ state.multiple ? t('upload.selectFiles') : t('upload.selectFile') }}
       </button>
 
@@ -95,8 +95,8 @@ defineExpose({
           class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm"
           data-testid="upload-item"
         >
-          <Loader2 v-if="item.status === 'uploading'" class="size-4 animate-spin text-muted-foreground" />
-          <XCircle v-else-if="item.status === 'error'" class="size-4 text-destructive" />
+          <loader2 v-if="item.status === 'uploading'" class="size-4 animate-spin text-muted-foreground" />
+          <x-circle v-else-if="item.status === 'error'" class="size-4 text-destructive" />
           <!-- 已传文件名可点击打开 url -->
           <a
             v-if="item.status === 'done'"
@@ -125,7 +125,7 @@ defineExpose({
               data-testid="upload-retry"
               @click="state.retry(item)"
             >
-              <RefreshCw class="size-3.5" />
+              <refresh-cw class="size-3.5" />
             </button>
             <button
               type="button"
@@ -136,7 +136,7 @@ defineExpose({
               data-testid="upload-remove"
               @click="state.remove(item)"
             >
-              <X class="size-3.5" />
+              <x class="size-3.5" />
             </button>
           </template>
         </li>
@@ -160,7 +160,7 @@ defineExpose({
           class="size-full object-cover"
         />
         <div v-else class="flex size-full flex-col items-center justify-center gap-1 bg-muted p-1">
-          <FileIcon class="size-5 text-muted-foreground" />
+          <file-icon class="size-5 text-muted-foreground" />
           <span class="w-full truncate text-center text-xs text-muted-foreground">{{ item.name }}</span>
         </div>
         <!-- 进行态遮罩 / 错误标识 -->
@@ -171,7 +171,7 @@ defineExpose({
           :aria-label="t('upload.uploading').value"
           data-testid="upload-progress"
         >
-          <Loader2 class="size-5 animate-spin text-muted-foreground" />
+          <loader2 class="size-5 animate-spin text-muted-foreground" />
         </div>
         <!-- 错误遮罩:图标 + 就近的失败原因,重试与否需要知道为什么失败 -->
         <div
@@ -194,7 +194,7 @@ defineExpose({
             data-testid="upload-retry"
             @click="state.retry(item)"
           >
-            <RefreshCw class="size-3.5" />
+            <refresh-cw class="size-3.5" />
           </button>
         </div>
         <button
@@ -206,7 +206,7 @@ defineExpose({
           data-testid="upload-remove"
           @click="state.remove(item)"
         >
-          <X class="size-3" />
+          <x class="size-3" />
         </button>
       </div>
 
@@ -220,7 +220,7 @@ defineExpose({
         v-bind="triggerAria"
         @click="inputEl?.click()"
       >
-        <Plus class="size-5" />
+        <plus class="size-5" />
       </button>
     </div>
 

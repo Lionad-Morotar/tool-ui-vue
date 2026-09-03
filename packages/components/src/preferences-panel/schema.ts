@@ -11,8 +11,8 @@
 
 import { z } from 'zod';
 import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
-import type { Action, SerializableActionsConfig, ToolUIReceipt } from '../core';
 import { UploadedFileSchema } from '../upload/schema';
+import type { Action, SerializableActionsConfig, ToolUIReceipt } from '../core';
 import type { UploadedFile } from '../upload/schema';
 
 const PreferenceItemBaseSchema = z.object({
@@ -125,7 +125,8 @@ const PreferenceUploadSchema = PreferenceItemBaseSchema.extend({
   defaultValue: z.array(UploadedFileSchema).optional(),
 });
 
-const PreferenceItemSchema = z.discriminatedUnion('type', [
+// 导出供 question-flow 字段步骤复用同一字段契约
+export const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
   PreferenceSelectSchema,

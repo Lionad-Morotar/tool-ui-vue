@@ -2,6 +2,7 @@ import { enableAutoUnmount, mount } from '@vue/test-utils';
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
 import { installScrollIntoViewShim, settle } from '../../ui/__tests__/reka-test-utils';
 import QuestionFlow from '../index.vue';
+import { safeParseSerializableQuestionFlow } from '../schema';
 
 enableAutoUnmount(afterEach);
 
@@ -379,5 +380,117 @@ describe('keyboard navigation', () => {
     const steppedOptions = wrapper.findAll("[role='option']");
     expect(steppedOptions.some((o) => o.attributes('tabindex') === '0')).toBe(true);
     vi.useRealTimers();
+  });
+});
+
+// fields 步骤:复用 PreferenceItem 契约的表单字段步骤,options 与 fields 二选一
+describe('fields steps', () => {
+  const FIELDS_STEP = {
+    id: 'contact',
+    title: 'Leave your contact',
+    fields: [
+      { id: 'phone', type: 'input' as const, label: 'Phone', required: true, placeholder: '13800xxxxxxx' },
+      { id: 'note', type: 'textarea' as const, label: 'Note', rows: 2 },
+    ],
+  };
+  const STEPS_WITH_FIELDS = [QUESTIONS[0], FIELDS_STEP];
+
+  test('renders field controls and labels for a fields step', async () => {
+    vi.useFakeTimers();
+    const wrapper = mount(QuestionFlow, {
+      ...globalMountOptions,
+      props: { id: 'qf-fields', steps: STEPS_WITH_FIELDS },
+    });
+    await wrapper.findAll("[role='option']")[0]?.trigger('click');
+    await wrapper.findAll('button').find((b) => b.text() === 'Next')?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    expect(wrapper.text()).toContain('Leave your contact');
+    expect(wrapper.text()).toContain('Phone');
+    expect(wrapper.find('[data-testid="preference-field"]').exists()).toBe(true);
+    vi.useRealTimers();
+  });
+
+  test('next stays disabled until required fields are filled', async () => {
+    vi.useFakeTimers();
+    const wrapper = mount(QuestionFlow, {
+      ...globalMountOptions,
+      props: { id: 'qf-fields', steps: STEPS_WITH_FIELDS },
+    });
+    await wrapper.findAll("[role='option']")[0]?.trigger('click');
+    await wrapper.findAll('button').find((b) => b.text() === 'Next')?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    let nextButton = wrapper.findAll('button').find((b) => b.text() === 'Complete');
+    expect(nextButton?.attributes('disabled')).toBeDefined();
+    // 填写 required 字段后可推进
+    const input = wrapper.find('input[id="preference-phone"]');
+    await input.setValue('13800138000');
+    nextButton = wrapper.findAll('button').find((b) => b.text() === 'Complete');
+    expect(nextButton?.attributes('disabled')).toBeUndefined();
+    vi.useRealTimers();
+  });
+
+  test('emits complete with field values map on final fields step', async () => {
+    vi.useFakeTimers();
+    const wrapper = mount(QuestionFlow, {
+      ...globalMountOptions,
+      props: { id: 'qf-fields', steps: STEPS_WITH_FIELDS },
+    });
+    await wrapper.findAll("[role='option']")[0]?.trigger('click');
+    await wrapper.findAll('button').find((b) => b.text() === 'Next')?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    await wrapper.find('input[id="preference-phone"]').setValue('13800138000');
+    await wrapper.findAll('button').find((b) => b.text() === 'Complete')?.trigger('click');
+    const payload = wrapper.emitted('complete')?.[0]?.[0] as Record<
+      string,
+      string[] | Record<string, unknown>
+    >;
+    expect(payload.q1).toEqual(['a']);
+    expect(payload.contact).toMatchObject({ phone: '13800138000' });
+    vi.useRealTimers();
+  });
+
+  test('back keeps previously entered field values', async () => {
+    vi.useFakeTimers();
+    const wrapper = mount(QuestionFlow, {
+      ...globalMountOptions,
+      props: { id: 'qf-fields', steps: STEPS_WITH_FIELDS },
+      attachTo: document.body,
+    });
+    await wrapper.findAll("[role='option']")[0]?.trigger('click');
+    await wrapper.findAll('button').find((b) => b.text() === 'Next')?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    await wrapper.find('input[id="preference-phone"]').setValue('13900139000');
+    await wrapper.findAll('button').find((b) => b.text().includes('Back'))?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    await wrapper.findAll('button').find((b) => b.text() === 'Next')?.trigger('click');
+    await vi.advanceTimersByTimeAsync(300);
+    expect((wrapper.find('input[id="preference-phone"]').element as HTMLInputElement).value).toBe(
+      '13900139000'
+    );
+    vi.useRealTimers();
+  });
+});
+
+describe('fields step schema 契约', () => {
+  test('accepts a step with fields instead of options', () => {
+    const result = safeParseSerializableQuestionFlow({
+      id: 'qf-schema',
+      steps: [
+        {
+          id: 'contact',
+          title: 'Contact',
+          fields: [{ id: 'phone', type: 'input', label: 'Phone' }],
+        },
+      ],
+    });
+    expect(result).not.toBeNull();
+  });
+
+  test('rejects a step with neither options nor fields', () => {
+    const result = safeParseSerializableQuestionFlow({
+      id: 'qf-schema',
+      steps: [{ id: 'empty', title: 'Empty' }],
+    });
+    expect(result).toBeNull();
   });
 });

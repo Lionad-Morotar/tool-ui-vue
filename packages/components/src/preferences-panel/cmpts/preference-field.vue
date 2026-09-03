@@ -1,7 +1,19 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { cn } from '../../core';
-import { Switch, ToggleGroup, Input, Textarea, Select, Rating, NumberField, TagsInput, DatePicker } from '../../ui';
+// Vtu 前缀别名:Switch/Input/Textarea/Select 与原生 HTML 标签同名,
+// kebab-case 模板写法会被编译器当成原生元素解析
+import {
+  Switch as VtuSwitch,
+  ToggleGroup as VtuToggleGroup,
+  Input as VtuInput,
+  Textarea as VtuTextarea,
+  Select as VtuSelect,
+  Rating as VtuRating,
+  NumberField as VtuNumberField,
+  TagsInput as VtuTagsInput,
+  DatePicker as VtuDatePicker,
+} from '../../ui';
 import Upload from '../../upload';
 import type { UploadedFile } from '../../upload';
 import type { PreferenceFieldValue, PreferenceItem } from '../schema';
@@ -126,7 +138,7 @@ const controlWrapperClass = computed(() =>
         isBlockControl
           ? 'flex-col gap-3'
           : props.item.type !== 'switch' &&
-              'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
+            'flex-col gap-3 @sm/preferences-panel:flex-row @sm/preferences-panel:gap-4',
         props.cssItem
       )
     "
@@ -151,7 +163,7 @@ const controlWrapperClass = computed(() =>
 
     <!-- 控件块:按 item.type 调度 -->
     <div :class="controlWrapperClass">
-      <Switch
+      <vtu-switch
         v-if="item.type === 'switch'"
         :id="`preference-${item.id}`"
         v-model="switchChecked"
@@ -159,7 +171,7 @@ const controlWrapperClass = computed(() =>
 
       <!-- ToggleGroupRoot 渲染 div role=group 非 labelable,label[for] 不参与命名,
            组容器可访问名称靠 aria-labelledby 指回文案块 label(该 label 恒带此 id) -->
-      <ToggleGroup
+      <vtu-toggle-group
         v-else-if="item.type === 'toggle' && item.options"
         v-model="toggleModel"
         :options="item.options"
@@ -169,7 +181,7 @@ const controlWrapperClass = computed(() =>
       />
 
       <!-- Select trigger 渲染为 button,label[for] 无法提供无障碍命名,须补 aria-labelledby -->
-      <Select
+      <vtu-select
         v-else-if="item.type === 'select' && item.selectOptions"
         :id="`preference-${item.id}`"
         v-model="textModel"
@@ -177,7 +189,7 @@ const controlWrapperClass = computed(() =>
         :aria-labelledby="`preference-${item.id}-label`"
       />
 
-      <Input
+      <vtu-input
         v-else-if="item.type === 'input'"
         :id="`preference-${item.id}`"
         v-model="textModel"
@@ -185,7 +197,7 @@ const controlWrapperClass = computed(() =>
         :placeholder="item.placeholder"
       />
 
-      <Textarea
+      <vtu-textarea
         v-else-if="item.type === 'textarea'"
         :id="`preference-${item.id}`"
         v-model="textModel"
@@ -194,14 +206,14 @@ const controlWrapperClass = computed(() =>
       />
 
       <!-- Rating/TagsInput/DatePicker 均非 labelable 原生控件,aria-labelledby 指回文案块 label -->
-      <Rating
+      <vtu-rating
         v-else-if="item.type === 'rating'"
         v-model="ratingModel"
         :max="item.max"
         :aria-labelledby="`preference-${item.id}-label`"
       />
 
-      <NumberField
+      <vtu-number-field
         v-else-if="item.type === 'number'"
         :id="`preference-${item.id}`"
         v-model="numberModel"
@@ -211,7 +223,7 @@ const controlWrapperClass = computed(() =>
         :placeholder="item.placeholder"
       />
 
-      <TagsInput
+      <vtu-tags-input
         v-else-if="item.type === 'tags'"
         v-model="tagsModel"
         :max="item.max"
@@ -220,7 +232,7 @@ const controlWrapperClass = computed(() =>
         :class="props.hasHeading ? 'w-full' : undefined"
       />
 
-      <DatePicker
+      <vtu-date-picker
         v-else-if="item.type === 'date'"
         v-model="dateModel"
         :mode="item.mode"
@@ -231,10 +243,10 @@ const controlWrapperClass = computed(() =>
       <!-- Upload 非 labelable:根是无 role 的 div,aria-labelledby 落上去不参与命名,
            命名由原子内 trigger 按钮承接 aria-label;label[for] 不可聚焦,同样以 trigger 兜底;
            upload handler 缺省时禁用原子,杜绝「选文件后永久卡在 uploading」的死态 -->
-      <Upload
+      <upload
         v-else-if="item.type === 'upload'"
-        ref="uploadRef"
         :id="`preference-${item.id}`"
+        ref="uploadRef"
         v-model="uploadModel"
         :accept="item.accept"
         :max-size="item.maxSize"
