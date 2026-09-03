@@ -39,11 +39,18 @@ export function resolveLucideIcon(iconName: string | undefined): Component | nul
   const asyncIcon = defineAsyncComponent({
     loader: async () => {
       const lucide = await import('lucide-vue-next');
-      const Icon = (lucide.icons as Record<string, unknown>)[pascalName];
-      if (!Icon) {
+      // The `icons` map only carries canonical names — lucide v1 renamed a
+      // batch of icons (file-edit → file-pen, bar-chart-3 → chart-column, …)
+      // and kept old names alive solely as named-export aliases, so fall
+      // back to the module namespace before giving up.
+      const icon = (lucide.icons as Record<string, unknown>)[pascalName] ?? (lucide as unknown as Record<string, unknown>)[pascalName];
+      if (!icon) {
+        console.warn(
+          `[vtu-components] Unknown lucide icon "${iconName}" (resolved as ${pascalName}); rendering a first-letter fallback.`
+        );
         return createFallbackComponent(raw);
       }
-      return Icon as Component;
+      return icon as Component;
     },
   });
 
