@@ -1,5 +1,13 @@
 # @lionad/vtu-components
 
+## 0.3.17-alpha.1
+
+### Patch Changes
+
+- fix(components): resolveLucideIcon 回退命名导出别名并告警未知图标
+
+  lucide v1 改名批次（file-edit→file-pen、bar-chart-3→chart-column 等）旧名仅存于命名导出，icons 映射表只含规范名，消费方按历史合法名取图静默降级为首字母占位。icons 表 miss 后回退查模块命名空间恢复全部 BC 别名；真未知名渲染占位时补 console.warn（模块级缓存天然去重，同名仅告警一次）
+
 ## 0.3.17-alpha.0
 
 ### Patch Changes
