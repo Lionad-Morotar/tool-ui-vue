@@ -8,6 +8,7 @@
     "@lionad/vtu-theme": "0.1.0"
   },
   "changesets": [
+    "release-0-3-17-alpha-2",
     "release-0-3-17-alpha"
   ]
 }

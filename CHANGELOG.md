@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.17-alpha.1] - 2026-09-03
+
+### Fixed
+
+- resolveLucideIcon 回退命名导出别名并告警未知图标：lucide v1 改名批次（file-edit→file-pen、bar-chart-3→chart-column 等）旧名仅存于命名导出，icons 映射表 miss 后回退查模块命名空间恢复全部向后兼容别名；真未知名渲染占位时补 console.warn（模块级缓存去重，同名仅告警一次）
+
+## [0.3.17-alpha.2] - 2026-09-03
+
+### Added
+
+- QuestionFlow 步骤支持表单字段：fields 复用 PreferencesPanel 字段契约（PreferenceItem），options/fields 二选一交叉校验，required 字段填齐门控推进，返回步骤保留已填值，complete 载荷按步骤类型分化（选项步骤为 optionId 数组、字段步骤为 itemId → 值映射）
+- QuestionFlow 步骤 id 唯一性校验，防止重复 id 下选项与字段答案互相覆盖
+- Upfront story 新增选项步骤与字段步骤混排、全字段步骤（覆盖全部 12 种字段形态）两个 variant
+
+### Fixed
+
+- select 值文本 shrink-0：窄卡片下 select 与相邻控件争空间时值文字被 flex 压缩逐字换行
+- PreferencesPanel 新增 upload 字段类型：上传 handler 经面板 Props 注入（不进 serializable schema），文件传输中禁用 Save 防提交不完整列表，handler 缺省时禁用原子避免 uploading 死态，回执展示文件名列表；Upload 原子 aria 命名通路收敛到 trigger 按钮
+- 字段行宽控件（input/textarea/tags/upload/toggle）统一 w-full：无 heading 形态（QuestionFlow 字段步骤）下此前渲染为内容宽
+
 ## [0.3.17-alpha.0] - 2026-09-03
 
 ### Added
