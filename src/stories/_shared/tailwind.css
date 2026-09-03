@@ -45,3 +45,19 @@
 .story-table td {
   padding: 0.625rem 1rem;
 }
+
+/* Histoire 沙箱的 @scope(:root) reset 含未分层的 a/input/button{color:inherit},
+ * 优先级压过 @layer utilities 的 text-* 类;reka 浮层 teleport 到 body 后脱离
+ * story 根、反而落入 scope 命中区,按钮文字色继承自 body 而非自身 utility。
+ * 未分层的还原规则让 teleport 出去的 utility 类重新生效 */
+[data-reka-popper-content-wrapper] button.text-primary-foreground {
+  color: var(--color-primary-foreground);
+}
+
+[data-reka-popper-content-wrapper] button.text-accent-foreground {
+  color: var(--color-accent-foreground);
+}
+
+[data-reka-popper-content-wrapper] button.text-muted-foreground {
+  color: var(--color-muted-foreground);
+}

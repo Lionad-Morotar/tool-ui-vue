@@ -234,23 +234,28 @@ const rangeModel = computed<string[]>({
         </DatePickerGrid>
       </DatePickerCalendar>
 
-      <!-- datetime 时间行:24 小时制时/分两段,段为 contenteditable spinbutton -->
+      <!-- datetime 时间行:24 小时制时/分两段,段为 contenteditable spinbutton;
+           段文本由 Root slot 的 segments 输出(空段渲染 '––' 占位),漏渲染则段不可见不可输入 -->
       <div v-if="isDatetime" class="mt-2 border-t pt-2">
         <TimeFieldRoot
+          v-slot="{ segments }"
           v-model="draftTime"
           :hour-cycle="24"
           class="flex items-center gap-1 text-sm"
           data-testid="time-field"
         >
           <TimeFieldInput
-            part="hour"
-            class="w-7 rounded-sm px-1 text-center focus-visible:bg-accent focus-visible:outline-none"
-          />
-          <span class="text-muted-foreground">:</span>
-          <TimeFieldInput
-            part="minute"
-            class="w-7 rounded-sm px-1 text-center focus-visible:bg-accent focus-visible:outline-none"
-          />
+            v-for="segment in segments"
+            :key="segment.part"
+            :part="segment.part"
+            :class="
+              segment.part === 'literal'
+                ? 'text-muted-foreground'
+                : 'w-7 rounded-sm px-1 text-center focus-visible:bg-accent focus-visible:outline-none'
+            "
+          >
+            {{ segment.value }}
+          </TimeFieldInput>
         </TimeFieldRoot>
         <button
           type="button"
