@@ -58,6 +58,8 @@ export function usePreferencesPanel(
           return Array.isArray(item.defaultValue) ? item.defaultValue : [];
         }
         return typeof item.defaultValue === 'string' ? item.defaultValue : '';
+      case 'upload':
+        return item.defaultValue ?? [];
     }
   }
 
@@ -183,6 +185,15 @@ export function usePreferencesPanel(
       return typeof value === 'string' && value ? value : '-';
     }
 
+    // upload 回执展示文件名列表;值可能是字符串数组的脏形态,过滤后回退 '-'
+    if (item.type === 'upload') {
+      if (!Array.isArray(value)) return '-';
+      const names = value
+        .map((f) => (typeof f === 'object' && f !== null && 'name' in f ? String(f.name) : ''))
+        .filter(Boolean);
+      return names.join(', ') || '-';
+    }
+
     const options = item.type === 'toggle' ? item.options : item.selectOptions;
 
     // Multi-select toggle: join selected option labels with comma
@@ -232,13 +243,20 @@ export function usePreferencesPanel(
   });
 
   // Actions with disabled state
+  // upload 字段传输中状态:字段层经 flight 事件上报,保存门控用
+  const isUploading = ref(false);
+  function setUploading(v: boolean) {
+    isUploading.value = v;
+  }
+
   const actionsWithState = computed(() => {
     if (!normalizedActions.value) return [];
 
     return normalizedActions.value.items.map((action) => {
       const isSaveAction = action.id === 'save';
       const baseDisabled = action.disabled ?? false;
-      const shouldDisable = baseDisabled || (isSaveAction && !isDirty.value);
+      // Save 在有文件仍在传输时禁用:上传未完成不进 v-model,提交会静默丢文件
+      const shouldDisable = baseDisabled || (isSaveAction && (!isDirty.value || isUploading.value));
 
       return {
         ...action,
@@ -299,6 +317,7 @@ export function usePreferencesPanel(
     currentValues,
     updateValue,
     isDirty,
+    setUploading,
     formatDisplayValue,
     normalizedActions,
     actionsWithState,

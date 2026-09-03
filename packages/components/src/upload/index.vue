@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { File as FileIcon, Loader2, Plus, RefreshCw, X, XCircle } from 'lucide-vue-next';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, useAttrs } from 'vue';
 import { cn } from '../core';
 import { useUpload, type UploadEmit } from './states';
 import { useI18n } from '../core/i18n';
 import type { UploadProps } from './schema';
 
-defineOptions({ name: 'CmptUpload' });
+defineOptions({ name: 'CmptUpload', inheritAttrs: false });
 
 const props = withDefaults(defineProps<UploadProps>(), {
   variant: 'text',
+});
+
+// attrs 只消费 aria-* 命名通路:根是无 role 的 div,命名须落在真正可聚焦的 trigger 上;
+// 其余 attrs 不转发,避免通用属性误落内部 button 造成重复 id 等污染
+const attrs = useAttrs();
+const triggerAria = computed(() => {
+  const picked: Record<string, string> = {};
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'aria-label' || k === 'aria-labelledby') picked[k] = String(v);
+  }
+  return picked;
 });
 
 const emit = defineEmits<UploadEmit>();
@@ -69,6 +80,7 @@ defineExpose({
         :disabled="state.disabled || state.limitReached"
         class="inline-flex h-9 items-center gap-2 self-start rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:cursor-not-allowed disabled:opacity-50"
         data-testid="upload-trigger"
+        v-bind="triggerAria"
         @click="inputEl?.click()"
       >
         <Plus class="size-4" />
@@ -205,6 +217,7 @@ defineExpose({
         :disabled="state.disabled"
         class="flex size-20 items-center justify-center rounded-md border border-dashed text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
         data-testid="upload-trigger"
+        v-bind="triggerAria"
         @click="inputEl?.click()"
       >
         <Plus class="size-5" />

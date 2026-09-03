@@ -12,6 +12,8 @@
 import { z } from 'zod';
 import { defineToolUiContract, SerializableActionSchema, SerializableActionsConfigSchema, ToolUIIdSchema, ToolUIReceiptSchema, ToolUIRoleSchema,  } from '../core';
 import type { Action, SerializableActionsConfig, ToolUIReceipt } from '../core';
+import { UploadedFileSchema } from '../upload/schema';
+import type { UploadedFile } from '../upload/schema';
 
 const PreferenceItemBaseSchema = z.object({
   id: z.string().min(1),
@@ -111,6 +113,18 @@ const PreferenceDateSchema = PreferenceItemBaseSchema.extend({
   }
 });
 
+// upload 字段复用 Upload 组件的声明性配置;上传通道(handler)是函数据,
+// 不进 serializable schema,由 PreferencesPanelProps 注入透传
+const PreferenceUploadSchema = PreferenceItemBaseSchema.extend({
+  type: z.literal('upload'),
+  accept: z.array(z.string().min(1)).optional(),
+  maxSize: z.number().positive().optional(),
+  limit: z.number().min(1).optional(),
+  multiple: z.boolean().optional(),
+  variant: z.enum(['text', 'picture-card']).optional(),
+  defaultValue: z.array(UploadedFileSchema).optional(),
+});
+
 const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceSwitchSchema,
   PreferenceToggleSchema,
@@ -121,6 +135,7 @@ const PreferenceItemSchema = z.discriminatedUnion('type', [
   PreferenceNumberSchema,
   PreferenceTagsSchema,
   PreferenceDateSchema,
+  PreferenceUploadSchema,
 ]);
 
 const PreferenceSectionSchema = z.object({
@@ -155,10 +170,11 @@ export const SerializablePreferencesPanelSchema =
  */
 export const SerializablePreferencesPanelReceiptSchema =
   z.strictObject(PreferencesPanelBaseSchema.extend({
-        // number 承载 rating/number 项,null 承载 number 项的未填空态
+        // number 承载 rating/number 项,null 承载 number 项的未填空态,
+        // 文件数组承载 upload 项
         choice: z.record(
           z.string(),
-          z.union([z.string(), z.boolean(), z.array(z.string()), z.number(), z.null()])
+          z.union([z.string(), z.boolean(), z.array(z.string()), z.number(), z.null(), z.array(UploadedFileSchema)])
         ),
         error: z.record(z.string(), z.string()).optional(),
       }).shape);
@@ -211,10 +227,11 @@ export const safeParseSerializablePreferencesPanelReceipt: (
 
 /**
  * 偏好设置值类型
- * null 专供 number 项的未填空态(与 0 区分);rating 恒为 number
+ * null 专供 number 项的未填空态(与 0 区分);rating 恒为 number;
+ * 文件数组专供 upload 项
  */
 export interface PreferencesValue {
-  [itemId: string]: string | string[] | boolean | number | null;
+  [itemId: string]: string | string[] | boolean | number | null | UploadedFile[];
 }
 
 /** 单个偏好项的值联合,供控件桥接与 states 层签名复用 */
@@ -247,6 +264,8 @@ export interface PreferencesPanelProps {
   actions?:
     | Action[]
     | SerializableActionsConfig;
+  // upload 字段的上传通道:组件不认识 HTTP,经此注入透传到字段内 Upload 原子
+  upload?: (file: File) => Promise<UploadedFile>;
   onChange?: (value: PreferencesValue) => void;
   onAction?: (actionId: string, value: PreferencesValue) => void | Promise<void>;
 }
@@ -260,7 +279,7 @@ export interface PreferencesPanelReceiptProps {
   receipt?: ToolUIReceipt;
   title?: string;
   sections: PreferenceSection[];
-  choice: Record<string, string | boolean | string[] | number | null>;
+  choice: Record<string, string | boolean | string[] | number | null | UploadedFile[]>;
   error?: Record<string, string>;
   css?: PreferencesPanelCss;
 }

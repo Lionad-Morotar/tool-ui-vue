@@ -28,6 +28,14 @@ const emit = defineEmits<{
 const state = reactive(usePreferencesPanel(props, emit));
 const { t } = useI18n();
 
+// upload 字段传输中状态汇总:任一项仍在上传即门控 Save,避免提交不完整文件列表
+const uploadingItemIds = reactive(new Set<string>());
+function onFieldFlight(itemId: string, hasUploading: boolean) {
+  if (hasUploading) uploadingItemIds.add(itemId);
+  else uploadingItemIds.delete(itemId);
+  state.setUploading(hasUploading || uploadingItemIds.size > 0);
+}
+
 // Derived i18n values for attribute bindings (type-safe unwrapping)
 const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.preferencesWithErrors').value : t('preferencesPanel.confirmedPreferences').value);
 </script>
@@ -168,7 +176,9 @@ const receiptAriaLabel = computed(() => state.hasErrors ? t('preferencesPanel.pr
                   :has-heading="!!section.heading"
                   :has-title="!!props.title"
                   :css-item="props.css?.item"
+                  :upload="props.upload"
                   @update="state.updateValue(item.id, $event)"
+                  @flight="onFieldFlight"
                 />
               </template>
             </div>

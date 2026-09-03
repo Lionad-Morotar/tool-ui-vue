@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { cn } from '../../core';
 import { Switch, ToggleGroup, Input, Textarea, Select, Rating, NumberField, TagsInput, DatePicker } from '../../ui';
+import Upload from '../../upload';
+import type { UploadedFile } from '../../upload';
 import type { PreferenceFieldValue, PreferenceItem } from '../schema';
 
 defineOptions({ name: 'PreferenceField' });
@@ -13,10 +15,14 @@ const props = defineProps<{
   hasHeading: boolean;
   hasTitle: boolean;
   cssItem?: string;
+  // upload 字段的上传通道,由面板层注入透传
+  upload?: (file: File) => Promise<UploadedFile>;
 }>();
 
 const emit = defineEmits<{
   update: [value: PreferenceFieldValue];
+  // upload 字段传输中状态外发,供面板层门控 Save 与进行中上传的竞态
+  flight: [itemId: string, hasUploading: boolean];
 }>();
 
 // 值可能来自序列化数据,字符串 'true' 视为开
@@ -26,9 +32,10 @@ const switchChecked = computed<boolean>({
 });
 
 // toggle 值桥接:field 联合类型收窄为 string | string[],写回统一走 update 上抛
+// (Array.isArray 收窄含 UploadedFile[] 形态,cast 回 string[] 由脏数据分支兜底)
 const toggleModel = computed<string | string[]>({
   get: () => {
-    if (Array.isArray(props.value)) return props.value;
+    if (Array.isArray(props.value)) return props.value as string[];
     return typeof props.value === 'string' ? props.value : '';
   },
   set: (v) => emit('update', v),
@@ -53,8 +60,9 @@ const numberModel = computed<number | null>({
 });
 
 // tags 值桥接:string[] 收窄,非数组输入(脏数据)归空数组
+// (Array.isArray 收窄含 UploadedFile[] 形态,cast 后脏数据仍由运行时归空兜底)
 const tagsModel = computed<string[]>({
-  get: () => (Array.isArray(props.value) ? props.value : []),
+  get: () => (Array.isArray(props.value) ? (props.value as string[]) : []),
   set: (v) => emit('update', v),
 });
 
@@ -63,12 +71,29 @@ const tagsModel = computed<string[]>({
 const dateModel = computed<string | string[]>({
   get: () => {
     if (props.item.type === 'date' && props.item.mode === 'range') {
-      return Array.isArray(props.value) ? props.value : [];
+      return Array.isArray(props.value) ? (props.value as string[]) : [];
     }
     return typeof props.value === 'string' ? props.value : '';
   },
   set: (v) => emit('update', v),
 });
+
+// upload 值桥接:UploadedFile[] 收窄,非数组输入(脏数据)归空数组
+const uploadModel = computed<UploadedFile[]>({
+  get: () => (Array.isArray(props.value) ? (props.value as UploadedFile[]) : []),
+  set: (v) => emit('update', v),
+});
+
+// upload 原子实例:success/error 落定时读其传输中状态,外发 flight 供面板门控 Save;
+// nextTick 等原子内部 items 状态先行转移,避免读到旧值
+const uploadRef = ref<InstanceType<typeof Upload> | null>(null);
+
+function emitFlight() {
+  void nextTick(() => {
+    const hasUploading = uploadRef.value?.getUploadStatus().hasUploading ?? false;
+    emit('flight', props.item.id, hasUploading);
+  });
+}
 
 // 宽控件独占一行,其余与文案同行排列
 const isBlockControl = computed(
@@ -76,7 +101,8 @@ const isBlockControl = computed(
     props.item.type === 'input' ||
     props.item.type === 'textarea' ||
     props.item.type === 'toggle' ||
-    props.item.type === 'tags'
+    props.item.type === 'tags' ||
+    props.item.type === 'upload'
 );
 
 // 无标题卡片的首行去掉上 padding,与容器内边距互补避免顶部双倍留白
@@ -200,6 +226,26 @@ const controlWrapperClass = computed(() =>
         :mode="item.mode"
         :placeholder="item.placeholder"
         :aria-labelledby="`preference-${item.id}-label`"
+      />
+
+      <!-- Upload 非 labelable:根是无 role 的 div,aria-labelledby 落上去不参与命名,
+           命名由原子内 trigger 按钮承接 aria-label;label[for] 不可聚焦,同样以 trigger 兜底;
+           upload handler 缺省时禁用原子,杜绝「选文件后永久卡在 uploading」的死态 -->
+      <Upload
+        v-else-if="item.type === 'upload'"
+        ref="uploadRef"
+        :id="`preference-${item.id}`"
+        v-model="uploadModel"
+        :accept="item.accept"
+        :max-size="item.maxSize"
+        :limit="item.limit"
+        :multiple="item.multiple"
+        :variant="item.variant"
+        v-bind="props.upload ? { upload: props.upload } : { disabled: true }"
+        :aria-labelledby="`preference-${item.id}-label`"
+        :class="props.hasHeading ? 'w-full' : undefined"
+        @success="emitFlight"
+        @error="emitFlight"
       />
     </div>
   </div>

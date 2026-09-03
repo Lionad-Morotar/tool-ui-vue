@@ -1400,6 +1400,136 @@ describe('PreferencesPanel', () => {
       expect(wrapper.find('[data-testid="date-trigger"]').text()).toContain('Pick a date');
     });
   });
+
+  describe('interactions - upload', () => {
+    function createUploadProps(overrides: Record<string, unknown> = {}) {
+      const { item: itemOverrides, ...panelOverrides } = overrides as {
+        item?: Record<string, unknown>;
+      } & Record<string, unknown>;
+      return createProps({
+        sections: [
+          {
+            items: [
+              {
+                id: 'attachment',
+                type: 'upload' as const,
+                label: 'Attachment',
+                multiple: true,
+                ...itemOverrides,
+              },
+            ],
+          },
+        ],
+        upload: vi.fn(async (file: File) => ({
+          name: file.name,
+          url: `https://cdn.example.com/${file.name}`,
+          size: file.size,
+        })),
+        ...panelOverrides,
+      });
+    }
+
+    async function chooseFiles(wrapper: ReturnType<typeof mount>, files: File[]) {
+      const input = wrapper.find('input[type="file"]');
+      Object.defineProperty(input.element, 'files', { value: files, configurable: true });
+      await input.trigger('change');
+      await new Promise((r) => setTimeout(r, 0));
+    }
+
+    test('renders upload trigger and injects upload handler', async () => {
+      const upload = vi.fn(async (file: File) => ({
+        name: file.name,
+        url: `https://cdn.example.com/${file.name}`,
+      }));
+      const wrapper = mount(PreferencesPanel, {
+        props: createUploadProps({ upload }),
+        attachTo: document.body,
+      });
+      expect(wrapper.find('[data-testid="upload-trigger"]').exists()).toBe(true);
+      const file = new File([new Uint8Array(10)], 'a.png', { type: 'image/png' });
+      await chooseFiles(wrapper, [file]);
+      expect(upload).toHaveBeenCalledTimes(1);
+      expect(wrapper.find('[data-testid="upload-item"]').text()).toContain('a.png');
+    });
+
+    test('uploaded files propagate to change payload', async () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createUploadProps(),
+        attachTo: document.body,
+      });
+      const file = new File([new Uint8Array(10)], 'b.png', { type: 'image/png' });
+      await chooseFiles(wrapper, [file]);
+      expect((wrapper.emitted('change')!.at(-1) as unknown[])[0]).toMatchObject({
+        attachment: [{ name: 'b.png', url: 'https://cdn.example.com/b.png' }],
+      });
+    });
+
+    test('initial files defaultValue renders as done items', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createUploadProps({
+          item: { defaultValue: [{ name: 'seed.png', url: 'https://cdn.example.com/seed.png' }] },
+        }),
+      });
+      const items = wrapper.findAll('[data-testid="upload-item"]');
+      expect(items).toHaveLength(1);
+      expect(items[0].text()).toContain('seed.png');
+    });
+
+    test('receipt shows uploaded file names', () => {
+      const wrapper = mount(PreferencesPanel, {
+        props: createUploadProps({
+          choice: {
+            attachment: [
+              { name: 'a.png', url: 'https://cdn.example.com/a.png' },
+              { name: 'b.png', url: 'https://cdn.example.com/b.png' },
+            ],
+          } as never,
+        }),
+      });
+      expect(wrapper.text()).toContain('a.png, b.png');
+    });
+
+    // Save 门控:文件传输中 Save 禁用,上传完成或全部失败后恢复
+    test('save action is disabled while a file is uploading and re-enabled when done', async () => {
+      let resolveUpload: (f: { name: string; url: string }) => void = () => undefined;
+      const upload = vi.fn(
+        (_file: File) =>
+          new Promise<{ name: string; url: string }>((r) => {
+            resolveUpload = r;
+          })
+      );
+      const wrapper = mount(PreferencesPanel, {
+        props: createUploadProps({ upload }),
+        attachTo: document.body,
+      });
+      // 夹具 sections 被整体替换无 switch:dirty 由上传完成后的值变化驱动,
+      // 断言序列「传输中禁用 → 完成后启用」同时覆盖 isUploading 门控的启停两端
+      const file = new File([new Uint8Array(10)], 'slow.png', { type: 'image/png' });
+      await chooseFiles(wrapper, [file]);
+      const saveBtn = wrapper.findAll('button').find((b) => b.text() === 'Save Changes')!;
+      expect(saveBtn.attributes('disabled')).toBeDefined();
+      resolveUpload({ name: 'slow.png', url: 'https://cdn.example.com/slow.png' });
+      await new Promise((r) => setTimeout(r, 0));
+      await flushPromises();
+      expect(saveBtn.attributes('disabled')).toBeUndefined();
+    });
+
+    // upload handler 缺省:原子整体禁用,杜绝选文件后永久卡 uploading 的死态
+    test('upload atom is disabled when no upload handler is provided', () => {
+      const { upload: _omit, ...rest } = createUploadProps();
+      const wrapper = mount(PreferencesPanel, { props: rest });
+      expect(wrapper.find('[data-testid="upload-trigger"]').attributes('disabled')).toBeDefined();
+      expect(wrapper.find('input[type="file"]').attributes('disabled')).toBeDefined();
+    });
+
+    // aria 命名落到可聚焦的 trigger 上(根是无 role 的 div,落根不参与命名)
+    test('upload trigger carries aria-labelledby in the DOM', () => {
+      const wrapper = mount(PreferencesPanel, { props: createUploadProps() });
+      expect(wrapper.find('[data-testid="upload-trigger"]').attributes('aria-labelledby')).toBe(
+        'preference-attachment-label'
+      );
+    });
+  });
 });
 
 describe('数组 props 缺省防御(LLM 产出宽容)', () => {
@@ -1473,6 +1603,49 @@ describe('serializable schema 契约', () => {
     const result = safeParseSerializablePreferencesPanel({
       id: 'pp-schema',
       sections: [{ items: [{ ...baseItem, id: 'd', type: 'date', ...extra }] }],
+    });
+    expect(result).toBeNull();
+  });
+
+  // upload 字段契约:serializable 层只含声明性配置(upload handler 是函数据不进 schema),
+  // defaultValue 为已上传文件集;receipt choice 为文件数组
+  test('accepts upload item with declarative config and files defaultValue', () => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [
+        {
+          items: [
+            {
+              ...baseItem,
+              id: 'u',
+              type: 'upload',
+              accept: ['png', 'jpg'],
+              maxSize: 10,
+              limit: 3,
+              multiple: true,
+              variant: 'text',
+              defaultValue: [{ name: 'a.png', url: 'https://cdn.example.com/a.png' }],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result).not.toBeNull();
+  });
+
+  test('receipt choice accepts upload file array', () => {
+    const result = safeParseSerializablePreferencesPanelReceipt({
+      id: 'pp-schema',
+      sections: [{ items: [{ ...baseItem, id: 'u', type: 'upload' }] }],
+      choice: { u: [{ name: 'a.png', url: 'https://cdn.example.com/a.png' }] },
+    });
+    expect(result).not.toBeNull();
+  });
+
+  test('rejects upload item with non-array defaultValue', () => {
+    const result = safeParseSerializablePreferencesPanel({
+      id: 'pp-schema',
+      sections: [{ items: [{ ...baseItem, id: 'u', type: 'upload', defaultValue: 'a.png' }] }],
     });
     expect(result).toBeNull();
   });
