@@ -493,4 +493,16 @@ describe('fields step schema 契约', () => {
     });
     expect(result).toBeNull();
   });
+
+  // 步骤 id 是 answers 的键,重复 id 会让两类步骤互相覆盖答案值
+  test('rejects steps with duplicate ids', () => {
+    const result = safeParseSerializableQuestionFlow({
+      id: 'qf-schema',
+      steps: [
+        { id: 'dup', title: 'A', options: [{ id: 'a', label: 'A' }] },
+        { id: 'dup', title: 'B', fields: [{ id: 'phone', type: 'input', label: 'Phone' }] },
+      ],
+    });
+    expect(result).toBeNull();
+  });
 });

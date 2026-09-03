@@ -135,9 +135,21 @@ export type SerializableProgressiveMode = z.infer<
 
 /**
  * 前置模式的可序列化 Schema 定义
+ * 步骤 id 是 answers 的键:重复 id 会让选项/字段两类步骤互相覆盖答案值
  */
 export const SerializableUpfrontModeSchema = BaseSchema.extend({
   steps: z.array(QuestionFlowStepDefinitionSchema).min(1),
+}).check((ctx) => {
+  const ids = ctx.value.steps.map((s) => s.id);
+  const dup = ids.find((id, i) => ids.indexOf(id) !== i);
+  if (dup) {
+    ctx.issues.push({
+      code: 'custom',
+      input: dup,
+      message: `question flow step ids must be unique, got duplicate: ${dup}`,
+      path: ['steps'],
+    });
+  }
 });
 
 /**
