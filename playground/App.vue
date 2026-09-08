@@ -3,6 +3,7 @@ const pages = [
   { path: '/demo-restaurant', name: 'Demo Restaurant' },
   { path: '/vtu-renderer', name: 'Vtu Renderer' },
   { path: '/json-render', name: 'Demo JSON Render' },
+  { path: '/data-table-resize', name: 'Data Table Resize 回归' },
 ]
 </script>
 
