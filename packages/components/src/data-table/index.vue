@@ -99,14 +99,33 @@ function onResizeStart(column: { key: string; width?: string }, e: PointerEvent)
   // 已覆盖过的宽度优先（widthOverrides 经 visibleColumns 合并回 column.width）
   resizeStartWidth = parseWidthToPx(column.width) ?? 160
   const handle = e.currentTarget as HTMLElement
-  handle.setPointerCapture?.(e.pointerId)
+  // 合成/无 active pointer 的环境（嵌套 iframe、自动化测试）会抛 InvalidPointerId，
+  // capture 失败仅失去指针跟随（快速拖动可能中断），不应用抛错打断 resize 状态建立
+  try {
+    handle.setPointerCapture?.(e.pointerId)
+  } catch {
+    /* capture 不可用时退化为元素内 pointermove 跟随 */
+  }
 }
+
+// 表格宽度下限：存在显式 px 列宽（LLM 声明或用户拖拽覆写）时，表格总宽必须 ≥ 各列宽之和，
+// 否则 w-full（100% 容器宽）会让浏览器 auto 布局压缩所有列——列宽 style 写得再大渲染也不变，
+// 拖拽因此看似无效。width:100% + min-width:Σpx 钳制组合等价 max(100%, Σpx)（jsdom cssstyle
+// 拒绝 max() 数学函数，纯值形态方可被单测覆盖）；百分比列宽无法计入求和，交由浏览器分配剩余空间。
+// selectable 列 w-10（2.5rem）一并计入。
+const tableMinWidth = computed(() => {
+  const widths = state.visibleColumns.map((c) => parseWidthToPx(c.width))
+  if (widths.every((w) => w === null)) return undefined
+  const sum = widths.reduce<number>((acc, w) => acc + (w ?? 0), 0) + (props.selectable ? 40 : 0)
+  return { width: '100%', minWidth: `${sum}px` }
+})
 function onResizeMove(e: PointerEvent) {
   if (!resizingKey.value) return
   const next = Math.max(48, resizeStartWidth + (e.clientX - resizeStartX))
   state.setColumnWidth(resizingKey.value, next)
 }
 function onResizeEnd() {
+  if (resizingKey.value) emit('columnResize', { ...state.widthOverrides })
   resizingKey.value = null
 }
 
@@ -232,7 +251,8 @@ function getRowA11yLabel(row: RowData, index: number): string {
       <div :class="cn('relative', isFullscreen && 'h-full')">
         <div
           :class="cn(
-            'relative w-full overflow-hidden overflow-y-auto rounded-lg border border-border bg-card',
+            // overflow-x-auto：列宽有显式声明时表格总宽可超出容器（见 tableMinWidth），横向内容须可滚动而非裁切
+            'relative w-full overflow-x-auto overflow-y-auto rounded-lg border border-border bg-card',
             'touch-pan-x',
             // 全屏态解除 maxHeight 帽子（宿主可能戴了 40vh 类有界契约），h-full 沿高度继承链铺满视口
             maxHeight && !isFullscreen && 'max-h-[var(--max-height)]',
@@ -240,7 +260,7 @@ function getRowA11yLabel(row: RowData, index: number): string {
           )"
           :style="maxHeight && !isFullscreen ? { '--max-height': maxHeight, 'overflow-y': 'auto' } : {}"
         >
-          <table class="w-full text-sm">
+          <table class="w-full text-sm" :style="tableMinWidth">
             <colgroup v-if="selectable || state.visibleColumns.length > 0">
               <col v-if="selectable" class="w-10" />
               <col
@@ -308,7 +328,7 @@ function getRowA11yLabel(row: RowData, index: number): string {
                     scope="col"
                     :data-column-key="column.key"
                     :class="cn(
-                      'relative h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
+                      'group/th relative h-10 align-middle font-normal whitespace-nowrap text-muted-foreground',
                       state.getAlignmentClass(state.getColumnAlign(column, columnIndex)),
                       columnIndex === 0 && 'pl-1',
                       columnIndex === state.visibleColumns.length - 1 && 'pr-1',
@@ -377,7 +397,7 @@ function getRowA11yLabel(row: RowData, index: number): string {
                     <span
                       v-if="featureEnabled.resize"
                       :data-testid="`resize-handle-${column.key}`"
-                      class="absolute top-0 right-0 z-10 h-full w-1.5 cursor-col-resize touch-none hover:bg-accent"
+                      class="absolute top-0 right-0 z-10 h-full w-2.5 cursor-col-resize touch-none group-hover/th:bg-border hover:bg-accent"
                       role="separator"
                       aria-orientation="vertical"
                       :aria-label="`Resize column ${column.label}`"

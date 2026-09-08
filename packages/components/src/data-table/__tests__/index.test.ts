@@ -1154,3 +1154,93 @@ describe('数组 props 缺省防御(LLM 产出宽容)', () => {
     expect(wrapper.text()).toContain('No data available');
   });
 });
+
+describe('表格宽度下限（tableMinWidth 列宽不被 w-full 压缩）', () => {
+  function colStyle(wrapper: ReturnType<typeof mount>, index: number) {
+    return wrapper.findAll('colgroup col')[index].attributes('style') || '';
+  }
+  function dispatchPointer(el: Element, type: string, init: PointerEventInit = {}) {
+    el.dispatchEvent(new PointerEvent(type, { bubbles: true, ...init }));
+  }
+
+  test('存在显式 px 列宽时，table 以 min-width 钳制总宽（各列之和）', () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        columns: [
+          { key: 'name', label: 'Name', width: '760px' },
+          { key: 'value', label: 'Value', width: '300px' },
+        ],
+      }),
+    });
+    const style = wrapper.find('table').attributes('style') || '';
+    expect(style).toContain('min-width: 1060px');
+    expect(style).toContain('width: 100%');
+  });
+
+  test('selectable 行勾选列的 w-10 计入下限', () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        selectable: true,
+        columns: [{ key: 'name', label: 'Name', width: '760px' }],
+      }),
+    });
+    expect(wrapper.find('table').attributes('style')).toContain('min-width: 800px');
+  });
+
+  test('无任何显式列宽时保持 w-full 弹性（无额外 style）', () => {
+    const wrapper = mount(DataTable, { props: createProps() });
+    expect(wrapper.find('table').attributes('style')).toBeUndefined();
+  });
+
+  test('百分比列宽不触发下限（无法求和，交由浏览器分配）', () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        columns: [{ key: 'name', label: 'Name', width: '50%' }],
+      }),
+    });
+    expect(wrapper.find('table').attributes('style')).toBeUndefined();
+  });
+
+  test('拖动加宽列后 table 下限同步增大（总宽随拖动撑开而非压缩）', async () => {
+    const wrapper = mount(DataTable, {
+      props: createProps({
+        columns: [
+          { key: 'name', label: 'Name', width: '760px' },
+          { key: 'value', label: 'Value', width: '300px' },
+        ],
+      }),
+    });
+    const handle = wrapper.find('[data-testid="resize-handle-name"]').element;
+    dispatchPointer(handle, 'pointerdown', { pointerId: 1, clientX: 100 });
+    await nextTick();
+    dispatchPointer(handle, 'pointermove', { pointerId: 1, clientX: 180 });
+    await nextTick();
+    dispatchPointer(handle, 'pointerup', { pointerId: 1 });
+    await nextTick();
+    expect(colStyle(wrapper, 0)).toContain('840px');
+    expect(wrapper.find('table').attributes('style')).toContain('min-width: 1140px');
+  });
+
+  test('setPointerCapture 抛错（合成/受限环境）不阻断 resize', async () => {
+    const wrapper = mount(DataTable, { props: createProps() });
+    const handleEl = wrapper.find('[data-testid="resize-handle-name"]').element as HTMLElement;
+    handleEl.setPointerCapture = () => {
+      throw new DOMException('No active pointer', 'NotFoundError');
+    };
+    dispatchPointer(handleEl, 'pointerdown', { pointerId: 1, clientX: 100 });
+    await nextTick();
+    dispatchPointer(handleEl, 'pointermove', { pointerId: 1, clientX: 140 });
+    await nextTick();
+    dispatchPointer(handleEl, 'pointerup', { pointerId: 1 });
+    await nextTick();
+    expect(colStyle(wrapper, 0)).toMatch(/width:\s*\d+px/);
+  });
+
+  test('resize 手柄可见性：列头 hover 显现 + 自身 hover 高亮 + 热区 10px', () => {
+    const wrapper = mount(DataTable, { props: createProps() });
+    const cls = wrapper.find('[data-testid="resize-handle-name"]').classes();
+    expect(cls).toContain('group-hover/th:bg-border');
+    expect(cls).toContain('hover:bg-accent');
+    expect(cls).toContain('w-2.5');
+  });
+});
