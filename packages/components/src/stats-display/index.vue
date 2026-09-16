@@ -54,14 +54,14 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
       <!-- Stats Grid -->
       <div class="@container overflow-hidden p-0">
         <div
-          :class="cn('grid grid-cols-1 @[440px]:-mt-px @[440px]:-ml-px', state.gridColsClass)"
+          :class="cn('grid grid-cols-1 @[440px]:-mb-px @[440px]:-ml-px', state.gridColsClass)"
         >
           <div
             v-for="(stat, index) in stats"
             :key="stat.key"
             :class="cn(
-              'overflow-clip py-3 first:pt-0 @[440px]:border-t @[440px]:border-l @[440px]:border-border @[440px]:py-3 @[440px]:first:pt-3',
-              index > 0 && 'border-t border-border',
+              'overflow-clip py-3 first:pt-0 @[440px]:border-b @[440px]:border-l @[440px]:border-border @[440px]:py-3 @[440px]:first:pt-3',
+              index > 0 && '@max-[440px]:border-t @max-[440px]:border-border',
               css?.stat
             )"
           >

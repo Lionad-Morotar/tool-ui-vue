@@ -247,7 +247,7 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const diff = wrapper.find('span.inline-flex.items-center');
+      const diff = wrapper.find('span.inline-flex');
       expect(diff.classes()).toContain('text-green-600');
       expect(diff.classes()).toContain('dark:text-green-400');
     });
@@ -265,7 +265,7 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const diff = wrapper.find('span.inline-flex.items-center');
+      const diff = wrapper.find('span.inline-flex');
       expect(diff.classes()).toContain('text-red-600');
       expect(diff.classes()).toContain('dark:text-red-500');
     });
@@ -283,7 +283,7 @@ describe('StatsDisplay', () => {
           ],
         }),
       });
-      const diff = wrapper.find('span.inline-flex.items-center');
+      const diff = wrapper.find('span.inline-flex');
       expect(diff.classes()).toContain('text-muted-foreground');
     });
 
@@ -365,6 +365,54 @@ describe('StatsDisplay', () => {
         }),
       });
       expect(four.find('.grid .text-3xl').exists()).toBe(true);
+    });
+
+    // 水平分隔线由格子的 border-b 绘制 + 网格 -mb-px 裁掉末行底线：
+    // 不完整的恒为末行，故上一行恒能画出满宽分隔线；
+    // 若反向用 border-t（由下一行绘制），奇数项时末行缺格会导致分隔线断档
+    test('odd item count keeps row dividers full-width via cell bottom borders', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: Array.from({ length: 5 }, (_, i) => ({
+            key: `s${i}`,
+            label: `S${i}`,
+            value: i,
+          })),
+        }),
+      });
+
+      const grid = wrapper.find('.grid');
+      expect(grid.classes()).toContain('@[440px]:-mb-px');
+      expect(grid.classes()).not.toContain('@[440px]:-mt-px');
+
+      const cells = wrapper.findAll('.grid > div');
+      expect(cells).toHaveLength(5);
+      for (const cell of cells) {
+        expect(cell.classes()).toContain('@[440px]:border-b');
+        expect(cell.classes()).not.toContain('@[440px]:border-t');
+      }
+    });
+
+    // 窄屏单列的格子间分隔线必须限定在 <440px 容器内生效：
+    // 无前缀 border-t 在宽屏不消失，且不再有 -mt-px 裁剪，
+    // 会在第一行第 2、3 格上方漏出与 header 底线叠加的分段粗线
+    test('stacked-layout divider is scoped below the 440px container query', () => {
+      const wrapper = mount(StatsDisplay, {
+        props: createProps({
+          stats: Array.from({ length: 3 }, (_, i) => ({
+            key: `s${i}`,
+            label: `S${i}`,
+            value: i,
+          })),
+        }),
+      });
+
+      const cells = wrapper.findAll('.grid > div');
+      expect(cells[0].classes()).not.toContain('@max-[440px]:border-t');
+      for (const cell of cells.slice(1)) {
+        expect(cell.classes()).toContain('@max-[440px]:border-t');
+        expect(cell.classes()).not.toContain('border-t');
+      }
     });
   });
 });
