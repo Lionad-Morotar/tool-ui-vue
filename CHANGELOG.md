@@ -7,11 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.17-alpha.1] - 2026-09-03
+## [0.3.17] - 2026-09-16
+
+### Added
+
+- Upload 公开组件：handler 注入传输，支持 text 与 picture-card 双形态
+- 原子表单层落地（reka-ui 底座）：input、textarea、select、switch、toggle-group、date（date/datetime/range 三模式）、rating、number-field、tags-input 十类表单原子，PreferencesPanel 各偏好项全面接线
+- PreferencesPanel 集成 rating/number/tags/date 四类新偏好项
+- ui/option-indicator 选中指示器原子：radio/checkbox 两形态纯展示，选中态样式与 motion-safe 动画自 QuestionFlow 收敛
+- QuestionFlow 步骤支持表单字段：fields 复用 PreferencesPanel 字段契约（PreferenceItem），options/fields 二选一交叉校验，required 字段填齐门控推进，返回步骤保留已填值，complete 载荷按步骤类型分化（选项步骤为 optionId 数组、字段步骤为 itemId → 值映射）
+- QuestionFlow 步骤 id 唯一性校验，防止重复 id 下选项与字段答案互相覆盖
+- Upfront story 新增选项步骤与字段步骤混排、全字段步骤（覆盖全部 12 种字段形态）两个 variant
+
+### Changed
+
+- QuestionFlow 选项区交互改由 reka Listbox 接管，替代手写 roving tabindex/keydown 实现
 
 ### Fixed
 
+- QuestionFlow 换步 transition 窗口内选项全部 disabled 导致 highlight 滞留已卸载元素、键盘焦点无法再进入；换步退场快照指示器不再重播入场动画
+- Select 选项较多（约 20 项）时浮层溢出视口，补滚动高度上限后底部选项滚轮与键盘 End 可达
+- preference-field toggle 分支补组容器无障碍命名（aria-labelledby）
+- date 原子 datetime 模式补 TimeField 段渲染
+- PreferencesValue 类型扩展的下游类型对齐
 - resolveLucideIcon 回退命名导出别名并告警未知图标：lucide v1 改名批次（file-edit→file-pen、bar-chart-3→chart-column 等）旧名仅存于命名导出，icons 映射表 miss 后回退查模块命名空间恢复全部向后兼容别名；真未知名渲染占位时补 console.warn（模块级缓存去重，同名仅告警一次）
+- select 值文本 shrink-0：窄卡片下 select 与相邻控件争空间时值文字被 flex 压缩逐字换行
+- PreferencesPanel 新增 upload 字段类型：上传 handler 经面板 Props 注入（不进 serializable schema），文件传输中禁用 Save 防提交不完整列表，handler 缺省时禁用原子避免 uploading 死态，回执展示文件名列表；Upload 原子 aria 命名通路收敛到 trigger 按钮
+- 字段行宽控件（input/textarea/tags/upload/toggle）统一 w-full：无 heading 形态（QuestionFlow 字段步骤）下此前渲染为内容宽
+- DataTable 列宽不再被表格 w-full 压缩：min-width 下限钳制总宽，resizer 拖拽真实生效；手柄列头 hover 显现并加宽热区，补发 columnResize 事件；总宽超出容器后横向可滚动
+- option-list receipt 选项标题左对齐
+- StatsDisplay 奇数项时行间分隔线断档修复：分隔线统一绘制于格子下边框并裁剪末行，完整行恒满宽
+- StatsDisplay diff 项对齐样式修正，确保视觉一致性
+- [internal] select 原子补 [data-slot] 主题覆盖锚点
 
 ## [0.3.17-alpha.2] - 2026-09-03
 
@@ -26,6 +53,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - select 值文本 shrink-0：窄卡片下 select 与相邻控件争空间时值文字被 flex 压缩逐字换行
 - PreferencesPanel 新增 upload 字段类型：上传 handler 经面板 Props 注入（不进 serializable schema），文件传输中禁用 Save 防提交不完整列表，handler 缺省时禁用原子避免 uploading 死态，回执展示文件名列表；Upload 原子 aria 命名通路收敛到 trigger 按钮
 - 字段行宽控件（input/textarea/tags/upload/toggle）统一 w-full：无 heading 形态（QuestionFlow 字段步骤）下此前渲染为内容宽
+
+## [0.3.17-alpha.1] - 2026-09-03
+
+### Fixed
+
+- resolveLucideIcon 回退命名导出别名并告警未知图标：lucide v1 改名批次（file-edit→file-pen、bar-chart-3→chart-column 等）旧名仅存于命名导出，icons 映射表 miss 后回退查模块命名空间恢复全部向后兼容别名；真未知名渲染占位时补 console.warn（模块级缓存去重，同名仅告警一次）
 
 ## [0.3.17-alpha.0] - 2026-09-03
 

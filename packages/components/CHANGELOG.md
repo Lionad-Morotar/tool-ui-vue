@@ -1,5 +1,29 @@
 # @lionad/vtu-components
 
+## 0.3.17
+
+### Patch Changes
+
+- [`a1dbfc2`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/a1dbfc299ddf0ab6ff7018264c96efc4259664bb) Thanks [@Lionad-Morotar](https://github.com/Lionad-Morotar)! - fix(components): data-table 列宽不再被表格 w-full 压缩——min-width 下限钳制总宽，resizer 拖拽真实生效；手柄列头 hover 显现并加宽热区，补发 columnResize 事件；总宽超出容器后横向可滚动
+
+- fix(components): option-list receipt 选项标题左对齐，去掉误加的 text-center
+
+- [`5f7500e`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/5f7500e463114155d02260150d45a65ef868703e) Thanks [@Lionad-Morotar](https://github.com/Lionad-Morotar)! - feat(components): QuestionFlow 步骤支持表单字段——fields 复用 PreferenceItem 契约，options/fields 二选一校验，required 填齐门控推进，complete 载荷按步骤类型分化
+
+  fix(components): select 值文本 shrink-0 防窄卡片下被 flex 压缩换行；PreferencesPanel 新增 upload 字段类型（handler 注入、传输中门控 Save、回执文件名展示）；字段行宽控件统一 w-full；QuestionFlow 步骤 id 唯一性校验防答案互相覆盖
+
+- [`35d05c5`](https://github.com/Lionad-Morotar/tool-ui-vue/commit/35d05c5159513a7c5c5312d17c7f46a1454102af) Thanks [@Lionad-Morotar](https://github.com/Lionad-Morotar)! - feat(components): 新增 upload 公开组件——handler 注入传输，text/picture-card 双形态
+
+  原子表单层 ui/\* 落地：input、textarea、select、switch、toggle-group、date（date/datetime/range 三模式）、rating、number-field、tags-input 表单原子，PreferencesPanel 偏好项全面接线并集成 rating/number/tags/date 四类新偏好项
+
+  QuestionFlow 选项区改由 reka Listbox 接管交互，修复换步 transition 窗口内 highlight 滞留已卸载元素、键盘焦点无法进入的问题；换步退场快照指示器不再重播入场动画
+
+  fix(components): Select 选项较多时浮层补滚动高度上限，底部选项滚轮与键盘 End 可达；preference-field toggle 分支补组容器无障碍命名；date 原子 datetime 模式补 TimeField 段渲染；PreferencesValue 类型扩展的下游类型对齐
+
+- fix(components): stats-display 奇数项时行间分隔线断档修复——分隔线统一绘制于格子下边框并裁剪末行，完整行恒满宽
+
+  fix(components): stats-display diff 项对齐样式修正，确保视觉一致性
+
 ## 0.3.17-alpha.3
 
 ### Patch Changes
