@@ -55,5 +55,8 @@ export default {
     withSparklines: 'With Sparklines',
     withTrends: 'With Trends',
     threeItems: 'Three Items',
+    fiveItems: 'Five Items (Odd)',
+    fiveTitle: 'Key Metrics',
+    fiveDesc: 'Latest available public data',
   },
 }

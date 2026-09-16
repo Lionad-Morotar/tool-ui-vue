@@ -20,6 +20,9 @@ const componentPropsTitle = StatsDisplayPropsTitle
 const subtitle = useStoryLocale('content.subtitle', messages);
 const basic = useStoryLocale('content.basic', messages)
 const threeItems = useStoryLocale('content.threeItems', messages)
+const fiveItems = useStoryLocale('content.fiveItems', messages)
+const fiveTitle = useStoryLocale('content.fiveTitle', messages)
+const fiveDesc = useStoryLocale('content.fiveDesc', messages)
 const revenueLabel = useStoryLocale('content.revenueLabel', messages)
 const usersLabel = useStoryLocale('content.usersLabel', messages)
 const churnLabel = useStoryLocale('content.churnLabel', messages)
@@ -63,6 +66,24 @@ const props = [
             { key: 'revenue', label: revenueLabel, value: '$48.2K' },
             { key: 'users', label: usersLabel, value: '2,420' },
             { key: 'churn', label: churnLabel, value: '2.1%' },
+          ]"
+        />
+      </div>
+    </Variant>
+
+    <Variant :title="fiveItems">
+      <p class="mb-3 text-xs text-muted-foreground">{{ subtitle }}</p>
+      <div class="w-full max-w-2xl">
+        <stats-display
+          id="stats-five"
+          :title="fiveTitle"
+          :description="fiveDesc"
+          :stats="[
+            { key: 'revenue', label: revenueLabel, value: '$48.2K' },
+            { key: 'users', label: usersLabel, value: '2,420' },
+            { key: 'churn', label: churnLabel, value: '2.1%' },
+            { key: 'nps', label: npsLabel, value: '72' },
+            { key: 'mrr', label: 'MRR', value: '$12.4K' },
           ]"
         />
       </div>

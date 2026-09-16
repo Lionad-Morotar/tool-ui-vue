@@ -55,5 +55,8 @@ export default {
     withSparklines: '含迷你图',
     withTrends: '含趋势',
     threeItems: '三项布局',
+    fiveItems: '五项布局（奇数）',
+    fiveTitle: '核心指标',
+    fiveDesc: '最新可得公开口径',
   },
 }
