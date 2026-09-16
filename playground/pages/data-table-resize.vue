@@ -55,7 +55,7 @@ function onColumnResize(widths: Record<string, number>) {
 
       <section class="space-y-3" data-testid="scene-wide">
         <h2 class="text-base font-medium">场景 A：显式 px 列宽（总和 1540px &gt; 容器）</h2>
-        <DataTable
+        <data-table
           id="resize-regression-wide"
           :columns="wideColumns"
           :data="rows"
@@ -67,7 +67,7 @@ function onColumnResize(widths: Record<string, number>) {
 
       <section class="space-y-3" data-testid="scene-auto">
         <h2 class="text-base font-medium">场景 B：无显式列宽（默认弹性）</h2>
-        <DataTable
+        <data-table
           id="resize-regression-auto"
           :columns="autoColumns"
           :data="rows"

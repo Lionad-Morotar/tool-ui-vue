@@ -179,7 +179,7 @@ function percentAriaLabel(value: number, format: { decimals?: number; basis?: 'f
                 <span
                   v-if="stat.diff"
                   :class="cn(
-                    'inline-flex items-center gap-0.5 text-sm font-medium tabular-nums',
+                    'inline-flex items-center gap-0.5 text-sm font-medium tabular-nums items-start',
                     state.deltaColorClasses(stat.diff)
                   )"
                 >
